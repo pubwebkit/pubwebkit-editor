@@ -1,0 +1,34 @@
+{
+  "name": "pubwebkit-editor",
+  "version": "0.0.1",
+  "description": "Powerful editor to create your ebook in various styles. It's includes: Cover Designer, Template Editor, Community Snippets and more...",
+  "homepage": "http://www.pubwebkit.com",
+  "bugs": "https://github.com/pubwebkit/pubwebkit-editor/issues",
+  "author": {
+    "name": "Dmitry Antonenko",
+    "email": "dmitry.antonenko@hedgehog.com.ua",
+    "url": "http://hedgehog.com.ua"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pubwebkit/pubwebkit-editor"
+  },
+  "main": "app/app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-closure-tools": "^0.9.7"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "keywords": [
+    "closure library"
+  ],
+  "licenses": [
+    {
+      "type": "GNU AGPL",
+      "url": "http://www.gnu.org/licenses/agpl-3.0.html"
+    }
+  ]
+}

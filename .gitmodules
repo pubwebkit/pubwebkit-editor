@@ -1,0 +1,9 @@
+[submodule "libs/closure-library"]
+	path = libs/closure-library
+	url = https://banguit@github.com/google/closure-library.git
+[submodule "libs/closure-compiler"]
+	path = libs/closure-compiler
+	url = https://banguit@github.com/google/closure-compiler.git
+[submodule "libs/closure-templates"]
+	path = libs/closure-templates
+	url = https://banguit@github.com/google/closure-templates.git
