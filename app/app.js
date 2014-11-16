@@ -3,32 +3,12 @@
  * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
-goog.provide('pwk');
+goog.provide('app');
 
-goog.require('goog.dom');
-goog.require('pwk.EditorContainer');
-goog.require('pwk.Editor');
+goog.require('app.Core');
+goog.require('app.exports');
 
-
-/**
- * Initialize PWK Editor
- *
- * @param {Object=} configuration Settings for initialize Rich Editor
- */
-pwk.init = function(configuration) {
-    var defaultConfig = {
-    };
-
-    // Merge settings
-    goog.object.extend(defaultConfig, configuration || {});
-
-    var editor = new pwk.Editor()
-      , container = new pwk.EditorContainer();
-
-    container.addChild(editor, true);
-    container.render();
+window.onload = function() {
+    // Run application
+    (new app.Core()).init();
 };
-
-
-// Export
-goog.exportSymbol('pwk.Init', pwk.init);

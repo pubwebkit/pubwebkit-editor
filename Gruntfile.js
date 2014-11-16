@@ -16,7 +16,7 @@ module.exports = function (grunt) {
         appPath: 'app/',
 
         // define the main namespace of your app.
-        entryPoint: 'pwk',
+        entryPoint: 'app',
 
         // The path to the closure library
         closureLibrary: 'libs/closure-library',
@@ -30,12 +30,15 @@ module.exports = function (grunt) {
         // The location of the source map
         sourceMap: 'build/pubwebkit.editor.js.map',
 
+        //local filename|remote url
+        source_map_location_mapping: ['libs/|http://localhost:63342/pubwebkit-editor/libs/', 'app/|http://localhost:63342/pubwebkit-editor/app/'],
+
         // Closure Compiler
         compiler: 'libs/closure-compiler/build/compiler.jar',
 
         // This sting will wrap your code marked as %output%
         // Take care to edit the sourcemap path
-        outputWrapper: '(function(){%output%}).call(this);' + '//# sourceMappingURL=build/pubwebkit.editor.js.map'
+        outputWrapper: '(function(){%output%}).call(this);' + '//# sourceMappingURL=pubwebkit.editor.js.map'
     };
 
     // Configure
@@ -65,18 +68,16 @@ module.exports = function (grunt) {
                 compilerOpts: {
                     compilation_level: 'ADVANCED_OPTIMIZATIONS',
                     externs: [CONFIGURATION.externsPath + '*.js'],
-                    define: [
-                        '\'goog.DEBUG=false\''
-                    ],
+                    define: ["'goog.DEBUG=false'"],
                     warning_level: 'verbose',
                     jscomp_off: [],
                     summary_detail_level: 3,
-                    only_closure_dependencies: false,
+                    only_closure_dependencies: true,
                     closure_entry_point: CONFIGURATION.entryPoint,
                     create_source_map: CONFIGURATION.sourceMap,
                     source_map_format: 'V3',
+                    source_map_location_mapping: CONFIGURATION.source_map_location_mapping,
                     output_wrapper: CONFIGURATION.outputWrapper
-
                 }
             },
             app: {
