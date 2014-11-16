@@ -12,6 +12,7 @@ goog.provide('pwk.Document.NodeRemovedEvent');
 
 goog.require('goog.ui.Component');
 goog.require('goog.events.Event');
+goog.require('goog.dom.classlist');
 goog.require('pwk.PageSettings');
 goog.require('pwk.BranchNode');
 goog.require('pwk.LeafNode');
@@ -49,7 +50,7 @@ pwk.Document = function() {
 
 
     /**
-     * Array of ids of child @code{pwk.Node} components. Used to hold order of nodes in document.
+     * Array of ids of child @code{pwk.Node} components. Used to hFold order of nodes in document.
      * @type {Array.<string>}
      * @private
      */
@@ -87,7 +88,7 @@ pwk.Document.prototype.createDom = function() {
 
     var el = this.getElement();
 
-    goog.dom.classes.add(el, pwk.Document.CSS_CLASS);
+    goog.dom.classlist.add(el, pwk.Document.CSS_CLASS);
 
     // Set document size, should be equal of page width
     goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');

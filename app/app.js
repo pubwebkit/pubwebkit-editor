@@ -30,32 +30,5 @@ pwk.init = function(configuration) {
 };
 
 
-/**
- * The multistep() function accepts three arguments: an array of functions to execute, an array of arguments to pass
- * into each function when it executes, and a callback function to call when the process is complete.
- * @param {Array.<function()>} steps
- * @param {Array=} args
- * @param {function()=} callback
- * @param {Object=} opt_scope
- */
-pwk.multistep = function(steps, args, callback, opt_scope) {
-    var tasks = steps.concat(); //clone the array
-
-    setTimeout( function() {
-
-        //execute the next task
-        var task = tasks.shift();
-        task.apply(opt_scope, args || []);
-            //determine if there's more
-            if (tasks.length > 0) {
-                setTimeout(arguments.callee, 25);
-            } else {
-                if(callback != null) {
-                    callback.call(opt_scope);
-                }
-            }
-    }, 25);
-};
-
 // Export
 goog.exportSymbol('pwk.Init', pwk.init);

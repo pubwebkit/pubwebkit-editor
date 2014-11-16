@@ -6,7 +6,9 @@
 goog.provide('pwk.LineContent');
 
 goog.require('goog.ui.Component');
+goog.require('goog.dom.classlist');
 goog.require('pwk.primitives.ClientRectRange');
+goog.require('pwk.NodeAnnotation');
 
 
 /**
@@ -42,7 +44,7 @@ goog.inherits(pwk.LineContent, goog.ui.Component);
 pwk.LineContent.prototype.createDom = function() {
     // Create element and apply classes
     this.setElementInternal(goog.dom.createElement('span'));
-    goog.dom.classes.add(this.getElement(), pwk.LineContent.CSS_CLASS);
+    goog.dom.classlist.add(this.getElement(), pwk.LineContent.CSS_CLASS);
 
     if(this.text_.length) {
         var textValue = this.text_;

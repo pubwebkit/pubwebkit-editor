@@ -7,6 +7,7 @@
 goog.provide('pwk.EditorContainer');
 
 goog.require('goog.dom');
+goog.require('goog.dom.classlist');
 goog.require('goog.ui.Component');
 
 
@@ -25,7 +26,7 @@ pwk.EditorContainer.prototype.createDom = function() {
 
     // Create element and apply classes
     this.setElementInternal(this.dom_.createElement('div'));
-    goog.dom.classes.add(this.getElement(), pwk.EditorContainer.CSS_CLASS);
+    goog.dom.classlist.add(this.getElement(), pwk.EditorContainer.CSS_CLASS);
 };
 
 

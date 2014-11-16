@@ -15,7 +15,7 @@ goog.require('goog.events.KeyHandler');
 goog.require('goog.events.KeyHandler.EventType');
 goog.require('goog.events.KeyNames');
 goog.require('goog.ui.Component');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.ui.KeyboardShortcutHandler');
 goog.require('goog.editor.icontent');
 goog.require('goog.dom.iframe');
@@ -109,7 +109,7 @@ pwk.Editor.prototype.createDom = function() {
 
     // Create element and apply classes
     this.setElementInternal(this.dom_.createElement('div'));
-    goog.dom.classes.add(this.getElement(), pwk.Editor.CSS_CLASS);
+    goog.dom.classlist.add(this.getElement(), pwk.Editor.CSS_CLASS);
 
     // Set editor focusable
     goog.dom.setFocusableTabIndex(this.getElement(), true);

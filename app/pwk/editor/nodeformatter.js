@@ -5,6 +5,7 @@
 
 goog.provide('pwk.NodeFormatter');
 
+goog.require('goog.dom.classlist');
 goog.require('pwk.NodeAttributeTypes');
 goog.require('pwk.DocumentSettings');
 
@@ -56,7 +57,7 @@ pwk.NodeFormatter.applyNodeAttributes = function(attributes, node) {
         switch (attr.getType()) {
 
             case pwk.NodeAttributeTypes.HTML_CLASS:
-                goog.dom.classes.set(el, value);
+                goog.dom.classlist.set(el, value);
                 break;
 
             case pwk.NodeAttributeTypes.STYLE_FONT_SIZE:

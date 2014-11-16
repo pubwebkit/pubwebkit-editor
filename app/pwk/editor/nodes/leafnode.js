@@ -11,8 +11,9 @@ goog.require('pwk.NodeAttribute');
 goog.require('pwk.NodeAttributeTypes');
 goog.require('pwk.NodeFormatter');
 goog.require('pwk.Line');
-goog.require('goog.dom.Range');
 goog.require('pwk.primitives.NodeSelectionRange');
+goog.require('goog.dom.Range');
+goog.require('goog.dom.classlist');
 
 
 /**
@@ -81,7 +82,7 @@ pwk.LeafNode.prototype.createDom = function() {
     var element = this.getElement();
     // adjust dom element
     element.setAttribute('id', this.getId());
-    goog.dom.classes.add(element, this.CSS_CLASS);
+    goog.dom.classlist.add(element, this.CSS_CLASS);
 
     var lines = this.lines_
       , linesLength = lines.length
@@ -915,7 +916,7 @@ pwk.LeafNode.prototype.unselect = function() {
 pwk.LeafNode.prototype.deleteRange = function(nodeSelectionRange) {
 
     if(nodeSelectionRange.isCollapsed()) {
-        
+
     } else {
 
     }

@@ -8,9 +8,10 @@
 goog.provide('pwk.Selection');
 
 goog.require('goog.events.EventTarget');
-goog.require('pwk.layer.Caret');
+goog.require('goog.dom.classlist');
 goog.require('goog.fx.dom');
 goog.require('goog.fx.easing');
+goog.require('pwk.layer.Caret');
 
 
 /**
@@ -844,7 +845,7 @@ pwk.Selection.prototype.getLineRangeFromPoint_ = function(line, x) {
  */
 pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
     // TODO: Optimisation required, but maybe it can be stay as is. Double check required
-    var googDomClasses = goog.dom.classes
+    var googDomClasses = goog.dom.classlist
       , googDom = goog.dom
       , googStyle = goog.style
       , receiver = document.elementFromPoint(x, y)
@@ -854,14 +855,14 @@ pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
       , childElements = []
       , l;
 
-    if(googDomClasses.has(receiver, pwk.LineContent.CSS_CLASS)) {
+    if(googDomClasses.contains(receiver, pwk.LineContent.CSS_CLASS)) {
         return googDom.getParentElement(receiver);
 
-    } else if(googDomClasses.has(receiver, pwk.Editor.CSS_CLASS)) {
+    } else if(googDomClasses.contains(receiver, pwk.Editor.CSS_CLASS)) {
         var viewPortSize = googDom.getViewportSize();
         receiver = document.elementFromPoint(viewPortSize.width / 2, y);
 
-    } else if(googDomClasses.has(receiver, pwk.Document.CSS_CLASS)) { // Between pages
+    } else if(googDomClasses.contains(receiver, pwk.Document.CSS_CLASS)) { // Between pages
         receiver = document.elementFromPoint(x, y - 15);
         if(receiver != null) {
             parentElement = googDom.getAncestorByClass(receiver, pwk.Page.CSS_CLASS);

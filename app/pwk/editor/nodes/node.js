@@ -6,6 +6,7 @@
 goog.provide('pwk.Node');
 
 goog.require('goog.ui.Component');
+goog.require('goog.dom.classlist');
 goog.require('pwk.NodeFormatter');
 
 
@@ -57,7 +58,7 @@ goog.inherits(pwk.Node, goog.ui.Component);
 pwk.Node.prototype.createDom = function() {
     // Create element and apply classes
     this.setElementInternal(this.dom_.createElement('div'));
-    goog.dom.classes.add(this.getElement(), this.CSS_CLASS);
+    goog.dom.classlist.add(this.getElement(), this.CSS_CLASS);
 };
 
 

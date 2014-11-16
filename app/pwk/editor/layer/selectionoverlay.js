@@ -7,6 +7,7 @@
 goog.provide('pwk.layer.SelectionOverlay');
 
 goog.require('goog.ui.Component');
+goog.require('goog.dom.classlist');
 goog.require('goog.events.Event');
 goog.require('pwk.primitives.ClientRectRange');
 
@@ -46,7 +47,7 @@ pwk.layer.SelectionOverlay.prototype.createDom = function() {
       , googMath = goog.math;
 
     this.setElementInternal(element);
-    goog.dom.classes.add(this.getElement(), pwk.layer.SelectionOverlay.CSS_CLASS);
+    goog.dom.classlist.add(this.getElement(), pwk.layer.SelectionOverlay.CSS_CLASS);
     googStyle.setPosition(element, new googMath.Coordinate(clientRect.left, clientRect.top));
     googStyle.setSize(element, new googMath.Size(clientRect.width, clientRect.height));
 };

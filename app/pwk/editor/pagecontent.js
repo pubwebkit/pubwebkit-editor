@@ -6,6 +6,7 @@
 goog.provide('pwk.PageContent');
 
 goog.require('goog.ui.Component');
+goog.require('goog.dom.classlist');
 goog.require('pwk.Node');
 goog.require('goog.style');
 
@@ -47,7 +48,7 @@ pwk.PageContent.prototype.createDom = function() {
 pwk.PageContent.prototype.decorateInternal = function(element) {
     goog.base(this, 'decorateInternal', element);
 
-    goog.dom.classes.add(element, pwk.PageContent.CSS_CLASS);
+    goog.dom.classlist.add(element, pwk.PageContent.CSS_CLASS);
 
     // apply settings
     var pageSettings = this.pageSettings_;

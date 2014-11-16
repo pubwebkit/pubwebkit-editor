@@ -6,8 +6,9 @@
 goog.provide('pwk.Line');
 
 goog.require('goog.ui.Component');
-goog.require('pwk.LineContent');
 goog.require('goog.style');
+goog.require('goog.dom.classlist');
+goog.require('pwk.LineContent');
 goog.require('pwk.layer.SelectionOverlay');
 
 
@@ -44,7 +45,7 @@ pwk.Line.prototype.createDom = function() {
     // Create element and apply classes
     this.setElementInternal(element);
     element.setAttribute('id', this.getId());
-    goog.dom.classes.add(element, pwk.Line.CSS_CLASS);
+    goog.dom.classlist.add(element, pwk.Line.CSS_CLASS);
 
     // Add content as child
     this.addChild(this.content_, true);

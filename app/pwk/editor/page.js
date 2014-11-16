@@ -10,6 +10,7 @@ goog.provide('pwk.Page.PageOverflowEvent');
 
 goog.require('goog.ui.Component');
 goog.require('goog.events.Event');
+goog.require('goog.dom.classlist');
 goog.require('pwk.PageHeader');
 goog.require('pwk.PageContent');
 goog.require('pwk.PageFooter');
@@ -85,8 +86,7 @@ pwk.Page.prototype.createDom = function() {
 /** @inheritDoc */
 pwk.Page.prototype.decorateInternal = function(element) {
     goog.base(this, 'decorateInternal', element);
-
-    goog.dom.classes.add(element, pwk.Page.CSS_CLASS);
+    goog.dom.classlist.add(element, pwk.Page.CSS_CLASS);
 };
 
 

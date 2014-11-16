@@ -7,6 +7,7 @@ goog.provide('pwk.layer.Caret');
 goog.provide('pwk.layer.Caret.AfterUpdateEvent');
 
 goog.require('pwk.utils.dom');
+goog.require('goog.dom.classlist');
 goog.require('goog.ui.Component');
 goog.require('goog.dom.Range');
 goog.require('goog.editor.range');
@@ -97,11 +98,11 @@ pwk.layer.Caret.prototype.decorateInternal = function(element) {
     goog.base(this, 'decorateInternal', element);
 
     // Add css class
-    goog.dom.classes.add(element, pwk.layer.Caret.CSS_CLASS);
+    goog.dom.classlist.add(element, pwk.layer.Caret.CSS_CLASS);
 
     // Initialize wrapper
     this.layer_ = goog.dom.createDom('div');
-    goog.dom.classes.add(this.layer_, pwk.layer.Caret.CSS_CLASS_LAYER);
+    goog.dom.classlist.add(this.layer_, pwk.layer.Caret.CSS_CLASS_LAYER);
 };
 
 

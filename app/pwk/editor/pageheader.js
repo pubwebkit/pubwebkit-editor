@@ -6,6 +6,7 @@
 goog.provide('pwk.PageHeader');
 
 goog.require('goog.ui.Component');
+goog.require('goog.dom.classlist');
 goog.require('pwk.PageSettings');
 
 
@@ -44,7 +45,7 @@ pwk.PageHeader.prototype.createDom = function() {
 pwk.PageHeader.prototype.decorateInternal = function(element) {
     goog.base(this, 'decorateInternal', element);
 
-    goog.dom.classes.add(element, pwk.PageHeader.CSS_CLASS);
+    goog.dom.classlist.add(element, pwk.PageHeader.CSS_CLASS);
 };
 
 

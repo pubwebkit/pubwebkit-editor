@@ -6,6 +6,7 @@
 goog.provide('pwk.PageFooter');
 
 goog.require('goog.ui.Component');
+goog.require('goog.dom.classlist');
 goog.require('pwk.PageSettings');
 
 
@@ -43,7 +44,7 @@ pwk.PageFooter.prototype.createDom = function() {
 pwk.PageFooter.prototype.decorateInternal = function(element) {
     goog.base(this, 'decorateInternal', element);
 
-    goog.dom.classes.add(element, pwk.PageFooter.CSS_CLASS);
+    goog.dom.classlist.add(element, pwk.PageFooter.CSS_CLASS);
 };
 
 
