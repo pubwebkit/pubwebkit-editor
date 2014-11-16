@@ -7,3 +7,11 @@
 [submodule "libs/closure-templates"]
 	path = libs/closure-templates
 	url = https://banguit@github.com/google/closure-templates.git
+[submodule "libs/bootstrap"]
+	path = libs/bootstrap
+	url = https://banguit@github.com/twbs/bootstrap.git
+	branch = master
+[submodule "libs/less.js"]
+	path = libs/less.js
+	url = https://github.com/less/less.js.git
+	branch = master

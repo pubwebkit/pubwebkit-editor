@@ -1,0 +1,85 @@
+/* Base styles
+========================*/
+body, html {
+    outline: none;
+    height: 100%;
+}
+
+/* pwk.Editor stylesheet
+========================*/
+.pwk-editor-container {
+    height: 100%;
+    background-color: #dfe4e7;
+    overflow-y: scroll;
+}
+
+    .pwk-editor {
+        outline: none;
+    }
+
+        .pwk-document {
+            position: relative;
+            margin: 0 auto;
+            padding: 15px 0;
+            color: #000;
+        }
+
+            .pwk-caret-layer {
+                z-index: 4;
+            }
+
+                .pwk-caret {
+                    -moz-box-sizing: border-box;
+                    height: 100%;
+                    overflow: hidden;
+                    pointer-events: none;
+                    position: absolute;
+                    white-space: nowrap;
+                    z-index: 4;
+                    border-left: 2px solid #000;
+                    font-size: 0;
+                }
+
+            .pwk-page {
+                position: relative;
+                border: 1px #d2d2d2 solid;
+                background-color: #fff;
+                margin-bottom: 15px;
+                .box-shadow(0 2px 5px rgba(0,0,0,.2));
+                -webkit-background-clip: padding-box;
+                -moz-background-clip: padding;
+                background-clip: padding-box;
+                cursor: text;
+            }
+
+                .pwk-page-header {
+                    min-height: 79px;
+                }
+
+                .pwk-page-content {
+
+                }
+
+                    .pwk-line {
+                        position: relative;
+                    }
+
+                    .pwk-line-content {
+                        cursor: text;
+                        white-space: pre;
+                        line-height: normal !important;
+                        display: inline-block;
+                    }
+
+                .pwk-page-footer {
+                    position: absolute;
+                    bottom: 0;
+                    min-height: 79px;
+                }
+
+                .pwk-selection-overlay {
+                    position: absolute;
+                    background-color: #056ef6;
+                    opacity: 0.2;
+                    z-index: 10;
+                }

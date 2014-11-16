@@ -49,7 +49,7 @@ module.exports = function (grunt) {
             app: {
                 options: {
                     root_with_prefix: [
-                        '"' + CONFIGURATION.appPath + ' ../../"'
+                        '"' + CONFIGURATION.appPath + ' ../../../../app/"'
                     ]
                 },
                 dest: '' + CONFIGURATION.appPath + '/deps.js'
@@ -71,7 +71,7 @@ module.exports = function (grunt) {
                     warning_level: 'verbose',
                     jscomp_off: [],
                     summary_detail_level: 3,
-                    only_closure_dependencies: null,
+                    only_closure_dependencies: false,
                     closure_entry_point: CONFIGURATION.entryPoint,
                     create_source_map: CONFIGURATION.sourceMap,
                     source_map_format: 'V3',
@@ -88,18 +88,49 @@ module.exports = function (grunt) {
             }
         },
 
+        copy: {
+            html: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: 'app',
+                    dest: 'build/',
+                    src: [ 'index-prod.html' ],
+                    rename: function(dest, src) {
+                        return dest + src.replace('-prod.html','.html');
+                    }
+                }]
+            }
+        },
+
         clean: {
             dist: ['build/*']
+        },
+
+        less: {
+            build: {
+                options: {
+                    paths: ["less"],
+                    cleancss: true
+                },
+                files: {
+                    "build/editor.min.css": "less/theme.less"
+                }
+            }
         }
     });
 
     // Load tasks
     grunt.loadNpmTasks('grunt-closure-tools');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     // Register tasks
     grunt.registerTask('build', [
         'clean:dist',
+        'copy:html',
+        'less:build',
         'closureDepsWriter:app',
         'closureBuilder:app'
     ]);
