@@ -15,3 +15,7 @@
 	path = libs/less.js
 	url = https://github.com/less/less.js.git
 	branch = master
+[submodule "libs/PlastronJS"]
+	path = libs/PlastronJS
+	url = https://banguit@github.com/rhysbrettbowen/PlastronJS.git
+	branch = master

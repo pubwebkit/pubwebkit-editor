@@ -28,7 +28,7 @@ goog.inherits(app.Core, goog.events.EventTarget);
  */
 app.Core.prototype.init = function() {
 
-    this.dispatchEvent( app.Core.EventType.INIT );
+    this.dispatchEvent(app.Core.EventType.INIT);
 
     var editor = new pwk.Editor()
       , container = new pwk.EditorContainer();
