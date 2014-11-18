@@ -32,8 +32,7 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventTarget');
 goog.require('app.core.Application');
 
-goog.require('pwk.EditorContainer');
-goog.require('pwk.Editor');
+goog.require('app.controllers.HomeController');
 
 
 /**
@@ -52,9 +51,17 @@ goog.inherits(app.Core, app.core.Application);
  * Kicks off the library.
  */
 app.Core.prototype.init = function() {
-    var editor = new pwk.Editor()
-      , container = new pwk.EditorContainer();
+    // -- Application initialization -- //
+    // -- Register routes -- //
+    // Default route should be wrapped in {.. route definition ..}
+    this.mapRoute('/home', app.controllers.HomeController); // Default route
 
-    container.addChild(editor, true);
-    container.render();
+    // -- Register application filters -- //
+    //this.addApplicationFilter(new hedgehog.filters.ComponentsInitializationApplicationFilter());
+
+    // -- Register action filters -- //
+    //this.addActionFilter(new hedgehog.filters.Componen tsInitializationActionFilter(), null, 0);
+
+    // Execute application
+    this.run();
 };

@@ -40,20 +40,20 @@ goog.require('app.exports');
  */
 app.contentLoaded_ = function (win, fn) {
     var done = false
-        , top = true
-        , doc = win.document
-        , root = doc.documentElement
-        , modern = doc.addEventListener
-        , add = modern ? 'addEventListener' : 'attachEvent'
-        , rem = modern ? 'removeEventListener' : 'detachEvent'
-        , pre = modern ? '' : 'on'
-        , init =
+      , top = true
+      , doc = win.document
+      , root = doc.documentElement
+      , modern = doc.addEventListener
+      , add = modern ? 'addEventListener' : 'attachEvent'
+      , rem = modern ? 'removeEventListener' : 'detachEvent'
+      , pre = modern ? '' : 'on'
+      , init =
             function(e) {
                 if (e.type == 'readystatechange' && doc.readyState != 'complete') return;
                 (e.type == 'load' ? win : doc)[rem](pre + e.type, init, false);
                 if (!done && (done = true)) fn.call(win, e.type || e);
             }
-        , poll =
+      , poll =
             function() {
                 try { root.doScroll('left'); } catch(e) { setTimeout(poll, 50); return; }
                 init('poll');

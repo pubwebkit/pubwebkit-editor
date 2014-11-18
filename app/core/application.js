@@ -101,7 +101,7 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
 
     // 404
     if(controllerName == null) {
-        window.location.replace('/404'); // TODO: Replace output with 404 error page | Show information about error during page loading and propose additional actions {!!!}
+        throw new Error('Page not found'); // TODO: Replace output with 404 error page | Show information about error during page loading and propose additional actions {!!!}
     }
 
     var i = 2
