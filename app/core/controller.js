@@ -22,39 +22,14 @@
 //
 
 /**
- * @fileoverview The core class of the application.
+ * @fileoverview Base controller class.
  * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
-goog.provide('app.Core');
-
-goog.require('goog.events.EventHandler');
-goog.require('goog.events.EventTarget');
-goog.require('app.core.Application');
-
-goog.require('pwk.EditorContainer');
-goog.require('pwk.Editor');
-
+goog.provide('app.core.Controller');
 
 /**
- * The base class.
- * This class will be exported as the main entry point.
+ * Defines an abstract controller for handling requests to certain fragments.
  * @constructor
- * @extends {app.core.Application}
  */
-app.Core = function() {
-    goog.base(this);
-};
-goog.inherits(app.Core, app.core.Application);
-
-
-/**
- * Kicks off the library.
- */
-app.Core.prototype.init = function() {
-    var editor = new pwk.Editor()
-      , container = new pwk.EditorContainer();
-
-    container.addChild(editor, true);
-    container.render();
-};
+app.core.Controller = function() {};

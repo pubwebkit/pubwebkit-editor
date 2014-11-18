@@ -23,6 +23,7 @@
 
 goog.provide('app.core.types.ActionFilterItem');
 
+goog.require('app.core.ActionFilter');
 goog.require('app.core.types.ApplicationFilterItem');
 
 /**

@@ -2,13 +2,18 @@
 // Please do not edit.
 goog.addDependency('../../../../app/app.js', ['app'], ['app.Core', 'app.exports']);
 goog.addDependency('../../../../app/core/actionfilter.js', ['app.core.ActionFilter'], []);
+goog.addDependency('../../../../app/core/application.js', ['app.core.Application'], ['app.core.ApplicationFilter', 'app.core.Request', 'app.core.Response', 'app.core.Router', 'app.core.events.ActionEvent', 'app.core.events.ActionExceptionEvent', 'app.core.types.ActionFilterItem', 'goog.Promise', 'goog.events.EventTarget', 'goog.string']);
 goog.addDependency('../../../../app/core/applicationfilter.js', ['app.core.ApplicationFilter'], []);
-goog.addDependency('../../../../app/core/core.js', ['app.Core'], ['goog.events.EventHandler', 'goog.events.EventTarget', 'pwk.Editor', 'pwk.EditorContainer']);
+goog.addDependency('../../../../app/core/controller.js', ['app.core.Controller'], []);
+goog.addDependency('../../../../app/core/core.js', ['app.Core'], ['app.core.Application', 'goog.events.EventHandler', 'goog.events.EventTarget', 'pwk.Editor', 'pwk.EditorContainer']);
 goog.addDependency('../../../../app/core/events/actionevent.js', ['app.core.events.ActionEvent'], ['app.core.types.ActionFilterContext', 'goog.events.Event']);
 goog.addDependency('../../../../app/core/events/actionexceptionevent.js', ['app.core.events.ActionExceptionEvent'], ['app.core.events.ActionEvent']);
 goog.addDependency('../../../../app/core/exports.js', ['app.exports'], []);
+goog.addDependency('../../../../app/core/request.js', ['app.core.Request'], ['goog.Uri']);
+goog.addDependency('../../../../app/core/response.js', ['app.core.Response'], ['app.core.Router', 'goog.soy']);
+goog.addDependency('../../../../app/core/router.js', ['app.core.Router'], ['goog.History', 'goog.array', 'goog.events', 'goog.history.Html5History']);
 goog.addDependency('../../../../app/core/types/actionfiltercontext.js', ['app.core.types.ActionFilterContext'], []);
-goog.addDependency('../../../../app/core/types/actionfilteritem.js', ['app.core.types.ActionFilterItem'], ['app.core.types.ApplicationFilterItem']);
+goog.addDependency('../../../../app/core/types/actionfilteritem.js', ['app.core.types.ActionFilterItem'], ['app.core.ActionFilter', 'app.core.types.ApplicationFilterItem']);
 goog.addDependency('../../../../app/core/types/applicationfilteritem.js', ['app.core.types.ApplicationFilterItem'], []);
 goog.addDependency('../../../../app/pwk/editor/document.js', ['pwk.Document', 'pwk.Document.EventType', 'pwk.Document.NodeRemovedEvent'], ['goog.dom.classlist', 'goog.events.Event', 'goog.ui.Component', 'pwk.BranchNode', 'pwk.DocumentSettings', 'pwk.LeafNode', 'pwk.NodeTypes', 'pwk.Page', 'pwk.PageSettings', 'pwk.Pagination', 'pwk.Range', 'pwk.Selection', 'pwk.utils.style']);
 goog.addDependency('../../../../app/pwk/editor/documentsettings.js', ['pwk.DocumentSettings'], ['goog.style']);
