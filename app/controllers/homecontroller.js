@@ -33,10 +33,9 @@ goog.require('pwk.Editor');
  * @extends {app.core.Controller}
  */
 app.controllers.HomeController = function() {
-    goog.base(this);
+    goog.base(this, 'HomeController');
 };
 goog.inherits(app.controllers.HomeController, app.core.Controller);
-
 
 /**
  * @param {app.core.Request} request
@@ -49,7 +48,7 @@ app.controllers.HomeController.prototype.index = function(request, response, res
       , container = new pwk.EditorContainer();
 
     container.addChild(editor, true);
-    container.render();
+    container.render(document.body);
 
     resolve();
 };

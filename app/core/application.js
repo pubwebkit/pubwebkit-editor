@@ -51,7 +51,7 @@ app.core.Application = function() {
      * @type {app.core.Router}
      * @private
      */
-    this.router_ = new app.core.Router();
+    this.router_ = new app.core.Router(false);
 
     /**
      * @type {Array.<app.core.types.ActionFilterItem>}
@@ -91,21 +91,14 @@ app.core.Application.prototype.mapRoute = function(route, controller) {
 
 /**
  * @param {string} route The fragment we are mapping the controller to.
- * @param {Function} controller The name or object that identifying the desired controller.
+ * @param {app.core.Controller} controller Controller instance related to current route.
  * @private
  */
 app.core.Application.prototype.processRoute_ = function(route, controller) {
     this.setCurrentRoute_(route); // TODO: Move to ROUTE_EXPIRED
 
-    var controllerName = /[a-zA-Z0-9._-]+/.exec(route);
-
-    // 404
-    if(controllerName == null) {
-        throw new Error('Page not found'); // TODO: Replace output with 404 error page | Show information about error during page loading and propose additional actions {!!!}
-    }
-
     var i = 2
-      , routeData = { 'controller' : controllerName[0] }
+      , routeData = { 'controller' : controller.getControllerName() }
       , pattern = /:[a-zA-Z0-9._-]*/g
       , request
       , response
@@ -137,9 +130,7 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
 
         try {
             new goog.Promise(function(resolve, reject) {
-                new goog.Promise(function(resolve, reject) {
-                    this.dispatchEvent(new app.core.events.ActionEvent(filterContext, app.core.Application.EventType.ACTIONEXECUTING, resolve, this));
-                }, this)
+                this.dispatchEvent(new app.core.events.ActionEvent(filterContext, app.core.Application.EventType.ACTIONEXECUTING, resolve, this));
             }, this)
             .then(function() {
                 return new goog.Promise(function(resolve, reject) {
@@ -194,9 +185,6 @@ app.core.Application.prototype.addActionFilter = function(filter, opt_route, opt
  * Start application execution
  */
 app.core.Application.prototype.run = function() {
-    // Add additional system routes
-    this.mapRoute('*', goog.nullFunction); // To handle all unhandled routes / 404
-
     // Initialize events
     this.listenOnce(app.core.Application.EventType.APPLICATIONSTART, this.onApplicationStart_, false, this);
     this.listenOnce(app.core.Application.EventType.APPLICATIONRUN, this.onApplicationRun_, false, this);

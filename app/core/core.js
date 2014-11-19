@@ -52,9 +52,9 @@ goog.inherits(app.Core, app.core.Application);
  */
 app.Core.prototype.init = function() {
     // -- Application initialization -- //
+
     // -- Register routes -- //
-    // Default route should be wrapped in {.. route definition ..}
-    this.mapRoute('/home', app.controllers.HomeController); // Default route
+    this.mapRoute('*', app.controllers.HomeController); // Default route, specify other routes above this one
 
     // -- Register application filters -- //
     //this.addApplicationFilter(new hedgehog.filters.ComponentsInitializationApplicationFilter());
