@@ -4,6 +4,10 @@
  * Copyright 2014 Dmitry Antonenko
  */
 
+var mountFolder = function (connect, dir) {
+    return connect.static(require('path').resolve(dir));
+};
+
 module.exports = function (grunt) {
     'use strict';
 
@@ -118,6 +122,24 @@ module.exports = function (grunt) {
                     "build/editor.min.css": "less/theme.less"
                 }
             }
+        },
+
+        connect: {
+            options: {
+                port: 9000,
+                // change this to '0.0.0.0' to access the server from outside
+                hostname: 'localhost',
+                keepalive: true
+            },
+            app: {
+                options: {
+                    middleware: function(connect) {
+                        return [
+                            mountFolder(connect, './')
+                        ];
+                    }
+                }
+            }
         }
     });
 
@@ -126,6 +148,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     // Register tasks
     grunt.registerTask('build', [
