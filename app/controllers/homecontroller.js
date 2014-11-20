@@ -38,6 +38,7 @@ app.controllers.HomeController = function() {
 goog.inherits(app.controllers.HomeController, app.core.Controller);
 
 /**
+ * index action
  * @param {app.core.Request} request
  * @param {app.core.Response} response
  * @param {Function} resolve

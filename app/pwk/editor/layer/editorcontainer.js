@@ -26,7 +26,6 @@
  * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
-
 goog.provide('pwk.EditorContainer');
 
 goog.require('goog.dom');
@@ -53,13 +52,6 @@ pwk.EditorContainer.prototype.createDom = function() {
 };
 
 
-/**
- * Component default css class
- * @type {string}
- */
-pwk.EditorContainer.CSS_CLASS = 'pwk-editor-container';
-
-
 /** @inheritDoc */
 pwk.EditorContainer.prototype.enterDocument = function() {
     goog.base(this, 'enterDocument');
@@ -77,3 +69,10 @@ pwk.EditorContainer.prototype.enterDocument = function() {
 pwk.EditorContainer.prototype.onWindowResize_ = function() {
     goog.style.setHeight(this.getElement(), goog.dom.getViewportSize().height);
 };
+
+
+/**
+ * Component default css class
+ * @type {string}
+ */
+pwk.EditorContainer.CSS_CLASS = 'pwk-editor-container';

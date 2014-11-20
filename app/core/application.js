@@ -95,7 +95,7 @@ app.core.Application.prototype.mapRoute = function(route, controller) {
  * @private
  */
 app.core.Application.prototype.processRoute_ = function(route, controller) {
-    this.setCurrentRoute_(route); // TODO: Move to ROUTE_EXPIRED
+    this.setCurrentRoute_(route);
 
     var i = 2
       , routeData = { 'controller' : controller.getControllerName() }
