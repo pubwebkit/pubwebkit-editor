@@ -806,12 +806,25 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
           , lastUpdatedLineContent = lastUpdatedLine.getContent()
           , isLastLine = !goog.isDefAndNotNull(lines[lastUpdateLineIndex + 1])
           , lastUpdatedLineContentLength = lastUpdatedLineContent.getLength()
-          , lastUpdatedContentText = lastUpdatedLineContent.getText()
-          , lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length
+          , firstSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedLineContent.getText())).indexOf(' ')
+          , lastUpdatedContentText = ''
           , contentToMove = ''
-          , tempWord
+          , lastUpdatedModifiedLineContentLength
           , lastSpaceIndex
+          , tempWord
           , lineParentNode;
+
+        if (firstSpaceIndex != -1) {
+            do {
+                contentToMove = lastUpdatedLineContent.copy(lastUpdatedContentText.length + firstSpaceIndex + 1);
+                lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
+                lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
+
+                lineContentWidth = lastUpdatedLineContent.getContentInfoForOffset(0, lastUpdatedModifiedLineContentLength).width;
+                firstSpaceIndex = googString.trimRight(googString.normalizeWhitespace(contentToMove)).indexOf(' ');
+
+            } while (lineContentWidth < parentContentWidth && firstSpaceIndex != -1);
+        }
 
         do {
             lastSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedContentText)).lastIndexOf(' ');
@@ -830,7 +843,6 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
                     lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
                     lastUpdatedModifiedLineContentLength--;
                 } while (googString.isSpace(tempWord));
-
             }
 
             lineContentWidth = lastUpdatedLineContent.getContentInfoForOffset(0, lastUpdatedModifiedLineContentLength).width;

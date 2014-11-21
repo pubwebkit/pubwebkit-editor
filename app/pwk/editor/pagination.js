@@ -182,12 +182,12 @@ pwk.Pagination.prototype.checkFilling = function() {
         while(goog.isDefAndNotNull(pageBelow)) { // No page below?
             abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
 
-            console.log('- = - = - = - = - = -');
-            console.log('Page id: ' + abovePage.getId());
-            console.log('Page index: ' + abovePageIndex);
+            //console.log('- = - = - = - = - = -');
+            //console.log('Page id: ' + abovePage.getId());
+            //console.log('Page index: ' + abovePageIndex);
 
             var availableHeight = abovePage.getAvailableContentSize();
-            console.info('Available height: ' + availableHeight);
+            //console.info('Available height: ' + availableHeight);
 
             // - check if current page is could be filled by content below {√}
             //      - get available height
@@ -200,7 +200,7 @@ pwk.Pagination.prototype.checkFilling = function() {
 
             abovePageIndex++;
 
-            console.log('- = - = - = - = - = -');
+            //console.log('- = - = - = - = - = -');
             return;
         }
     }

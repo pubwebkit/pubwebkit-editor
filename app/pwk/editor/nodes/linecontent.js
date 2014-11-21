@@ -121,7 +121,7 @@ pwk.LineContent.prototype.insertText = function(text, opt_offset) {
             }
         } else {
             while(textLength--) {
-                this.insertValue(text[textLength], 0, fragmentFirstChild); // TODO: Required to fix it. Should adding to end of line content. May be this is a feature?
+                this.insertValue(text[textLength], 0, fragmentFirstChild);
             }
         }
 
@@ -498,7 +498,7 @@ pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_en
 
     if(goog.userAgent.IE) {
         var textRange = document.body.createTextRange()
-            , browserZoomLevel = (screen.deviceXDPI / screen.logicalXDPI);
+          , browserZoomLevel = (screen.deviceXDPI / screen.logicalXDPI);
 
         textRange.moveToElementText(el);
         textRange.moveStart('character', startOffset);
