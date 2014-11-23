@@ -696,7 +696,7 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range, opt_disable_for_
         // Detect Internet Explorer
         if(goog.userAgent.IE) {
             var textRange = document.body.createTextRange()
-              , browserZoomLevel = screen.logicalXDPI / screen.logicalXDPI
+              , browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI
               , isExclude = opt_disable_for_ie != null ? opt_disable_for_ie : {boundingHeight: false, boundingWidth: false, boundingLeft: false, boundingTop: false };
 
             if (startNodeLength == 0) {

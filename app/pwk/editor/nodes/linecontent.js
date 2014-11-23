@@ -411,7 +411,7 @@ pwk.LineContent.prototype.getWidth = function(isOnlyPrintableContent) {
 
         if(goog.userAgent.IE) {
             var textRange = document.body.createTextRange()
-              , browserZoomLevel = (screen.logicalXDPI / screen.logicalXDPI);
+              , browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
 
             textRange.moveToElementText(el);
             textRange.moveStart('character', 0);
@@ -450,7 +450,7 @@ pwk.LineContent.prototype.getBoundingClientRectForOffset = function(opt_startOff
 
     if(goog.userAgent.IE) {
         var textRange = document.body.createTextRange()
-          , browserZoomLevel = (screen.logicalXDPI / screen.logicalXDPI);
+          , browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
 
         textRange.moveToElementText(el);
         textRange.moveStart('character', opt_startOffset);
@@ -498,7 +498,7 @@ pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_en
 
     if(goog.userAgent.IE) {
         var textRange = document.body.createTextRange()
-          , browserZoomLevel = (screen.logicalXDPI / screen.logicalXDPI);
+          , browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
 
         textRange.moveToElementText(el);
         textRange.moveStart('character', startOffset);
