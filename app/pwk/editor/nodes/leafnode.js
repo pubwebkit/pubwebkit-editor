@@ -809,7 +809,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
           , firstSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedLineContent.getText())).indexOf(' ')
           , lastUpdatedContentText = ''
           , contentToMove = ''
-          , lastUpdatedModifiedLineContentLength
+          , lastUpdatedModifiedLineContentLength = 0
           , lastSpaceIndex
           , tempWord
           , lineParentNode;
