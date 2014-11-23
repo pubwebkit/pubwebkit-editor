@@ -47,11 +47,13 @@ goog.require('app.core.types.ActionFilterItem');
 app.core.Application = function() {
     goog.events.EventTarget.call(this);
 
+    var historyStateInput = (/** @type{HTMLInputElement} **/(goog.dom.createDom('input', { 'type': 'text', 'id': 'history_state',  'name': 'history_state', 'style': 'display:none'})));
+    document.body.appendChild(historyStateInput);
     /**
      * @type {app.core.Router}
      * @private
      */
-    this.router_ = new app.core.Router(false);
+    this.router_ = new app.core.Router(false, undefined, historyStateInput);
 
     /**
      * @type {Array.<app.core.types.ActionFilterItem>}
