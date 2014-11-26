@@ -117,6 +117,16 @@ pwk.PageSettings.prototype.getSize = function() {
     return new goog.math.Size(this.width_, this.heigth_);
 };
 
+
+/**
+ * Get page content width
+ * @return {number}
+ */
+pwk.PageSettings.prototype.getContentWidth = function() {
+    return this.width_ - this.leftMargin_ - this.rightMargin_;
+};
+
+
 /**
  * Get inner width of page
  * @return {number}

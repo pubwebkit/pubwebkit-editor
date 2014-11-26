@@ -811,11 +811,16 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
           , contentToMove = ''
           , lastUpdatedModifiedLineContentLength = 0
           , lastSpaceIndex
-          , tempWord
           , lineParentNode;
 
-        if (firstSpaceIndex != -1) {
+        if (firstSpaceIndex != -1 && (lineContentWidth >= parentContentWidth * 2)) {
+            var prevContentToMove
+              , prevLastUpdatedModifiedLineContentLength;
+
             do {
+                prevContentToMove = contentToMove;
+                prevLastUpdatedModifiedLineContentLength = lastUpdatedModifiedLineContentLength;
+
                 contentToMove = lastUpdatedLineContent.copy(lastUpdatedContentText.length + firstSpaceIndex + 1);
                 lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
                 lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
@@ -824,30 +829,38 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
                 firstSpaceIndex = googString.trimRight(googString.normalizeWhitespace(contentToMove)).indexOf(' ');
 
             } while (lineContentWidth < parentContentWidth && firstSpaceIndex != -1);
+
+            contentToMove = prevContentToMove;
+            lastUpdatedModifiedLineContentLength = prevLastUpdatedModifiedLineContentLength;
         }
+        else {
+            var tempWord;
+            lastUpdatedContentText = lastUpdatedLineContent.getText();
+            lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length
 
-        do {
-            lastSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedContentText)).lastIndexOf(' ');
+            do {
+                lastSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedContentText)).lastIndexOf(' ');
 
-            // If remains big text only, then move last character only
-            if (lastSpaceIndex != -1) {
-                contentToMove = lastUpdatedLineContent.copy(lastSpaceIndex + 1, lastUpdatedModifiedLineContentLength) + contentToMove;
+                // If remains big text only, then move last character only
+                if (lastSpaceIndex != -1) {
+                    contentToMove = lastUpdatedLineContent.copy(lastSpaceIndex + 1, lastUpdatedModifiedLineContentLength) + contentToMove;
 
-                lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
-                lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
-            } else {
-
-                do {
-                    tempWord = googString.normalizeWhitespace(lastUpdatedLineContent.getTextNodeAtOffset(lastUpdatedModifiedLineContentLength - 1).data);
-                    contentToMove = tempWord + contentToMove;
                     lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
-                    lastUpdatedModifiedLineContentLength--;
-                } while (googString.isSpace(tempWord));
-            }
+                    lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
+                } else {
 
-            lineContentWidth = lastUpdatedLineContent.getContentInfoForOffset(0, lastUpdatedModifiedLineContentLength).width;
+                    do {
+                        tempWord = googString.normalizeWhitespace(lastUpdatedLineContent.getTextNodeAtOffset(lastUpdatedModifiedLineContentLength - 1).data);
+                        contentToMove = tempWord + contentToMove;
+                        lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
+                        lastUpdatedModifiedLineContentLength--;
+                    } while (googString.isSpace(tempWord));
+                }
 
-        } while (lineContentWidth > parentContentWidth);
+                lineContentWidth = lastUpdatedLineContent.getContentInfoForOffset(0, lastUpdatedModifiedLineContentLength).width;
+
+            } while (lineContentWidth > parentContentWidth);
+        }
 
         lastUpdatedLineContent.removeAt(lastUpdatedModifiedLineContentLength);
 
