@@ -49,12 +49,6 @@ pwk.LineContent = function(opt_text) {
     this.text_ = opt_text || '';
 
     /**
-     * @type {string}
-     * @private
-     */
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
-
-    /**
      * @type {Array.<pwk.NodeAnnotation>}
      * @private
      */
@@ -72,7 +66,6 @@ pwk.LineContent.prototype.createDom = function() {
     if(this.text_.length) {
         var textValue = this.text_;
         this.text_ = '';
-        this.normalizedText_ = '';
         this.insertText(textValue);
     }
 };
@@ -95,7 +88,6 @@ pwk.LineContent.prototype.disposeInternal = function() {
 
     delete this.annotations_;
     delete this.text_;
-    delete this.normalizedText_;
 };
 
 
@@ -149,7 +141,6 @@ pwk.LineContent.prototype.insertValue = function(value, opt_offset, opt_parent) 
 
     // Update indexes
     this.text_ = text.substr(0, offset) + textNode.nodeValue + text.substr(offset);
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
 };
 
 
@@ -164,7 +155,7 @@ pwk.LineContent.prototype.getText = function() {
  * @return {string}
  */
 pwk.LineContent.prototype.getNormalizedText = function() {
-    return this.normalizedText_;
+    return goog.string.normalizeWhitespace(this.text_);
 };
 
 
@@ -180,8 +171,7 @@ pwk.LineContent.prototype.pop = function() {
 
     lastChild.parentNode.removeChild(lastChild);
 
-    this.text_ = text.slice(0, this.normalizedText_.length - 1);
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
+    this.text_ = text.slice(0, this.getNormalizedText().length - 1);
 
     // TODO: Update annotations required
 
@@ -197,7 +187,7 @@ pwk.LineContent.prototype.popLastWord = function() {
     var googString = goog.string
       , el = this.getElement()
       , text = this.text_
-      , normalizedText = this.normalizedText_
+      , normalizedText = this.getNormalizedText()
       , spaceIndex = googString.trimRight(normalizedText).lastIndexOf(' ')
       , offset = spaceIndex != -1 ? spaceIndex + 1 : 0
       , gRange = goog.dom.Range.createFromNodes(el, offset, el, normalizedText.length)
@@ -208,7 +198,6 @@ pwk.LineContent.prototype.popLastWord = function() {
     // TODO: Update annotations required
 
     this.text_ = text.slice(0, offset);
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
 
     return value;
 };
@@ -218,7 +207,7 @@ pwk.LineContent.prototype.popFirstWord = function() {
     var googString = goog.string
       , el = this.getElement()
       , text = this.text_
-      , normalizedText = this.normalizedText_
+      , normalizedText = this.getNormalizedText()
       , spaceIndex = normalizedText.indexOf(' ')
       , offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
 
@@ -240,7 +229,6 @@ pwk.LineContent.prototype.popFirstWord = function() {
     // TODO: Update annotations required
 
     this.text_ = text.slice(offset);
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
 
     return value;
 };
@@ -250,7 +238,7 @@ pwk.LineContent.prototype.removeFirstWord = function() {
     var googString = goog.string
         , el = this.getElement()
         , text = this.text_
-        , normalizedText = this.normalizedText_
+        , normalizedText = this.getNormalizedText()
         , spaceIndex = normalizedText.indexOf(' ')
         , offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
 
@@ -271,7 +259,6 @@ pwk.LineContent.prototype.removeFirstWord = function() {
     // TODO: Update annotations required
 
     this.text_ = text.slice(offset);
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
 };
 
 /**
@@ -281,7 +268,7 @@ pwk.LineContent.prototype.removeFirstWord = function() {
 pwk.LineContent.prototype.copyFirstWord = function() {
     var googString = goog.string
       , text = this.text_
-      , normalizedText = this.normalizedText_
+      , normalizedText = this.getNormalizedText()
       , spaceIndex = normalizedText.indexOf(' ')
       , offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
 
@@ -324,7 +311,7 @@ pwk.LineContent.prototype.copyFirstChar = function() {
 pwk.LineContent.prototype.cut = function(startOffset, opt_endOffset) {
     var el = this.getElement()
         , text = this.text_
-        , normalizedText = this.normalizedText_
+        , normalizedText = this.getNormalizedText()
         , endOffset = opt_endOffset || normalizedText.length
         , gRange = goog.dom.Range.createFromNodes(el, startOffset, el, endOffset)
         , value = text.slice(startOffset, endOffset);
@@ -332,7 +319,6 @@ pwk.LineContent.prototype.cut = function(startOffset, opt_endOffset) {
     gRange.removeContents();
 
     this.text_ = text.slice(0, startOffset) + text.slice(endOffset);
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
 
     return value;
 };
@@ -345,7 +331,7 @@ pwk.LineContent.prototype.cut = function(startOffset, opt_endOffset) {
  */
 pwk.LineContent.prototype.copy = function(startOffset, opt_endOffset) {
     var text = this.text_
-      , normalizedText = this.normalizedText_
+      , normalizedText = this.getNormalizedText()
       , endOffset = opt_endOffset || normalizedText.length;
 
     return text.slice(startOffset, endOffset);
@@ -359,14 +345,13 @@ pwk.LineContent.prototype.copy = function(startOffset, opt_endOffset) {
 pwk.LineContent.prototype.removeAt = function(startOffset, opt_endOffset) {
     var el = this.getElement()
       , text = this.text_
-      , normalizedText = this.normalizedText_
+      , normalizedText = this.getNormalizedText()
       , endOffset = opt_endOffset || normalizedText.length
       , gRange = goog.dom.Range.createFromNodes(el, startOffset, el, endOffset);
 
     gRange.removeContents();
 
     this.text_ = text.slice(0, startOffset) + text.slice(endOffset);
-    this.normalizedText_ = goog.string.normalizeWhitespace(this.text_);
 };
 
 
@@ -374,7 +359,7 @@ pwk.LineContent.prototype.removeAt = function(startOffset, opt_endOffset) {
  * @return {number}
  */
 pwk.LineContent.prototype.getLength = function() {
-    return this.normalizedText_.length;
+    return this.getNormalizedText().length;
 };
 
 
@@ -407,7 +392,7 @@ pwk.LineContent.prototype.getWidth = function(isOnlyPrintableContent) {
       , width;
 
     if(isOnlyPrintableContent) {
-        var lastCharIndex = goog.string.trimRight(this.normalizedText_).length;
+        var lastCharIndex = goog.string.trimRight(this.getNormalizedText()).length;
 
         if(goog.userAgent.IE) {
             var textRange = document.body.createTextRange()
@@ -491,7 +476,7 @@ pwk.LineContent.prototype.getBoundingClientRectForOffset = function(opt_startOff
  */
 pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_endOffset) {
     var text = this.text_
-      , normalizedText = this.normalizedText_
+      , normalizedText = this.getNormalizedText()
       , endOffset = opt_endOffset || normalizedText.length
       , el = this.getElement()
       , width;
@@ -528,7 +513,7 @@ pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_en
 pwk.LineContent.prototype.getFirstWordInfo = function() {
     var googString = goog.string
       , text = this.text_
-      , normalizedText = this.normalizedText_
+      , normalizedText = this.getNormalizedText()
       , spaceIndex = normalizedText.indexOf(' ')
       , offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
 
