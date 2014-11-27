@@ -1,12 +1,12 @@
 // Core variables and mixins
 @import "../libs/bootstrap/less/variables.less";
 @import "../libs/bootstrap/less/mixins.less";
-@import "retina";
+@import "retina.less";
 
 // Reset and dependencies
 @import "../libs/bootstrap/less/normalize.less";
 @import "../libs/bootstrap/less/print.less";
-@import "../libs/bootstrap/less/glyphicons.less";
+//@import "../libs/bootstrap/less/glyphicons.less";
 
 // Core CSS
 @import "../libs/bootstrap/less/scaffolding.less";
@@ -51,7 +51,7 @@
 @import "../libs/bootstrap/less/responsive-utilities.less";
 
 // Google Closure Stylesheets
-@import url('../libs/closure-library/closure/goog/css/common.css');
+@import (less) "../libs/closure-library/closure/goog/css/common.css";
 
 // PubWebKit specific styles
 @import "editor.less";
