@@ -84,7 +84,7 @@ pwk.Document = function() {
      * @type {Array.<string>}
      * @private
      */
-    this.pageIndex_ = [];
+    this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component
 
 
     /**
@@ -290,16 +290,17 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
       , topNodeIndex = isReversed ? this.indexOfNode(range.getEndNode()) : this.indexOfNode(range.getStartNode())
       , bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
 
-//    if(range.isCollapsed()) { //
-//
-//        if(opt_isBack === true) { // Backspace
-//
-//        } else { // Delete
-//
-//        }
-//    } else { // Remove selection range
-//
-//    }
+
+    if(range.isCollapsed()) { //
+
+        if(opt_isBack === true) { // Backspace
+
+        } else { // Delete
+
+        }
+    } else { // Remove selection range
+
+    }
 
     for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
 
@@ -483,9 +484,9 @@ pwk.Document.prototype.addNode = function(node) {
  * Add node to the document at the given 0-based index.
  * @param {pwk.Node} node
  * @param {number} index
- * @param {boolean=} renderAfter Is required to render the node after previous node or before sibling?
+ * @param {boolean=} opt_renderAfter Is required to render the node after previous node or before sibling?
  */
-pwk.Document.prototype.addNodeAt = function(node, index, renderAfter) {
+pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
     var prevNode
       , prevNodeIndex
       , prevNodeId = /**@type {string}*/(this.nodeIndex_.length ? this.nodeIndex_[index - 1] : null);
@@ -499,7 +500,7 @@ pwk.Document.prototype.addNodeAt = function(node, index, renderAfter) {
             this.addChildAt(node, prevNodeIndex + 1);
         }
 
-        this.pagination_.addNodeAt(node, index, renderAfter);
+        this.pagination_.addNodeAt(node, index, opt_renderAfter);
 
         var nodeId = node.getId(); // For prevent duplicates in case of creating new page
         if(goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
@@ -680,7 +681,7 @@ pwk.Document.prototype.initializeEvents_ = function() {
 
 
 /**
- * Handler for handling changes filling of content
+ * Handler of filling document content.
  * @param {goog.events.Event} e
  * @private
  */

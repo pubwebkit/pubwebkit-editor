@@ -70,7 +70,7 @@ pwk.Pagination.prototype.initEvents_ = function() {
 pwk.Pagination.prototype.addNode = function(node) {
     // Check if node already rendered
     if(node.isInDocument()) {
-        throw new Error('Node shouldn\'t be already in the document.');
+        throw new Error('Node should not be already in the document.');
     }
 
     var page
@@ -83,6 +83,7 @@ pwk.Pagination.prototype.addNode = function(node) {
     if(!goog.isArray(pageNodeIndex[pageNodeIndexLen - 1])) {
         page = new pwk.Page(editorDocument);
         editorDocument.addPage(page);
+
         // Important to add handlers after page initialization.
         page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_, false, this);
 
@@ -110,7 +111,7 @@ pwk.Pagination.prototype.addNode = function(node) {
 pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
     // Check if node already rendered
     if(node.isInDocument()) {
-        throw new Error('Node shouldn\'t be already in the document.');
+        throw new Error('Node should not be already in the document.');
     }
 
     var doc = this.document_
