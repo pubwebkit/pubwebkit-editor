@@ -84,7 +84,7 @@ pwk.Document = function() {
      * @type {Array.<string>}
      * @private
      */
-    this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component
+    this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component?
 
 
     /**
@@ -300,23 +300,22 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         }
     } else { // Remove selection range
 
-    }
+        for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
 
-    for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
+            switch (i) {
+                case topNodeIndex:
+                    //var nodeRange = new pwk.primitives.NodeSelectionRange();
+                    break;
 
-        switch (i) {
-            case topNodeIndex:
-                //var nodeRange = new pwk.primitives.NodeSelectionRange();
-                break;
+                case bottomNodeIndex:
 
-            case bottomNodeIndex:
+                    break;
 
-                break;
-
-            default:
-                this.removeNode(this.getNodeAt(i));
-                bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
-                i--;
+                default:
+                    this.removeNode(this.getNodeAt(i));
+                    bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
+                    i--;
+            }
         }
     }
 
@@ -681,7 +680,7 @@ pwk.Document.prototype.initializeEvents_ = function() {
 
 
 /**
- * Handler of filling document content.
+ * Handler of filling document content. Called each time, when document height changed.
  * @param {goog.events.Event} e
  * @private
  */
