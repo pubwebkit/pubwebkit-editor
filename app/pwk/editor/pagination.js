@@ -157,9 +157,9 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
 
 /**
  * Checking size of page content on overflows and dispatching OVERFLOW event in case page is overflowed.
- * @param {string} nodeId Id of changed node.
+ * @param {string} nodeId Id of changed node. The page of this node will be used as start point for overflow check.
  */
-pwk.Pagination.prototype.checkPageOverflow = function(nodeId) {
+pwk.Pagination.prototype.checkOverflow = function(nodeId) {
     var pageIndex = this.getPageIndexByNodeId(nodeId)
       , activePage = this.document_.getPageAt(pageIndex);
 
@@ -254,7 +254,7 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
     }, this);
 
     // Is required to create a new page?
-    if(goog.isDefAndNotNull(siblingPage)) {
+    if(goog.isDefAndNotNull(siblingPage)) { // - No
         var siblingPageNodes = this.pageNodeIndex_[pageIndex + 1]
           , siblingNode = doc.getNode(siblingPageNodes[0])
           , siblingNodeIndex = doc.indexOfNode(siblingNode);
@@ -262,7 +262,8 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
         goog.array.forEach(nodes, function(node) {
             doc.addNodeAt(node, siblingNodeIndex);
         }, this);
-    } else {
+
+    } else { // Yes
         page = new pwk.Page(doc);
         doc.addPage(page);
 
