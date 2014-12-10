@@ -680,11 +680,7 @@ pwk.Document.prototype.initializeEvents_ = function() {
 
 
 /**
-<<<<<<< .merge_file_lsaq28
  * Handler of filling document content. Called each time, when height of document content was changed.
-=======
- * Handler of filling document content. Called each time, when document height changed.
->>>>>>> .merge_file_xAgAJ9
  * @param {goog.events.Event} e
  * @private
  */
@@ -694,45 +690,11 @@ pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
       , range = selection.getRange();
 
     if(range != null) {
-<<<<<<< .merge_file_lsaq28
         // If document become bigger then available on current pages, move nodes to other pages or create more page and move them there
         pagination.checkOverflow(range.getStartNode().getId());
         // Fill document pages if content height was changed
         //pagination.checkFilling();
-=======
-        var startNode = range.getStartNode()
-          , prevLinkedNode = startNode.getPreviousLinkedNode()
-          , nextLinkedNode = startNode.getNextLinkedNode()
-          , tmpLinkedNode;
-
-        pagination.checkPageOverflow(startNode.getId());
-
-        while(goog.isDefAndNotNull(prevLinkedNode)) {
-            pagination.checkPageOverflow(prevLinkedNode.getId());
-            tmpLinkedNode = prevLinkedNode.getPreviousLinkedNode();
-
-            if(tmpLinkedNode != null && pagination.getPageIndexByNodeId(tmpLinkedNode.getId()) != pagination.getPageIndexByNodeId(prevLinkedNode.getId())) {
-                prevLinkedNode = tmpLinkedNode;
-            } else {
-                prevLinkedNode = null;
-            }
-        }
-
-        while(goog.isDefAndNotNull(nextLinkedNode)) {
-            pagination.checkPageOverflow(nextLinkedNode.getId());
-            tmpLinkedNode = nextLinkedNode.getNextLinkedNode();
-
-            if(tmpLinkedNode != null && pagination.getPageIndexByNodeId(tmpLinkedNode.getId()) != pagination.getPageIndexByNodeId(nextLinkedNode.getId())) {
-                nextLinkedNode = tmpLinkedNode;
-            } else {
-                nextLinkedNode = null;
-            }
-        }
->>>>>>> .merge_file_xAgAJ9
     }
-
-    // Fill document pages if content height was changed
-    pagination.checkFilling();
 };
 
 
