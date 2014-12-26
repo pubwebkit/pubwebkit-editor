@@ -175,7 +175,7 @@ pwk.Pagination.prototype.checkFilling = function() {
       , range = doc.getSelection().getRange();
 
     if(range != null) {
-            // This is topmost edited page index
+        // This is topmost edited page index
         var abovePageIndex = this.getPageIndexByNodeId(range.isReversed() ? range.getEndNode().getId() : range.getStartNode().getId())
           , pageBelow = this.pageNodeIndex_.length > abovePageIndex + 1 ? doc.getPageAt(abovePageIndex + 1) : null
           , abovePage;
@@ -183,12 +183,9 @@ pwk.Pagination.prototype.checkFilling = function() {
         while(goog.isDefAndNotNull(pageBelow)) { // No page below?
             abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
 
-            //console.log('- = - = - = - = - = -');
-            //console.log('Page id: ' + abovePage.getId());
-            //console.log('Page index: ' + abovePageIndex);
+            var availableHeightAbove = abovePage.getAvailableContentSize();
+            console.log(doc.indexOfPage(abovePage));
 
-            var availableHeight = abovePage.getAvailableContentSize();
-            //console.info('Available height: ' + availableHeight);
 
             // - check if current page is could be filled by content below {√}
             //      - get available height
