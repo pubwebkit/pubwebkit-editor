@@ -1,4 +1,31 @@
-//
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pwk/editor/editor.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pwk/editor/editor.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
@@ -16,7 +43,7 @@
 //
 // See the GNU Affero General Public License for more details. You should have received
 // a copy of the GNU General Public License along with Hatch.js. If not, see
-// <http://www.gnu.org/licenses/>.
+// &lt;http://www.gnu.org/licenses/>.
 //
 // Authors: Dmitry Antonenko
 //
@@ -24,7 +51,7 @@
 /**
  * @fileoverview Rich Text Editor.
  *
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmitry Antonenko &lt;dmitry.antonenko@pubwebkit.com>
  */
 
 goog.provide('pwk.Editor');
@@ -238,7 +265,7 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.onMouseMove_ = function(e) {
-    if(e.isMouseActionButton() && this.isSelectionStarted_) {
+    if(e.isMouseActionButton() &amp;&amp; this.isSelectionStarted_) {
 
         var elementFromPoint = document.elementFromPoint(e.clientX, e.clientY);
         if(elementFromPoint) {
@@ -305,13 +332,13 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
           , clientY = e.clientY
           , offsetY = 0;
 
-        if(clientX < 0 || clientX >= viewPortWidth ) {
-            clientX = clientX < 0 ? 1 : viewPortWidth;
+        if(clientX &lt; 0 || clientX >= viewPortWidth ) {
+            clientX = clientX &lt; 0 ? 1 : viewPortWidth;
         }
 
-        if(clientY < 50 || clientY >= viewPortHeight) {
-            offsetY = clientY < 0 ? clientY : clientY - viewPortHeight;
-            clientY = clientY < 0 ? 50 : viewPortHeight - 50;
+        if(clientY &lt; 50 || clientY >= viewPortHeight) {
+            offsetY = clientY &lt; 0 ? clientY : clientY - viewPortHeight;
+            clientY = clientY &lt; 0 ? 50 : viewPortHeight - 50;
         }
 
         var y = goog.style.getContainerOffsetToScrollInto(this.selection_.getRange().getEndLine().getElement(), container).y;
@@ -381,7 +408,7 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
     var isStopPropagation = false;
 
     // Fix charCode for Opera on Mac
-    if(goog.userAgent.OPERA && goog.userAgent.MAC) {
+    if(goog.userAgent.OPERA &amp;&amp; goog.userAgent.MAC) {
         e.charCode = e.getBrowserEvent().which;
     }
 
@@ -451,7 +478,7 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
             break;
 
         default:
-            if(e.charCode > 0 && !e.ctrlKey && !e.metaKey) {
+            if(e.charCode > 0 &amp;&amp; !e.ctrlKey &amp;&amp; !e.metaKey) {
                 switch (e.charCode) {
                     default:
                         this.document_.addValue(String.fromCharCode(e.charCode));
@@ -564,8 +591,8 @@ pwk.Editor.prototype.addTestText = function(opt_init) {
     var line;
 
     //console.profile('Normalization performance');
-    for(var i = 0; i < paragraphs.length; i++) {
-        if(i == 0 && opt_init) {
+    for(var i = 0; i &lt; paragraphs.length; i++) {
+        if(i == 0 &amp;&amp; opt_init) {
             line = (/** @type {pwk.LeafNode} */ (this.document_.getNodeAt(0))).getFirstLine();
             line.insertText(paragraphs[i]);
         } else {
@@ -590,3 +617,26 @@ pwk.Editor.CSS_CLASS = 'pwk-editor';
  * @type {string}
  */
 pwk.Editor.CSS_TEXT_EVENT_TARGET = 'pwk-editor-textevettarget-iframe';
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="app.controllers.HomeController.html">HomeController</a></li><li><a href="app.Core.html">Core</a></li><li><a href="app.core.Application.html">Application</a></li><li><a href="app.core.Application_processRoute_-instance.html">instance</a></li><li><a href="app.core.Controller.html">Controller</a></li><li><a href="app.core.events.ActionEvent.html">ActionEvent</a></li><li><a href="app.core.events.ActionExceptionEvent.html">ActionExceptionEvent</a></li><li><a href="app.core.Request.html">Request</a></li><li><a href="app.core.Response.html">Response</a></li><li><a href="app.core.Router.html">Router</a></li><li><a href="app.core.types.ActionFilterContext.html">ActionFilterContext</a></li><li><a href="app.core.types.ActionFilterItem.html">ActionFilterItem</a></li><li><a href="app.core.types.ApplicationFilterItem.html">ApplicationFilterItem</a></li><li><a href="pwk.BranchNode.html">BranchNode</a></li><li><a href="pwk.Document.html">Document</a></li><li><a href="pwk.Document.NodeRemovedEvent.html">NodeRemovedEvent</a></li><li><a href="pwk.DocumentSettings.html">DocumentSettings</a></li><li><a href="pwk.Editor.html">Editor</a></li><li><a href="pwk.EditorContainer.html">EditorContainer</a></li><li><a href="pwk.layer.Caret.html">Caret</a></li><li><a href="pwk.layer.Caret.AfterUpdateEvent.html">AfterUpdateEvent</a></li><li><a href="pwk.layer.SelectionOverlay.html">SelectionOverlay</a></li><li><a href="pwk.LeafNode.html">LeafNode</a></li><li><a href="pwk.LeafNode.NodeContentChangedEvent.html">NodeContentChangedEvent</a></li><li><a href="pwk.Line.html">Line</a></li><li><a href="pwk.LineContent.html">LineContent</a></li><li><a href="pwk.Node.html">Node</a></li><li><a href="pwk.NodeAnnotation.html">NodeAnnotation</a></li><li><a href="pwk.NodeAttribute.html">NodeAttribute</a></li><li><a href="pwk.Page.html">Page</a></li><li><a href="pwk.Page.PageOverflowEvent.html">PageOverflowEvent</a></li><li><a href="pwk.PageContent.html">PageContent</a></li><li><a href="pwk.PageFooter.html">PageFooter</a></li><li><a href="pwk.PageHeader.html">PageHeader</a></li><li><a href="pwk.PageSettings.html">PageSettings</a></li><li><a href="pwk.Pagination.html">Pagination</a></li><li><a href="pwk.primitives.ClientRectRange.html">ClientRectRange</a></li><li><a href="pwk.primitives.NodeSelectionRange.html">NodeSelectionRange</a></li><li><a href="pwk.Range.html">Range</a></li><li><a href="pwk.Ruler.html">Ruler</a></li><li><a href="pwk.Selection.html">Selection</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Dec 30 2014 02:19:31 GMT+0200 (EET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

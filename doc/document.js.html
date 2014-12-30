@@ -1,4 +1,31 @@
-//
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pwk/editor/document.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pwk/editor/document.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
@@ -16,7 +43,7 @@
 //
 // See the GNU Affero General Public License for more details. You should have received
 // a copy of the GNU General Public License along with Hatch.js. If not, see
-// <http://www.gnu.org/licenses/>.
+// &lt;http://www.gnu.org/licenses/>.
 //
 // Authors: Dmitry Antonenko
 //
@@ -24,7 +51,7 @@
 /**
  * @fileoverview Document contains all information about edited information and information itself,
  * as child components.
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmitry Antonenko &lt;dmitry.antonenko@pubwebkit.com>
  */
 
 
@@ -73,7 +100,7 @@ pwk.Document = function() {
 
     /**
      * Array of ids of child @code{pwk.Node} components. Used to hFold order of nodes in document.
-     * @type {Array.<string>}
+     * @type {Array.&lt;string>}
      * @private
      */
     this.nodeIndex_ = [];
@@ -81,7 +108,7 @@ pwk.Document = function() {
 
     /**
      * Array of ids of child @code{pwk.Page} components. Used to hold order of pages in document.
-     * @type {Array.<string>}
+     * @type {Array.&lt;string>}
      * @private
      */
     this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component?
@@ -174,24 +201,24 @@ pwk.Document.prototype.addValue = function(value) {
           , linkedLineBelow = range.getStartNode().getLineAt(linkedNodeRangeInfo.lineIndex + 1, true)
           , offset = value.length;
 
-        if(lineBelow != null && !isSpace && isLastPositionBefore && isPrevNodeValueSpace) {
+        if(lineBelow != null &amp;&amp; !isSpace &amp;&amp; isLastPositionBefore &amp;&amp; isPrevNodeValueSpace) {
             range.setStartPosition(lineBelow, startNodeOffset + offset);
             range.setEndPosition(lineBelow, startNodeOffset + offset);
             lineBelow.insertValue(/** @type {string} */(value), 0);
 
-        } else if(linkedLineBelow != null && linkedLineBelow.getParentNode() !== range.getStartNode() && !isSpace && isLastPositionBefore && isPrevNodeValueSpace) {
+        } else if(linkedLineBelow != null &amp;&amp; linkedLineBelow.getParentNode() !== range.getStartNode() &amp;&amp; !isSpace &amp;&amp; isLastPositionBefore &amp;&amp; isPrevNodeValueSpace) {
             range.setStartPosition(linkedLineBelow, offset);
             range.setEndPosition(linkedLineBelow, offset);
             linkedLineBelow.insertValue(/** @type {string} */(value), 0);
 
-        } else if(startLineOffset == 0 && startNodeOffset != 0 && isSpace) {
+        } else if(startLineOffset == 0 &amp;&amp; startNodeOffset != 0 &amp;&amp; isSpace) {
             // If is start of line and value is space, add it to the end of line above
             // Logic to align text
             range.getStartNode().insertValue(/** @type {string} */(value), startNodeOffset);
             range.setStartPosition(startLine, startNodeOffset + offset, true);
             range.setEndPosition(startLine, startNodeOffset + offset, true);
 
-        } else if(startLineOffset == 0 && linkedNodeRangeInfo.linkedNodeOffset > 0 && isSpace) {
+        } else if(startLineOffset == 0 &amp;&amp; linkedNodeRangeInfo.linkedNodeOffset > 0 &amp;&amp; isSpace) {
             // If is start of line and value is space and it is first line of linked node, add it to the end of last linked
             // line above
             linkedNodeRangeInfo.line.getParentNode().insertValue(/** @type {string} */(value), linkedNodeRangeInfo.nodeOffset);
@@ -204,7 +231,7 @@ pwk.Document.prototype.addValue = function(value) {
 
             var isLastPositionAfter = !(range.getStartLine().getLength() - range.getStartLineOffset());
 
-            if(isSpace && !isLastPositionBefore && isLastPositionAfter) {
+            if(isSpace &amp;&amp; !isLastPositionBefore &amp;&amp; isLastPositionAfter) {
                 var rangeStartNode = range.getStartNode();
                 lineBelow = rangeStartNode.getLineAt(range.getStartLineRangeInfo().lineIndex + 1);
 
@@ -300,7 +327,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         }
     } else { // Remove selection range
 
-        for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
+        for(var i = topNodeIndex; i &lt;= bottomNodeIndex; i++) {
 
             switch (i) {
                 case topNodeIndex:
@@ -409,7 +436,7 @@ pwk.Document.prototype.getPageCount = function() {
 /**
  * Returns an array containing the IDs of the pages of this document, or an
  * empty array if the document has no pages.
- * @return {Array.<string>} Page component IDs.
+ * @return {Array.&lt;string>} Page component IDs.
  */
 pwk.Document.prototype.getPageIds = function() {
     return this.pageIndex_;
@@ -425,7 +452,7 @@ pwk.Document.prototype.getPageIds = function() {
 pwk.Document.prototype.indexOfPage = function(page) {
     var pageId = goog.isString(page) ? page : page.getId();
 
-    return (this.pageIndex_ && pageId) ? goog.array.indexOf(this.pageIndex_, pageId) : -1;
+    return (this.pageIndex_ &amp;&amp; pageId) ? goog.array.indexOf(this.pageIndex_, pageId) : -1;
 };
 
 
@@ -564,7 +591,7 @@ pwk.Document.prototype.getNodeCount = function() {
 /**
  * Returns an array containing the IDs of the nodes of this document, or an
  * empty array if the document has no nodes.
- * @return {Array.<string>} Node component IDs.
+ * @return {Array.&lt;string>} Node component IDs.
  */
 pwk.Document.prototype.getNodeIds = function() {
     return this.nodeIndex_;
@@ -578,7 +605,7 @@ pwk.Document.prototype.getNodeIds = function() {
  * @return {number} 0-based index of the node component; -1 if not found.
  */
 pwk.Document.prototype.indexOfNode = function(node) {
-    return (this.nodeIndex_ && node) ? goog.array.indexOf(this.nodeIndex_, node.getId()) : -1;
+    return (this.nodeIndex_ &amp;&amp; node) ? goog.array.indexOf(this.nodeIndex_, node.getId()) : -1;
 };
 
 
@@ -641,7 +668,7 @@ pwk.Document.prototype.getPagination = function() {
 
 /**
  * Return index of page/nodes equivalent.
- * @return {Array.<Array.<string>>}
+ * @return {Array.&lt;Array.&lt;string>>}
  */
 pwk.Document.prototype.getPaginationIndex = function() {
     return this.pagination_.getPaginationIndex();
@@ -730,3 +757,26 @@ pwk.Document.NodeRemovedEvent = function(node) {
     this.removedNode = node;
 };
 goog.inherits(pwk.Document.NodeRemovedEvent, goog.events.Event);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="app.controllers.HomeController.html">HomeController</a></li><li><a href="app.Core.html">Core</a></li><li><a href="app.core.Application.html">Application</a></li><li><a href="app.core.Application_processRoute_-instance.html">instance</a></li><li><a href="app.core.Controller.html">Controller</a></li><li><a href="app.core.events.ActionEvent.html">ActionEvent</a></li><li><a href="app.core.events.ActionExceptionEvent.html">ActionExceptionEvent</a></li><li><a href="app.core.Request.html">Request</a></li><li><a href="app.core.Response.html">Response</a></li><li><a href="app.core.Router.html">Router</a></li><li><a href="app.core.types.ActionFilterContext.html">ActionFilterContext</a></li><li><a href="app.core.types.ActionFilterItem.html">ActionFilterItem</a></li><li><a href="app.core.types.ApplicationFilterItem.html">ApplicationFilterItem</a></li><li><a href="pwk.BranchNode.html">BranchNode</a></li><li><a href="pwk.Document.html">Document</a></li><li><a href="pwk.Document.NodeRemovedEvent.html">NodeRemovedEvent</a></li><li><a href="pwk.DocumentSettings.html">DocumentSettings</a></li><li><a href="pwk.Editor.html">Editor</a></li><li><a href="pwk.EditorContainer.html">EditorContainer</a></li><li><a href="pwk.layer.Caret.html">Caret</a></li><li><a href="pwk.layer.Caret.AfterUpdateEvent.html">AfterUpdateEvent</a></li><li><a href="pwk.layer.SelectionOverlay.html">SelectionOverlay</a></li><li><a href="pwk.LeafNode.html">LeafNode</a></li><li><a href="pwk.LeafNode.NodeContentChangedEvent.html">NodeContentChangedEvent</a></li><li><a href="pwk.Line.html">Line</a></li><li><a href="pwk.LineContent.html">LineContent</a></li><li><a href="pwk.Node.html">Node</a></li><li><a href="pwk.NodeAnnotation.html">NodeAnnotation</a></li><li><a href="pwk.NodeAttribute.html">NodeAttribute</a></li><li><a href="pwk.Page.html">Page</a></li><li><a href="pwk.Page.PageOverflowEvent.html">PageOverflowEvent</a></li><li><a href="pwk.PageContent.html">PageContent</a></li><li><a href="pwk.PageFooter.html">PageFooter</a></li><li><a href="pwk.PageHeader.html">PageHeader</a></li><li><a href="pwk.PageSettings.html">PageSettings</a></li><li><a href="pwk.Pagination.html">Pagination</a></li><li><a href="pwk.primitives.ClientRectRange.html">ClientRectRange</a></li><li><a href="pwk.primitives.NodeSelectionRange.html">NodeSelectionRange</a></li><li><a href="pwk.Range.html">Range</a></li><li><a href="pwk.Ruler.html">Ruler</a></li><li><a href="pwk.Selection.html">Selection</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Dec 30 2014 02:19:31 GMT+0200 (EET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

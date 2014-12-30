@@ -139,6 +139,17 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+
+        jsdoc : {
+            dist : {
+                src: ['app/*.js', 'app/**/*.js'],
+                options: {
+                    'destination': 'doc',
+                    'private': true,
+                    'recurse': true
+                }
+            }
         }
     });
 
@@ -148,6 +159,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     // Register tasks
     grunt.registerTask('build', [
