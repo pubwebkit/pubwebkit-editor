@@ -111,7 +111,6 @@ pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
     }
 
     goog.base(this, 'addChildAt', child, index, opt_render);
-    this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
 
@@ -228,6 +227,33 @@ pwk.Node.prototype.isSplittable = goog.abstractMethod;
  * @return {pwk.Node}   Returns new node or next linked node, in case if offset is end of the current node and next exist linked node.
  */
 pwk.Node.prototype.split = goog.abstractMethod;
+
+
+/**
+ * Set previous linked node.
+ * @param {pwk.Node} node
+ */
+pwk.Node.prototype.setPreviousLinkedNode = goog.abstractMethod;
+
+/**
+ * Set next linked node.
+ * @param {pwk.Node} node
+ */
+pwk.Node.prototype.setNextLinkedNode = goog.abstractMethod;
+
+
+/**
+ * Get previous linked node. If node does not linked returns null.
+ * @return {?pwk.Node}
+ */
+pwk.Node.prototype.getPreviousLinkedNode = goog.abstractMethod;
+
+
+/**
+ * Get next linked node. If node does not linked returns null.
+ * @return {?pwk.Node}
+ */
+pwk.Node.prototype.getNextLinkedNode = goog.abstractMethod;
 
 
 /**

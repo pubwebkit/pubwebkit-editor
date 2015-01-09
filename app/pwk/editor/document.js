@@ -609,7 +609,7 @@ pwk.Document.prototype.removeNode = function(node) {
         goog.dispose(removedNode);
     }
 
-    // trigger event
+    // trigger events
     this.dispatchEvent(new pwk.Document.NodeRemovedEvent(removedNode));
 
     // return removed node
@@ -690,7 +690,8 @@ pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
       , range = selection.getRange();
 
     if(range != null) {
-        // If document become bigger then available on current pages, move nodes to other pages or create more page and move them there
+        // If document become bigger then available on current pages, move nodes to other pages or create more page and
+        // move them there
         pagination.checkOverflow(range.getStartNode().getId());
 
         // Fill document pages if content height was changed

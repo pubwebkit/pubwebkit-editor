@@ -51,8 +51,7 @@ pwk.BranchNode.prototype.CSS_CLASS = 'pwk-branchnode';
 
 
 /**
- * Get size of current node.
- * @return {goog.math.Size}
+ * @inheritDoc
  */
 pwk.BranchNode.prototype.getSize = function() {
     return goog.style.getSize(this.getElement());

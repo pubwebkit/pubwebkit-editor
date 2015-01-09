@@ -139,8 +139,7 @@ pwk.LeafNode.prototype.enterDocument = function() {
 
 
 /**
- * Get previous linked node. If node does not linked returns null.
- * @return {pwk.LeafNode}
+ * @inheritDoc
  */
 pwk.LeafNode.prototype.getPreviousLinkedNode = function() {
     return this.previousLinkedNode_;
@@ -148,8 +147,8 @@ pwk.LeafNode.prototype.getPreviousLinkedNode = function() {
 
 
 /**
- * Get next linked node. If node does not linked returns null.
- * @return {pwk.LeafNode}
+ * @inheritDoc
+ * @return {?pwk.LeafNode}
  */
 pwk.LeafNode.prototype.getNextLinkedNode = function() {
     return this.nextLinkedNode_;
@@ -165,24 +164,18 @@ pwk.LeafNode.prototype.isRootLinkedNode = function() {
 };
 
 
-/**
- * Set previous linked node.
- * @param {pwk.LeafNode} node
- */
+/** @inheritDoc */
 pwk.LeafNode.prototype.setPreviousLinkedNode = function(node) {
-    this.previousLinkedNode_ = node;
+    this.previousLinkedNode_ = /** @type {pwk.LeafNode} */(node);
     if(node.getNextLinkedNode() != this) {
         node.setNextLinkedNode(this);
     }
 };
 
 
-/**
- * Set next linked node.
- * @param {pwk.LeafNode} node
- */
+/** @inheritDoc */
 pwk.LeafNode.prototype.setNextLinkedNode = function(node) {
-    this.nextLinkedNode_ = node;
+    this.nextLinkedNode_ = /** @type {pwk.LeafNode} */(node);
     if(node.getPreviousLinkedNode() != this) {
         node.setPreviousLinkedNode(this);
     }
@@ -191,7 +184,7 @@ pwk.LeafNode.prototype.setNextLinkedNode = function(node) {
 
 /**
  * @param {pwk.Line} line Line object to insert.
- * @param {boolean} render
+ * @param {boolean} render Is required render lines?
  * @param {number=} opt_i The index at which to insert the object.
  */
 pwk.LeafNode.prototype.insertLine = function(line, render, opt_i) {
@@ -201,6 +194,19 @@ pwk.LeafNode.prototype.insertLine = function(line, render, opt_i) {
         this.addChildAt(line, i, true);
         pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line); // apply node attributes
     }
+};
+
+
+/**
+ * *
+ * @param {Array.<pwk.Line>} lines Lines to insert.
+ * @param {boolean} render Is required render lines?
+ * @param {number=} opt_i The index at which to insert the object.
+ */
+pwk.LeafNode.prototype.insertLines = function(lines, render, opt_i) {
+    goog.array.forEach(lines, function(line, index) {
+        this.insertLine(line, render, goog.isDefAndNotNull(opt_i) ? opt_i + index : undefined);
+    }, this);
 };
 
 
@@ -579,6 +585,14 @@ pwk.LeafNode.prototype.renderNode_ = function() {
     goog.array.forEach(this.lines_, function(line) {
         pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
     }, this);
+};
+
+
+/**
+ * @inheritDoc
+ */
+pwk.LeafNode.prototype.isSplittable = function() {
+    return true;
 };
 
 
@@ -968,6 +982,13 @@ pwk.LeafNode.prototype.deleteRange = function(nodeSelectionRange) {
     } else {
 
     }
+};
+
+
+/** @inheritDoc */
+pwk.LeafNode.prototype.addChildAt = function(child, index, opt_render) {
+    goog.base(this, 'addChildAt', child, index, opt_render);
+    this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
 

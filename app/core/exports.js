@@ -27,3 +27,5 @@
  */
 
 goog.provide('app.exports');
+
+// TODO: Declare the public API.
