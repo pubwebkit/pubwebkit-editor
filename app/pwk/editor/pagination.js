@@ -174,6 +174,8 @@ pwk.Pagination.prototype.checkFilling = function() {
     var doc = this.document_
       , range = doc.getSelection().getRange();
 
+    console.log('checkFilling');
+
     if(range != null) {
     //
     //    // Variable declaration

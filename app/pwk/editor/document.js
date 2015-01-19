@@ -246,7 +246,7 @@ pwk.Document.prototype.newLine = function() {
               , paragraphIndex;
 
             // Checking, if line should be splitted
-            if(range.getStartNodeOffset() == 0) {
+            if(range.getStartNodeOffset() == 0 && !goog.isDefAndNotNull(startNode.getPreviousLinkedNode())) {
                 // Just create empty node above
                 paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
 

@@ -79,7 +79,7 @@ app.core.Router.prototype.getFragment = function() {
  * argument. *abc/def will pass through all after the * as an argument
  *
  * @param {string|RegExp} route to watch for.
- * @param {function(string, ...[string])} fn should take in the token and any captured strings.
+ * @param {function(string)} fn should take in the token and any captured strings.
  * @param {Object=} opt_context Object in whose context the function is to be
  *     called (the global scope if none).
  */
