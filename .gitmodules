@@ -16,6 +16,3 @@
 	path = libs/PlastronJS
 	url = https://banguit@github.com/rhysbrettbowen/PlastronJS.git
 	branch = master
-[submodule "libs/closure-library"]
-	path = libs/closure-library
-	url = https://banguit@github.com/google/closure-library.git
