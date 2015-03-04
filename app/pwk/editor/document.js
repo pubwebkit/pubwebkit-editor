@@ -319,8 +319,6 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         }
     }
 
-    //paragraph.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(paragraph.getLineAt(1, true))); // Call normalization
-
     this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
