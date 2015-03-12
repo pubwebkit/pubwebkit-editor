@@ -175,35 +175,30 @@ pwk.Pagination.prototype.checkFilling = function() {
       , range = doc.getSelection().getRange();
 
     if(range != null) {
-        //console.log('checkFilling');
+
+        // Variable declaration
+        var abovePageIndex = this.getPageIndexByNodeId(range.isReversed() ? range.getEndNode().getId() : range.getStartNode().getId()) // This is topmost edited page index
+          ,_getBelowPageIndex = goog.bind(function() {
+                return this.pageNodeIndex_.length > abovePageIndex ? abovePageIndex + 1 : -1;
+          }, this)
+          , belowPageIndex = _getBelowPageIndex()
+          , abovePage;
+
+
+        while(belowPageIndex > 0) { // No page below?
+            abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
+
+            var availableHeightAbove = abovePage.getAvailableContentSize()
+              , nodeToMove = /** @type {pwk.Node}*/(this.pageNodeIndex_[belowPageIndex].length > 0 ? doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) : null) // TODO: Should fixed in future, then will be implemented proper range deleting
+              , nodeToMoveSize;
+
+            if(goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
+                nodeToMoveSize = nodeToMove.getSize();
+
+        //        if(nodeToMoveSize.height <= availableHeightAbove) { // Node above could be moved to the page above completely
         //
-        //// Variable declaration
-        //var abovePageIndex
-        //  , belowPageIndex
-        //  , abovePage;
-        //
-        //// Helper functions
-        //var _getBelowPageIndex = goog.bind(function() {
-        //    return this.pageNodeIndex_.length > abovePageIndex + 1 ? abovePageIndex + 1 : -1;
-        //}, this);
-        //
-        //// This is topmost edited page index
-        //abovePageIndex = this.getPageIndexByNodeId(range.isReversed() ? range.getEndNode().getId() : range.getStartNode().getId());
-        //belowPageIndex = _getBelowPageIndex();
-        //
-        //while(belowPageIndex >= 0) { // No page below?
-        //    abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
-        //
-        //    var availableHeightAbove = abovePage.getAvailableContentSize()
-        //      , nodeToMove = /** @type {pwk.Node}*/(this.pageNodeIndex_[belowPageIndex].length ? doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) : null) // TODO: Should fixed in future, then will be implemented proper range deleting
-        //      , nodeToMoveSize;
-        //
-        //    if(goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
-        //        nodeToMoveSize = nodeToMove.getSize();
-        //        if(nodeToMoveSize.height <= availableHeightAbove) {
-        //
+        //            // Check if it's linked node
         //            var previousLinkedNode = nodeToMove.getPreviousLinkedNode();
-        //
         //            if(previousLinkedNode != null) {
         //                switch (previousLinkedNode.getType()) {
         //                    case pwk.NodeTypes.PARAGRAPH:
@@ -223,22 +218,22 @@ pwk.Pagination.prototype.checkFilling = function() {
         //                        throw new Error('Node type "' + previousLinkedNode.getType() + '" does not handled.');
         //
         //                }
-        //            } else {
+        //            } else { // It's not linked node, so just move it to the above page
         //                nodeToMove = doc.unlinkNode(nodeToMove);
         //                doc.addNodeAt(nodeToMove, doc.indexOfNode(previousLinkedNode), true);
         //            }
         //
         //        } else if(nodeToMove.isSplittable()) {
-        //            // TODO: Split node
-        //
+        ////            // TODO: Split node
+        ////
         //        } else {
         //
-        //            break;
+        ////            break;
         //        }
-        //    } else {
+            } else {
         //        break;
-        //
-        //    }
+
+            }
 
             // - check if current page is could be filled by content below {√}
             //      - get available height
@@ -252,7 +247,7 @@ pwk.Pagination.prototype.checkFilling = function() {
             //console.log('- = - = - = - = - = -');
             return;
 
-        //}
+        }
     }
 
     // Steps to fill pages top:
