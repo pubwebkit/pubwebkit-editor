@@ -176,16 +176,18 @@ pwk.Pagination.prototype.checkFilling = function() {
 
     if(range != null) {
 
+        console.log('pwk.Pagination.prototype.checkFilling');
+
         // Variable declaration
         var abovePageIndex = this.getPageIndexByNodeId(range.isReversed() ? range.getEndNode().getId() : range.getStartNode().getId()) // This is topmost edited page index
           ,_getBelowPageIndex = goog.bind(function() {
-                return this.pageNodeIndex_.length > abovePageIndex ? abovePageIndex + 1 : -1;
+                return this.pageNodeIndex_.length > abovePageIndex + 1 ? abovePageIndex + 1 : -1;
           }, this)
           , belowPageIndex = _getBelowPageIndex()
           , abovePage;
 
 
-        while(belowPageIndex > 0) { // No page below?
+        while(belowPageIndex > 0) { // We have page below modified page?
             abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
 
             var availableHeightAbove = abovePage.getAvailableContentSize()
@@ -193,9 +195,9 @@ pwk.Pagination.prototype.checkFilling = function() {
               , nodeToMoveSize;
 
             if(goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
-                nodeToMoveSize = nodeToMove.getSize();
 
-        //        if(nodeToMoveSize.height <= availableHeightAbove) { // Node above could be moved to the page above completely
+                nodeToMoveSize = nodeToMove.getSize();
+                if(nodeToMoveSize.height <= availableHeightAbove) { // Node above could be moved to the page above completely
         //
         //            // Check if it's linked node
         //            var previousLinkedNode = nodeToMove.getPreviousLinkedNode();
@@ -230,9 +232,9 @@ pwk.Pagination.prototype.checkFilling = function() {
         //
         ////            break;
         //        }
-            } else {
+                }
+        //      else {
         //        break;
-
             }
 
             // - check if current page is could be filled by content below {√}
