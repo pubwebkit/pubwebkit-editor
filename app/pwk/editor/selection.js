@@ -870,7 +870,7 @@ pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
     var googDomClasses = goog.dom.classlist
       , googDom = goog.dom
       , googStyle = goog.style
-      , receiver = document.elementFromPoint(x, y)
+      , receiver = document.elementFromPoint(x, y < 0 ? 0 : y)
       , lineCssClass = pwk.Line.CSS_CLASS
       , el = null
       , parentElement
