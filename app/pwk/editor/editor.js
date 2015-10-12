@@ -242,7 +242,7 @@ pwk.Editor.prototype.onMouseMove_ = function(e) {
 
         var viewPortSize = goog.dom.getViewportSize();
 
-        if(e.clientY < viewPortSize.height - 50 && e.clientY > -1) {
+        if(e.clientY < viewPortSize.height - 10 && e.clientY > -1) {
             this.scrollLoopInProgress_ = false;
             this.selectFromRangeToPoint_(this.startSelectionRange_, e.clientX, e.clientY);
         } else {
@@ -316,7 +316,7 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
         }
 
         var y = goog.style.getContainerOffsetToScrollInto(this.selection_.getRange().getEndLine().getElement(), container).y;
-        var scroll = new goog.fx.dom.Scroll(container, [0, container.scrollTop], [0, y + ((offsetY == 0 ? 25 : offsetY) * 5)], 50);
+        var scroll = new goog.fx.dom.Scroll(container, [0, container.scrollTop], [0, y + ((offsetY == 0 ? 15 : offsetY) * 5)], 50);
 
         scroll.listen(goog.fx.Transition.EventType.END, goog.bind(function() {
             if(this.scrollLoopInProgress_) {

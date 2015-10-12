@@ -183,6 +183,32 @@ pwk.LeafNode.prototype.setNextLinkedNode = function(node) {
 
 
 /**
+ * Unlink topmost linked node
+ */
+pwk.LeafNode.prototype.unlinkPreviousLinkedNode = function() {
+    var previousLinkedNode = this.previousLinkedNode_;
+    this.previousLinkedNode_ = null;
+
+    if(previousLinkedNode != null && previousLinkedNode.getNextLinkedNode() != null) {
+        previousLinkedNode.unlinkNextLinkedNode();
+    }
+};
+
+
+/**
+ * Unlink linked node below
+ */
+pwk.LeafNode.prototype.unlinkNextLinkedNode = function() {
+    var nextLinkedNode = this.nextLinkedNode_;
+    this.nextLinkedNode_ = null;
+
+    if(nextLinkedNode != null && nextLinkedNode.getPreviousLinkedNode() != null) {
+        nextLinkedNode.unlinkPreviousLinkedNode();
+    }
+};
+
+
+/**
  * @param {pwk.Line} line Line object to insert.
  * @param {boolean} render Is required render lines?
  * @param {number=} opt_i The index at which to insert the object.
@@ -222,12 +248,14 @@ pwk.LeafNode.prototype.disposeInternal = function() {
         goog.dispose(lines[linesLen]);
     }
 
+    // Unlink previous and next linked nodes
+    this.unlinkPreviousLinkedNode();
+    this.unlinkNextLinkedNode();
+
     // Remove references
     delete this.lines_;
     delete this.rangeInfoForOffsetCache_;
 
-    this.previousLinkedNode_ = null;
-    this.nextLinkedNode_ = null;
     this.document_ = null;
 };
 

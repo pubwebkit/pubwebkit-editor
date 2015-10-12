@@ -176,9 +176,8 @@ pwk.Pagination.prototype.checkFilling = function() {
 
     if(range != null) {
 
-        console.log('pwk.Pagination.prototype.checkFilling');
+        console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
 
-        // Variable declaration
         var abovePageIndex = this.getPageIndexByNodeId(range.isReversed() ? range.getEndNode().getId() : range.getStartNode().getId()) // This is topmost edited page index
           ,_getBelowPageIndex = goog.bind(function() {
                 return this.pageNodeIndex_.length > abovePageIndex + 1 ? abovePageIndex + 1 : -1;
