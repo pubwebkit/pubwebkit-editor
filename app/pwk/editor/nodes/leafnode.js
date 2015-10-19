@@ -192,6 +192,7 @@ pwk.LeafNode.prototype.unlinkPreviousLinkedNode = function() {
     if(previousLinkedNode != null && previousLinkedNode.getNextLinkedNode() != null) {
         previousLinkedNode.unlinkNextLinkedNode();
     }
+    this.clearRangeInfoForOffsetCache();
 };
 
 
@@ -205,6 +206,7 @@ pwk.LeafNode.prototype.unlinkNextLinkedNode = function() {
     if(nextLinkedNode != null && nextLinkedNode.getPreviousLinkedNode() != null) {
         nextLinkedNode.unlinkPreviousLinkedNode();
     }
+    this.clearRangeInfoForOffsetCache();
 };
 
 

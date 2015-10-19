@@ -304,7 +304,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
 
             switch (i) {
                 case topNodeIndex:
-                    //var nodeRange = new pwk.primitives.NodeSelectionRange();
+
                     break;
 
                 case bottomNodeIndex:
