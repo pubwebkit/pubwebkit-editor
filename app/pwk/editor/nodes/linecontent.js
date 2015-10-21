@@ -137,7 +137,7 @@ pwk.LineContent.prototype.insertValue = function(value, opt_offset, opt_parent) 
       , textNode;
 
     textNode = document.createTextNode(value);
-    parent.insertBefore(textNode, parent.childNodes[opt_offset] || null);
+    parent.insertBefore(textNode, parent.childNodes[offset] || null);
 
     // Update indexes
     this.text_ = text.substr(0, offset) + textNode.nodeValue + text.substr(offset);

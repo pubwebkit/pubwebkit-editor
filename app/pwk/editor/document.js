@@ -301,18 +301,20 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     } else { // Remove selection range
 
         for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
+            var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
             switch (i) {
                 case topNodeIndex:
-
-                    break;
-
                 case bottomNodeIndex:
+                    // - Remove selection
+                    // - Check if length equal 0,then remove node (start == start, end == end)
+
+                    processedNode.removeSelection();
 
                     break;
 
-                default:
-                    this.removeNode(this.getNodeAt(i));
+                default: // Looks like this node is selected entirely, let's just remove it from document
+                    this.removeNode(processedNode);
                     bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
                     i--;
             }

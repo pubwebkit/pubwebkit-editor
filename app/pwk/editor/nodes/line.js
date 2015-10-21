@@ -57,6 +57,11 @@ pwk.Line = function(opt_text) {
      */
     this.selectionOverlay_;
 
+    /**
+     * @type {{ start:number, end:number }}
+     */
+    this.selectionOffsets_;
+
 };
 goog.inherits(pwk.Line, goog.ui.Component);
 
@@ -81,8 +86,10 @@ pwk.Line.prototype.disposeInternal = function() {
 
     goog.dispose(this.content_);
     goog.dispose(this.selectionOverlay_);
+
     delete this.content_;
     delete this.selectionOverlay_;
+    delete this.selectionOffsets_;
 };
 
 
@@ -253,6 +260,9 @@ pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
         clientRectRange = new pwk.primitives.ClientRectRange(lineContentClientRect.width, elSize.height, 0, lineContentClientRect.left - elPageOffset.x);
     }
 
+    this.selectionOffsets_ = { start: goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0,
+                               end: goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength() };
+
     this.selectionOverlay_ = new pwk.layer.SelectionOverlay(clientRectRange);
     this.addChildAt(this.selectionOverlay_, 0, true);
 };
@@ -266,6 +276,30 @@ pwk.Line.prototype.unselect = function() {
         this.removeChild(this.selectionOverlay_);
         goog.dispose(this.selectionOverlay_);
         delete this.selectionOverlay_;
+        this.selectionOffsets_ = null;
+    }
+};
+
+
+/**
+ * Is line selected entirely?
+ * @return {boolean}
+ */
+pwk.Line.prototype.isSelectedEntirely = function() {
+    if(goog.isDefAndNotNull(this.selectionOffsets_)) {
+        return this.selectionOffsets_.start == 0 && this.selectionOffsets_.end == this.getLength();
+    }
+    return false;
+};
+
+
+/**
+ * Remove selected content
+ */
+pwk.Line.prototype.removeSelection = function() {
+    if(goog.isDefAndNotNull(this.selectionOffsets_)) {
+        this.content_.removeAt(this.selectionOffsets_.start, this.selectionOffsets_.end);
+        this.unselect();
     }
 };
 

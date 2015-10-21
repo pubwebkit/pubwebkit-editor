@@ -242,10 +242,15 @@ pwk.Editor.prototype.onMouseMove_ = function(e) {
 
         var viewPortSize = goog.dom.getViewportSize();
 
-        if(e.clientY < viewPortSize.height - 10 && e.clientY > -1) {
+        if(e.clientY < viewPortSize.height - 10 && e.clientY > 0) {
             this.scrollLoopInProgress_ = false;
             this.selectFromRangeToPoint_(this.startSelectionRange_, e.clientX, e.clientY);
+
         } else {
+            if(e.clientY == 0) {
+                // In case if browser opened in full screen mode, we can't receive negative clientY, so let's assign fake offset
+                e.clientY = -15;
+            }
             // Cursor is out of document, let's scroll it
             this.scrollDocumentForSelection_(e);
         }

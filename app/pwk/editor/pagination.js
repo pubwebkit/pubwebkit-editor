@@ -196,7 +196,7 @@ pwk.Pagination.prototype.checkFilling = function() {
             if(goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
 
                 nodeToMoveSize = nodeToMove.getSize();
-                if(nodeToMoveSize.height <= availableHeightAbove) { // Node above could be moved to the page above completely
+        // - - - -        if(nodeToMoveSize.height <= availableHeightAbove) { // Node above could be moved to the page above completely
         //
         //            // Check if it's linked node
         //            var previousLinkedNode = nodeToMove.getPreviousLinkedNode();
@@ -234,7 +234,7 @@ pwk.Pagination.prototype.checkFilling = function() {
                 }
         //      else {
         //        break;
-            }
+        // - - - -    }
 
             // - check if current page is could be filled by content below {√}
             //      - get available height

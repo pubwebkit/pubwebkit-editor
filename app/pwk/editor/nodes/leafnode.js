@@ -1002,16 +1002,45 @@ pwk.LeafNode.prototype.unselect = function() {
 
 
 /**
- * Delete selected content from node
- * @param {pwk.primitives.NodeSelectionRange} nodeSelectionRange
+ * @inheritDoc
+ * @param {boolean=} opt_isBack
  */
-pwk.LeafNode.prototype.deleteRange = function(nodeSelectionRange) {
+pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
+    // Actions:
+    //  - remove
+    //  - unselect
+    //  - dispose
+    var nodeSelectionRange = this.nodeSelectionRange_;
 
-    if(nodeSelectionRange.isCollapsed()) {
+    if(nodeSelectionRange.isCollapsed() && goog.isDefAndNotNull(opt_isBack)) {
+        // Process "Delete" / "Backspace" buttons
 
     } else {
+        var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine)
+          , endLineIndex = this.indexOfLine(nodeSelectionRange.endLine)
+          , loopLine;
 
+        // Cases:
+        // 1. Selection could be on single line only
+        // 2. Selected could be entire line
+        // 3. Cursor could be located on the latest position without selection any word
+
+        for(var i = startLineIndex; i <= endLineIndex; i++) {
+            loopLine = this.lines_[i];
+            if(loopLine.isSelectedEntirely()) {
+                this.removeLine(loopLine);
+                endLineIndex--;
+            } else {
+                this.lines_[i].removeSelection();
+            }
+        }
+
+        //if(startLineIndex + 1 in this.lines_) {
+        //    this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
+        //}
     }
+
+    this.unselect();
 };
 
 

@@ -209,10 +209,18 @@ pwk.Node.prototype.unselect = goog.abstractMethod;
 
 
 /**
- * Delete selected content from node
+ * Remove content range from node
  * @param {pwk.primitives.NodeSelectionRange} nodeSelectionRange
+ * @param {boolean=} opt_isBack Direction, in case if range is collapsed required to determine which key was pressed, Backspace or Delete
  */
-pwk.Node.prototype.deleteRange = goog.abstractMethod;
+pwk.Node.prototype.removeRange = goog.abstractMethod;
+
+
+/**
+ * Remove node content based on current selection
+ * @param {boolean=} opt_isBack Direction, in case if range is collapsed required to determine which key was pressed, Backspace or Delete
+ */
+pwk.Node.prototype.removeSelection = goog.abstractMethod;
 
 
 /**
