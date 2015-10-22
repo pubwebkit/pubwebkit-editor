@@ -1030,14 +1030,15 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
             if(loopLine.isSelectedEntirely()) {
                 this.removeLine(loopLine);
                 endLineIndex--;
+                i--;
             } else {
                 this.lines_[i].removeSelection();
             }
         }
 
-        //if(startLineIndex + 1 in this.lines_) {
-        //    this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
-        //}
+        if(startLineIndex + 1 in this.lines_) {
+            this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
+        }
     }
 
     this.unselect();
