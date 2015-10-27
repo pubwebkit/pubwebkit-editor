@@ -304,12 +304,20 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
             var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
             switch (i) {
+
+                // - Remove selection
+                // - Check if length equal 0,then remove node (start == start, end == end)
+                // - Update range (!!! highly important !!!)
+
+                // TODO: inprogress => Update range
                 case topNodeIndex:
                 case bottomNodeIndex:
-                    // - Remove selection
-                    // - Check if length equal 0,then remove node (start == start, end == end)
-
                     processedNode.removeSelection();
+                    if(processedNode.getLength() === 0) {
+                        this.removeNode(processedNode);
+                        bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
+                        i--;
+                    }
 
                     break;
 
@@ -319,6 +327,8 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
                     i--;
             }
         }
+
+        selection.updateSelectionFromRange(range);
     }
 
     this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);

@@ -464,8 +464,7 @@ pwk.LeafNode.prototype.getOffsetForLinkedNodes_ = function(line, lineOffset) {
 
 
 /**
- * Get lines content length
- * @return {number}
+ * @inheritDoc
  */
 pwk.LeafNode.prototype.getLength = function() {
     var length = 0

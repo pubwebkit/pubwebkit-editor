@@ -265,6 +265,14 @@ pwk.Node.prototype.getNextLinkedNode = goog.abstractMethod;
 
 
 /**
+ * Get lines content length
+ * 0 is means that no content inside the node
+ * @return {number}
+ */
+pwk.Node.prototype.getLength = goog.abstractMethod;
+
+
+/**
  * Component default css class
  * @type {string}
  */
