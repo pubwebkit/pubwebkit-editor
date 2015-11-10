@@ -286,10 +286,10 @@ pwk.Document.prototype.newLine = function() {
 pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     var selection = this.selection_
       , range = selection.getRange()
+      , updatedRange = (/** @type {pwk.Range} */ goog.object.clone(range))
       , isReversed = range.isReversed()
       , topNodeIndex = isReversed ? this.indexOfNode(range.getEndNode()) : this.indexOfNode(range.getStartNode())
       , bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
-
 
     if(range.isCollapsed()) { //
 
@@ -300,26 +300,28 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         }
     } else { // Remove selection range
 
+        // Update range before manipulation
+        updatedRange.collapse(true);
+
+        // Process content
         for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
             var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
             switch (i) {
 
-                // - Remove selection
-                // - Check if length equal 0,then remove node (start == start, end == end)
-                // - Update range (!!! highly important !!!)
+                // - Remove selection [ + ]
+                // - Check if length equal 0,then remove node (start == start, end == end) [ + ]
+                // - Update range (!!! highly important !!!) [ - ]
+                //      * Required calculate new range [ - ]
 
                 // TODO: inprogress => Update range
                 case topNodeIndex:
                 case bottomNodeIndex:
                     processedNode.removeSelection();
-                    if(processedNode.getLength() === 0) {
-                        this.removeNode(processedNode);
-                        bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
-                        i--;
+                    // Node still contains content? Let's remove it from document if no?
+                    if(processedNode.getLength() != 0) {
+                        break;
                     }
-
-                    break;
 
                 default: // Looks like this node is selected entirely, let's just remove it from document
                     this.removeNode(processedNode);
@@ -327,9 +329,17 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
                     i--;
             }
         }
-
-        selection.updateSelectionFromRange(range);
     }
+
+    // Update range.
+
+    // Check next cases
+    // -- empty start node
+    // -- empty start line
+
+
+    // Update selection by updated range
+    selection.updateCaretFromRange(updatedRange);
 
     this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };

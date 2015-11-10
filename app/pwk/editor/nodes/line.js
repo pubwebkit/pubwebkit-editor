@@ -58,7 +58,7 @@ pwk.Line = function(opt_text) {
     this.selectionOverlay_;
 
     /**
-     * @type {{ start:number, end:number }}
+     * @type {?{start:number, end:number}}
      */
     this.selectionOffsets_;
 
