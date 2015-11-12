@@ -94,6 +94,8 @@ pwk.Node.prototype.disposeInternal = function() {
         goog.array.removeAt(this.attributes_, i);
     }
 
+    this.unselect();
+
     delete this.attributes_;
 };
 

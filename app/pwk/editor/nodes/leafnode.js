@@ -990,11 +990,47 @@ pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
  * Remove selection from node
  */
 pwk.LeafNode.prototype.unselect = function() {
-    var lines = this.lines_;
+    var lines = this.lines_
+      , selectionRange = this.document_.getSelection().getRange();
+
     goog.array.forEach(lines, function(line) {
         line.unselect();
     });
 
+    // Update selection range
+    // NOTE: Check if it's could be moved to base pwk.Node class
+    var topSelectionRangeNode = selectionRange.isReversed() ? selectionRange.getEndNode() : selectionRange.getStartNode()
+      , bottomSelectionRangeNode = selectionRange.isReversed() ? selectionRange.getStartNode() : selectionRange.getEndNode();
+
+    // - if start and end nodes are represented by this node, set range collapsed to the end position of current node
+    // - if it is topmost node, move position to the first position of the next selected node
+    // - it it is bottommost node, move position to the last position of the previous selected node
+
+    console.log('- - - - - - - -');
+
+    if(topSelectionRangeNode === this && bottomSelectionRangeNode === this) {
+        console.log('1. set range collapsed to the end position of current node');
+        if(selectionRange.isReversed()) {
+
+        } else {
+
+        }
+
+    } else if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this) {
+        console.log('2. move position to the first position of the next selected node');
+    } else if(topSelectionRangeNode !== this && bottomSelectionRangeNode === this) {
+        console.log('3. move position to the last position of the previous selected node');
+    }
+
+    //console.log('- - - - - - - -');
+    //console.log(this.nodeSelectionRange_);
+    //console.log(selectionRange);
+    //console.log(startSelectionRangeNode);
+    //console.log(startSelectionRangeLine);
+
+    console.log('- - - - - - - -');
+
+    // Cleanup variables
     this.isSelected_ = false;
     this.nodeSelectionRange_ = null;
 };
@@ -1012,7 +1048,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
     var nodeSelectionRange = this.nodeSelectionRange_;
 
     if(nodeSelectionRange.isCollapsed() && goog.isDefAndNotNull(opt_isBack)) {
-        // Process "Delete" / "Backspace" buttons
+        //TODO: Process "Delete" / "Backspace" buttons
 
     } else {
         var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine)

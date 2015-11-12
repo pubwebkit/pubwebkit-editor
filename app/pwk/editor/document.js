@@ -286,7 +286,7 @@ pwk.Document.prototype.newLine = function() {
 pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     var selection = this.selection_
       , range = selection.getRange()
-      , updatedRange = (/** @type {pwk.Range} */ goog.object.clone(range))
+      , updatedRange = (/** @type {pwk.Range} */(goog.object.clone(range)))
       , isReversed = range.isReversed()
       , topNodeIndex = isReversed ? this.indexOfNode(range.getEndNode()) : this.indexOfNode(range.getStartNode())
       , bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
@@ -300,7 +300,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         }
     } else { // Remove selection range
 
-        // Update range before manipulation
+        // Update range before manipulation with document content
         updatedRange.collapse(true);
 
         // Process content
@@ -318,7 +318,8 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
                 case topNodeIndex:
                 case bottomNodeIndex:
                     processedNode.removeSelection();
-                    // Node still contains content? Let's remove it from document if no?
+
+                    // Node still contains content? Let's remove it from document if no (execute "default" block)?
                     if(processedNode.getLength() != 0) {
                         break;
                     }
@@ -334,12 +335,11 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     // Update range.
 
     // Check next cases
-    // -- empty start node
-    // -- empty start line
-
+    // -- start/end node is not in document
+    // -- start/end line is not in document
 
     // Update selection by updated range
-    selection.updateCaretFromRange(updatedRange);
+    selection.updateCaretFromRange(range);
 
     this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
