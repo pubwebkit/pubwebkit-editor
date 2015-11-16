@@ -286,7 +286,6 @@ pwk.Document.prototype.newLine = function() {
 pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     var selection = this.selection_
       , range = selection.getRange()
-      , updatedRange = (/** @type {pwk.Range} */(goog.object.clone(range)))
       , isReversed = range.isReversed()
       , topNodeIndex = isReversed ? this.indexOfNode(range.getEndNode()) : this.indexOfNode(range.getStartNode())
       , bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
@@ -300,34 +299,19 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         }
     } else { // Remove selection range
 
-        // Update range before manipulation with document content
-        updatedRange.collapse(true);
-
         // Process content
         for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
             var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
-            switch (i) {
-
-                // - Remove selection [ + ]
-                // - Check if length equal 0,then remove node (start == start, end == end) [ + ]
-                // - Update range (!!! highly important !!!) [ - ]
-                //      * Required calculate new range [ - ]
-
-                // TODO: inprogress => Update range
-                case topNodeIndex:
-                case bottomNodeIndex:
-                    processedNode.removeSelection();
-
-                    // Node still contains content? Let's remove it from document if no (execute "default" block)?
-                    if(processedNode.getLength() != 0) {
-                        break;
-                    }
-
-                default: // Looks like this node is selected entirely, let's just remove it from document
-                    this.removeNode(processedNode);
-                    bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
-                    i--;
+            // - Remove selection [ + ]
+            // - Check if length equal 0,then remove node (start == start, end == end) [ + ]
+            // - Update range (!!! highly important !!!) [ - ]
+            //      * Required calculate new range [ - ]
+            processedNode.removeSelection();
+            if(!(i in [topNodeIndex, bottomNodeIndex])) {
+                // Looks like this node is selected entirely and was removed from document, so let's correct variables
+                bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
+                i--;
             }
         }
     }

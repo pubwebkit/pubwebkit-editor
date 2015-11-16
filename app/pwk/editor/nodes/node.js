@@ -223,6 +223,11 @@ pwk.Node.prototype.removeRange = goog.abstractMethod;
  * @param {boolean=} opt_isBack Direction, in case if range is collapsed required to determine which key was pressed, Backspace or Delete
  */
 pwk.Node.prototype.removeSelection = goog.abstractMethod;
+// Actions:
+// - update selection range
+// - remove
+// - unselect
+// - dispose
 
 
 /**

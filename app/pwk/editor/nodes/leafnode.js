@@ -990,45 +990,11 @@ pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
  * Remove selection from node
  */
 pwk.LeafNode.prototype.unselect = function() {
-    var lines = this.lines_
-      , selectionRange = this.document_.getSelection().getRange();
+    var lines = this.lines_;
 
     goog.array.forEach(lines, function(line) {
         line.unselect();
     });
-
-    // Update selection range
-    // NOTE: Check if it's could be moved to base pwk.Node class
-    var topSelectionRangeNode = selectionRange.isReversed() ? selectionRange.getEndNode() : selectionRange.getStartNode()
-      , bottomSelectionRangeNode = selectionRange.isReversed() ? selectionRange.getStartNode() : selectionRange.getEndNode();
-
-    // - if start and end nodes are represented by this node, set range collapsed to the end position of current node
-    // - if it is topmost node, move position to the first position of the next selected node
-    // - it it is bottommost node, move position to the last position of the previous selected node
-
-    console.log('- - - - - - - -');
-
-    if(topSelectionRangeNode === this && bottomSelectionRangeNode === this) {
-        console.log('1. set range collapsed to the end position of current node');
-        if(selectionRange.isReversed()) {
-
-        } else {
-
-        }
-
-    } else if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this) {
-        console.log('2. move position to the first position of the next selected node');
-    } else if(topSelectionRangeNode !== this && bottomSelectionRangeNode === this) {
-        console.log('3. move position to the last position of the previous selected node');
-    }
-
-    //console.log('- - - - - - - -');
-    //console.log(this.nodeSelectionRange_);
-    //console.log(selectionRange);
-    //console.log(startSelectionRangeNode);
-    //console.log(startSelectionRangeLine);
-
-    console.log('- - - - - - - -');
 
     // Cleanup variables
     this.isSelected_ = false;
@@ -1042,41 +1008,110 @@ pwk.LeafNode.prototype.unselect = function() {
  */
 pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
     // Actions:
+    //  - update selection range
     //  - remove
     //  - unselect
-    //  - dispose
-    var nodeSelectionRange = this.nodeSelectionRange_;
+    var nodeSelectionRange = this.nodeSelectionRange_
+      , pwkDocument = this.document_
+      , pwkSelection = pwkDocument.getSelection()
+      , selectionRange = pwkSelection.getRange()
+      , topSelectionRangeNode = selectionRange.isReversed() ? selectionRange.getEndNode() : selectionRange.getStartNode()
+      , bottomSelectionRangeNode = selectionRange.isReversed() ? selectionRange.getStartNode() : selectionRange.getEndNode();
 
     if(nodeSelectionRange.isCollapsed() && goog.isDefAndNotNull(opt_isBack)) {
         //TODO: Process "Delete" / "Backspace" buttons
 
     } else {
-        var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine)
-          , endLineIndex = this.indexOfLine(nodeSelectionRange.endLine)
-          , loopLine;
 
-        // Cases:
-        // 1. Selection could be on single line only
-        // 2. Selected could be entire line
-        // 3. Cursor could be located on the latest position without selection any word
+        // Is node selected entirely?
+        if(this.isSelectedEntirely_()) { // Yes -> Let's remove node from document
 
-        for(var i = startLineIndex; i <= endLineIndex; i++) {
-            loopLine = this.lines_[i];
-            if(loopLine.isSelectedEntirely()) {
-                this.removeLine(loopLine);
-                endLineIndex--;
-                i--;
-            } else {
-                this.lines_[i].removeSelection();
+            // Update selection range
+            if(topSelectionRangeNode === this && bottomSelectionRangeNode === this) {
+                var currentNodeIndex = pwkDocument.indexOfNode(this)
+                  , nextNode = pwkDocument.getNodeAt(currentNodeIndex + 2);
+
+                if(nextNode != null) {
+                    // Set cursor to the first position of the next node
+                    selectionRange.collapse(false);
+                    pwkSelection.moveCaretRight();
+                } else {
+                    // Set cursor to the last position of the previous node
+                    selectionRange.collapse(true);
+                    pwkSelection.moveCaretLeft();
+                }
             }
-        }
 
-        if(startLineIndex + 1 in this.lines_) {
-            this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
+            // Remove node from document
+            pwkDocument.removeNode(this);
+            return;
+
+        } else {
+
+            var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine)
+              , endLineIndex = this.indexOfLine(nodeSelectionRange.endLine)
+              , loopLine;
+
+            // Update selection range
+            // NOTE: Check if it's could be moved to base pwk.Node class
+
+            // - if start and end nodes are represented by this node, set range collapsed to the end position of current node
+            // - if it is topmost node, move position to the first position of the next selected node
+            // - it it is bottommost node, move position to the last position of the previous selected node
+
+            //if(topSelectionRangeNode === this && bottomSelectionRangeNode === this) {
+            //    console.log('1. set range collapsed to the end position of current node');
+            //    if(selectionRange.isReversed()) {
+            //        selectionRange.setEndPosition(selectionRange.getStartLine(), selectionRange.getStartNodeOffset());
+            //    } else {
+            //
+            //    }
+            //
+            //} else if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this) {
+            //    console.log('2. move position to the first position of the next selected node');
+            //} else if(topSelectionRangeNode !== this && bottomSelectionRangeNode === this) {
+            //    console.log('3. move position to the last position of the previous selected node');
+            //}
+
+
+            // Remove selected node content
+            // Cases:
+            // 1. Selection could be on single line only
+            // 2. Selected could be entire line
+            // 3. Cursor could be located on the latest position without selection any word
+            for(var i = startLineIndex; i <= endLineIndex; i++) {
+                loopLine = this.lines_[i];
+                if(loopLine.isSelectedEntirely()) {
+                    this.removeLine(loopLine);
+                    endLineIndex--;
+                    i--;
+                } else {
+                    this.lines_[i].removeSelection();
+                }
+            }
+
+            if(startLineIndex + 1 in this.lines_) {
+                this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
+            }
         }
     }
 
     this.unselect();
+};
+
+/**
+ * Is node selected entirely?
+ * @return {boolean}
+ * @private
+ */
+pwk.LeafNode.prototype.isSelectedEntirely_ = function() {
+    if(goog.isDefAndNotNull(this.nodeSelectionRange_)) {
+        return this.indexOfLine(this.nodeSelectionRange_.startLine) === 0
+            && this.nodeSelectionRange_.startLineOffset === 0
+            && this.indexOfLine(this.nodeSelectionRange_.endLine) == this.lines_.length - 1
+            && this.nodeSelectionRange_.endLineOffset === this.nodeSelectionRange_.endLine.getLength();
+    }
+    return false;
 };
 
 
