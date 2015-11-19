@@ -219,6 +219,28 @@ pwk.Node.prototype.removeRange = goog.abstractMethod;
 
 
 /**
+ * Get first line of the current node.
+ * @return {pwk.Line}
+ */
+pwk.Node.prototype.getFirstLine = goog.abstractMethod;
+
+
+/**
+ * Get latest line of the node.
+ * @return {pwk.Line}
+ */
+pwk.Node.prototype.getLastLine = goog.abstractMethod;
+
+
+/**
+ * Get node offset regarding specified line offset.
+ * @param {pwk.Line} line
+ * @param {number} lineOffset
+ * @return {number}
+ */
+pwk.Node.prototype.getOffsetByLineOffset = goog.abstractMethod;
+
+/**
  * Remove node content based on current selection
  * @param {boolean=} opt_isBack Direction, in case if range is collapsed required to determine which key was pressed, Backspace or Delete
  */

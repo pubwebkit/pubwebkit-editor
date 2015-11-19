@@ -295,12 +295,16 @@ pwk.Line.prototype.isSelectedEntirely = function() {
 
 /**
  * Remove selected content
+ * @return {?{start:number, end:number}}
  */
 pwk.Line.prototype.removeSelection = function() {
+    var result = this.selectionOffsets_ != null ? goog.object.clone(this.selectionOffsets_) : null;
     if(goog.isDefAndNotNull(this.selectionOffsets_)) {
         this.content_.removeAt(this.selectionOffsets_.start, this.selectionOffsets_.end);
         this.unselect();
     }
+
+    return result;
 };
 
 /**

@@ -308,7 +308,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
             // - Update range (!!! highly important !!!) [ - ]
             //      * Required calculate new range [ - ]
             processedNode.removeSelection();
-            if(!(i in [topNodeIndex, bottomNodeIndex])) {
+            if(!processedNode.isInDocument()) {
                 // Looks like this node is selected entirely and was removed from document, so let's correct variables
                 bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
                 i--;
