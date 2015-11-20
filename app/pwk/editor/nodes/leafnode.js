@@ -1021,12 +1021,37 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         //TODO: Process "Delete" / "Backspace" buttons
 
     } else {
-        var isSingleNodeSelection;
+        var isSingleNodeSelection = false;
 
         // Update selection range
         // Move start/end position to the next/previous node
         // NOTE: Check if it's could be moved to base pwk.Node class
-        if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this) {
+        if(topSelectionRangeNode === this && bottomSelectionRangeNode === this && this.isSelectedEntirely_()) {
+            var bottommostNode = /** @type {pwk.Node} */ pwkDocument.getNodeAt(pwkDocument.indexOfNode(topSelectionRangeNode) + 1);
+            if(bottommostNode != null) {
+                if(selectionRange.isReversed()) {
+                    selectionRange.setEndPosition(bottommostNode.getFirstLine(), 0, true);
+                } else {
+                    selectionRange.setStartPosition(bottommostNode.getFirstLine(), 0, true);
+                }
+
+            } else {
+                var topmostNode = /** @type {pwk.Node} */ pwkDocument.getNodeAt(pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1)
+                  , lastLine = /** @type {pwk.Line} */ topmostNode.getLastLine()
+                  , lastLineOffset = topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
+
+                if(selectionRange.isReversed()) {
+                    selectionRange.setStartPosition(lastLine, lastLineOffset, false);
+                } else {
+                    selectionRange.setEndPosition(lastLine, lastLineOffset, false);
+                }
+            }
+
+            // Remove node from document
+            pwkDocument.removeNode(this);
+            return;
+
+        } else if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this) {
             var bottommostNode = /** @type {pwk.Node} */ pwkDocument.getNodeAt(pwkDocument.indexOfNode(topSelectionRangeNode) + 1);
 
             if(selectionRange.isReversed()) {
@@ -1039,8 +1064,8 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
         } else if(topSelectionRangeNode !== this && bottomSelectionRangeNode === this) {
             var topmostNode = /** @type {pwk.Node} */ pwkDocument.getNodeAt(pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1)
-                , lastLine = /** @type {pwk.Line} */ topmostNode.getLastLine()
-                , lastLineOffset = topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
+              , lastLine = /** @type {pwk.Line} */ topmostNode.getLastLine()
+              , lastLineOffset = topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
 
             if(selectionRange.isReversed()) {
                 selectionRange.setStartPosition(lastLine, lastLineOffset, false);
@@ -1049,79 +1074,74 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
             }
 
             isSingleNodeSelection = true;
-
-        } else {
-            isSingleNodeSelection = false;
-
         }
 
 
-        // Is node selected entirely?
-        if(this.isSelectedEntirely_()) { // Yes -> Let's remove node from document
-            // Remove node from document
-            pwkDocument.removeNode(this);
-            return;
+        var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine)
+          , endLineIndex = this.indexOfLine(nodeSelectionRange.endLine)
+          , loopLine;
 
-        } else {
+        // Remove selected node content
+        // Cases:
+        // 1. Selection could be on single line only
+        // 2. Selected could be entire line
+        // 3. Cursor could be located on the latest position without selection any word
+        for(var i = startLineIndex; i <= endLineIndex; i++) {
+            loopLine = this.lines_[i];
+            if(loopLine.isSelectedEntirely()) {
 
-            var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine)
-              , endLineIndex = this.indexOfLine(nodeSelectionRange.endLine)
-              , loopLine;
+                // Update selection range. Move start/end position to the start position of line below,
+                //if does not exist, then move to the end position of the line above.
+                if(!isSingleNodeSelection) {
+                    var lineBelow = this.getLineAt(this.indexOfLine(loopLine) + 1);
+                    if(lineBelow) {
 
-            // Remove selected node content
-            // Cases:
-            // 1. Selection could be on single line only
-            // 2. Selected could be entire line
-            // 3. Cursor could be located on the latest position without selection any word
-            for(var i = startLineIndex; i <= endLineIndex; i++) {
-                loopLine = this.lines_[i];
-                if(loopLine.isSelectedEntirely()) {
-
-                    // Update selection range. Move start/end position to the start position of line below,
-                    //if does not exist, then move to the end position of the line above.
-                    if(!isSingleNodeSelection) {
-                        var lineBelow = this.getLineAt(this.indexOfLine(loopLine) + 1);
-                        if(lineBelow) {
-
-                            if(selectionRange.isReversed()) {
-                                selectionRange.setEndPosition(lineBelow, 0, true);
-                            } else {
-                                selectionRange.setStartPosition(lineBelow, 0, true);
-                            }
-
-                        } else {
-                            var lineAbove = this.getLineAt(this.indexOfLine(loopLine) - 1)
-                              , lineAboveOffset = this.getOffsetByLineOffset(lineAbove, lineAbove.getLength());
-
-                            if(selectionRange.isReversed()) {
-                                selectionRange.setEndPosition(lineAbove, lineAboveOffset, false);
-                            } else {
-                                selectionRange.setStartPosition(lineBelow, 0, true);
-                            }
-                        }
-                    }
-
-                    // Remove line from node.
-                    this.removeLine(loopLine);
-                    endLineIndex--;
-                    i--;
-                } else {
-                    var selectionOffsets = this.lines_[i].removeSelection();
-
-                    // TODO: Update selection range. Move start/end position to the end position of the selection range of current line
-                    if(!isSingleNodeSelection && selectionOffsets) {
                         if(selectionRange.isReversed()) {
-                            selectionRange.setEndPosition(loopLine, selectionOffsets.start, false);
+                            selectionRange.setEndPosition(lineBelow, 0, true);
                         } else {
-                            selectionRange.setStartPosition(loopLine, selectionOffsets.start, false);
+                            selectionRange.setStartPosition(lineBelow, 0, true);
+                        }
+
+                    } else {
+                        var lineAbove = this.getLineAt(this.indexOfLine(loopLine) - 1)
+                          , lineAboveOffset = this.getOffsetByLineOffset(lineAbove, lineAbove.getLength());
+
+                        if(selectionRange.isReversed()) {
+                            selectionRange.setEndPosition(lineAbove, lineAboveOffset, false);
+                        } else {
+                            selectionRange.setStartPosition(lineBelow, 0, true);
                         }
                     }
                 }
-            }
 
-            if(startLineIndex + 1 in this.lines_) {
-                this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
+                // Remove line from node.
+                this.removeLine(loopLine);
+                endLineIndex--;
+                i--;
+            } else {
+                var selectionOffsets = this.lines_[i].removeSelection();
+
+                // TODO: Update selection range. Move start/end position to the end position of the selection range of current line
+                if(!isSingleNodeSelection && selectionOffsets) {
+                    var nodeOffset = this.getOffsetByLineOffset(loopLine, selectionOffsets.start);
+                    if(selectionRange.isReversed()) {
+                        selectionRange.setEndPosition(loopLine, nodeOffset, false);
+                    } else {
+                        selectionRange.setStartPosition(loopLine, nodeOffset, false);
+                    }
+                }
             }
+        }
+
+        // Update selection by updated range
+        if(selectionRange.isReversed()) {
+            selectionRange.setStartPosition(selectionRange.getEndLine(), selectionRange.getEndNodeOffset());
+        } else {
+            selectionRange.setEndPosition(selectionRange.getStartLine(), selectionRange.getStartNodeOffset());
+        }
+
+        if(startLineIndex + 1 in this.lines_) {
+            this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
         }
     }
 

@@ -316,13 +316,6 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         }
     }
 
-    // Update range.
-
-    // Check next cases
-    // -- start/end node is not in document
-    // -- start/end line is not in document
-
-    // Update selection by updated range
     selection.updateCaretFromRange(range);
 
     this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);

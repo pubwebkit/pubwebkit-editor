@@ -250,7 +250,6 @@ pwk.Selection.prototype.updateSelectionFromRange = function(opt_range) {
     if(goog.isDefAndNotNull(opt_range)) {
         this.range_ = opt_range;
     }
-
 };
 
 
