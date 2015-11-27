@@ -1022,11 +1022,14 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         //TODO: Process "Delete" / "Backspace" buttons
 
     } else {
-        var isSingleNodeSelection = false;
+        var isSingleNodeSelection = false; // Required to mark if range has been updated and no more update required
 
         // Update selection range
         // Move start/end position to the next/previous node
         // NOTE: Check if it's could be moved to base pwk.Node class
+        // TODO: Refactoring required!
+
+        // Selected whole node only
         if(topSelectionRangeNode === this && bottomSelectionRangeNode === this && this.isSelectedEntirely_()) {
             var bottommostNode = /** @type {pwk.Node} */ pwkDocument.getNodeAt(pwkDocument.indexOfNode(topSelectionRangeNode) + 1);
             if(bottommostNode != null) {
@@ -1052,6 +1055,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
             pwkDocument.removeNode(this);
             return;
 
+        // Selected more than one node
         } else if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this) {
             var bottommostNode = /** @type {pwk.Node} */ pwkDocument.getNodeAt(pwkDocument.indexOfNode(topSelectionRangeNode) + 1);
 
@@ -1063,6 +1067,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
             isSingleNodeSelection = true;
 
+        // Selected more than one node
         } else if(topSelectionRangeNode !== this && bottomSelectionRangeNode === this) {
             var topmostNode = /** @type {pwk.Node} */ pwkDocument.getNodeAt(pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1)
               , lastLine = /** @type {pwk.Line} */ topmostNode.getLastLine()
@@ -1090,31 +1095,6 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         for(var i = startLineIndex; i <= endLineIndex; i++) {
             loopLine = this.lines_[i];
             if(loopLine.isSelectedEntirely()) {
-
-                // Update selection range. Move start/end position to the start position of line below,
-                //if does not exist, then move to the end position of the line above.
-                if(!isSingleNodeSelection) {
-                    var lineBelow = this.getLineAt(this.indexOfLine(loopLine) + 1)
-                      , lineBelowOffset = this.getOffsetByLineOffset(lineBelow, 0);
-
-                    if(lineBelow) {
-                        if(isReversed) {
-                            selectionRange.setEndPosition(lineBelow, lineBelowOffset, true);
-                        } else {
-                            selectionRange.setStartPosition(lineBelow, lineBelowOffset, true);
-                        }
-
-                    } else {
-                        var lineAbove = this.getLineAt(this.indexOfLine(loopLine) - 1)
-                          , lineAboveOffset = this.getOffsetByLineOffset(lineAbove, lineAbove.getLength());
-
-                        if(isReversed) {
-                            selectionRange.setEndPosition(lineAbove, lineAboveOffset, false);
-                        } else {
-                            selectionRange.setStartPosition(lineBelow, lineBelowOffset, true);
-                        }
-                    }
-                }
 
                 // Remove line from node.
                 this.removeLine(loopLine);
