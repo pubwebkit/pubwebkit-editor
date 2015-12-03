@@ -295,7 +295,7 @@ pwk.Line.prototype.isSelectedEntirely = function() {
 
 /**
  * Remove selected content
- * @return {?{start:number, end:number}}
+ * @return {{start:number, end:number}|Object<string,string>|null}
  */
 pwk.Line.prototype.removeSelection = function() {
     var result = this.selectionOffsets_ != null ? goog.object.clone(this.selectionOffsets_) : null;

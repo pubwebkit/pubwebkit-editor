@@ -297,7 +297,9 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
         } else { // Delete
 
         }
-    } else { // Remove selection range
+
+    // Remove selection range
+    } else {
 
         // Process content
         for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
@@ -305,10 +307,9 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
 
             // - Remove selection [ + ]
             // - Check if length equal 0,then remove node (start == start, end == end) [ + ]
-            // - Update range (!!! highly important !!!) [ - ]
-            //      * Required calculate new range [ - ]
+            // - Update range [ +/- ]
             processedNode.removeSelection();
-            if(!processedNode.isInDocument()) {
+            if(!processedNode.isInDocument() && !range.isCollapsed()) {
                 // Looks like this node is selected entirely and was removed from document, so let's correct variables
                 bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
                 i--;
@@ -317,7 +318,6 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     }
 
     selection.updateCaretFromRange(range);
-
     this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
