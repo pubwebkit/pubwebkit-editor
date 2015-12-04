@@ -250,13 +250,14 @@ pwk.LeafNode.prototype.disposeInternal = function() {
         goog.dispose(lines[linesLen]);
     }
 
+    this.clearRangeInfoForOffsetCache();
+
     // Unlink previous and next linked nodes
     this.unlinkPreviousLinkedNode();
     this.unlinkNextLinkedNode();
 
     // Remove references
     delete this.lines_;
-    delete this.rangeInfoForOffsetCache_;
 
     this.document_ = null;
 };
@@ -557,6 +558,8 @@ pwk.LeafNode.prototype.removeLine = function(line) {
     var removedLine = /** @type {pwk.Line} */(this.removeChild(line, true));
     if(removedLine) {
         goog.dispose(removedLine);
+        // Clear cache for offsets range information
+        this.clearRangeInfoForOffsetCache();
     }
     return removedLine;
 };
@@ -1033,9 +1036,9 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this || // Case 1: it's topmost selected node
            topSelectionRangeNode === this && bottomSelectionRangeNode === this // Case 2: it's single selected node and below exist other node that could be selected
                                           && isNodeSelectedEntirely
-                                          && (pwkDocument.indexOfNode(topSelectionRangeNode) + 1) != -1) {
-            var bottommostNode = /** @type {pwk.Node} */(pwkDocument.getNodeAt(pwkDocument.indexOfNode(topSelectionRangeNode) + 1));
+                                          && pwkDocument.indexOfNode(topSelectionRangeNode) < pwkDocument.getNodeCount() - 1) {
 
+            var bottommostNode = /** @type {pwk.Node} */(pwkDocument.getNodeAt(pwkDocument.indexOfNode(topSelectionRangeNode) + 1));
             if(isReversed) {
                 selectionRange.setEndPosition(bottommostNode.getFirstLine(), 0, true);
             } else {
@@ -1047,7 +1050,8 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         } else if(topSelectionRangeNode !== this && bottomSelectionRangeNode === this || // Case 1: it's bottommost selected node
                   topSelectionRangeNode === this && bottomSelectionRangeNode === this // Case 2: it's single selected node and above exist other node that could be selected
                                                  && isNodeSelectedEntirely
-                                                 && (pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1) != -1) {
+                                                 && pwkDocument.indexOfNode(bottomSelectionRangeNode) > 0) {
+
             var topmostNode = /** @type {pwk.Node} */(pwkDocument.getNodeAt(pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1))
               , lastLine = /** @type {pwk.Line} */(topmostNode.getLastLine())
               , lastLineOffset = topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
@@ -1057,7 +1061,6 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
             } else {
                 selectionRange.setEndPosition(lastLine, lastLineOffset, false);
             }
-
             isRangeUpdateRequired = false;
         }
 
@@ -1072,8 +1075,8 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
         } else {
             var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine)
-                , endLineIndex = this.indexOfLine(nodeSelectionRange.endLine)
-                , loopLine;
+              , endLineIndex = this.indexOfLine(nodeSelectionRange.endLine)
+              , loopLine;
 
             // Remove selected node content
             // Cases:

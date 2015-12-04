@@ -301,8 +301,21 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     // Remove selection range
     } else {
 
+        var startNode
+          , endNode;
+
         // Process content
         for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
+
+            switch(i) {
+                case 0:
+                    startNode = processedNode;
+                    break;
+                case bottomNodeIndex:
+                    endNode = processedNode;
+                    break;
+            }
+
             var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
             // - Remove selection [ + ]
@@ -314,6 +327,10 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
                 bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
                 i--;
             }
+        }
+
+        if(startNode && startNode.isInDocument() && endNode && endNode.isInDocument()) {
+            // TODO: Merge nodes here
         }
     }
 
