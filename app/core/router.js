@@ -19,7 +19,7 @@ goog.require('goog.history.Html5History');
  *
  * @param {boolean=} opt_noFragment set to true to hide fragment when using
  * HTML5 history.
- * @param {string=} opt_blankPage url to a blank page - needed if HTML5 is not
+ * @param {!goog.html.TrustedResourceUrl=} opt_blankPage url to a blank page - needed if HTML5 is not
  * available and you don't want to show the fragment.
  * @param {HTMLInputElement=} opt_input The hidden input element to be used to
  * store the history token.  If not provided, a hidden input element will

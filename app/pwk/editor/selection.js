@@ -923,15 +923,15 @@ pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
             }
 
             var offsets = [[elBounds.left, elBounds.top], [elBounds.right, elBounds.top], [elBounds.left, elBounds.bottom], [elBounds.right, elBounds.bottom]];
-            for (var off in offsets) {
-                dx = offsets[off][0] - x;
-                dy = offsets[off][1] - y;
+            goog.array.forEach(offsets, function(offset) {
+                dx = offset[0] - x;
+                dy = offset[1] - y;
                 distance = Math.sqrt((dx*dx) + (dy*dy));
                 if (minDistance === undefined || distance < minDistance) {
                     minDistance = distance;
                     el = item;
                 }
-            }
+            }, this);
         }
     }
 
