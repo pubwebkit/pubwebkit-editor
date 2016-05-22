@@ -42,11 +42,24 @@ module.exports = function (grunt) {
 
         // This sting will wrap your code marked as %output%
         // Take care to edit the sourcemap path
-        outputWrapper: '(function(){%output%}).call(this);' + '//# sourceMappingURL=pubwebkit.editor.js.map'
+        outputWrapper: '(function(){%output%}).call(this);'
     };
 
     // Configure
     grunt.initConfig({
+
+        file_append: {
+            default_options: {
+                files:[
+                    function() {
+                        return {
+                            append: "\n/*\n//@ sourceMappingURL=testing2.js.map\n*/",
+                            input: CONFIGURATION.destCompiled
+                        };
+                    }
+                ]
+            }
+        },
 
         // grunt-closure-tools tasks
         closureDepsWriter: {
@@ -159,6 +172,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-file-append');
     grunt.loadNpmTasks('grunt-jsdoc');
 
     // Register tasks
@@ -167,7 +181,8 @@ module.exports = function (grunt) {
         'copy:html',
         'less:build',
         'closureDepsWriter:app',
-        'closureBuilder:app'
+        'closureBuilder:app',
+        'file_append'
     ]);
     grunt.registerTask('deps', [
         'closureDepsWriter:app'
