@@ -31,24 +31,23 @@ goog.provide('pwk.Shortcuts.MacOS');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.ui.KeyboardShortcutHandler');
 
+/**
+ * Get command button for current OS
+ * @type {goog.ui.KeyboardShortcutHandler.Modifiers}
+ */
+pwk.Shortcuts.CMD_BUTTON = (function(){
+    if(goog.userAgent.MAC) {
+        return goog.ui.KeyboardShortcutHandler.Modifiers.META;
+    } else {
+        return goog.ui.KeyboardShortcutHandler.Modifiers.CTRL;
+    }
+})();
 
 /**
  * Default editor shortcuts.
  * @enum {Array}
  */
 pwk.Shortcuts.Default = {
-    SAVE : ['Save', goog.events.KeyCodes.S, goog.ui.KeyboardShortcutHandler.Modifiers.CTRL],
-    SELECT_ALL : ['Select_All', goog.events.KeyCodes.A, goog.ui.KeyboardShortcutHandler.Modifiers.CTRL]
+    SAVE : ['Save', goog.events.KeyCodes.S, pwk.Shortcuts.CMD_BUTTON],
+    SELECT_ALL : ['Select_All', goog.events.KeyCodes.A, pwk.Shortcuts.CMD_BUTTON]
 };
-
-
-/**
- * Global editor shortcuts.
- * @enum {Array}
- */
-pwk.Shortcuts.MacOS = {
-    SAVE : ['Save', goog.events.KeyCodes.S, goog.ui.KeyboardShortcutHandler.Modifiers.META],
-    SELECT_ALL : ['Select_All', goog.events.KeyCodes.A, goog.ui.KeyboardShortcutHandler.Modifiers.META]
-};
-
-
