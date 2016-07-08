@@ -56,13 +56,11 @@ goog.require('pwk.DocumentSettings');
 pwk.Document = function() {
     goog.base(this);
 
-
     /**
      * @type {pwk.Selection}
      * @private
      */
     this.selection_ = new pwk.Selection(this);
-
 
     /**
      * @type {pwk.Pagination}
@@ -70,14 +68,12 @@ pwk.Document = function() {
     */
     this.pagination_ = new pwk.Pagination(this);
 
-
     /**
-     * Array of ids of child @code{pwk.Node} components. Used to hFold order of nodes in document.
+     * Array of ids of child @code{pwk.Node} components. Used to hold order of nodes in document.
      * @type {Array.<string>}
      * @private
      */
     this.nodeIndex_ = [];
-
 
     /**
      * Array of ids of child @code{pwk.Page} components. Used to hold order of pages in document.
@@ -86,13 +82,11 @@ pwk.Document = function() {
      */
     this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component?
 
-
     /**
      * @type {pwk.PageSettings}
      * @private
      */
     this.pageSettings_ = pwk.PageSettings.getInstance();
-
 
     /**
      * @type {pwk.DocumentSettings}
@@ -150,8 +144,7 @@ pwk.Document.prototype.getSelection = function() {
  */
 pwk.Document.prototype.addValue = function(value) {
     var selection = this.selection_
-      , range = selection.getRange()
-      , self = this;
+      , range = selection.getRange();
 
     // remove selection
     selection.removeSelection();
@@ -214,7 +207,7 @@ pwk.Document.prototype.addValue = function(value) {
                     range.setStartPosition(lineBelow, startNodeOffset, true);
                     range.setEndPosition(lineBelow, startNodeOffset, true);
                 } else {
-                    linkedNodeRangeInfo = rangeStartNode.getRangeInfoByLinkedNodesOffset(range.getStartLineRangeInfo().linkedNodeOffset)
+                    linkedNodeRangeInfo = rangeStartNode.getRangeInfoByLinkedNodesOffset(range.getStartLineRangeInfo().linkedNodeOffset);
                     linkedLineBelow = rangeStartNode.getLineAt(linkedNodeRangeInfo.lineIndex + 1, true);
 
                     range.setStartPosition(linkedLineBelow, 0, true);
