@@ -2,7 +2,7 @@
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
-// Copyright (C) 2014 Dmitry Antonenko
+// Copyright (C) 2016 Dmytro Antonenko
 //
 // This file is part of Pubwebkit editor
 //
@@ -18,12 +18,12 @@
 // a copy of the GNU General Public License along with Hatch.js. If not, see
 // <http://www.gnu.org/licenses/>.
 //
-// Authors: Dmitry Antonenko
+// Authors: Dmytro Antonenko
 //
 
 /**
  * @fileoverview Page content component.
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmytro Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
 goog.provide('pwk.PageContent');
@@ -139,7 +139,7 @@ pwk.PageContent.prototype.linkNodeAfter = function(node, previous) {
     node.render(previous.getParent().getElement());
 
     var nodeEl = node.getElement()
-      , previousNodeEl = previous.getElement()
+      , previousNodeEl = previous.getElement();
 
     if(nodeEl.previousElementSibling != previousNodeEl) {
         goog.dom.insertSiblingAfter(node.getElement(), previous.getElement());

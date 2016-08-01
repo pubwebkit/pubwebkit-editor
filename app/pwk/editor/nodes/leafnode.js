@@ -2,7 +2,7 @@
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
-// Copyright (C) 2014 Dmitry Antonenko
+// Copyright (C) 2016 Dmytro Antonenko
 //
 // This file is part of Pubwebkit editor
 //
@@ -18,11 +18,11 @@
 // a copy of the GNU General Public License along with Hatch.js. If not, see
 // <http://www.gnu.org/licenses/>.
 //
-// Authors: Dmitry Antonenko
+// Authors: Dmytro Antonenko
 //
 
 /**
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmytro Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
 goog.provide('pwk.LeafNode');
@@ -657,7 +657,7 @@ pwk.LeafNode.prototype.split = function(offset) {
         if(content.length > 0 || linesCountToMove == 0) {
             newNode = new pwk.LeafNode(this.getType(), this.document_, content)
         } else {
-            newNode = new pwk.LeafNode(this.getType(), this.document_, this.unlinkLine(lines[startLineIndexToMove]))
+            newNode = new pwk.LeafNode(this.getType(), this.document_, this.unlinkLine(lines[startLineIndexToMove]));
             linesCountToMove--;
         }
 
@@ -881,7 +881,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
         else {
             var tempWord;
             lastUpdatedContentText = lastUpdatedLineContent.getText();
-            lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length
+            lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
 
             do {
                 lastSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedContentText)).lastIndexOf(' ');
@@ -1116,19 +1116,19 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
             // Update selection by updated range
             var updateRangeInfo;
             if(isReversed) {
-                updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(selectionRange.getEndNodeOffset())
+                updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(selectionRange.getEndNodeOffset());
                 selectionRange.setStartPosition(updateRangeInfo.line, selectionRange.getEndNodeOffset());
 
                 if(selectionRange.getStartNode() == selectionRange.getEndNode() && !isNodeSelectedEntirely) {
-                    updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(selectionRange.getStartNodeOffset())
+                    updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(selectionRange.getStartNodeOffset());
                     selectionRange.setEndPosition(updateRangeInfo.line, selectionRange.getStartNodeOffset());
                 }
             } else {
-                updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(selectionRange.getStartNodeOffset())
+                updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(selectionRange.getStartNodeOffset());
                 selectionRange.setEndPosition(updateRangeInfo.line, selectionRange.getStartNodeOffset());
 
                 if(selectionRange.getStartNode() == selectionRange.getEndNode() && !isNodeSelectedEntirely) {
-                    updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(selectionRange.getEndNodeOffset())
+                    updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(selectionRange.getEndNodeOffset());
                     selectionRange.setStartPosition(updateRangeInfo.line, selectionRange.getEndNodeOffset());
                 }
             }

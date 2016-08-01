@@ -2,7 +2,7 @@
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
-// Copyright (C) 2014 Dmitry Antonenko
+// Copyright (C) 2016 Dmytro Antonenko
 //
 // This file is part of Pubwebkit editor
 //
@@ -18,13 +18,13 @@
 // a copy of the GNU General Public License along with Hatch.js. If not, see
 // <http://www.gnu.org/licenses/>.
 //
-// Authors: Dmitry Antonenko
+// Authors: Dmytro Antonenko
 //
 
 /**
  * @fileoverview The action filter is a class with specific events that you can apply to a controller action or an entire
  * controller that modifies the way in which the action is executed.
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmytro Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
 goog.provide('app.core.ActionFilter');

@@ -2,7 +2,7 @@
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
-// Copyright (C) 2014 Dmitry Antonenko
+// Copyright (C) 2016 Dmytro Antonenko
 //
 // This file is part of Pubwebkit editor
 //
@@ -18,12 +18,12 @@
 // a copy of the GNU General Public License along with Hatch.js. If not, see
 // <http://www.gnu.org/licenses/>.
 //
-// Authors: Dmitry Antonenko
+// Authors: Dmytro Antonenko
 //
 
 /**
  * @fileoverview Document contains all information about edited information and information itself, as child components.
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmytro Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
 goog.provide('pwk.Document');
@@ -282,8 +282,10 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     if(range.isCollapsed()) { //
 
         if(opt_isBack === true) { // Backspace
+            console.log('Backspace');
 
         } else { // Delete
+            console.log('Delete');
 
         }
 
@@ -316,19 +318,6 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
                 bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
                 i--;
             }
-        }
-
-        if(startNode && endNode && startNode.getId() != endNode.getId()) {
-            var linkedNode = startNode.getNextLinkedNode();
-
-            if(linkedNode && linkedNode.getId() == endNode.getId()) {
-                console.log("They are linked nodes. Merge them!");
-            } else {
-                console.log("Merge them");
-            }
-
-        } else {
-            console.log("It's single node");
         }
     }
 

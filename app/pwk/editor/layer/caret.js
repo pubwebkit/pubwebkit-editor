@@ -2,7 +2,7 @@
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
-// Copyright (C) 2014 Dmitry Antonenko
+// Copyright (C) 2016 Dmytro Antonenko
 //
 // This file is part of Pubwebkit editor
 //
@@ -18,12 +18,12 @@
 // a copy of the GNU General Public License along with Hatch.js. If not, see
 // <http://www.gnu.org/licenses/>.
 //
-// Authors: Dmitry Antonenko
+// Authors: Dmytro Antonenko
 //
 
 /**
  * @fileoverview Component that represent caret in document
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmytro Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
 goog.provide('pwk.layer.Caret');
@@ -221,7 +221,7 @@ pwk.layer.Caret.prototype.update = function(selection) {
 
 	var el = this.getElement()
       , bounds = selection.getBoundsForRange()
-      , elStyle = el.style
+      , elStyle = el.style;
 
     elStyle.left = bounds.left + 'px';
     elStyle.top = bounds.top + 'px';

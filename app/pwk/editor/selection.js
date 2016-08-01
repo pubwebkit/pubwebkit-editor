@@ -2,7 +2,7 @@
 // Pubwebkit editor is powerful editor to create your ebook in various styles.
 // It's includes: Cover Designer, Template Editor, Community Snippets and more...
 // Also, it's a part of www.pubwebkit.com portal.
-// Copyright (C) 2014 Dmitry Antonenko
+// Copyright (C) 2016 Dmytro Antonenko
 //
 // This file is part of Pubwebkit editor
 //
@@ -18,13 +18,13 @@
 // a copy of the GNU General Public License along with Hatch.js. If not, see
 // <http://www.gnu.org/licenses/>.
 //
-// Authors: Dmitry Antonenko
+// Authors: Dmytro Antonenko
 //
 
 /**
  * @fileoverview Represents a selected area of the document.
  * Contains the cursor position and the text selection of an edit session.
- * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
+ * @author Dmytro Antonenko <dmitry.antonenko@pubwebkit.com>
  */
 
 goog.provide('pwk.Selection');
@@ -892,7 +892,7 @@ pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
 
         receiver = document.elementFromPoint(x, y + 15);
         if(receiver != null) {
-            var googArray = goog.array
+            var googArray = goog.array;
             parentElement = googDom.getAncestorByClass(receiver, pwk.Page.CSS_CLASS);
             childElements = googArray.concat(googArray.toArray(childElements), googArray.toArray(googDom.getElementsByClass(lineCssClass, parentElement)));
         }

@@ -1,7 +1,7 @@
 /*!
  * PubWebkit editor project Gruntfile
  * https://github.com/pubwebkit/pubwebkit-editor
- * Copyright 2014 Dmitry Antonenko
+ * Copyright 2016 Dmytro Antonenko
  */
 
 var mountFolder = function (connect, dir) {
