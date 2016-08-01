@@ -43,13 +43,11 @@ goog.require('pwk.NodeFormatter');
 pwk.Node = function(type, doc) {
     goog.base(this);
 
-
     /**
      * @type {Array.<pwk.NodeAttribute>}
      * @private
      */
     this.attributes_ = [];
-
 
     /**
      * @type {pwk.NodeTypes}
@@ -57,19 +55,16 @@ pwk.Node = function(type, doc) {
      */
     this.type_ = type;
 
-
     /**
      * @type {boolean}
      */
     this.isChild_ = false;
-
 
     /**
      * @type {pwk.Document}
      * @protected
      */
     this.document_ = doc;
-
 
     // Apply global attributes
     pwk.NodeFormatter.applyGlobalDocumentFormation(doc, this);
@@ -250,7 +245,6 @@ pwk.Node.prototype.removeSelection = goog.abstractMethod;
 // - remove
 // - unselect
 // - dispose
-
 
 /**
  * Specifies whether there can be this node is split between pages.

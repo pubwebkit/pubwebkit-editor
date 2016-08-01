@@ -167,7 +167,6 @@ pwk.Editor.prototype.enterDocument = function() {
 
 /**
  * Initialize key event handler
- *
  * @private
  */
 pwk.Editor.prototype.initializeEvents_ = function() {

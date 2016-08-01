@@ -22,11 +22,9 @@
 //
 
 /**
- * @fileoverview Document contains all information about edited information and information itself,
- * as child components.
+ * @fileoverview Document contains all information about edited information and information itself, as child components.
  * @author Dmitry Antonenko <dmitry.antonenko@pubwebkit.com>
  */
-
 
 goog.provide('pwk.Document');
 goog.provide('pwk.Document.EventType');
@@ -46,10 +44,8 @@ goog.require('pwk.Pagination');
 goog.require('pwk.utils.style');
 goog.require('pwk.DocumentSettings');
 
-
 /**
- * Represent document of editor
- *
+ * Represent document of editor.
  * @extends {goog.ui.Component}
  * @constructor
  */
@@ -294,22 +290,22 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     // Remove selection range
     } else {
 
-        var startNode
-          , endNode;
+        var /** @type {pwk.Node} */startNode
+          , /** @type {pwk.Node} */endNode;
 
         // Process content
         for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
 
+            var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
+
             switch(i) {
-                case 0:
+                case topNodeIndex:
                     startNode = processedNode;
                     break;
                 case bottomNodeIndex:
                     endNode = processedNode;
                     break;
             }
-
-            var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
             // - Remove selection [ + ]
             // - Check if length equal 0,then remove node (start == start, end == end) [ + ]
@@ -322,8 +318,17 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
             }
         }
 
-        if(startNode && startNode.isInDocument() && endNode && endNode.isInDocument()) {
-            // TODO: Merge nodes here
+        if(startNode && endNode && startNode.getId() != endNode.getId()) {
+            var linkedNode = startNode.getNextLinkedNode();
+
+            if(linkedNode && linkedNode.getId() == endNode.getId()) {
+                console.log("They are linked nodes. Merge them!");
+            } else {
+                console.log("Merge them");
+            }
+
+        } else {
+            console.log("It's single node");
         }
     }
 

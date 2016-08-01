@@ -25,6 +25,8 @@ module.exports = function (grunt) {
         // The path to the closure library
         closureLibrary: 'libs/closure-library',
 
+        closureCompilerSrc: 'libs/closure-compiler',
+
         // The folder that contains all the externs files
         externsPath: 'app/externs/',
 
@@ -38,7 +40,7 @@ module.exports = function (grunt) {
         source_map_location_mapping: ['libs/|http://localhost:63342/pubwebkit-editor/libs/', 'app/|http://localhost:63342/pubwebkit-editor/app/'],
 
         // Closure Compiler
-        compiler: 'libs/closure-compiler/build/compiler.jar',
+        compiler: 'libs/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar',
 
         // This sting will wrap your code marked as %output%
         // Take care to edit the sourcemap path
@@ -163,6 +165,13 @@ module.exports = function (grunt) {
                     'recurse': true
                 }
             }
+        },
+
+        shell: {
+            compileClosureCompiler: {
+                command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests',
+
+            }
         }
     });
 
@@ -174,6 +183,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-file-append');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-shell');
 
     // Register tasks
     grunt.registerTask('build', [
