@@ -22,4 +22,4 @@
 [submodule "libs/closure-linter"]
 	path = libs/closure-linter
 	url = https://github.com/google/closure-linter.git
-
+	branch = master

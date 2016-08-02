@@ -25,7 +25,11 @@ module.exports = function (grunt) {
         // The path to the closure library
         closureLibrary: 'libs/closure-library',
 
+        // Path to closure compiler source
         closureCompilerSrc: 'libs/closure-compiler',
+
+        // Path to closure linter
+        closureLinter: 'libs/closure-linter/closure_linter',
 
         // The folder that contains all the externs files
         externsPath: 'app/externs/',
@@ -49,6 +53,10 @@ module.exports = function (grunt) {
 
     // Configure
     grunt.initConfig({
+
+        eslint: {
+            target: ['app/**/*.js']
+        },
 
         file_append: {
             default_options: {
@@ -78,6 +86,19 @@ module.exports = function (grunt) {
             }
         },
 
+        closureLint: {
+            data: {
+                closureLinterPath: CONFIGURATION.closureLinter,
+                toolFile: 'gjslint.py',
+                src: ['app']
+            },
+            options: {
+                strict: true,
+                maxLineLength: 80,
+                opt: '-r'
+            },
+        },
+
         closureBuilder: {
             options: {
                 closureLibraryPath: CONFIGURATION.closureLibrary,
@@ -86,6 +107,7 @@ module.exports = function (grunt) {
                 compilerFile: CONFIGURATION.compiler,
                 compilerOpts: {
                     compilation_level: 'ADVANCED_OPTIMIZATIONS',
+                    language_in: 'ECMASCRIPT6_STRICT',
                     externs: [CONFIGURATION.externsPath + '*.js'],
                     define: ["'goog.DEBUG=false'"],
                     warning_level: 'verbose',
@@ -177,13 +199,14 @@ module.exports = function (grunt) {
 
     // Load tasks
     grunt.loadNpmTasks('grunt-closure-tools');
+    grunt.loadNpmTasks('grunt-closure-linter');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-file-append');
     grunt.loadNpmTasks('grunt-jsdoc');
-    grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-eslint');
 
     // Register tasks
     grunt.registerTask('build', [
