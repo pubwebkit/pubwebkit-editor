@@ -39,7 +39,7 @@ goog.require('app.exports');
  * @private
  */
 app.contentLoaded_ = function (win, fn) {
-    var done = false
+    let done = false
       , top = true
       , doc = win.document
       , root = doc.documentElement

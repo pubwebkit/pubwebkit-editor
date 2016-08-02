@@ -19,3 +19,7 @@
 [submodule "libs/closure-library"]
 	path = libs/closure-library
 	url = https://banguit@github.com/google/closure-library.git
+[submodule "libs/closure-linter"]
+	path = libs/closure-linter
+	url = https://github.com/google/closure-linter.git
+
