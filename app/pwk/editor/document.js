@@ -703,10 +703,12 @@ pwk.Document.prototype.initializeDocument_ = function() {
 
     this.addNode(paragraph);
 
-    this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
+    this.dispatchEvent(
+        new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
 
     // Initialize Range
-    var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0, paragraph.getFirstLine(), 0);
+    var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0,
+        paragraph.getFirstLine(), 0);
     this.selection_.setRange(range);
     this.selection_.updateCaretFromRange();
   }
@@ -718,23 +720,25 @@ pwk.Document.prototype.initializeDocument_ = function() {
  * @private
  */
 pwk.Document.prototype.initializeEvents_ = function() {
-  this.listen(pwk.Document.EventType.FILLING_CHANGE, this.onDocumentFillingChangedEventHandler_);
+  this.listen(pwk.Document.EventType.FILLING_CHANGE,
+      this.onDocumentFillingChangedEventHandler_);
 };
 
 
 /**
- * Handler of filling document content. Called each time, when height of document content was changed.
+ * Handler of filling document content. Called each time, when height of
+ * document content was changed.
  * @param {goog.events.Event} e
  * @private
  */
 pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
-  var pagination = this.pagination_ ,
-      selection = this.selection_ ,
-      range = selection.getRange();
+  let pagination = this.pagination_;
+  let selection = this.selection_;
+  let range = selection.getRange();
 
   if (range != null) {
-    // If document become bigger then available on current pages, move nodes to other pages or create more page and
-    // move them there
+    // If document become bigger then available on current pages, move nodes to
+    // other pages or create more page and move them there
     pagination.checkOverflow(range.getStartNode().getId());
 
     // Fill document pages if content height was changed

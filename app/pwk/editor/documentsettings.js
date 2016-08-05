@@ -116,7 +116,8 @@ pwk.DocumentSettings.prototype.initialize = function(doc) {
  * @private
  */
 pwk.DocumentSettings.prototype.applyLineHeight_ = function() {
-  goog.style.setStyle(this.getDocument_().getElement(), 'line-height', this.lineHeight_);
+  goog.style.setStyle(
+      this.getDocument_().getElement(), 'line-height', this.lineHeight_);
 };
 
 
