@@ -498,7 +498,7 @@ pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
  * @param {goog.ui.KeyboardShortcutHandler} handler
  * @private
  */
-pwk.Editor.prototype.registerKeyboardShortcut_ = function (handler) {
+pwk.Editor.prototype.registerKeyboardShortcut_ = function(handler) {
     for(let shortcut in pwk.Shortcuts.Default) {
         handler.registerShortcut(pwk.Shortcuts.Default[shortcut][0],
             goog.array.slice(pwk.Shortcuts.Default[shortcut], 1));

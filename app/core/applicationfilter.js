@@ -24,6 +24,7 @@
 goog.provide('app.core.ApplicationFilter');
 
 
+
 /**
  * Application filter.
  * @interface

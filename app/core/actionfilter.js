@@ -23,12 +23,13 @@
 
 /**
  * @fileoverview The action filter is a class with specific events that you can
- * apply to a controller action or an entire
- * controller that modifies the way in which the action is executed.
+ *    apply to a controller action or an entire controller that modifies the way
+ *    in which the action is executed.
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
 goog.provide('app.core.ActionFilter');
+
 
 
 /**

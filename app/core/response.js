@@ -27,8 +27,8 @@
 
 goog.provide('app.core.Response');
 
-goog.require('goog.soy');
 goog.require('app.core.Router');
+goog.require('goog.soy');
 
 
 
@@ -39,17 +39,17 @@ goog.require('app.core.Router');
  * @constructor
  */
 app.core.Response = function(request, router) {
-    /**
-     * @type {app.core.Request}
-     * @private
-     */
-    this.request_ = request;
+  /**
+   * @type {app.core.Request}
+   * @private
+   */
+  this.request_ = request;
 
-    /**
-     * @type {app.core.Router}
-     * @private
-     */
-    this.router_ = router;
+  /**
+   * @type {app.core.Router}
+   * @private
+   */
+  this.router_ = router;
 };
 
 
@@ -57,7 +57,7 @@ app.core.Response = function(request, router) {
  * @return {app.core.Router}
  */
 app.core.Response.prototype.getRouter = function() {
-    return this.router_;
+  return this.router_;
 };
 
 
@@ -70,8 +70,8 @@ app.core.Response.prototype.getRouter = function() {
  * Defaults to document.body.
  */
 app.core.Response.prototype.render = function(template, opt_data, opt_element) {
-    let element = opt_element || document.body;
-    let data = opt_data || {};
+  let element = opt_element || document.body;
+  let data = opt_data || {};
 
-    goog.soy.renderElement(element, template, data, this.request_.toJSON());
+  goog.soy.renderElement(element, template, data, this.request_.toJSON());
 };

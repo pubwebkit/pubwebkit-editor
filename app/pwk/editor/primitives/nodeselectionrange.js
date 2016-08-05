@@ -69,7 +69,7 @@ pwk.primitives.NodeSelectionRange = function(startLine, startLineOffset, endLine
 /**
  * @return {boolean}
  */
-pwk.primitives.NodeSelectionRange.prototype.isCollapsed = function () {
+pwk.primitives.NodeSelectionRange.prototype.isCollapsed = function() {
     return this.startLine === this.endLine && this.startLineOffset === this.endLineOffset;
 };
 

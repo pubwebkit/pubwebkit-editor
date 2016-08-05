@@ -27,23 +27,23 @@ goog.provide('app.core.types.ApplicationFilterItem');
 
 /**
  * @param {!app.core.ApplicationFilter|T} filter
- * @param {number=} order
+ * @param {number=} opt_order
  * @constructor
  * @template T
  */
-app.core.types.ApplicationFilterItem = function(filter, order) {
+app.core.types.ApplicationFilterItem = function(filter, opt_order) {
 
-    /**
-     * @type {!app.core.ApplicationFilter|T}
-     * @private
-     */
-    this.filter_ = filter;
+  /**
+   * @type {!app.core.ApplicationFilter|T}
+   * @private
+   */
+  this.filter_ = filter;
 
-    /**
-     * @type {number}
-     * @private
-     */
-    this.order_ = goog.isDefAndNotNull(order) ? order : 0;
+  /**
+   * @type {number}
+   * @private
+   */
+  this.order_ = goog.isDefAndNotNull(opt_order) ? opt_order : 0;
 };
 
 
@@ -51,7 +51,7 @@ app.core.types.ApplicationFilterItem = function(filter, order) {
  * @return {!app.core.ApplicationFilter|T}
  */
 app.core.types.ApplicationFilterItem.prototype.getFilter = function() {
-    return this.filter_;
+  return this.filter_;
 };
 
 
@@ -59,5 +59,5 @@ app.core.types.ApplicationFilterItem.prototype.getFilter = function() {
  * @return {number}
  */
 app.core.types.ApplicationFilterItem.prototype.getOrder = function() {
-    return this.order_;
+  return this.order_;
 };

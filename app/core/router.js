@@ -1,5 +1,6 @@
 /**
- * @fileoverview app.core.Router uses goog.History and hash tokens to hold and manage the state of the application.
+ * @fileoverview app.core.Router uses goog.History and hash tokens to hold and
+ *    manage the state of the application.
  * This class is modified mvc.Router class from PlastronJS library.
  * @see https://github.com/rhysbrettbowen/PlastronJS#mvcrouter
  * @author rhysbrettbowen@gmail.com (Rhys Brett-Bowen),
@@ -12,6 +13,7 @@ goog.require('goog.History');
 goog.require('goog.array');
 goog.require('goog.events');
 goog.require('goog.history.Html5History');
+
 
 
 /**
@@ -30,8 +32,8 @@ goog.require('goog.history.Html5History');
  * @constructor
  * @extends {goog.events.EventTarget}
  */
-app.core.Router = function (opt_noFragment, opt_blankPage, opt_input,
-                            opt_iframe) {
+app.core.Router = function(opt_noFragment, opt_blankPage, opt_input,
+                           opt_iframe) {
   goog.base(this);
   this.history_ = goog.history.Html5History.isSupported() ?
       new goog.history.Html5History() :
@@ -42,7 +44,7 @@ app.core.Router = function (opt_noFragment, opt_blankPage, opt_input,
   goog.events.listen(this.history_, goog.history.EventType.NAVIGATE,
       this.onChange_, false, this);
   this.routes_ = [];
-  this.currentFragment_ = "";
+  this.currentFragment_ = '';
   this.history_.setEnabled(true);
 };
 goog.inherits(app.core.Router, goog.events.EventTarget);
@@ -56,7 +58,7 @@ app.core.Router.EventType = {
   /*
    * event to trigger when route is about to change.
    */
-  ROUTE_EXPIRED: "routeExpired"
+  ROUTE_EXPIRED: 'routeExpired'
 };
 
 
@@ -64,7 +66,7 @@ app.core.Router.EventType = {
  * Pass through the fragment for the URL
  * @param {string} fragment to set for the history token.
  */
-app.core.Router.prototype.navigate = function (fragment) {
+app.core.Router.prototype.navigate = function(fragment) {
   this.history_.setToken(fragment);
 };
 
@@ -73,7 +75,7 @@ app.core.Router.prototype.navigate = function (fragment) {
  * Returns current routed fragment
  * @return {string} routed fragment.
  */
-app.core.Router.prototype.getFragment = function () {
+app.core.Router.prototype.getFragment = function() {
   return this.currentFragment_;
 };
 
@@ -88,7 +90,7 @@ app.core.Router.prototype.getFragment = function () {
  * @param {Object=} opt_context Object in whose context the function is to be
  *     called (the global scope if none).
  */
-app.core.Router.prototype.route = function (route, fn, opt_context) {
+app.core.Router.prototype.route = function(route, fn, opt_context) {
   if (goog.isString(route))
     route = new RegExp('^' + goog.string.regExpEscape(route)
             .replace(/\\:\w+/g, '([a-zA-Z0-9._-]+)')
@@ -111,8 +113,10 @@ app.core.Router.prototype.route = function (route, fn, opt_context) {
  * Run route callback if route regexp matches fragment.
  * @param {Object} route Route object with context and route regexp.
  * @param {string} fragment URI fragment to match with.
+ * @return {boolean}
+ * @private
  */
-app.core.Router.prototype.runRouteIfMatches_ = function (route, fragment) {
+app.core.Router.prototype.runRouteIfMatches_ = function(route, fragment) {
   var args = route.route.exec(fragment);
   if (args) {
     route.callback.apply(route.context, args);
@@ -126,7 +130,7 @@ app.core.Router.prototype.runRouteIfMatches_ = function (route, fragment) {
  * Route change handler.
  * @private
  */
-app.core.Router.prototype.onChange_ = function () {
+app.core.Router.prototype.onChange_ = function() {
   var fragment = this.history_.getToken();
   var locationPathname = window.location.pathname;
 
@@ -142,7 +146,7 @@ app.core.Router.prototype.onChange_ = function () {
       current: fragment
     });
     this.currentFragment_ = fragment;
-    goog.array.find(this.routes_ || [], function (route) {
+    goog.array.find(this.routes_ || [], function(route) {
       return this.runRouteIfMatches_(route, fragment);
     }, this);
   }
@@ -152,7 +156,7 @@ app.core.Router.prototype.onChange_ = function () {
 /**
  * Go through all defined routes and run first matched.
  */
-app.core.Router.prototype.checkRoutes = function () {
+app.core.Router.prototype.checkRoutes = function() {
   var fragment = this.history_.getToken();
   var locationPathname = window.location.pathname;
 
@@ -162,7 +166,7 @@ app.core.Router.prototype.checkRoutes = function () {
   }
 
   this.currentFragment_ = fragment;
-  goog.array.find(this.routes_ || [], function (route) {
+  goog.array.find(this.routes_ || [], function(route) {
     return this.runRouteIfMatches_(route, fragment);
   }, this);
 };

@@ -258,7 +258,7 @@ pwk.Range.prototype.setEndPosition = function(line, nodeOffset, opt_isStartOfLin
 /**
  * @return {boolean}
  */
-pwk.Range.prototype.isCollapsed = function () {
+pwk.Range.prototype.isCollapsed = function() {
     return this.startLine_ === this.endLine_ && this.startNodeOffset_ === this.endNodeOffset_;
 };
 

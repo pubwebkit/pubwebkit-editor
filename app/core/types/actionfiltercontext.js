@@ -32,17 +32,17 @@ goog.provide('app.core.types.ActionFilterContext');
  */
 app.core.types.ActionFilterContext = function(request, response) {
 
-    /**
-     * @type {app.core.Request}
-     * @private
-     */
-    this.request_ = request;
+  /**
+   * @type {app.core.Request}
+   * @private
+   */
+  this.request_ = request;
 
-    /**
-     * @type {app.core.Response}
-     * @private
-     */
-    this.response_ = response;
+  /**
+   * @type {app.core.Response}
+   * @private
+   */
+  this.response_ = response;
 };
 
 
@@ -50,7 +50,7 @@ app.core.types.ActionFilterContext = function(request, response) {
  * @return {app.core.Request}
  */
 app.core.types.ActionFilterContext.prototype.getRequest = function() {
-    return this.request_;
+  return this.request_;
 };
 
 
@@ -58,5 +58,5 @@ app.core.types.ActionFilterContext.prototype.getRequest = function() {
  * @return {app.core.Response}
  */
 app.core.types.ActionFilterContext.prototype.getResponse = function() {
-    return this.response_;
+  return this.response_;
 };

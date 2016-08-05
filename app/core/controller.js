@@ -37,17 +37,18 @@ goog.provide('app.core.Controller');
  */
 app.core.Controller = function(controllerName) {
 
-    /**
-     * @type {string}
-     * @private
-     */
-    this.controllerName_ = controllerName;
+  /**
+   * @type {string}
+   * @private
+   */
+  this.controllerName_ = controllerName;
 };
+
 
 /**
  * Get current controller name
  * @return {string}
  */
 app.core.Controller.prototype.getControllerName = function() {
-    return this.controllerName_;
+  return this.controllerName_;
 };

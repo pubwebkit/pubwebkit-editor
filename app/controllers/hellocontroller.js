@@ -43,10 +43,7 @@ goog.inherits(app.controllers.HelloController, app.core.Controller);
  * index action
  * @param {app.core.Request} request
  * @param {app.core.Response} response
- * @param {Function} resolve
- * @param {Function} reject
  */
-app.controllers.HelloController.prototype.index =
-    function(request, response) {
+app.controllers.HelloController.prototype.index = function(request, response) {
   console.log('Hello');
 };

@@ -30,9 +30,11 @@ goog.provide('app.core.Request');
 goog.require('goog.Uri');
 
 
+
 /**
  * Create a simple request object based on the provided URL.
- * @param {Object} routeData Object that contains information about current route.
+ * @param {Object} routeData Object that contains information about current
+ *    route.
  * @param {string} uri The uri we are constructing this object from.
  * @param {string} queryVals The values for query path.
  * @param {boolean=} opt_ignoreCase Whether or not we are performing a case
@@ -40,7 +42,7 @@ goog.require('goog.Uri');
  * @constructor
  * @extends {goog.Uri}
  */
-app.core.Request = function (routeData, uri, queryVals, opt_ignoreCase) {
+app.core.Request = function(routeData, uri, queryVals, opt_ignoreCase) {
   goog.Uri.call(this, uri, opt_ignoreCase);
 
   /**
@@ -59,7 +61,7 @@ goog.inherits(app.core.Request, goog.Uri);
  * @param {string=} opt_key
  * @return {Object|string}
  */
-app.core.Request.prototype.getRouteData = function (opt_key) {
+app.core.Request.prototype.getRouteData = function(opt_key) {
   if (goog.isDefAndNotNull(opt_key)) {
     return this.routeData_[opt_key];
   }
@@ -71,7 +73,7 @@ app.core.Request.prototype.getRouteData = function (opt_key) {
  * Convert this object to a simple JSON object.
  * @return {Object}
  */
-app.core.Request.prototype.toJSON = function () {
+app.core.Request.prototype.toJSON = function() {
   var obj = {
     domain: this.getDomain(),
     path: this.getPath(),

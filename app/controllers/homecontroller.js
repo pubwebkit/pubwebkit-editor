@@ -43,11 +43,8 @@ goog.inherits(app.controllers.HomeController, app.core.Controller);
  * index action
  * @param {app.core.Request} request
  * @param {app.core.Response} response
- * @param {Function} resolve
- * @param {Function} reject
  */
-app.controllers.HomeController.prototype.index =
-    function(request, response) {
+app.controllers.HomeController.prototype.index = function(request, response) {
   let editor = new pwk.Editor();
   let container = new pwk.EditorContainer();
 
