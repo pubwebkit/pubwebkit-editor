@@ -29,60 +29,62 @@
 goog.provide('pwk.layer.Caret');
 goog.provide('pwk.layer.Caret.AfterUpdateEvent');
 
-goog.require('pwk.utils.dom');
-goog.require('goog.dom.classlist');
-goog.require('goog.ui.Component');
 goog.require('goog.dom.Range');
+goog.require('goog.dom.classlist');
 goog.require('goog.editor.range');
-goog.require('goog.style');
 goog.require('goog.events.Event');
+goog.require('goog.style');
+goog.require('goog.ui.Component');
+goog.require('pwk.utils.dom');
+
+
 
 /**
  * Initialize {pwk.layer.Caret} component.
- *
- * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for document interaction.
+ * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
+ *    document interaction.
  * @constructor
  * @extends {goog.ui.Component}
  */
 pwk.layer.Caret = function(opt_domHelper) {
-    goog.base(this, opt_domHelper);
+  goog.base(this, opt_domHelper);
 
-    /**
+  /**
      * Is cursor visible.
      *
      * @type {boolean}
      * @private
      */
-    this.isVisible_ = false;
+  this.isVisible_ = false;
 
-    /**
+  /**
      * Parent caret wrapper.
      *
      * @type {Node}
      * @private
      */
-    this.layer_;
+  this.layer_;
 
-    /**
+  /**
      * @type {number}
      * @private
      */
-    this.blinkId_;
+  this.blinkId_;
 
-    /**
+  /**
      * @type {Element}
      * @private
      */
-    this.documentElement_;
+  this.documentElement_;
 
-    /**
+  /**
      * A zero width space character.
      * @type {string}
      * @private
      */
-    this.ZERO_WIDTH_SPACE_ = '\ufeff';
+  this.ZERO_WIDTH_SPACE_ = '\ufeff';
 
-    this.count_ = 0;
+  this.count_ = 0;
 };
 goog.inherits(pwk.layer.Caret, goog.ui.Component);
 
@@ -95,6 +97,7 @@ goog.inherits(pwk.layer.Caret, goog.ui.Component);
  */
 pwk.layer.Caret.CSS_CLASS = 'pwk-caret';
 
+
 /**
  * CSS class of parent caret wrapper element.
  *
@@ -105,61 +108,63 @@ pwk.layer.Caret.CSS_CLASS_LAYER = 'pwk-caret-layer';
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.createDom = function() {
-    var element = goog.dom.createDom('div');
+  var element = goog.dom.createDom('div');
 
-    this.documentElement_ = goog.dom.getElementByClass(pwk.Document.CSS_CLASS);
+  this.documentElement_ = goog.dom.getElementByClass(pwk.Document.CSS_CLASS);
 
-    goog.style.setUnselectable(element, true);
+  goog.style.setUnselectable(element, true);
 
-    this.setElementInternal(element);
-    this.decorateInternal(element);
+  this.setElementInternal(element);
+  this.decorateInternal(element);
 };
 
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.decorateInternal = function(element) {
-    goog.base(this, 'decorateInternal', element);
+  goog.base(this, 'decorateInternal', element);
 
-    // Add css class
-    goog.dom.classlist.add(element, pwk.layer.Caret.CSS_CLASS);
+  // Add css class
+  goog.dom.classlist.add(element, pwk.layer.Caret.CSS_CLASS);
 
-    // Initialize wrapper
-    this.layer_ = goog.dom.createDom('div');
-    goog.dom.classlist.add(this.layer_, pwk.layer.Caret.CSS_CLASS_LAYER);
+  // Initialize wrapper
+  this.layer_ = goog.dom.createDom('div');
+  goog.dom.classlist.add(this.layer_, pwk.layer.Caret.CSS_CLASS_LAYER);
 };
 
 
 pwk.layer.Caret.prototype.enterDocument = function() {
-    goog.base(this, 'enterDocument');
+  goog.base(this, 'enterDocument');
 
-    // Wrap by layer
-    var parent = /** @type {!Node} */(goog.dom.getParentElement(this.getElement()));
-    goog.dom.append(parent, this.layer_);
-    this.layer_.appendChild(this.getElement());
+  // Wrap by layer
+  var parent = /** @type {!Node} */(goog.dom.getParentElement(this.getElement()));
+  goog.dom.append(parent, this.layer_);
+  this.layer_.appendChild(this.getElement());
 
-    // Initialize events
-    this.listen(pwk.layer.Caret.EventType.BEFORE_UPDATE, this.onCaretBeforeUpdate_, false, this);
-    this.listen(pwk.layer.Caret.EventType.AFTER_UPDATE, this.onCaretAfterUpdate_, false, this);
+  // Initialize events
+  this.listen(pwk.layer.Caret.EventType.BEFORE_UPDATE,
+      this.onCaretBeforeUpdate_, false, this);
+  this.listen(pwk.layer.Caret.EventType.AFTER_UPDATE, this.onCaretAfterUpdate_,
+      false, this);
 };
 
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.disposeInternal = function() {
-    goog.base(this, 'disposeInternal');
+  goog.base(this, 'disposeInternal');
 
-    // Stop timer
-    clearInterval(this.blinkId_);
+  // Stop timer
+  clearInterval(this.blinkId_);
 
-    // Remove DOM nodes
-    if(this.layer_) {
-        goog.dom.removeNode(this.layer_);
-    }
-    delete this.layer_;
+  // Remove DOM nodes
+  if (this.layer_) {
+    goog.dom.removeNode(this.layer_);
+  }
+  delete this.layer_;
 
-    // Remove references to DOM nodes,
-    this.documentElement_ = null;
+  // Remove references to DOM nodes,
+  this.documentElement_ = null;
 
-    //NOTE: Event listeners are cleaned in the method exitDocument of base class
+  //NOTE: Event listeners are cleaned in the method exitDocument of base class
 };
 
 
@@ -167,11 +172,11 @@ pwk.layer.Caret.prototype.disposeInternal = function() {
  * Hide cursor.
  */
 pwk.layer.Caret.prototype.hide = function() {
-    var el = this.getElement();
+  var el = this.getElement();
 
-    clearInterval(this.blinkId_);
-    this.isVisible_ = false;
-    el.style.visibility = "hidden";
+  clearInterval(this.blinkId_);
+  this.isVisible_ = false;
+  el.style.visibility = 'hidden';
 };
 
 
@@ -179,11 +184,11 @@ pwk.layer.Caret.prototype.hide = function() {
  * Show cursor.
  */
 pwk.layer.Caret.prototype.show = function() {
-    var el = this.getElement();
+  var el = this.getElement();
 
-    this.isVisible_ = true;
-    el.style.visibility = "visible";
-    this.restartTimer();
+  this.isVisible_ = true;
+  el.style.visibility = 'visible';
+  this.restartTimer();
 };
 
 
@@ -191,21 +196,21 @@ pwk.layer.Caret.prototype.show = function() {
  * Restart blink
  */
 pwk.layer.Caret.prototype.restartTimer = function() {
-    clearInterval(this.blinkId_);
-    if (!this.isVisible_) {
-        return;
-    }
+  clearInterval(this.blinkId_);
+  if (!this.isVisible_) {
+    return;
+  }
 
-    var self = this.getElement()
-      , obj = this;
-    this.blinkId_ = setInterval(function() {
-        self.style.visibility = "hidden";
-        setTimeout(function() {
-            if(obj.isVisible_) {
-                self.style.visibility = "visible";
-            }
-        }, 400);
-    }, 1000);
+  var self = this.getElement() ,
+      obj = this;
+  this.blinkId_ = setInterval(function() {
+    self.style.visibility = 'hidden';
+    setTimeout(function() {
+      if (obj.isVisible_) {
+                self.style.visibility = 'visible';
+      }
+    }, 400);
+  }, 1000);
 };
 
 
@@ -217,20 +222,20 @@ pwk.layer.Caret.prototype.restartTimer = function() {
  */
 pwk.layer.Caret.prototype.update = function(selection) {
 
-    this.dispatchEvent(pwk.layer.Caret.EventType.BEFORE_UPDATE);
+  this.dispatchEvent(pwk.layer.Caret.EventType.BEFORE_UPDATE);
 
-	var el = this.getElement()
-      , bounds = selection.getBoundsForRange()
-      , elStyle = el.style;
+	var el = this.getElement() ,
+      bounds = selection.getBoundsForRange() ,
+      elStyle = el.style;
 
-    elStyle.left = bounds.left + 'px';
-    elStyle.top = bounds.top + 'px';
-    elStyle.height = bounds.height + 'px';
+  elStyle.left = bounds.left + 'px';
+  elStyle.top = bounds.top + 'px';
+  elStyle.height = bounds.height + 'px';
 
-    this.restartTimer();
-    this.dispatchEvent(new pwk.layer.Caret.AfterUpdateEvent(this, bounds));
+  this.restartTimer();
+  this.dispatchEvent(new pwk.layer.Caret.AfterUpdateEvent(this, bounds));
 
-    return bounds;
+  return bounds;
 };
 
 
@@ -255,9 +260,10 @@ pwk.layer.Caret.prototype.onCaretAfterUpdate_ = function(e) {
  * @enum {string}
  */
 pwk.layer.Caret.EventType = {
-    BEFORE_UPDATE: goog.events.getUniqueId('before_update'),
-    AFTER_UPDATE: goog.events.getUniqueId('after_update')
+  BEFORE_UPDATE: goog.events.getUniqueId('before_update'),
+  AFTER_UPDATE: goog.events.getUniqueId('after_update')
 };
+
 
 
 /**
@@ -267,13 +273,13 @@ pwk.layer.Caret.EventType = {
  * @extends {goog.events.Event}
  */
 pwk.layer.Caret.AfterUpdateEvent = function(caret, bounds) {
-    goog.events.Event.call(this, pwk.layer.Caret.EventType.AFTER_UPDATE, caret);
+  goog.events.Event.call(this, pwk.layer.Caret.EventType.AFTER_UPDATE, caret);
 
-    /**
+  /**
      * @type {goog.math.Rect}
      * @private
      */
-    this.bounds_ = bounds;
+  this.bounds_ = bounds;
 };
 goog.inherits(pwk.layer.Caret.AfterUpdateEvent, goog.events.Event);
 
@@ -282,5 +288,5 @@ goog.inherits(pwk.layer.Caret.AfterUpdateEvent, goog.events.Event);
  * @return {goog.math.Rect}
  */
 pwk.layer.Caret.AfterUpdateEvent.prototype.getBounds = function() {
-    return this.bounds_;
+  return this.bounds_;
 };

@@ -30,6 +30,7 @@ goog.provide('pwk.NodeAttribute');
 goog.provide('pwk.NodeAttributeTypes');
 
 
+
 /**
  * @param {pwk.NodeAttributeTypes} type
  * @param {string} value
@@ -37,27 +38,28 @@ goog.provide('pwk.NodeAttributeTypes');
  */
 pwk.NodeAttribute = function(type, value) {
 
-    /**
+  /**
      * @type {pwk.NodeAttributeTypes}
      * @private
      */
-    this.type_ = type;
+  this.type_ = type;
 
 
-    /**
+  /**
      * @type {string}
      * @private
      */
-    this.value_ = "";
-    this.setValue(value);
+  this.value_ = '';
+  this.setValue(value);
 };
+
 
 /**
  * Get attribute type.
  * @return {pwk.NodeAttributeTypes}
  */
 pwk.NodeAttribute.prototype.getType = function() {
-    return this.type_;
+  return this.type_;
 };
 
 
@@ -66,7 +68,7 @@ pwk.NodeAttribute.prototype.getType = function() {
  * @return {string}
  */
 pwk.NodeAttribute.prototype.getValue = function() {
-    return this.value_;
+  return this.value_;
 };
 
 
@@ -76,28 +78,28 @@ pwk.NodeAttribute.prototype.getValue = function() {
  * @param {boolean=} opt_isAppendValue Add value to the exist value. Adding depend from attribute type
  */
 pwk.NodeAttribute.prototype.setValue = function(value, opt_isAppendValue) {
-    if(goog.isDefAndNotNull(this.value_)) {
+  if (goog.isDefAndNotNull(this.value_)) {
 
-        switch (this.type_) {
+    switch (this.type_) {
 
-            case pwk.NodeAttributeTypes.HTML_CLASS:
-                var classes = this.value_.split(' ');
-                // Is class already assigned?
-                if(!goog.array.contains(classes, value)) {
+      case pwk.NodeAttributeTypes.HTML_CLASS:
+        var classes = this.value_.split(' ');
+        // Is class already assigned?
+        if (!goog.array.contains(classes, value)) {
 
-                    // Is required to append value of just define it?
-                    if(opt_isAppendValue) {
-                        this.value_ = this.value_ + ' ' + value;
-                    } else {
-                        this.value_ = value;
-                    }
-                }
-                break;
-
-            default:
-                this.value_ = value;
+          // Is required to append value of just define it?
+          if (opt_isAppendValue) {
+            this.value_ = this.value_ + ' ' + value;
+          } else {
+            this.value_ = value;
+          }
         }
+        break;
+
+      default:
+        this.value_ = value;
     }
+  }
 };
 
 
@@ -107,8 +109,8 @@ pwk.NodeAttribute.prototype.setValue = function(value, opt_isAppendValue) {
  * @enum {string}
  */
 pwk.NodeAttributeTypes = {
-    HTML_CLASS : 'html/class',
-    STYLE_HEIGHT : 'style/height',
-    STYLE_LINE_HEIGHT : 'style/lineHeight',
-    STYLE_FONT_SIZE : 'style/fontSize'
+  HTML_CLASS: 'html/class',
+  STYLE_HEIGHT: 'style/height',
+  STYLE_LINE_HEIGHT: 'style/lineHeight',
+  STYLE_FONT_SIZE: 'style/fontSize'
 };

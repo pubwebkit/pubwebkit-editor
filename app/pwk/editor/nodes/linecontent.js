@@ -28,10 +28,11 @@
 
 goog.provide('pwk.LineContent');
 
-goog.require('goog.ui.Component');
 goog.require('goog.dom.classlist');
-goog.require('pwk.primitives.ClientRectRange');
+goog.require('goog.ui.Component');
 goog.require('pwk.NodeAnnotation');
+goog.require('pwk.primitives.ClientRectRange');
+
 
 
 /**
@@ -40,54 +41,54 @@ goog.require('pwk.NodeAnnotation');
  * @constructor
  */
 pwk.LineContent = function(opt_text) {
-    goog.base(this);
+  goog.base(this);
 
-    /**
+  /**
      * @type {string}
      * @private
      */
-    this.text_ = opt_text || '';
+  this.text_ = opt_text || '';
 
-    /**
+  /**
      * @type {Array.<pwk.NodeAnnotation>}
      * @private
      */
-    this.annotations_ = [];
+  this.annotations_ = [];
 };
 goog.inherits(pwk.LineContent, goog.ui.Component);
 
 
 /** @inheritDoc */
 pwk.LineContent.prototype.createDom = function() {
-    // Create element and apply classes
-    this.setElementInternal(goog.dom.createElement('span'));
-    goog.dom.classlist.add(this.getElement(), pwk.LineContent.CSS_CLASS);
+  // Create element and apply classes
+  this.setElementInternal(goog.dom.createElement('span'));
+  goog.dom.classlist.add(this.getElement(), pwk.LineContent.CSS_CLASS);
 
-    if(this.text_.length) {
-        var textValue = this.text_;
-        this.text_ = '';
-        this.insertText(textValue);
-    }
+  if (this.text_.length) {
+    var textValue = this.text_;
+    this.text_ = '';
+    this.insertText(textValue);
+  }
 };
 
 
 /** @inheritDoc */
 pwk.LineContent.prototype.enterDocument = function() {
-    goog.base(this, 'enterDocument');
+  goog.base(this, 'enterDocument');
 };
 
 
 /** @inheritDoc */
 pwk.LineContent.prototype.disposeInternal = function() {
-    goog.base(this, 'disposeInternal');
+  goog.base(this, 'disposeInternal');
 
-    // Remove annotations
-    for(var i = 0; i < this.annotations_.length; i++) {
-        goog.array.removeAt(this.annotations_, i);
-    }
+  // Remove annotations
+  for (var i = 0; i < this.annotations_.length; i++) {
+    goog.array.removeAt(this.annotations_, i);
+  }
 
-    delete this.annotations_;
-    delete this.text_;
+  delete this.annotations_;
+  delete this.text_;
 };
 
 
@@ -97,29 +98,29 @@ pwk.LineContent.prototype.disposeInternal = function() {
  * @param {number=} opt_offset
  */
 pwk.LineContent.prototype.insertText = function(text, opt_offset) {
-    if(text && text.length > 0) {
-        var el = this.getElement()
-          , fragment = document.createDocumentFragment()
-          , fragmentFirstChild
-          , textLength;
+  if (text && text.length > 0) {
+    var el = this.getElement() ,
+        fragment = document.createDocumentFragment() ,
+        fragmentFirstChild ,
+        textLength;
 
-        fragment.appendChild(el.cloneNode(true));
-        fragmentFirstChild = /** @type {Element} */(fragment.firstChild);
-        textLength = goog.string.normalizeWhitespace(text).length;
+    fragment.appendChild(el.cloneNode(true));
+    fragmentFirstChild = /** @type {Element} */(fragment.firstChild);
+    textLength = goog.string.normalizeWhitespace(text).length;
 
-        if(goog.isDefAndNotNull(opt_offset)) {
-            while(textLength--) {
-                this.insertValue(text[textLength], opt_offset, fragmentFirstChild);
-            }
-        } else {
-            while(textLength--) {
-                this.insertValue(text[textLength], 0, fragmentFirstChild);
-            }
-        }
-
-        goog.dom.replaceNode(fragmentFirstChild, el);
-        this.setElementInternal(fragmentFirstChild);
+    if (goog.isDefAndNotNull(opt_offset)) {
+      while (textLength--) {
+        this.insertValue(text[textLength], opt_offset, fragmentFirstChild);
+      }
+    } else {
+      while (textLength--) {
+        this.insertValue(text[textLength], 0, fragmentFirstChild);
+      }
     }
+
+    goog.dom.replaceNode(fragmentFirstChild, el);
+    this.setElementInternal(fragmentFirstChild);
+  }
 
 };
 
@@ -131,16 +132,16 @@ pwk.LineContent.prototype.insertText = function(text, opt_offset) {
  * @param {Node|Element=} opt_parent
  */
 pwk.LineContent.prototype.insertValue = function(value, opt_offset, opt_parent) {
-    var text = this.text_
-      , parent = opt_parent || this.getElement()
-      , offset = opt_offset || 0
-      , textNode;
+  var text = this.text_ ,
+      parent = opt_parent || this.getElement() ,
+      offset = opt_offset || 0 ,
+      textNode;
 
-    textNode = document.createTextNode(value);
-    parent.insertBefore(textNode, parent.childNodes[offset] || null);
+  textNode = document.createTextNode(value);
+  parent.insertBefore(textNode, parent.childNodes[offset] || null);
 
-    // Update indexes
-    this.text_ = text.substr(0, offset) + textNode.nodeValue + text.substr(offset);
+  // Update indexes
+  this.text_ = text.substr(0, offset) + textNode.nodeValue + text.substr(offset);
 };
 
 
@@ -148,14 +149,15 @@ pwk.LineContent.prototype.insertValue = function(value, opt_offset, opt_parent) 
  * @return {string}
  */
 pwk.LineContent.prototype.getText = function() {
-    return this.text_;
+  return this.text_;
 };
+
 
 /**
  * @return {string}
  */
 pwk.LineContent.prototype.getNormalizedText = function() {
-    return goog.string.normalizeWhitespace(this.text_);
+  return goog.string.normalizeWhitespace(this.text_);
 };
 
 
@@ -164,18 +166,18 @@ pwk.LineContent.prototype.getNormalizedText = function() {
  * @return {string} The value of the popped text node.
  */
 pwk.LineContent.prototype.pop = function() {
-    var el = this.getElement()
-      , lastChild = el.lastChild
-      , nodeValue = lastChild.nodeValue
-      , text = this.text_;
+  var el = this.getElement() ,
+      lastChild = el.lastChild ,
+      nodeValue = lastChild.nodeValue ,
+      text = this.text_;
 
-    lastChild.parentNode.removeChild(lastChild);
+  lastChild.parentNode.removeChild(lastChild);
 
-    this.text_ = text.slice(0, this.getNormalizedText().length - 1);
+  this.text_ = text.slice(0, this.getNormalizedText().length - 1);
 
-    // TODO: Update annotations required
+  // TODO: Update annotations required
 
-    return nodeValue;
+  return nodeValue;
 };
 
 
@@ -184,113 +186,115 @@ pwk.LineContent.prototype.pop = function() {
  * @return {string} Merged values of the popped text nodes.
  */
 pwk.LineContent.prototype.popLastWord = function() {
-    var googString = goog.string
-      , el = this.getElement()
-      , text = this.text_
-      , normalizedText = this.getNormalizedText()
-      , spaceIndex = googString.trimRight(normalizedText).lastIndexOf(' ')
-      , offset = spaceIndex != -1 ? spaceIndex + 1 : 0
-      , gRange = goog.dom.Range.createFromNodes(el, offset, el, normalizedText.length)
-      , value = text.slice(offset);
+  var googString = goog.string ,
+      el = this.getElement() ,
+      text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      spaceIndex = googString.trimRight(normalizedText).lastIndexOf(' ') ,
+      offset = spaceIndex != -1 ? spaceIndex + 1 : 0 ,
+      gRange = goog.dom.Range.createFromNodes(el, offset, el, normalizedText.length) ,
+      value = text.slice(offset);
 
-    gRange.removeContents();
+  gRange.removeContents();
 
-    // TODO: Update annotations required
+  // TODO: Update annotations required
 
-    this.text_ = text.slice(0, offset);
+  this.text_ = text.slice(0, offset);
 
-    return value;
+  return value;
 };
 
 
 pwk.LineContent.prototype.popFirstWord = function() {
-    var googString = goog.string
-      , el = this.getElement()
-      , text = this.text_
-      , normalizedText = this.getNormalizedText()
-      , spaceIndex = normalizedText.indexOf(' ')
-      , offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
+  var googString = goog.string ,
+      el = this.getElement() ,
+      text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      spaceIndex = normalizedText.indexOf(' ') ,
+      offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
 
-    if(spaceIndex == 0) {
-        var trimedText = googString.trimLeft(normalizedText);
-        var firstCharIndex = text.indexOf(trimedText[0]);
-        offset = normalizedText.indexOf(' ', firstCharIndex);
-    }
+  if (spaceIndex == 0) {
+    var trimedText = googString.trimLeft(normalizedText);
+    var firstCharIndex = text.indexOf(trimedText[0]);
+    offset = normalizedText.indexOf(' ', firstCharIndex);
+  }
 
-    while(googString.isSpace(normalizedText[offset])) {
-        offset++;
-    }
+  while (googString.isSpace(normalizedText[offset])) {
+    offset++;
+  }
 
-    var gRange = goog.dom.Range.createFromNodes(el, 0, el, offset)
-      , value = text.slice(0, offset);
+  var gRange = goog.dom.Range.createFromNodes(el, 0, el, offset) ,
+      value = text.slice(0, offset);
 
-    gRange.removeContents();
+  gRange.removeContents();
 
-    // TODO: Update annotations required
+  // TODO: Update annotations required
 
-    this.text_ = text.slice(offset);
+  this.text_ = text.slice(offset);
 
-    return value;
+  return value;
 };
 
 
 pwk.LineContent.prototype.removeFirstWord = function() {
-    var googString = goog.string
-        , el = this.getElement()
-        , text = this.text_
-        , normalizedText = this.getNormalizedText()
-        , spaceIndex = normalizedText.indexOf(' ')
-        , offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
+  var googString = goog.string ,
+      el = this.getElement() ,
+      text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      spaceIndex = normalizedText.indexOf(' ') ,
+      offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
 
-    if(spaceIndex == 0) {
-        var trimedText = googString.trimLeft(normalizedText);
-        var firstCharIndex = text.indexOf(trimedText[0]);
-        offset = normalizedText.indexOf(' ', firstCharIndex);
-    }
+  if (spaceIndex == 0) {
+    var trimedText = googString.trimLeft(normalizedText);
+    var firstCharIndex = text.indexOf(trimedText[0]);
+    offset = normalizedText.indexOf(' ', firstCharIndex);
+  }
 
-    while(googString.isSpace(normalizedText[offset])) {
-        offset++;
-    }
+  while (googString.isSpace(normalizedText[offset])) {
+    offset++;
+  }
 
-    var gRange = goog.dom.Range.createFromNodes(el, 0, el, offset);
+  var gRange = goog.dom.Range.createFromNodes(el, 0, el, offset);
 
-    gRange.removeContents();
+  gRange.removeContents();
 
-    // TODO: Update annotations required
+  // TODO: Update annotations required
 
-    this.text_ = text.slice(offset);
+  this.text_ = text.slice(offset);
 };
+
 
 /**
  * Returns first word
  * @return {string}
  */
 pwk.LineContent.prototype.copyFirstWord = function() {
-    var googString = goog.string
-      , text = this.text_
-      , normalizedText = this.getNormalizedText()
-      , spaceIndex = normalizedText.indexOf(' ')
-      , offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
+  var googString = goog.string ,
+      text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      spaceIndex = normalizedText.indexOf(' ') ,
+      offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
 
-    if(spaceIndex == 0) {
-        var trimedText = googString.trimLeft(normalizedText);
-        var firstCharIndex = text.indexOf(trimedText[0]);
-        offset = normalizedText.indexOf(' ', firstCharIndex);
-    }
+  if (spaceIndex == 0) {
+    var trimedText = googString.trimLeft(normalizedText);
+    var firstCharIndex = text.indexOf(trimedText[0]);
+    offset = normalizedText.indexOf(' ', firstCharIndex);
+  }
 
-    while(googString.isSpace(normalizedText[offset])) {
-        offset++;
-    }
+  while (googString.isSpace(normalizedText[offset])) {
+    offset++;
+  }
 
-    return text.slice(0, offset);
+  return text.slice(0, offset);
 };
+
 
 /**
  * Returns the last text node value.
  * @return {string} The value of the popped text node.
  */
 pwk.LineContent.prototype.getLastTextNodeValue = function() {
-    return this.getElement().lastChild.nodeValue;
+  return this.getElement().lastChild.nodeValue;
 };
 
 
@@ -299,7 +303,7 @@ pwk.LineContent.prototype.getLastTextNodeValue = function() {
  * @return {string}
  */
 pwk.LineContent.prototype.copyFirstChar = function() {
-    return this.text_.slice(0, 1);
+  return this.text_.slice(0, 1);
 };
 
 
@@ -309,18 +313,18 @@ pwk.LineContent.prototype.copyFirstChar = function() {
  * @return {string}
  */
 pwk.LineContent.prototype.cut = function(startOffset, opt_endOffset) {
-    var el = this.getElement()
-        , text = this.text_
-        , normalizedText = this.getNormalizedText()
-        , endOffset = opt_endOffset || normalizedText.length
-        , gRange = goog.dom.Range.createFromNodes(el, startOffset, el, endOffset)
-        , value = text.slice(startOffset, endOffset);
+  var el = this.getElement() ,
+      text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      endOffset = opt_endOffset || normalizedText.length ,
+      gRange = goog.dom.Range.createFromNodes(el, startOffset, el, endOffset) ,
+      value = text.slice(startOffset, endOffset);
 
-    gRange.removeContents();
+  gRange.removeContents();
 
-    this.text_ = text.slice(0, startOffset) + text.slice(endOffset);
+  this.text_ = text.slice(0, startOffset) + text.slice(endOffset);
 
-    return value;
+  return value;
 };
 
 
@@ -330,11 +334,11 @@ pwk.LineContent.prototype.cut = function(startOffset, opt_endOffset) {
  * @return {string}
  */
 pwk.LineContent.prototype.copy = function(startOffset, opt_endOffset) {
-    var text = this.text_
-      , normalizedText = this.getNormalizedText()
-      , endOffset = opt_endOffset || normalizedText.length;
+  var text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      endOffset = opt_endOffset || normalizedText.length;
 
-    return text.slice(startOffset, endOffset);
+  return text.slice(startOffset, endOffset);
 };
 
 
@@ -343,15 +347,15 @@ pwk.LineContent.prototype.copy = function(startOffset, opt_endOffset) {
  * @param {number=} opt_endOffset
  */
 pwk.LineContent.prototype.removeAt = function(startOffset, opt_endOffset) {
-    var el = this.getElement()
-      , text = this.text_
-      , normalizedText = this.getNormalizedText()
-      , endOffset = opt_endOffset || normalizedText.length
-      , gRange = goog.dom.Range.createFromNodes(el, startOffset, el, endOffset);
+  var el = this.getElement() ,
+      text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      endOffset = opt_endOffset || normalizedText.length ,
+      gRange = goog.dom.Range.createFromNodes(el, startOffset, el, endOffset);
 
-    gRange.removeContents();
+  gRange.removeContents();
 
-    this.text_ = text.slice(0, startOffset) + text.slice(endOffset);
+  this.text_ = text.slice(0, startOffset) + text.slice(endOffset);
 };
 
 
@@ -359,7 +363,7 @@ pwk.LineContent.prototype.removeAt = function(startOffset, opt_endOffset) {
  * @return {number}
  */
 pwk.LineContent.prototype.getLength = function() {
-    return this.getNormalizedText().length;
+  return this.getNormalizedText().length;
 };
 
 
@@ -368,7 +372,7 @@ pwk.LineContent.prototype.getLength = function() {
  * @return {Node?}
  */
 pwk.LineContent.prototype.getTextNodeAtOffset = function(offset) {
-    return this.getElement().childNodes[offset] || null;
+  return this.getElement().childNodes[offset] || null;
 };
 
 
@@ -377,8 +381,8 @@ pwk.LineContent.prototype.getTextNodeAtOffset = function(offset) {
  * @return {string}
  */
 pwk.LineContent.prototype.getTextNodeValueAtOffset = function(offset) {
-    var textNode =  this.getElement().childNodes[offset];
-    return textNode != null ? textNode.nodeValue : '';
+  var textNode = this.getElement().childNodes[offset];
+  return textNode != null ? textNode.nodeValue : '';
 };
 
 
@@ -388,37 +392,37 @@ pwk.LineContent.prototype.getTextNodeValueAtOffset = function(offset) {
  * @return {number}
  */
 pwk.LineContent.prototype.getWidth = function(isOnlyPrintableContent) {
-    var el = this.getElement()
-      , width;
+  var el = this.getElement() ,
+      width;
 
-    if(isOnlyPrintableContent) {
-        var lastCharIndex = goog.string.trimRight(this.getNormalizedText()).length;
+  if (isOnlyPrintableContent) {
+    var lastCharIndex = goog.string.trimRight(this.getNormalizedText()).length;
 
-        if(goog.userAgent.IE) {
-            var textRange = document.body.createTextRange()
-              , browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
+    if (goog.userAgent.IE) {
+      var textRange = document.body.createTextRange() ,
+              browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
 
-            textRange.moveToElementText(el);
-            textRange.moveStart('character', 0);
-            textRange.collapse();
-            textRange.moveEnd('character', lastCharIndex);
+      textRange.moveToElementText(el);
+      textRange.moveStart('character', 0);
+      textRange.collapse();
+      textRange.moveEnd('character', lastCharIndex);
 
-            width = textRange.boundingWidth / browserZoomLevel;
+      width = textRange.boundingWidth / browserZoomLevel;
 
-        } else {
-            var range = document.createRange();
-
-            range.selectNodeContents(el);
-            range.setStart(el, 0);
-            range.setEnd(el, lastCharIndex);
-
-            width = range.getBoundingClientRect().width;
-        }
     } else {
-        width = goog.style.getSize(el).width;
-    }
+      var range = document.createRange();
 
-    return width;
+      range.selectNodeContents(el);
+      range.setStart(el, 0);
+      range.setEnd(el, lastCharIndex);
+
+      width = range.getBoundingClientRect().width;
+    }
+  } else {
+    width = goog.style.getSize(el).width;
+  }
+
+  return width;
 };
 
 
@@ -427,44 +431,44 @@ pwk.LineContent.prototype.getWidth = function(isOnlyPrintableContent) {
  * @return {pwk.primitives.ClientRectRange}
  */
 pwk.LineContent.prototype.getBoundingClientRectForOffset = function(opt_startOffset, opt_endOffset) {
-    var el = this.getElement()
-      , clientRectResult;
+  var el = this.getElement() ,
+      clientRectResult;
 
-    opt_startOffset = goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0;
-    opt_endOffset = goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength();
+  opt_startOffset = goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0;
+  opt_endOffset = goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength();
 
-    if(goog.userAgent.IE) {
-        var textRange = document.body.createTextRange()
-          , browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
+  if (goog.userAgent.IE) {
+    var textRange = document.body.createTextRange() ,
+        browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
 
-        textRange.moveToElementText(el);
-        textRange.moveStart('character', opt_startOffset);
-        textRange.collapse();
-        textRange.moveEnd('character', opt_endOffset - opt_startOffset);
+    textRange.moveToElementText(el);
+    textRange.moveStart('character', opt_startOffset);
+    textRange.collapse();
+    textRange.moveEnd('character', opt_endOffset - opt_startOffset);
 
-        clientRectResult = new pwk.primitives.ClientRectRange();
-        clientRectResult.width = textRange.boundingWidth / browserZoomLevel;
-        clientRectResult.height = textRange.boundingHeight / browserZoomLevel;
-        clientRectResult.left = textRange.boundingLeft / browserZoomLevel;
-        clientRectResult.top = textRange.boundingTop / browserZoomLevel;
-    } else {
-        var range = document.createRange()
-          , boundingClientRect;
+    clientRectResult = new pwk.primitives.ClientRectRange();
+    clientRectResult.width = textRange.boundingWidth / browserZoomLevel;
+    clientRectResult.height = textRange.boundingHeight / browserZoomLevel;
+    clientRectResult.left = textRange.boundingLeft / browserZoomLevel;
+    clientRectResult.top = textRange.boundingTop / browserZoomLevel;
+  } else {
+    var range = document.createRange() ,
+        boundingClientRect;
 
-        range.selectNodeContents(el);
-        range.setStart(el, opt_startOffset);
-        range.setEnd(el, opt_endOffset);
+    range.selectNodeContents(el);
+    range.setStart(el, opt_startOffset);
+    range.setEnd(el, opt_endOffset);
 
-        boundingClientRect = range.getBoundingClientRect();
+    boundingClientRect = range.getBoundingClientRect();
 
-        clientRectResult = new pwk.primitives.ClientRectRange();
-        clientRectResult.width = boundingClientRect.width;
-        clientRectResult.height = boundingClientRect.height;
-        clientRectResult.top = boundingClientRect.top;
-        clientRectResult.left = boundingClientRect.left;
-    }
+    clientRectResult = new pwk.primitives.ClientRectRange();
+    clientRectResult.width = boundingClientRect.width;
+    clientRectResult.height = boundingClientRect.height;
+    clientRectResult.top = boundingClientRect.top;
+    clientRectResult.left = boundingClientRect.left;
+  }
 
-    return clientRectResult;
+  return clientRectResult;
 };
 
 
@@ -472,62 +476,62 @@ pwk.LineContent.prototype.getBoundingClientRectForOffset = function(opt_startOff
  * Get text and width for content range
  * @param {number} startOffset
  * @param {number=} opt_endOffset
- * @returns {{width: number, text: string}}
+ * @return {{width: number, text: string}}
  */
 pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_endOffset) {
-    var text = this.text_
-      , normalizedText = this.getNormalizedText()
-      , endOffset = opt_endOffset || normalizedText.length
-      , el = this.getElement()
-      , width;
+  var text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      endOffset = opt_endOffset || normalizedText.length ,
+      el = this.getElement() ,
+      width;
 
-    if(goog.userAgent.IE) {
-        var textRange = document.body.createTextRange()
-          , browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
+  if (goog.userAgent.IE) {
+    var textRange = document.body.createTextRange() ,
+        browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
 
-        textRange.moveToElementText(el);
-        textRange.moveStart('character', startOffset);
-        textRange.collapse();
-        textRange.moveEnd('character', endOffset);
+    textRange.moveToElementText(el);
+    textRange.moveStart('character', startOffset);
+    textRange.collapse();
+    textRange.moveEnd('character', endOffset);
 
-        width = textRange.boundingWidth / browserZoomLevel;
+    width = textRange.boundingWidth / browserZoomLevel;
 
-    } else {
-        var range = document.createRange();
+  } else {
+    var range = document.createRange();
 
-        range.selectNodeContents(el);
-        range.setStart(el, startOffset);
-        range.setEnd(el, endOffset);
+    range.selectNodeContents(el);
+    range.setStart(el, startOffset);
+    range.setEnd(el, endOffset);
 
-        width = range.getBoundingClientRect().width;
-    }
+    width = range.getBoundingClientRect().width;
+  }
 
-    return { width: width, text: text.slice(startOffset, endOffset) };
+  return { width: width, text: text.slice(startOffset, endOffset) };
 };
 
 
 /**
  * Get first word and width
- * @returns {{width: number, text: string}}
+ * @return {{width: number, text: string}}
  */
 pwk.LineContent.prototype.getFirstWordInfo = function() {
-    var googString = goog.string
-      , text = this.text_
-      , normalizedText = this.getNormalizedText()
-      , spaceIndex = normalizedText.indexOf(' ')
-      , offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
+  var googString = goog.string ,
+      text = this.text_ ,
+      normalizedText = this.getNormalizedText() ,
+      spaceIndex = normalizedText.indexOf(' ') ,
+      offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
 
-    if(spaceIndex == 0) {
-        var trimedText = googString.trimLeft(normalizedText);
-        var firstCharIndex = text.indexOf(trimedText[0]);
-        offset = normalizedText.indexOf(' ', firstCharIndex);
-    }
+  if (spaceIndex == 0) {
+    var trimedText = googString.trimLeft(normalizedText);
+    var firstCharIndex = text.indexOf(trimedText[0]);
+    offset = normalizedText.indexOf(' ', firstCharIndex);
+  }
 
-    while(googString.isSpace(normalizedText[offset])) {
-        offset++;
-    }
+  while (googString.isSpace(normalizedText[offset])) {
+    offset++;
+  }
 
-    return this.getContentInfoForOffset(0, offset);
+  return this.getContentInfoForOffset(0, offset);
 };
 
 
@@ -535,7 +539,7 @@ pwk.LineContent.prototype.getFirstWordInfo = function() {
  * @return {Array.<pwk.NodeAnnotation>}
  */
 pwk.LineContent.prototype.getAnnotations = function() {
-    return this.annotations_;
+  return this.annotations_;
 };
 
 
@@ -543,7 +547,7 @@ pwk.LineContent.prototype.getAnnotations = function() {
  * @param {pwk.NodeAnnotation} annotation
  */
 pwk.LineContent.prototype.addAnnotation = function(annotation) {
-    this.annotations_.push(annotation);
+  this.annotations_.push(annotation);
 };
 
 

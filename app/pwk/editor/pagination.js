@@ -30,28 +30,30 @@ goog.provide('pwk.Pagination');
 
 goog.require('goog.events.EventTarget');
 
+
+
 /**
  * @param {pwk.Document} document
  * @constructor
  */
 pwk.Pagination = function(document) {
 
-    /**
+  /**
      * @type {pwk.Document}
      * @private
      */
-    this.document_ = document;
+  this.document_ = document;
 
-    /**
+  /**
      * Each array represent page and index equals the index of page in document.
      * Each child array represent nodes ids.
      * @type {Array.<Array.<string>>}
      * @private
      */
-    this.pageNodeIndex_ = [];
+  this.pageNodeIndex_ = [];
 
-    // Initialize event handlers
-    this.initEvents_();
+  // Initialize event handlers
+  this.initEvents_();
 };
 
 
@@ -60,45 +62,46 @@ pwk.Pagination = function(document) {
  * @private
  */
 pwk.Pagination.prototype.initEvents_ = function() {
-    goog.events.listen(this.document_, pwk.Document.EventType.NODE_REMOVED, this.onDocumentNodeRemovedEventHandler_, false, this);
+  goog.events.listen(this.document_, pwk.Document.EventType.NODE_REMOVED, this.onDocumentNodeRemovedEventHandler_, false, this);
 };
+
 
 /**
  * Add node to the document and link with the latest page.
  * @param {pwk.Node} node
  */
 pwk.Pagination.prototype.addNode = function(node) {
-    // Check if node already rendered
-    if(node.isInDocument()) {
-        throw new Error('Node should not be already in the document.');
-    }
+  // Check if node already rendered
+  if (node.isInDocument()) {
+    throw new Error('Node should not be already in the document.');
+  }
 
-    var page
-      , pageIndex
-      , editorDocument = this.document_
-      , pageNodeIndex = this.pageNodeIndex_
-      , pageNodeIndexLen = this.pageNodeIndex_.length;
+  var page ,
+      pageIndex ,
+      editorDocument = this.document_ ,
+      pageNodeIndex = this.pageNodeIndex_ ,
+      pageNodeIndexLen = this.pageNodeIndex_.length;
 
-    // Get node index for latest page
-    if(!goog.isArray(pageNodeIndex[pageNodeIndexLen - 1])) {
-        page = new pwk.Page(editorDocument);
-        editorDocument.addPage(page);
+  // Get node index for latest page
+  if (!goog.isArray(pageNodeIndex[pageNodeIndexLen - 1])) {
+    page = new pwk.Page(editorDocument);
+    editorDocument.addPage(page);
 
-        // Important to add handlers after page initialization.
-        page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_, false, this);
+    // Important to add handlers after page initialization.
+    page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_, false, this);
 
-        pageNodeIndex[pageNodeIndexLen] = [];
+    pageNodeIndex[pageNodeIndexLen] = [];
 
-    } else {
-        page = editorDocument.getPageAt(pageNodeIndexLen - 1);
-    }
+  } else {
+    page = editorDocument.getPageAt(pageNodeIndexLen - 1);
+  }
 
-    // Update index
-    pageIndex = editorDocument.indexOfPage(page);
-    goog.array.insert(pageNodeIndex[pageIndex], node.getId());
+  // Update index
+  pageIndex = editorDocument.indexOfPage(page);
+  goog.array.insert(pageNodeIndex[pageIndex], node.getId());
 
-    // Render node on the page
-    page.linkNode(node);
+  // Render node on the page
+  page.linkNode(node);
 };
 
 
@@ -109,49 +112,49 @@ pwk.Pagination.prototype.addNode = function(node) {
  * @param {boolean=} opt_after
  */
 pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
-    // Check if node already rendered
-    if(node.isInDocument()) {
-        throw new Error('Node should not be already in the document.');
-    }
+  // Check if node already rendered
+  if (node.isInDocument()) {
+    throw new Error('Node should not be already in the document.');
+  }
 
-    var doc = this.document_
-      , pageNodeIndex = this.pageNodeIndex_
-      , pageIndex
-      , page;
+  var doc = this.document_ ,
+      pageNodeIndex = this.pageNodeIndex_ ,
+      pageIndex ,
+      page;
 
-    if(opt_after) {
-        var prevNode = doc.getNodeAt(index - 1);
+  if (opt_after) {
+    var prevNode = doc.getNodeAt(index - 1);
 
-        if(goog.isDefAndNotNull(prevNode)) {
-            pageIndex = this.getPageIndexByNodeId(prevNode.getId());
+    if (goog.isDefAndNotNull(prevNode)) {
+      pageIndex = this.getPageIndexByNodeId(prevNode.getId());
 
-            var prevNodeIndex = goog.array.indexOf(pageNodeIndex[pageIndex], prevNode.getId());
-            goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(), prevNodeIndex + 1);
+      var prevNodeIndex = goog.array.indexOf(pageNodeIndex[pageIndex], prevNode.getId());
+      goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(), prevNodeIndex + 1);
 
-            page = this.document_.getPageAt(pageIndex);
-            page.linkNodeAfter(node, prevNode);
-        } else {
-            // If previous node does not exist, add node to the end
-            this.addNode(node);
-        }
+      page = this.document_.getPageAt(pageIndex);
+      page.linkNodeAfter(node, prevNode);
     } else {
-        var nextNode = this.document_.getNodeAt(index);
-
-        if(goog.isDefAndNotNull(nextNode)) {
-            // Get page index
-            pageIndex = this.getPageIndexByNodeId(nextNode.getId());
-
-            // Add node index to index
-            var nextNodeIndex = goog.array.indexOf(pageNodeIndex[pageIndex], nextNode.getId());
-            goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(), nextNodeIndex);
-
-            page = this.document_.getPageAt(pageIndex);
-            page.linkNodeBefore(node, nextNode);
-
-        } else { // If sibling node does not exist, add node to the end
-            this.addNode(node);
-        }
+      // If previous node does not exist, add node to the end
+      this.addNode(node);
     }
+  } else {
+    var nextNode = this.document_.getNodeAt(index);
+
+    if (goog.isDefAndNotNull(nextNode)) {
+      // Get page index
+      pageIndex = this.getPageIndexByNodeId(nextNode.getId());
+
+      // Add node index to index
+      var nextNodeIndex = goog.array.indexOf(pageNodeIndex[pageIndex], nextNode.getId());
+      goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(), nextNodeIndex);
+
+      page = this.document_.getPageAt(pageIndex);
+      page.linkNodeBefore(node, nextNode);
+
+    } else { // If sibling node does not exist, add node to the end
+      this.addNode(node);
+    }
+  }
 };
 
 
@@ -160,10 +163,10 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
  * @param {string} nodeId Id of changed node. The page of this node will be used as start point for overflow check.
  */
 pwk.Pagination.prototype.checkOverflow = function(nodeId) {
-    var pageIndex = this.getPageIndexByNodeId(nodeId)
-      , activePage = this.document_.getPageAt(pageIndex);
+  var pageIndex = this.getPageIndexByNodeId(nodeId) ,
+      activePage = this.document_.getPageAt(pageIndex);
 
-    activePage.checkPageOverflow();
+  activePage.checkPageOverflow();
 };
 
 
@@ -171,31 +174,31 @@ pwk.Pagination.prototype.checkOverflow = function(nodeId) {
  * Checking pages filling. Checking started from topless range node.
  */
 pwk.Pagination.prototype.checkFilling = function() {
-    var doc = this.document_
-      , range = doc.getSelection().getRange();
+  var doc = this.document_ ,
+      range = doc.getSelection().getRange();
 
-    if(range != null) {
+  if (range != null) {
 
-        //console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
+    //console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
 
-        var abovePageIndex = this.getPageIndexByNodeId(range.isReversed() ? range.getEndNode().getId() : range.getStartNode().getId()) // This is topmost edited page index
-          ,_getBelowPageIndex = goog.bind(function() {
-                return this.pageNodeIndex_.length > abovePageIndex + 1 ? abovePageIndex + 1 : -1;
-          }, this)
-          , belowPageIndex = _getBelowPageIndex()
-          , abovePage;
+    var abovePageIndex = this.getPageIndexByNodeId(range.isReversed() ? range.getEndNode().getId() : range.getStartNode().getId()) , // This is topmost edited page index
+        _getBelowPageIndex = goog.bind(function() {
+          return this.pageNodeIndex_.length > abovePageIndex + 1 ? abovePageIndex + 1 : -1;
+        }, this) ,
+        belowPageIndex = _getBelowPageIndex() ,
+        abovePage;
 
 
-        while(belowPageIndex > 0) { // We have page below modified page?
-            abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
+    while (belowPageIndex > 0) { // We have page below modified page?
+      abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
 
-            var availableHeightAbove = abovePage.getAvailableContentSize()
-              , nodeToMove = /** @type {pwk.Node}*/(this.pageNodeIndex_[belowPageIndex].length > 0 ? doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) : null) // TODO: Should fixed in future, then will be implemented proper range deleting
-              , nodeToMoveSize;
+      var availableHeightAbove = abovePage.getAvailableContentSize() ,
+              nodeToMove = /** @type {pwk.Node}*/(this.pageNodeIndex_[belowPageIndex].length > 0 ? doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) : null) , // TODO: Should fixed in future, then will be implemented proper range deleting
+              nodeToMoveSize;
 
-            if(goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
+      if (goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
 
-                nodeToMoveSize = nodeToMove.getSize();
+        nodeToMoveSize = nodeToMove.getSize();
         // - - - -        if(nodeToMoveSize.height <= availableHeightAbove) { // Node above could be moved to the page above completely
         //
         //            // Check if it's linked node
@@ -231,34 +234,35 @@ pwk.Pagination.prototype.checkFilling = function() {
         //
         ////            break;
         //        }
-                }
-        //      else {
-        //        break;
-        // - - - -    }
+      }
+      //      else {
+      //        break;
+      // - - - -    }
 
-            // - check if current page is could be filled by content below {√}
-            //      - get available height
-            // - get minimal available splittable part on the page below
-            //      - get minimal splittable part height of the node below and node height itself
-            //      - if height acceptable, move it to the above page
-            //          - remove empty page LAST page
-            //      - if not, exit ...
-            // - set page below to belowPageIndex variable
+      // - check if current page is could be filled by content below {√}
+      //      - get available height
+      // - get minimal available splittable part on the page below
+      //      - get minimal splittable part height of the node below and node height itself
+      //      - if height acceptable, move it to the above page
+      //          - remove empty page LAST page
+      //      - if not, exit ...
+      // - set page below to belowPageIndex variable
 
-            //console.log('- = - = - = - = - = -');
-            return;
+      //console.log('- = - = - = - = - = -');
+      return;
 
-        }
     }
+  }
 
-    // Steps to fill pages top:
-    // - Checking start from topmost range node
-    // - Get height of remains space of the top page and get height of node below, if it's could be moved to the page
-    // above, move it. Merge with node above if they are linked.
-    // - If the space still remains on the page, check if current node could be split (Create abstract method isSplittable to pwk.Node class),
-    // then try to split it and move part of them.
-    // - Stop checking if content position were not changed
+  // Steps to fill pages top:
+  // - Checking start from topmost range node
+  // - Get height of remains space of the top page and get height of node below, if it's could be moved to the page
+  // above, move it. Merge with node above if they are linked.
+  // - If the space still remains on the page, check if current node could be split (Create abstract method isSplittable to pwk.Node class),
+  // then try to split it and move part of them.
+  // - Stop checking if content position were not changed
 };
+
 
 /**
  * Get page index where are situated node with specified id.
@@ -266,19 +270,19 @@ pwk.Pagination.prototype.checkFilling = function() {
  * @return {number}
  */
 pwk.Pagination.prototype.getPageIndexByNodeId = function(id) {
-    var result
-      , pageNodeIndex = this.pageNodeIndex_
-      , indexLen = pageNodeIndex.length
-      , googArray = goog.array;
+  var result ,
+      pageNodeIndex = this.pageNodeIndex_ ,
+      indexLen = pageNodeIndex.length ,
+      googArray = goog.array;
 
-    for(var i = 0; i < indexLen; i++)
-    {
-        result = googArray.indexOf(pageNodeIndex[i], id);
-        if(result != -1){
-            return i;
-        }
+  for (var i = 0; i < indexLen; i++)
+  {
+    result = googArray.indexOf(pageNodeIndex[i], id);
+    if (result != -1) {
+      return i;
     }
-    return -1;
+  }
+  return -1;
 };
 
 
@@ -287,41 +291,41 @@ pwk.Pagination.prototype.getPageIndexByNodeId = function(id) {
  * @param {pwk.Page.PageOverflowEvent} e
  */
 pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
-    var nodes = e.getNodesForMoving()
-      , page = e.target
-      , pageIndex = e.getPageIndex()
-      , doc = this.document_
-      , siblingPage = doc.getPageAt(pageIndex + 1);
+  var nodes = e.getNodesForMoving() ,
+      page = e.target ,
+      pageIndex = e.getPageIndex() ,
+      doc = this.document_ ,
+      siblingPage = doc.getPageAt(pageIndex + 1);
 
-    // Update index
+  // Update index
+  goog.array.forEach(nodes, function(node) {
+    goog.array.remove(this.pageNodeIndex_[pageIndex], node.getId());
+  }, this);
+
+  // Is required to create a new page?
+  if (goog.isDefAndNotNull(siblingPage)) { // - No
+    var siblingPageNodes = this.pageNodeIndex_[pageIndex + 1] ,
+        siblingNode = doc.getNode(siblingPageNodes[0]) ,
+        siblingNodeIndex = doc.indexOfNode(siblingNode);
+
     goog.array.forEach(nodes, function(node) {
-        goog.array.remove(this.pageNodeIndex_[pageIndex], node.getId());
+      doc.addNodeAt(node, siblingNodeIndex);
     }, this);
 
-    // Is required to create a new page?
-    if(goog.isDefAndNotNull(siblingPage)) { // - No
-        var siblingPageNodes = this.pageNodeIndex_[pageIndex + 1]
-          , siblingNode = doc.getNode(siblingPageNodes[0])
-          , siblingNodeIndex = doc.indexOfNode(siblingNode);
+  } else { // Yes
+    page = new pwk.Page(doc);
+    doc.addPage(page);
 
-        goog.array.forEach(nodes, function(node) {
-            doc.addNodeAt(node, siblingNodeIndex);
-        }, this);
+    // NOTE: Important to add handlers after page initialization.
+    page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_, false, this);
 
-    } else { // Yes
-        page = new pwk.Page(doc);
-        doc.addPage(page);
+    // Update index
+    this.pageNodeIndex_[this.pageNodeIndex_.length] = [];
 
-        // NOTE: Important to add handlers after page initialization.
-        page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_, false, this);
-
-        // Update index
-        this.pageNodeIndex_[this.pageNodeIndex_.length] = [];
-
-        goog.array.forEachRight(nodes, function(node) {
-            doc.addNode(node);
-        }, this);
-    }
+    goog.array.forEachRight(nodes, function(node) {
+      doc.addNode(node);
+    }, this);
+  }
 };
 
 
@@ -329,7 +333,7 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
  * @return {Array.<Array.<string>>}
  */
 pwk.Pagination.prototype.getPaginationIndex = function() {
-    return this.pageNodeIndex_;
+  return this.pageNodeIndex_;
 };
 
 
@@ -340,11 +344,11 @@ pwk.Pagination.prototype.getPaginationIndex = function() {
  * @private
  */
 pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
-    var removedNodeId = e.removedNode.getId();
-    goog.array.forEach(this.pageNodeIndex_, function(arr) {
-        if(goog.array.remove(arr, removedNodeId)) {
+  var removedNodeId = e.removedNode.getId();
+  goog.array.forEach(this.pageNodeIndex_, function(arr) {
+    if (goog.array.remove(arr, removedNodeId)) {
 
-        }
-    }, this);
+    }
+  }, this);
 
 };

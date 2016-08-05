@@ -31,32 +31,33 @@ goog.provide('pwk.DocumentSettings');
 goog.require('goog.style');
 
 
+
 /**
  * Initialize {pwk.PageSettings} component.
  * @constructor
  */
 pwk.DocumentSettings = function() {
 
-    /**
+  /**
      * Document line height.
      * @type {string}
      * @private
      */
-    this.lineHeight_ = '1.5';
+  this.lineHeight_ = '1.5';
 
-    /**
+  /**
      * Document font size.
      * @type {string}
      * @private
      */
-    this.fontSize_ = '12pt';
+  this.fontSize_ = '12pt';
 
-    /**
+  /**
      * Document instance.
      * @type {pwk.Document}
      * @private
      */
-    this.document_;
+  this.document_;
 };
 goog.addSingletonGetter(pwk.DocumentSettings);
 
@@ -66,7 +67,7 @@ goog.addSingletonGetter(pwk.DocumentSettings);
  * @return {string}
  */
 pwk.DocumentSettings.prototype.getLineHeight = function() {
-    return this.lineHeight_;
+  return this.lineHeight_;
 };
 
 
@@ -75,8 +76,8 @@ pwk.DocumentSettings.prototype.getLineHeight = function() {
  * @param {string} value
  */
 pwk.DocumentSettings.prototype.setLineHeight = function(value) {
-    this.lineHeight_ = value;
-    this.applyLineHeight_();
+  this.lineHeight_ = value;
+  this.applyLineHeight_();
 };
 
 
@@ -85,7 +86,7 @@ pwk.DocumentSettings.prototype.setLineHeight = function(value) {
  * @return {string}
  */
 pwk.DocumentSettings.prototype.getFontSize = function() {
-   return this.fontSize_;
+  return this.fontSize_;
 };
 
 
@@ -94,8 +95,8 @@ pwk.DocumentSettings.prototype.getFontSize = function() {
  * @param {string} value
  */
 pwk.DocumentSettings.prototype.setFontSize = function(value) {
-    this.fontSize_ = value;
-    this.applyFontSize_();
+  this.fontSize_ = value;
+  this.applyFontSize_();
 };
 
 
@@ -104,9 +105,9 @@ pwk.DocumentSettings.prototype.setFontSize = function(value) {
  * @param {pwk.Document} doc
  */
 pwk.DocumentSettings.prototype.initialize = function(doc) {
-    this.document_ = doc;
-    this.applyLineHeight_();
-    this.applyFontSize_();
+  this.document_ = doc;
+  this.applyLineHeight_();
+  this.applyFontSize_();
 };
 
 
@@ -115,15 +116,16 @@ pwk.DocumentSettings.prototype.initialize = function(doc) {
  * @private
  */
 pwk.DocumentSettings.prototype.applyLineHeight_ = function() {
-    goog.style.setStyle(this.getDocument_().getElement(), 'line-height', this.lineHeight_);
+  goog.style.setStyle(this.getDocument_().getElement(), 'line-height', this.lineHeight_);
 };
+
 
 /**
  * Apply font size settings to document.
  * @private
  */
 pwk.DocumentSettings.prototype.applyFontSize_ = function() {
-    this.getDocument_().getElement().style.fontSize = this.fontSize_;
+  this.getDocument_().getElement().style.fontSize = this.fontSize_;
 };
 
 
@@ -132,9 +134,9 @@ pwk.DocumentSettings.prototype.applyFontSize_ = function() {
  * @private
  */
 pwk.DocumentSettings.prototype.getDocument_ = function() {
-    if(!goog.isDefAndNotNull(this.document_)) {
-        throw new Error('Document should be initialized!');
-    }
-    return this.document_;
+  if (!goog.isDefAndNotNull(this.document_)) {
+    throw new Error('Document should be initialized!');
+  }
+  return this.document_;
 };
 

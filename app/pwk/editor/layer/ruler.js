@@ -39,7 +39,7 @@ goog.require('goog.ui.Component');
  * @extends {goog.ui.Component}
  */
 pwk.Ruler = function() {
-    goog.base(this);
+  goog.base(this);
 };
 goog.inherits(pwk.Ruler, goog.ui.Component);
 

@@ -34,6 +34,6 @@ goog.provide('pwk.NodeTypes');
  * @enum {string}
  */
 pwk.NodeTypes = {
-    PARAGRAPH : 'pwk-paragraph'
+  PARAGRAPH: 'pwk-paragraph'
 };
 

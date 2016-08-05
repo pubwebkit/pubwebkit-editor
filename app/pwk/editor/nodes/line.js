@@ -28,11 +28,12 @@
 
 goog.provide('pwk.Line');
 
-goog.require('goog.ui.Component');
-goog.require('goog.style');
 goog.require('goog.dom.classlist');
+goog.require('goog.style');
+goog.require('goog.ui.Component');
 goog.require('pwk.LineContent');
 goog.require('pwk.layer.SelectionOverlay');
+
 
 
 /**
@@ -42,25 +43,25 @@ goog.require('pwk.layer.SelectionOverlay');
  * @constructor
  */
 pwk.Line = function(opt_text) {
-    goog.base(this);
+  goog.base(this);
 
-    /**
+  /**
      * @type {pwk.LineContent}
      * @private
      */
-    this.content_ = new pwk.LineContent(opt_text);
+  this.content_ = new pwk.LineContent(opt_text);
 
 
-    /**
+  /**
      * @type {pwk.layer.SelectionOverlay}
      * @private
      */
-    this.selectionOverlay_;
+  this.selectionOverlay_;
 
-    /**
+  /**
      * @type {?{start:number, end:number}}
      */
-    this.selectionOffsets_;
+  this.selectionOffsets_;
 
 };
 goog.inherits(pwk.Line, goog.ui.Component);
@@ -68,28 +69,28 @@ goog.inherits(pwk.Line, goog.ui.Component);
 
 /** @inheritDoc */
 pwk.Line.prototype.createDom = function() {
-    var element = goog.dom.createElement('div');
+  var element = goog.dom.createElement('div');
 
-    // Create element and apply classes
-    this.setElementInternal(element);
-    element.setAttribute('id', this.getId());
-    goog.dom.classlist.add(element, pwk.Line.CSS_CLASS);
+  // Create element and apply classes
+  this.setElementInternal(element);
+  element.setAttribute('id', this.getId());
+  goog.dom.classlist.add(element, pwk.Line.CSS_CLASS);
 
-    // Add content as child
-    this.addChild(this.content_, true);
+  // Add content as child
+  this.addChild(this.content_, true);
 };
 
 
 /** @inheritDoc */
 pwk.Line.prototype.disposeInternal = function() {
-    goog.base(this, 'disposeInternal');
+  goog.base(this, 'disposeInternal');
 
-    goog.dispose(this.content_);
-    goog.dispose(this.selectionOverlay_);
+  goog.dispose(this.content_);
+  goog.dispose(this.selectionOverlay_);
 
-    delete this.content_;
-    delete this.selectionOverlay_;
-    delete this.selectionOffsets_;
+  delete this.content_;
+  delete this.selectionOverlay_;
+  delete this.selectionOffsets_;
 };
 
 
@@ -98,7 +99,7 @@ pwk.Line.prototype.disposeInternal = function() {
  * @return {string}
  */
 pwk.Line.prototype.getText = function() {
-    return this.content_.getText();
+  return this.content_.getText();
 };
 
 
@@ -107,7 +108,7 @@ pwk.Line.prototype.getText = function() {
  * @return {string}
  */
 pwk.Line.prototype.getNormalizedText = function() {
-    return this.content_.getNormalizedText();
+  return this.content_.getNormalizedText();
 };
 
 
@@ -116,7 +117,7 @@ pwk.Line.prototype.getNormalizedText = function() {
  * @return {number}
  */
 pwk.Line.prototype.getLength = function() {
-    return this.content_.getLength();
+  return this.content_.getLength();
 };
 
 
@@ -126,7 +127,7 @@ pwk.Line.prototype.getLength = function() {
  * @return {number}
  */
 pwk.Line.prototype.getWidth = function(isOnlyPrintableContent) {
-    return this.content_.getWidth(isOnlyPrintableContent);
+  return this.content_.getWidth(isOnlyPrintableContent);
 };
 
 
@@ -135,24 +136,25 @@ pwk.Line.prototype.getWidth = function(isOnlyPrintableContent) {
  * @return {number}
  */
 pwk.Line.prototype.getHeight = function() {
-    return goog.style.getSize(this.getContentElement()).height;
+  return goog.style.getSize(this.getContentElement()).height;
 };
 
 
 /**
  * Get index inside node.
- * @returns {number}
+ * @return {number}
  */
 pwk.Line.prototype.getIndex = function() {
-    return this.getParentNode().indexOfLine(this);
+  return this.getParentNode().indexOfLine(this);
 };
+
 
 /**
  * Removes the last text node from the content and returns its value.
  * @return {string} The value of the popped text node.
  */
 pwk.Line.prototype.pop = function() {
-    return this.content_.pop();
+  return this.content_.pop();
 };
 
 
@@ -161,7 +163,7 @@ pwk.Line.prototype.pop = function() {
  * @return {string} The values of the popped text nodes.
  */
 pwk.Line.prototype.popLastWord = function() {
-    return this.content_.popLastWord();
+  return this.content_.popLastWord();
 };
 
 
@@ -171,9 +173,9 @@ pwk.Line.prototype.popLastWord = function() {
  * @param {number=} opt_offset
  */
 pwk.Line.prototype.insertValue = function(value, opt_offset) {
-    this.content_.insertValue(value, opt_offset);
+  this.content_.insertValue(value, opt_offset);
 
-    this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this));
+  this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this));
 };
 
 
@@ -183,9 +185,9 @@ pwk.Line.prototype.insertValue = function(value, opt_offset) {
  * @param {number=} opt_offset
  */
 pwk.Line.prototype.insertText = function(text, opt_offset) {
-    this.content_.insertText(text, opt_offset);
+  this.content_.insertText(text, opt_offset);
 
-    this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this));
+  this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this));
 };
 
 
@@ -194,7 +196,7 @@ pwk.Line.prototype.insertText = function(text, opt_offset) {
  * @return {Node?}
  */
 pwk.Line.prototype.getTextNodeAtOffset = function(offset) {
-    return this.content_.getTextNodeAtOffset(offset);
+  return this.content_.getTextNodeAtOffset(offset);
 };
 
 
@@ -203,7 +205,7 @@ pwk.Line.prototype.getTextNodeAtOffset = function(offset) {
  * @return {string}
  */
 pwk.Line.prototype.getTextNodeValueAtOffset = function(offset) {
-    return this.content_.getTextNodeValueAtOffset(offset);
+  return this.content_.getTextNodeValueAtOffset(offset);
 };
 
 
@@ -211,7 +213,7 @@ pwk.Line.prototype.getTextNodeValueAtOffset = function(offset) {
  * @return {pwk.LineContent}
  */
 pwk.Line.prototype.getContent = function() {
-    return this.content_;
+  return this.content_;
 };
 
 
@@ -221,7 +223,7 @@ pwk.Line.prototype.getContent = function() {
  * @return {string} Сutted text
  */
 pwk.Line.prototype.cut = function(startOffset, opt_endOffset) {
-    return this.content_.cut(startOffset, opt_endOffset);
+  return this.content_.cut(startOffset, opt_endOffset);
 };
 
 
@@ -230,7 +232,7 @@ pwk.Line.prototype.cut = function(startOffset, opt_endOffset) {
  * @return {pwk.LeafNode}
  */
 pwk.Line.prototype.getParentNode = function() {
-    return /** @type {pwk.LeafNode} */(this.getParent());
+  return /** @type {pwk.LeafNode} */(this.getParent());
 };
 
 
@@ -241,30 +243,30 @@ pwk.Line.prototype.getParentNode = function() {
  */
 pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
 
-    // Remove previous selection, if exist
-    if(goog.isDefAndNotNull(this.selectionOverlay_)) {
-        this.removeChild(this.selectionOverlay_, true);
-        goog.dispose(this.selectionOverlay_);
-    }
+  // Remove previous selection, if exist
+  if (goog.isDefAndNotNull(this.selectionOverlay_)) {
+    this.removeChild(this.selectionOverlay_, true);
+    goog.dispose(this.selectionOverlay_);
+  }
 
-    var googStyle = goog.style
-      , el = this.getElement()
-      , elSize = googStyle.getSize(el)
-      , elPageOffset = googStyle.getPageOffset(el)
-      , clientRectRange;
+  var googStyle = goog.style ,
+      el = this.getElement() ,
+      elSize = googStyle.getSize(el) ,
+      elPageOffset = googStyle.getPageOffset(el) ,
+      clientRectRange;
 
-    if(this.getLength() == 0) {
-        clientRectRange = new pwk.primitives.ClientRectRange(10, elSize.height, 0, 0);
-    } else {
-        var lineContentClientRect = this.content_.getBoundingClientRectForOffset(opt_startOffset, opt_endOffset);
-        clientRectRange = new pwk.primitives.ClientRectRange(lineContentClientRect.width, elSize.height, 0, lineContentClientRect.left - elPageOffset.x);
-    }
+  if (this.getLength() == 0) {
+    clientRectRange = new pwk.primitives.ClientRectRange(10, elSize.height, 0, 0);
+  } else {
+    var lineContentClientRect = this.content_.getBoundingClientRectForOffset(opt_startOffset, opt_endOffset);
+    clientRectRange = new pwk.primitives.ClientRectRange(lineContentClientRect.width, elSize.height, 0, lineContentClientRect.left - elPageOffset.x);
+  }
 
-    this.selectionOffsets_ = { start: goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0,
-                               end: goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength() };
+  this.selectionOffsets_ = { start: goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0,
+    end: goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength() };
 
-    this.selectionOverlay_ = new pwk.layer.SelectionOverlay(clientRectRange);
-    this.addChildAt(this.selectionOverlay_, 0, true);
+  this.selectionOverlay_ = new pwk.layer.SelectionOverlay(clientRectRange);
+  this.addChildAt(this.selectionOverlay_, 0, true);
 };
 
 
@@ -272,12 +274,12 @@ pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
  * Remove selection overlay from the line
  */
 pwk.Line.prototype.unselect = function() {
-    if(this.selectionOverlay_) {
-        this.removeChild(this.selectionOverlay_);
-        goog.dispose(this.selectionOverlay_);
-        delete this.selectionOverlay_;
-        this.selectionOffsets_ = null;
-    }
+  if (this.selectionOverlay_) {
+    this.removeChild(this.selectionOverlay_);
+    goog.dispose(this.selectionOverlay_);
+    delete this.selectionOverlay_;
+    this.selectionOffsets_ = null;
+  }
 };
 
 
@@ -286,10 +288,10 @@ pwk.Line.prototype.unselect = function() {
  * @return {boolean}
  */
 pwk.Line.prototype.isSelectedEntirely = function() {
-    if(goog.isDefAndNotNull(this.selectionOffsets_)) {
-        return this.selectionOffsets_.start == 0 && this.selectionOffsets_.end == this.getLength();
-    }
-    return false;
+  if (goog.isDefAndNotNull(this.selectionOffsets_)) {
+    return this.selectionOffsets_.start == 0 && this.selectionOffsets_.end == this.getLength();
+  }
+  return false;
 };
 
 
@@ -298,14 +300,15 @@ pwk.Line.prototype.isSelectedEntirely = function() {
  * @return {{start:number, end:number}|Object<string,string>|null}
  */
 pwk.Line.prototype.removeSelection = function() {
-    var result = this.selectionOffsets_ != null ? goog.object.clone(this.selectionOffsets_) : null;
-    if(goog.isDefAndNotNull(this.selectionOffsets_)) {
-        this.content_.removeAt(this.selectionOffsets_.start, this.selectionOffsets_.end);
-        this.unselect();
-    }
+  var result = this.selectionOffsets_ != null ? goog.object.clone(this.selectionOffsets_) : null;
+  if (goog.isDefAndNotNull(this.selectionOffsets_)) {
+    this.content_.removeAt(this.selectionOffsets_.start, this.selectionOffsets_.end);
+    this.unselect();
+  }
 
-    return result;
+  return result;
 };
+
 
 /**
  * Component default css class.

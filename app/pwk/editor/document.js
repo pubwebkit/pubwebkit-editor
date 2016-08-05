@@ -718,7 +718,7 @@ pwk.Document.prototype.initializeDocument_ = function() {
  * @private
  */
 pwk.Document.prototype.initializeEvents_ = function() {
-  this.listen(pwk.Document.EventType.FILLING_CHANGE, this.onDocumentFillingChangedEventHandler_)
+  this.listen(pwk.Document.EventType.FILLING_CHANGE, this.onDocumentFillingChangedEventHandler_);
 };
 
 
@@ -728,9 +728,9 @@ pwk.Document.prototype.initializeEvents_ = function() {
  * @private
  */
 pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
-  var pagination = this.pagination_
-      , selection = this.selection_
-      , range = selection.getRange();
+  var pagination = this.pagination_ ,
+      selection = this.selection_ ,
+      range = selection.getRange();
 
   if (range != null) {
     // If document become bigger then available on current pages, move nodes to other pages or create more page and
@@ -758,6 +758,7 @@ pwk.Document.EventType = {
   FILLING_CHANGE: goog.events.getUniqueId('filling_changed'),
   NODE_REMOVED: goog.events.getUniqueId('node_removed')
 };
+
 
 
 /**

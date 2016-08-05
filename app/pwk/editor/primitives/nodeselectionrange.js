@@ -20,12 +20,14 @@
 //
 // Authors: Dmytro Antonenko
 //
+
 /**
  * @fileoverview
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
 goog.provide('pwk.primitives.NodeSelectionRange');
+
 
 
 /**
@@ -37,32 +39,32 @@ goog.provide('pwk.primitives.NodeSelectionRange');
  */
 pwk.primitives.NodeSelectionRange = function(startLine, startLineOffset, endLine, endLineOffset) {
 
-    /**
+  /**
      * @type {pwk.Line}
      * @public
      */
-    this.startLine = startLine;
+  this.startLine = startLine;
 
 
-    /**
+  /**
      * @type {number}
      * @public
      */
-    this.startLineOffset = startLineOffset;
+  this.startLineOffset = startLineOffset;
 
 
-    /**
+  /**
      * @type {pwk.Line}
      * @public
      */
-    this.endLine = endLine;
+  this.endLine = endLine;
 
 
-    /**
+  /**
      * @type {number}
      * @public
      */
-    this.endLineOffset = endLineOffset;
+  this.endLineOffset = endLineOffset;
 };
 
 
@@ -70,7 +72,7 @@ pwk.primitives.NodeSelectionRange = function(startLine, startLineOffset, endLine
  * @return {boolean}
  */
 pwk.primitives.NodeSelectionRange.prototype.isCollapsed = function() {
-    return this.startLine === this.endLine && this.startLineOffset === this.endLineOffset;
+  return this.startLine === this.endLine && this.startLineOffset === this.endLineOffset;
 };
 
 
@@ -79,8 +81,8 @@ pwk.primitives.NodeSelectionRange.prototype.isCollapsed = function() {
  * @return {boolean}
  */
 pwk.primitives.NodeSelectionRange.prototype.equals = function(otherNodeSelectionRange) {
-    return (otherNodeSelectionRange.startLine == this.startLine &&
-            otherNodeSelectionRange.endLine == this.endLine &&
-            otherNodeSelectionRange.startLineOffset == this.startLineOffset &&
-            otherNodeSelectionRange.endLineOffset == this.endLineOffset);
+  return (otherNodeSelectionRange.startLine == this.startLine &&
+      otherNodeSelectionRange.endLine == this.endLine &&
+      otherNodeSelectionRange.startLineOffset == this.startLineOffset &&
+      otherNodeSelectionRange.endLineOffset == this.endLineOffset);
 };

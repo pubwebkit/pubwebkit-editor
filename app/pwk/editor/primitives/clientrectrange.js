@@ -28,6 +28,8 @@
 
 goog.provide('pwk.primitives.ClientRectRange');
 
+
+
 /**
  * @param {number=} opt_width
  * @param {number=} opt_height
@@ -37,27 +39,27 @@ goog.provide('pwk.primitives.ClientRectRange');
  */
 pwk.primitives.ClientRectRange = function(opt_width, opt_height, opt_top, opt_left) {
 
-    /**
+  /**
      * @type {number}
      * @public
      */
-    this.width = opt_width ? opt_width : 0;
+  this.width = opt_width ? opt_width : 0;
 
-    /**
+  /**
      * @type {number}
      * @public
      */
-    this.height = opt_height ? opt_height : 0;
+  this.height = opt_height ? opt_height : 0;
 
-    /**
+  /**
      * @type {number}
      * @public
      */
-    this.left = opt_left ? opt_left : 0;
+  this.left = opt_left ? opt_left : 0;
 
-    /**
+  /**
      * @type {number}
      * @public
      */
-    this.top = opt_top ? opt_top : 0;
+  this.top = opt_top ? opt_top : 0;
 };

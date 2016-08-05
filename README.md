@@ -17,3 +17,4 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 - build Closure Templates for javascript usage
 - install Closure Linter from `libs/closure-linter`
     - Make gjslint.py executable `chmod +x libs/closure-linter/closure_linter/gjslint.py`
+    - Make gjslint.py executable `chmod +x libs/closure-linter/closure_linter/fixjsstyle.py`

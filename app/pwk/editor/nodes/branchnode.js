@@ -31,6 +31,7 @@ goog.provide('pwk.BranchNode');
 goog.require('pwk.Node');
 
 
+
 /**
  * @param {pwk.NodeTypes} type Type of node
  * @param {pwk.Document} doc Parent document object.
@@ -38,7 +39,7 @@ goog.require('pwk.Node');
  * @extends {pwk.Node}
  */
 pwk.BranchNode = function(type, doc) {
-    goog.base(this, type, doc);
+  goog.base(this, type, doc);
 };
 goog.inherits(pwk.BranchNode, pwk.Node);
 
@@ -54,5 +55,5 @@ pwk.BranchNode.prototype.CSS_CLASS = 'pwk-branchnode';
  * @inheritDoc
  */
 pwk.BranchNode.prototype.getSize = function() {
-    return goog.style.getSize(this.getElement());
+  return goog.style.getSize(this.getElement());
 };

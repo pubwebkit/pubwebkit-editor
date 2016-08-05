@@ -28,9 +28,10 @@
 
 goog.provide('pwk.PageFooter');
 
-goog.require('goog.ui.Component');
 goog.require('goog.dom.classlist');
+goog.require('goog.ui.Component');
 goog.require('pwk.PageSettings');
+
 
 
 /**
@@ -40,49 +41,49 @@ goog.require('pwk.PageSettings');
  * @extends {goog.ui.Component}
  */
 pwk.PageFooter = function() {
-    goog.base(this);
+  goog.base(this);
 
-    /**
+  /**
      * @type {pwk.PageSettings}
      * @private
      */
-    this.pageSettings_ = pwk.PageSettings.getInstance();
+  this.pageSettings_ = pwk.PageSettings.getInstance();
 };
 goog.inherits(pwk.PageFooter, goog.ui.Component);
 
 
 /** @inheritDoc */
 pwk.PageFooter.prototype.createDom = function() {
-    var el = this.dom_.createElement('div');
-    this.setElementInternal(el);
-    this.decorateInternal(el);
+  var el = this.dom_.createElement('div');
+  this.setElementInternal(el);
+  this.decorateInternal(el);
 
-    // Width should be equal page width
-    goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');
-    goog.style.setUnselectable(el, true);
+  // Width should be equal page width
+  goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');
+  goog.style.setUnselectable(el, true);
 };
 
 
 /** @inheritDoc */
 pwk.PageFooter.prototype.decorateInternal = function(element) {
-    goog.base(this, 'decorateInternal', element);
+  goog.base(this, 'decorateInternal', element);
 
-    goog.dom.classlist.add(element, pwk.PageFooter.CSS_CLASS);
+  goog.dom.classlist.add(element, pwk.PageFooter.CSS_CLASS);
 };
 
 
 /** @inheritDoc */
 pwk.PageFooter.prototype.enterDocument = function() {
-    goog.base(this, 'enterDocument');
+  goog.base(this, 'enterDocument');
 };
 
 
 /** @inheritDoc */
 pwk.PageFooter.prototype.disposeInternal = function() {
-    goog.base(this, 'disposeInternal');
+  goog.base(this, 'disposeInternal');
 
-    // Remove references
-    this.pageSettings_ = null;
+  // Remove references
+  this.pageSettings_ = null;
 };
 
 

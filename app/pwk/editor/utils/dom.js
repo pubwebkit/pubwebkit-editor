@@ -33,6 +33,6 @@ goog.provide('pwk.utils.dom');
  * @return {Element}
  */
 pwk.utils.dom.createDummyNode = function() {
-    // Create marker
-    return goog.dom.createDom('span', { 'id' : 'caret-marker' }, '\u200B');
+  // Create marker
+  return goog.dom.createDom('span', { 'id' : 'caret-marker' }, '\u200B');
 };
