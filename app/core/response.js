@@ -31,6 +31,7 @@ goog.require('goog.soy');
 goog.require('app.core.Router');
 
 
+
 /**
  * Create a response based on the provided request.
  * @param {app.core.Request} request
@@ -63,13 +64,14 @@ app.core.Response.prototype.getRouter = function() {
 /**
  * Render the template with the provided data.
  * @param {Function} template The template being rendered.
- * @param {Object=} opt_data The data being passed to the template. Usually it's {mvc.Model} object.
+ * @param {Object=} opt_data The data being passed to the template. Usually it's
+ * {mvc.Model} object.
  * @param {Element=} opt_element The element having the template rendered in.
  * Defaults to document.body.
  */
 app.core.Response.prototype.render = function(template, opt_data, opt_element) {
-    var element = opt_element || document.body
-      , data = opt_data || {};
+    let element = opt_element || document.body;
+    let data = opt_data || {};
 
     goog.soy.renderElement(element, template, data, this.request_.toJSON());
 };

@@ -29,7 +29,8 @@ goog.require('app.core.types.ActionFilterContext');
 
 /**
  * A base class for controller actions events.
- * @param {app.core.types.ActionFilterContext} actionFilterContext Current filter context
+ * @param {app.core.types.ActionFilterContext} actionFilterContext Current
+ * filter context
  * @param {string|!goog.events.EventId} type Event Type.
  * @param {Function} resolve Promise resolver function.
  * @param {Object=} opt_target Reference to the object that is the target of
@@ -38,7 +39,8 @@ goog.require('app.core.types.ActionFilterContext');
  * @extends {goog.events.Event}
  * @constructor
  */
-app.core.events.ActionEvent = function(actionFilterContext, type, resolve, opt_target) {
+app.core.events.ActionEvent = function(actionFilterContext, type, resolve,
+                                       opt_target) {
     goog.events.Event.call(this, type, opt_target);
 
     /**

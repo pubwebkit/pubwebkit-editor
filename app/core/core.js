@@ -28,11 +28,11 @@
 
 goog.provide('app.Core');
 
+goog.require('app.core.Application');
+goog.require('app.controllers.HomeController');
+goog.require('app.controllers.HelloController');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventTarget');
-goog.require('app.core.Application');
-
-goog.require('app.controllers.HomeController');
 
 
 
@@ -55,13 +55,17 @@ app.Core.prototype.init = function() {
     // -- Application initialization -- //
 
     // -- Register routes -- //
-    this.mapRoute('*', app.controllers.HomeController); // Default route, specify other routes above this one
+    this.mapRoute('{!}{/}{/hello{/}}', app.controllers.HelloController);
+    // Default route, specify other routes above this one
+    this.mapRoute('*', app.controllers.HomeController);
 
     // -- Register application filters -- //
-    //this.addApplicationFilter(new hedgehog.filters.ComponentsInitializationApplicationFilter());
+    //this.addApplicationFilter(
+    //  new hedgehog.filters.ComponentsInitializationApplicationFilter());
 
     // -- Register action filters -- //
-    //this.addActionFilter(new hedgehog.filters.Componen tsInitializationActionFilter(), null, 0);
+    //this.addActionFilter(
+    //  new hedgehog.filters.Componen tsInitializationActionFilter(), null, 0);
 
     // Execute application
     this.run();

@@ -21,7 +21,7 @@
 // Authors: Dmytro Antonenko
 //
 
-goog.provide('app.controllers.HomeController');
+goog.provide('app.controllers.HelloController');
 
 goog.require('app.core.Controller');
 goog.require('pwk.Editor');
@@ -33,10 +33,10 @@ goog.require('pwk.EditorContainer');
  * @constructor
  * @extends {app.core.Controller}
  */
-app.controllers.HomeController = function() {
-  goog.base(this, 'HomeController');
+app.controllers.HelloController = function() {
+  goog.base(this, 'HelloController');
 };
-goog.inherits(app.controllers.HomeController, app.core.Controller);
+goog.inherits(app.controllers.HelloController, app.core.Controller);
 
 
 /**
@@ -46,11 +46,7 @@ goog.inherits(app.controllers.HomeController, app.core.Controller);
  * @param {Function} resolve
  * @param {Function} reject
  */
-app.controllers.HomeController.prototype.index =
+app.controllers.HelloController.prototype.index =
     function(request, response) {
-  let editor = new pwk.Editor();
-  let container = new pwk.EditorContainer();
-
-  container.addChild(editor, true);
-  container.render(document.body);
+  console.log('Hello');
 };

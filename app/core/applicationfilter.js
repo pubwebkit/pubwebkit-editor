@@ -30,6 +30,7 @@ goog.provide('app.core.ApplicationFilter');
  */
 app.core.ApplicationFilter = function() {};
 
+
 /**
  * Called when an application start initialization.
  * @param {goog.events.Event} e
