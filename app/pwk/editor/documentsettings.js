@@ -39,24 +39,24 @@ goog.require('goog.style');
 pwk.DocumentSettings = function() {
 
   /**
-     * Document line height.
-     * @type {string}
-     * @private
-     */
+   * Document line height.
+   * @type {string}
+   * @private
+   */
   this.lineHeight_ = '1.5';
 
   /**
-     * Document font size.
-     * @type {string}
-     * @private
-     */
+   * Document font size.
+   * @type {string}
+   * @private
+   */
   this.fontSize_ = '12pt';
 
   /**
-     * Document instance.
-     * @type {pwk.Document}
-     * @private
-     */
+   * Document instance.
+   * @type {pwk.Document}
+   * @private
+   */
   this.document_;
 };
 goog.addSingletonGetter(pwk.DocumentSettings);

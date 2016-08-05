@@ -52,48 +52,51 @@ pwk.LeafNode = function(type, doc, opt_content) {
   goog.base(this, type, doc);
 
   /**
-     * @type {Array.<pwk.Line>}
-     * @private
-     */
-  this.lines_ = goog.isString(opt_content) || !goog.isDefAndNotNull(opt_content) ? [new pwk.Line(opt_content || '')] : [opt_content];
+   * @type {Array.<pwk.Line>}
+   * @private
+   */
+  this.lines_ = goog.isString(opt_content) ||
+  !goog.isDefAndNotNull(opt_content) ?
+      [new pwk.Line(opt_content || '')] :
+      [opt_content];
 
 
   /**
-     * @type {Array}
-     * @private
-     */
+   * @type {Array}
+   * @private
+   */
   this.rangeInfoForOffsetCache_ = [];
 
 
   /**
-     * @type {pwk.PageSettings}
-     * @private
-     */
+   * @type {pwk.PageSettings}
+   * @private
+   */
   this.pageSettings_ = pwk.PageSettings.getInstance();
 
   /**
-     * @type {pwk.LeafNode}
-     * @private
-     */
+   * @type {pwk.LeafNode}
+   * @private
+   */
   this.previousLinkedNode_;
 
 
   /**
-     * @type {pwk.LeafNode}
-     * @private
-     */
+   * @type {pwk.LeafNode}
+   * @private
+   */
   this.nextLinkedNode_;
 
   /**
-     * @type {?pwk.primitives.NodeSelectionRange}
-     * @private
-     */
+   * @type {?pwk.primitives.NodeSelectionRange}
+   * @private
+   */
   this.nodeSelectionRange_;
 
   /**
-     * @type {boolean}
-     * @private
-     */
+   * @type {boolean}
+   * @private
+   */
   this.isSelected_ = false;
 };
 goog.inherits(pwk.LeafNode, pwk.Node);
@@ -108,14 +111,15 @@ pwk.LeafNode.prototype.createDom = function() {
   element.setAttribute('id', this.getId());
   goog.dom.classlist.add(element, this.CSS_CLASS);
 
-  var lines = this.lines_ ,
-      linesLength = lines.length ,
+  var lines = this.lines_,
+      linesLength = lines.length,
       loopLine;
 
-  while (linesLength--) {
+  while(linesLength--) {
     loopLine = lines[linesLength];
     this.addChildAt(loopLine, 0, true);
-    pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), loopLine); // apply node attributes
+    // apply node attributes
+    pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), loopLine);
   }
 };
 
@@ -128,12 +132,12 @@ pwk.LeafNode.prototype.enterDocument = function() {
   this.listen(pwk.Node.EventType.ATTRIBUTES_CHANGED, this.renderNode_, false, this);
   this.listen(pwk.LeafNode.EventType.CONTENT_CHANGED, this.onLineContentChangedHandler_, false, this);
 
-  if (this.getAttributes().length > 0) {
+  if(this.getAttributes().length > 0) {
     this.dispatchEvent(pwk.Node.EventType.ATTRIBUTES_CHANGED);
   }
 
 
-  if (this.getLength() > 0) {
+  if(this.getLength() > 0) {
     this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.getFirstLine()));
   }
 };
@@ -168,7 +172,7 @@ pwk.LeafNode.prototype.isRootLinkedNode = function() {
 /** @inheritDoc */
 pwk.LeafNode.prototype.setPreviousLinkedNode = function(node) {
   this.previousLinkedNode_ = /** @type {pwk.LeafNode} */(node);
-  if (node.getNextLinkedNode() != this) {
+  if(node.getNextLinkedNode() != this) {
     node.setNextLinkedNode(this);
   }
 };
@@ -177,7 +181,7 @@ pwk.LeafNode.prototype.setPreviousLinkedNode = function(node) {
 /** @inheritDoc */
 pwk.LeafNode.prototype.setNextLinkedNode = function(node) {
   this.nextLinkedNode_ = /** @type {pwk.LeafNode} */(node);
-  if (node.getPreviousLinkedNode() != this) {
+  if(node.getPreviousLinkedNode() != this) {
     node.setPreviousLinkedNode(this);
   }
 };
@@ -190,7 +194,7 @@ pwk.LeafNode.prototype.unlinkPreviousLinkedNode = function() {
   var previousLinkedNode = this.previousLinkedNode_;
   this.previousLinkedNode_ = null;
 
-  if (previousLinkedNode != null && previousLinkedNode.getNextLinkedNode() != null) {
+  if(previousLinkedNode != null && previousLinkedNode.getNextLinkedNode() != null) {
     previousLinkedNode.unlinkNextLinkedNode();
   }
   this.clearRangeInfoForOffsetCache();
@@ -204,7 +208,7 @@ pwk.LeafNode.prototype.unlinkNextLinkedNode = function() {
   var nextLinkedNode = this.nextLinkedNode_;
   this.nextLinkedNode_ = null;
 
-  if (nextLinkedNode != null && nextLinkedNode.getPreviousLinkedNode() != null) {
+  if(nextLinkedNode != null && nextLinkedNode.getPreviousLinkedNode() != null) {
     nextLinkedNode.unlinkPreviousLinkedNode();
   }
   this.clearRangeInfoForOffsetCache();
@@ -219,7 +223,7 @@ pwk.LeafNode.prototype.unlinkNextLinkedNode = function() {
 pwk.LeafNode.prototype.insertLine = function(line, render, opt_i) {
   var i = goog.isDefAndNotNull(opt_i) ? opt_i : this.lines_.length;
   goog.array.insertAt(this.lines_, line, i);
-  if (render) {
+  if(render) {
     this.addChildAt(line, i, true);
     pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line); // apply node attributes
   }
@@ -243,11 +247,11 @@ pwk.LeafNode.prototype.insertLines = function(lines, render, opt_i) {
 pwk.LeafNode.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 
-  var lines = this.lines_ ,
+  var lines = this.lines_,
       linesLen = lines.length;
 
   // Dispose of all Disposable objects owned by this class.
-  while (linesLen--) {
+  while(linesLen--) {
     goog.dispose(lines[linesLen]);
   }
 
@@ -270,18 +274,18 @@ pwk.LeafNode.prototype.disposeInternal = function() {
  * @private
  */
 pwk.LeafNode.prototype.getLinesOfAllLinkedNodes_ = function() {
-  var lines = [] ,
-      previousLinkedNode = this.previousLinkedNode_ ,
+  var lines = [],
+      previousLinkedNode = this.previousLinkedNode_,
       nextLinkedNode = this.nextLinkedNode_;
 
-  while (goog.isDefAndNotNull(previousLinkedNode)) {
+  while(goog.isDefAndNotNull(previousLinkedNode)) {
     lines = goog.array.concat(previousLinkedNode.getLines(), lines);
     previousLinkedNode = previousLinkedNode.getPreviousLinkedNode();
   }
 
   lines = goog.array.concat(lines, this.getLines());
 
-  while (goog.isDefAndNotNull(nextLinkedNode)) {
+  while(goog.isDefAndNotNull(nextLinkedNode)) {
     lines = goog.array.concat(lines, nextLinkedNode.getLines());
     nextLinkedNode = nextLinkedNode.getNextLinkedNode();
   }
@@ -298,16 +302,16 @@ pwk.LeafNode.prototype.getLinesOfAllLinkedNodes_ = function() {
 pwk.LeafNode.prototype.getRangeInfoForOffset = function(offset) {
   // Looking into cache
   var cacheData = this.rangeInfoForOffsetCache_[offset];
-  if (goog.isDefAndNotNull(cacheData)) {
+  if(goog.isDefAndNotNull(cacheData)) {
     return cacheData;
   }
 
-  var lines = this.lines_ ,
-      lineLength ,
-      line ,
+  var lines = this.lines_,
+      lineLength,
+      line,
       rangeInfo;
 
-  if (offset == 0) {
+  if(offset == 0) {
     line = lines[0];
     lineLength = line.getLength();
     rangeInfo = {
@@ -324,15 +328,15 @@ pwk.LeafNode.prototype.getRangeInfoForOffset = function(offset) {
     return rangeInfo;
   }
 
-  var lengthSummary = 0 ,
+  var lengthSummary = 0,
       linesCount = lines.length;
 
-  for (var i = 0; i < linesCount; i++) {
+  for(var i = 0; i < linesCount; i++) {
     line = lines[i];
     lineLength = line.getLength();
     lengthSummary += lineLength;
 
-    if (lengthSummary >= offset) {
+    if(lengthSummary >= offset) {
       var lineOffset = lineLength - (lengthSummary - offset);
       rangeInfo = {
         lineIndex: i,
@@ -359,12 +363,12 @@ pwk.LeafNode.prototype.getRangeInfoForOffset = function(offset) {
  * @return {?{lineIndex: number, line: pwk.Line, lineOffset: number, lineLength: number, nodeOffset: number, isEndOfLine: boolean, linkedNodeOffset: number}}
  */
 pwk.LeafNode.prototype.getRangeInfoByLinkedNodesOffset = function(offset) {
-  var lines = this.getLinesOfAllLinkedNodes_() ,
-      lineLength ,
-      line ,
+  var lines = this.getLinesOfAllLinkedNodes_(),
+      lineLength,
+      line,
       rangeInfo;
 
-  if (offset == 0) {
+  if(offset == 0) {
     line = lines[0];
     lineLength = line.getLength();
     rangeInfo = {
@@ -380,15 +384,15 @@ pwk.LeafNode.prototype.getRangeInfoByLinkedNodesOffset = function(offset) {
     return rangeInfo;
   }
 
-  var lengthSummary = 0 ,
+  var lengthSummary = 0,
       linesCount = lines.length;
 
-  for (var i = 0; i < linesCount; i++) {
+  for(var i = 0; i < linesCount; i++) {
     line = lines[i];
     lineLength = line.getLength();
     lengthSummary += lineLength;
 
-    if (lengthSummary >= offset) {
+    if(lengthSummary >= offset) {
       var lineOffset = lineLength - (lengthSummary - offset);
       rangeInfo = {
         lineIndex: i,
@@ -415,16 +419,16 @@ pwk.LeafNode.prototype.getRangeInfoByLinkedNodesOffset = function(offset) {
  * @return {number}
  */
 pwk.LeafNode.prototype.getOffsetByLineOffset = function(line, lineOffset) {
-  var lines = this.lines_ ,
-      index = this.indexOfLine(line) ,
-      linesCount = lines.length ,
-      lengthSummary = 0 ,
-      i = 0 ,
+  var lines = this.lines_,
+      index = this.indexOfLine(line),
+      linesCount = lines.length,
+      lengthSummary = 0,
+      i = 0,
       loopLine;
 
-  while (i < linesCount) {
+  while(i < linesCount) {
     loopLine = lines[i];
-    if (i == index) {
+    if(i == index) {
       lengthSummary += lineOffset;
       break;
     } else {
@@ -445,16 +449,16 @@ pwk.LeafNode.prototype.getOffsetByLineOffset = function(line, lineOffset) {
  * @private
  */
 pwk.LeafNode.prototype.getOffsetForLinkedNodes_ = function(line, lineOffset) {
-  var lines = this.getLinesOfAllLinkedNodes_() ,
-      index = goog.array.indexOf(lines, line) ,
-      linesCount = lines.length ,
-      lengthSummary = 0 ,
-      i = 0 ,
+  var lines = this.getLinesOfAllLinkedNodes_(),
+      index = goog.array.indexOf(lines, line),
+      linesCount = lines.length,
+      lengthSummary = 0,
+      i = 0,
       loopLine;
 
-  while (i < linesCount) {
+  while(i < linesCount) {
     loopLine = lines[i];
-    if (i == index) {
+    if(i == index) {
       lengthSummary += lineOffset;
       break;
     } else {
@@ -471,11 +475,11 @@ pwk.LeafNode.prototype.getOffsetForLinkedNodes_ = function(line, lineOffset) {
  * @inheritDoc
  */
 pwk.LeafNode.prototype.getLength = function() {
-  var length = 0 ,
-      lines = this.lines_ ,
+  var length = 0,
+      lines = this.lines_,
       lineLength = lines.length;
 
-  while (lineLength--) {
+  while(lineLength--) {
     length += lines[lineLength].getLength();
   }
 
@@ -488,11 +492,11 @@ pwk.LeafNode.prototype.getLength = function() {
  * @return {string}
  */
 pwk.LeafNode.prototype.getText = function() {
-  var text = '' ,
-      lines = this.lines_ ,
+  var text = '',
+      lines = this.lines_,
       lineLength = lines.length;
 
-  while (lineLength--) {
+  while(lineLength--) {
     text = lines[lineLength].getText() + text;
   }
 
@@ -524,7 +528,7 @@ pwk.LeafNode.prototype.getLastLine = function() {
  * @return {?pwk.Line}
  */
 pwk.LeafNode.prototype.getLineAt = function(index, opt_isIncludeLinesFromLinkedNodes) {
-  if (opt_isIncludeLinesFromLinkedNodes) {
+  if(opt_isIncludeLinesFromLinkedNodes) {
     return this.getLinesOfAllLinkedNodes_()[index] || null;
   } else {
     return this.lines_[index] || null;
@@ -560,7 +564,7 @@ pwk.LeafNode.prototype.getLinesCount = function() {
 pwk.LeafNode.prototype.removeLine = function(line) {
   goog.array.remove(this.lines_, line);
   var removedLine = /** @type {pwk.Line} */(this.removeChild(line, true));
-  if (removedLine) {
+  if(removedLine) {
     goog.dispose(removedLine);
     // Clear cache for offsets range information
     this.clearRangeInfoForOffsetCache();
@@ -637,13 +641,13 @@ pwk.LeafNode.prototype.isSplittable = function() {
  */
 pwk.LeafNode.prototype.split = function(offset) {
 
-  var rangeInfo = this.getRangeInfoForOffset(offset) ,
+  var rangeInfo = this.getRangeInfoForOffset(offset),
       parentNodeLength = rangeInfo.line.getParentNode().getLength();
 
 
   // If this is end of the node and exist linked node,
   // then just unlink next linked node and return it
-  if (offset == parentNodeLength && goog.isDefAndNotNull(this.nextLinkedNode_)) {
+  if(offset == parentNodeLength && goog.isDefAndNotNull(this.nextLinkedNode_)) {
 
     var linkedNode = this.nextLinkedNode_;
     this.nextLinkedNode_ = null;
@@ -651,14 +655,14 @@ pwk.LeafNode.prototype.split = function(offset) {
     return linkedNode;
   } else {
 
-    var lines = this.lines_ ,
-        linesLen = lines.length ,
-        content = rangeInfo.line.cut(rangeInfo.lineOffset) ,
-        startLineIndexToMove = rangeInfo.lineIndex + 1 ,
-        linesCountToMove = linesLen - startLineIndexToMove ,
+    var lines = this.lines_,
+        linesLen = lines.length,
+        content = rangeInfo.line.cut(rangeInfo.lineOffset),
+        startLineIndexToMove = rangeInfo.lineIndex + 1,
+        linesCountToMove = linesLen - startLineIndexToMove,
         newNode;
 
-    if (content.length > 0 || linesCountToMove == 0) {
+    if(content.length > 0 || linesCountToMove == 0) {
       newNode = new pwk.LeafNode(this.getType(), this.document_, content);
     } else {
       newNode = new pwk.LeafNode(this.getType(), this.document_, this.unlinkLine(lines[startLineIndexToMove]));
@@ -666,12 +670,12 @@ pwk.LeafNode.prototype.split = function(offset) {
     }
 
     // If node have the next linked node, assign it to the new node.
-    if (offset > 0 && goog.isDefAndNotNull(this.nextLinkedNode_)) {
+    if(offset > 0 && goog.isDefAndNotNull(this.nextLinkedNode_)) {
       newNode.setNextLinkedNode(this.nextLinkedNode_);
       this.nextLinkedNode_ = null;
     }
 
-    while (linesCountToMove--) {
+    while(linesCountToMove--) {
       newNode.insertLine(this.unlinkLine(lines[startLineIndexToMove]), false);
     }
 
@@ -688,18 +692,18 @@ pwk.LeafNode.prototype.split = function(offset) {
 pwk.LeafNode.prototype.clearRangeInfoForOffsetCache = function(opt_callerNode) {
   goog.array.clear(this.rangeInfoForOffsetCache_);
 
-  var prevLinkedNode = this.previousLinkedNode_ ,
+  var prevLinkedNode = this.previousLinkedNode_,
       nextLinkedNode = this.nextLinkedNode_;
 
   // Clearing for linked nodes
-  if (prevLinkedNode != null) {
-    if (opt_callerNode == null || opt_callerNode.getId() != prevLinkedNode.getId()) {
+  if(prevLinkedNode != null) {
+    if(opt_callerNode == null || opt_callerNode.getId() != prevLinkedNode.getId()) {
       prevLinkedNode.clearRangeInfoForOffsetCache(this);
     }
   }
 
-  if (nextLinkedNode != null) {
-    if (opt_callerNode == null || opt_callerNode.getId() != nextLinkedNode.getId()) {
+  if(nextLinkedNode != null) {
+    if(opt_callerNode == null || opt_callerNode.getId() != nextLinkedNode.getId()) {
       nextLinkedNode.clearRangeInfoForOffsetCache(this);
     }
   }
@@ -726,18 +730,18 @@ pwk.LeafNode.prototype.onLineContentChangedHandler_ = function(e) {
 pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
   // TODO: Try to improve performance in this place if it's possible.
 
-  var pagination = this.document_.getPagination() ,
-      prevLinkedNode = this.previousLinkedNode_ ,
-      nextLinkedNode = this.nextLinkedNode_ ,
-      doc = this.document_ ,
-      currentNodePageId = pagination.getPageIndexByNodeId(this.getId()) ,
+  var pagination = this.document_.getPagination(),
+      prevLinkedNode = this.previousLinkedNode_,
+      nextLinkedNode = this.nextLinkedNode_,
+      doc = this.document_,
+      currentNodePageId = pagination.getPageIndexByNodeId(this.getId()),
       length;
 
   // Check if some of linked node situated on the same page and merge it.
-  if (prevLinkedNode != null && currentNodePageId == pagination.getPageIndexByNodeId(prevLinkedNode.getId())) {
+  if(prevLinkedNode != null && currentNodePageId == pagination.getPageIndexByNodeId(prevLinkedNode.getId())) {
     length = prevLinkedNode.getLinesCount();
 
-    while (length--) {
+    while(length--) {
       this.insertLine(prevLinkedNode.unlinkLine(prevLinkedNode.getLineAt(length)), true, 0);
     }
 
@@ -745,10 +749,10 @@ pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
     this.previousLinkedNode_ = null;
   }
 
-  if (nextLinkedNode != null && currentNodePageId == pagination.getPageIndexByNodeId(nextLinkedNode.getId())) {
+  if(nextLinkedNode != null && currentNodePageId == pagination.getPageIndexByNodeId(nextLinkedNode.getId())) {
     length = nextLinkedNode.getLinesCount();
 
-    while (length--) {
+    while(length--) {
       this.insertLine(nextLinkedNode.unlinkLine(nextLinkedNode.getLineAt(0)), true);
     }
 
@@ -762,7 +766,7 @@ pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
   // Move text from the line below, if it's possible
   lastUpdatedLine = this.normalizeBackward_(lastUpdatedLine, parentContentWidth);
 
-  if (lastUpdatedLine != null) {
+  if(lastUpdatedLine != null) {
     // Move text to the line below, if it's required
     this.normalizeForward_(lastUpdatedLine, parentContentWidth);
   }
@@ -776,38 +780,38 @@ pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
  * @private
  */
 pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine, parentContentWidth) {
-  var googArray = goog.array ,
-      lines = this.getLinesOfAllLinkedNodes_() ,
-      lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine) ,
+  var googArray = goog.array,
+      lines = this.getLinesOfAllLinkedNodes_(),
+      lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine),
       lineAbove = lines[lastUpdateLineIndex - 1];
 
-  if (goog.isDefAndNotNull(lineAbove)) { // Is first line?
-    var googString = goog.string ,
-        lineAboveContent = lineAbove.getContent() ,
-        lastUpdatedLineContent = lastUpdatedLine.getContent() ,
-        loopsCount = 0 ,
-        isSpace = false ,
-        lineBelowLength ,
-        contentToMoveInfo ,
-        calculatedAboveWidth ,
+  if(goog.isDefAndNotNull(lineAbove)) { // Is first line?
+    var googString = goog.string,
+        lineAboveContent = lineAbove.getContent(),
+        lastUpdatedLineContent = lastUpdatedLine.getContent(),
+        loopsCount = 0,
+        isSpace = false,
+        lineBelowLength,
+        contentToMoveInfo,
+        calculatedAboveWidth,
         lastWord;
 
     do {
-      if (contentToMoveInfo != null) { // Skip this case for first time
+      if(contentToMoveInfo != null) { // Skip this case for first time
 
         lineAboveContent.insertText(contentToMoveInfo.text, lineAboveContent.getLength());
 
-        if (!isSpace) {
+        if(!isSpace) {
           lastUpdatedLineContent.removeAt(0, 1);
         } else {
           lastUpdatedLineContent.removeFirstWord();
         }
 
         lineBelowLength = lastUpdatedLineContent.getLength();
-        if (lineBelowLength == 0) {
+        if(lineBelowLength == 0) {
           lastUpdatedLine.getParentNode().removeLine(lastUpdatedLine);
           lastUpdatedLine = lines[lastUpdateLineIndex + 1];
-          if (goog.isDefAndNotNull(lastUpdatedLine)) {
+          if(goog.isDefAndNotNull(lastUpdatedLine)) {
             lastUpdatedLineContent = lastUpdatedLine.getContent();
           } else {
             // No line below? Exit...
@@ -823,12 +827,12 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine, parentCont
       calculatedAboveWidth = lineAbove.getWidth(false) + contentToMoveInfo.width;
 
       loopsCount++;
-    } while (calculatedAboveWidth < parentContentWidth);
+    } while(calculatedAboveWidth < parentContentWidth);
 
-    if (loopsCount > 1) {
+    if(loopsCount > 1) {
       lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine);
       var lineBelow = lines[lastUpdateLineIndex + 1];
-      if (lineBelow != null) {
+      if(lineBelow != null) {
         return this.normalizeBackward_(lineBelow, parentContentWidth);
       }
     }
@@ -844,26 +848,26 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine, parentCont
  * @private
  */
 pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentContentWidth) {
-  var lineContentWidth = lastUpdatedLine.getWidth(true) ,
+  var lineContentWidth = lastUpdatedLine.getWidth(true),
       lastUpdatedLineBelow;
 
-  if (lineContentWidth > parentContentWidth) {
-    var googString = goog.string ,
-        googArray = goog.array ,
-        lines = this.getLinesOfAllLinkedNodes_() ,
-        lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine) ,
-        lastUpdatedLineContent = lastUpdatedLine.getContent() ,
-        isLastLine = !goog.isDefAndNotNull(lines[lastUpdateLineIndex + 1]) ,
-        lastUpdatedLineContentLength = lastUpdatedLineContent.getLength() ,
-        firstSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedLineContent.getText())).indexOf(' ') ,
-        lastUpdatedContentText = '' ,
-        contentToMove = '' ,
-        lastUpdatedModifiedLineContentLength = 0 ,
-        lastSpaceIndex ,
+  if(lineContentWidth > parentContentWidth) {
+    var googString = goog.string,
+        googArray = goog.array,
+        lines = this.getLinesOfAllLinkedNodes_(),
+        lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine),
+        lastUpdatedLineContent = lastUpdatedLine.getContent(),
+        isLastLine = !goog.isDefAndNotNull(lines[lastUpdateLineIndex + 1]),
+        lastUpdatedLineContentLength = lastUpdatedLineContent.getLength(),
+        firstSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedLineContent.getText())).indexOf(' '),
+        lastUpdatedContentText = '',
+        contentToMove = '',
+        lastUpdatedModifiedLineContentLength = 0,
+        lastSpaceIndex,
         lineParentNode;
 
-    if (firstSpaceIndex != -1 && (lineContentWidth >= parentContentWidth * 2)) {
-      var prevContentToMove ,
+    if(firstSpaceIndex != -1 && (lineContentWidth >= parentContentWidth * 2)) {
+      var prevContentToMove,
           prevLastUpdatedModifiedLineContentLength;
 
       do {
@@ -877,7 +881,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
         lineContentWidth = lastUpdatedLineContent.getContentInfoForOffset(0, lastUpdatedModifiedLineContentLength).width;
         firstSpaceIndex = googString.trimRight(googString.normalizeWhitespace(contentToMove)).indexOf(' ');
 
-      } while (lineContentWidth < parentContentWidth && firstSpaceIndex != -1);
+      } while(lineContentWidth < parentContentWidth && firstSpaceIndex != -1);
 
       contentToMove = prevContentToMove;
       lastUpdatedModifiedLineContentLength = prevLastUpdatedModifiedLineContentLength;
@@ -891,7 +895,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
         lastSpaceIndex = googString.trimRight(googString.normalizeWhitespace(lastUpdatedContentText)).lastIndexOf(' ');
 
         // If remains big text only, then move last character only
-        if (lastSpaceIndex != -1) {
+        if(lastSpaceIndex != -1) {
           contentToMove = lastUpdatedLineContent.copy(lastSpaceIndex + 1, lastUpdatedModifiedLineContentLength) + contentToMove;
 
           lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
@@ -903,17 +907,17 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
             contentToMove = tempWord + contentToMove;
             lastUpdatedContentText = lastUpdatedLineContent.copy(0, lastUpdatedLineContentLength - contentToMove.length);
             lastUpdatedModifiedLineContentLength--;
-          } while (googString.isSpace(tempWord));
+          } while(googString.isSpace(tempWord));
         }
 
         lineContentWidth = lastUpdatedLineContent.getContentInfoForOffset(0, lastUpdatedModifiedLineContentLength).width;
 
-      } while (lineContentWidth > parentContentWidth);
+      } while(lineContentWidth > parentContentWidth);
     }
 
     lastUpdatedLineContent.removeAt(lastUpdatedModifiedLineContentLength);
 
-    if (isLastLine) {
+    if(isLastLine) {
       lastUpdatedLineBelow = new pwk.Line(contentToMove);
       lineParentNode = lastUpdatedLine.getParentNode();
       googArray.insert(lineParentNode.getLines(), lastUpdatedLineBelow);
@@ -925,7 +929,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
     }
   }
 
-  if (lastUpdatedLineBelow != null) {
+  if(lastUpdatedLineBelow != null) {
     this.normalizeForward_(lastUpdatedLineBelow, parentContentWidth);
   }
 };
@@ -939,13 +943,13 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine, parentConte
 pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
   // NOTE: Call select method for each line (exclude lines from linked node, add this functionality in future if required)
 
-  if (this.isSelected_) {
-    if (!goog.isDefAndNotNull(opt_nodeSelectionRange) && !goog.isDefAndNotNull(this.nodeSelectionRange_)) {
+  if(this.isSelected_) {
+    if(!goog.isDefAndNotNull(opt_nodeSelectionRange) && !goog.isDefAndNotNull(this.nodeSelectionRange_)) {
       // Whole node already selected, exit.
       return;
     }
 
-    if (goog.isDefAndNotNull(opt_nodeSelectionRange) &&
+    if(goog.isDefAndNotNull(opt_nodeSelectionRange) &&
         goog.isDefAndNotNull(this.nodeSelectionRange_) &&
         opt_nodeSelectionRange.equals(this.nodeSelectionRange_)) {
       // The same range already selected, exit.
@@ -954,29 +958,29 @@ pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
   }
 
   // Select all node content or only provided range?
-  if (goog.isDefAndNotNull(opt_nodeSelectionRange)) {
+  if(goog.isDefAndNotNull(opt_nodeSelectionRange)) {
 
-    var lines = this.lines_ ,
-        linesLength = lines.length ,
-        startlineIndex = goog.array.indexOf(lines, opt_nodeSelectionRange.startLine) ,
-        endLineIndex = goog.array.indexOf(lines, opt_nodeSelectionRange.endLine) ,
+    var lines = this.lines_,
+        linesLength = lines.length,
+        startlineIndex = goog.array.indexOf(lines, opt_nodeSelectionRange.startLine),
+        endLineIndex = goog.array.indexOf(lines, opt_nodeSelectionRange.endLine),
         isSelectionInsideSingleLine = opt_nodeSelectionRange.startLine == opt_nodeSelectionRange.endLine;
 
-    for (var i = 0; i < linesLength; i++) {
-      if (i == startlineIndex) {
-        if (isSelectionInsideSingleLine) {
+    for(var i = 0; i < linesLength; i++) {
+      if(i == startlineIndex) {
+        if(isSelectionInsideSingleLine) {
           lines[i].select(opt_nodeSelectionRange.startLineOffset, opt_nodeSelectionRange.endLineOffset);
           break;
         } else {
           lines[i].select(opt_nodeSelectionRange.startLineOffset);
         }
       }
-      else if (i == endLineIndex) {
-        if (!isSelectionInsideSingleLine) {
+      else if(i == endLineIndex) {
+        if(!isSelectionInsideSingleLine) {
           lines[i].select(0, opt_nodeSelectionRange.endLineOffset);
         }
         break;
-      } else if (i > startlineIndex) {
+      } else if(i > startlineIndex) {
         lines[i].select();
       }
     }
@@ -1017,17 +1021,17 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
   //  - update selection range
   //  - remove
   //  - unselect
-  var nodeSelectionRange = this.nodeSelectionRange_ ,
-      pwkDocument = /** @type {pwk.Document} */(this.document_) ,
-      pwkSelection = pwkDocument.getSelection() ,
-      selectionRange = pwkSelection.getRange() ,
-      isReversed = selectionRange.isReversed() ,
-      topSelectionRangeNode = isReversed ? selectionRange.getEndNode() : selectionRange.getStartNode() ,
-      bottomSelectionRangeNode = isReversed ? selectionRange.getStartNode() : selectionRange.getEndNode() ,
+  var nodeSelectionRange = this.nodeSelectionRange_,
+      pwkDocument = /** @type {pwk.Document} */(this.document_),
+      pwkSelection = pwkDocument.getSelection(),
+      selectionRange = pwkSelection.getRange(),
+      isReversed = selectionRange.isReversed(),
+      topSelectionRangeNode = isReversed ? selectionRange.getEndNode() : selectionRange.getStartNode(),
+      bottomSelectionRangeNode = isReversed ? selectionRange.getStartNode() : selectionRange.getEndNode(),
       isNodeSelectedEntirely = this.isSelectedEntirely_();
 
-  if (nodeSelectionRange.isCollapsed() && goog.isDefAndNotNull(opt_isBack)) {
-  //TODO: Process "Delete" / "Backspace" buttons
+  if(nodeSelectionRange.isCollapsed() && goog.isDefAndNotNull(opt_isBack)) {
+    //TODO: Process "Delete" / "Backspace" buttons
 
   } else {
     var isRangeUpdateRequired = true; // Required to mark if range has been updated and no more update required
@@ -1037,13 +1041,13 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
     // NOTE: Check if it's could be moved to base pwk.Node class
     // TODO: Refactoring required!
 
-    if (topSelectionRangeNode === this && bottomSelectionRangeNode !== this || // Case 1: it's topmost selected node
+    if(topSelectionRangeNode === this && bottomSelectionRangeNode !== this || // Case 1: it's topmost selected node
         topSelectionRangeNode === this && bottomSelectionRangeNode === this && // Case 2: it's single selected node and below exist other node that could be selected
         isNodeSelectedEntirely &&
         pwkDocument.indexOfNode(topSelectionRangeNode) < pwkDocument.getNodeCount() - 1) {
 
       var bottommostNode = /** @type {pwk.Node} */(pwkDocument.getNodeAt(pwkDocument.indexOfNode(topSelectionRangeNode) + 1));
-      if (isReversed) {
+      if(isReversed) {
         selectionRange.setEndPosition(bottommostNode.getFirstLine(), 0, true);
       } else {
         selectionRange.setStartPosition(bottommostNode.getFirstLine(), 0, true);
@@ -1051,16 +1055,16 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
       isRangeUpdateRequired = false;
 
-    } else if (topSelectionRangeNode !== this && bottomSelectionRangeNode === this || // Case 1: it's bottommost selected node
+    } else if(topSelectionRangeNode !== this && bottomSelectionRangeNode === this || // Case 1: it's bottommost selected node
         topSelectionRangeNode === this && bottomSelectionRangeNode === this && // Case 2: it's single selected node and above exist other node that could be selected
-                                                 isNodeSelectedEntirely &&
-                                                 pwkDocument.indexOfNode(bottomSelectionRangeNode) > 0) {
+        isNodeSelectedEntirely &&
+        pwkDocument.indexOfNode(bottomSelectionRangeNode) > 0) {
 
-      var topmostNode = /** @type {pwk.Node} */(pwkDocument.getNodeAt(pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1)) ,
-              lastLine = /** @type {pwk.Line} */(topmostNode.getLastLine()) ,
-              lastLineOffset = topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
+      var topmostNode = /** @type {pwk.Node} */(pwkDocument.getNodeAt(pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1)),
+          lastLine = /** @type {pwk.Line} */(topmostNode.getLastLine()),
+          lastLineOffset = topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
 
-      if (isReversed) {
+      if(isReversed) {
         selectionRange.setStartPosition(lastLine, lastLineOffset, false);
       } else {
         selectionRange.setEndPosition(lastLine, lastLineOffset, false);
@@ -1069,27 +1073,27 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
     }
 
     // Remove node from document entirely
-    if (isNodeSelectedEntirely) {
+    if(isNodeSelectedEntirely) {
       pwkDocument.removeNode(this);
-      if (topSelectionRangeNode === this && bottomSelectionRangeNode === this) {
+      if(topSelectionRangeNode === this && bottomSelectionRangeNode === this) {
         isRangeUpdateRequired = true;
       } else {
         return;
       }
 
     } else {
-      var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine) ,
-              endLineIndex = this.indexOfLine(nodeSelectionRange.endLine) ,
-              loopLine;
+      var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine),
+          endLineIndex = this.indexOfLine(nodeSelectionRange.endLine),
+          loopLine;
 
       // Remove selected node content
       // Cases:
       // 1. Selection could be on single line only
       // 2. Selected could be entire line
       // 3. Cursor could be located on the latest position without selection any word
-      for (var i = startLineIndex; i <= endLineIndex; i++) {
+      for(var i = startLineIndex; i <= endLineIndex; i++) {
         loopLine = this.lines_[i];
-        if (loopLine.isSelectedEntirely()) {
+        if(loopLine.isSelectedEntirely()) {
 
           // Remove line from node.
           this.removeLine(loopLine);
@@ -1099,9 +1103,9 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
           var selectionOffsets = this.lines_[i].removeSelection();
 
           // TODO: Update selection range. Move start/end position to the end position of the selection range of current line
-          if (isRangeUpdateRequired && selectionOffsets) {
+          if(isRangeUpdateRequired && selectionOffsets) {
             var nodeOffset = this.getOffsetByLineOffset(loopLine, selectionOffsets.start);
-            if (isReversed) {
+            if(isReversed) {
               selectionRange.setEndPosition(loopLine, nodeOffset, false);
             } else {
               selectionRange.setStartPosition(loopLine, nodeOffset, false);
@@ -1110,20 +1114,20 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         }
       }
 
-      if (startLineIndex + 1 in this.lines_) {
+      if(startLineIndex + 1 in this.lines_) {
         this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
       }
 
     }
 
-    if (isRangeUpdateRequired) {
+    if(isRangeUpdateRequired) {
       // Update selection by updated range
       var updateRangeInfo;
-      if (isReversed) {
+      if(isReversed) {
         updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(selectionRange.getEndNodeOffset());
         selectionRange.setStartPosition(updateRangeInfo.line, selectionRange.getEndNodeOffset());
 
-        if (selectionRange.getStartNode() == selectionRange.getEndNode() && !isNodeSelectedEntirely) {
+        if(selectionRange.getStartNode() == selectionRange.getEndNode() && !isNodeSelectedEntirely) {
           updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(selectionRange.getStartNodeOffset());
           selectionRange.setEndPosition(updateRangeInfo.line, selectionRange.getStartNodeOffset());
         }
@@ -1131,7 +1135,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(selectionRange.getStartNodeOffset());
         selectionRange.setEndPosition(updateRangeInfo.line, selectionRange.getStartNodeOffset());
 
-        if (selectionRange.getStartNode() == selectionRange.getEndNode() && !isNodeSelectedEntirely) {
+        if(selectionRange.getStartNode() == selectionRange.getEndNode() && !isNodeSelectedEntirely) {
           updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(selectionRange.getEndNodeOffset());
           selectionRange.setStartPosition(updateRangeInfo.line, selectionRange.getEndNodeOffset());
         }
@@ -1151,11 +1155,11 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
  * @private
  */
 pwk.LeafNode.prototype.isSelectedEntirely_ = function() {
-  if (goog.isDefAndNotNull(this.nodeSelectionRange_)) {
+  if(goog.isDefAndNotNull(this.nodeSelectionRange_)) {
     return this.indexOfLine(this.nodeSelectionRange_.startLine) === 0 &&
         this.nodeSelectionRange_.startLineOffset === 0 &&
-            this.indexOfLine(this.nodeSelectionRange_.endLine) == this.lines_.length - 1 &&
-            this.nodeSelectionRange_.endLineOffset === this.nodeSelectionRange_.endLine.getLength();
+        this.indexOfLine(this.nodeSelectionRange_.endLine) == this.lines_.length - 1 &&
+        this.nodeSelectionRange_.endLineOffset === this.nodeSelectionRange_.endLine.getLength();
   }
   return false;
 };
@@ -1183,7 +1187,6 @@ pwk.LeafNode.EventType = {
 };
 
 
-
 /**
  * @param {pwk.Line} line
  * @extends {goog.events.Event}
@@ -1193,8 +1196,8 @@ pwk.LeafNode.NodeContentChangedEvent = function(line) {
   goog.events.Event.call(this, pwk.LeafNode.EventType.CONTENT_CHANGED, line);
 
   /**
-     * @type {pwk.Line}
-     */
+   * @type {pwk.Line}
+   */
   this.lastUpdatedLine = line;
 };
 goog.inherits(pwk.LeafNode.NodeContentChangedEvent, goog.events.Event);

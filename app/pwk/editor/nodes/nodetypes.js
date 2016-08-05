@@ -25,7 +25,6 @@
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-
 goog.provide('pwk.NodeTypes');
 
 

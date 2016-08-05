@@ -37,25 +37,25 @@ goog.provide('pwk.NodeAnnotation');
 pwk.NodeAnnotation = function(type, range) {
 
   /**
-     * Type of current annotation.
-     *
-     * @type {string}
-     * @private
-     */
+   * Type of current annotation.
+   *
+   * @type {string}
+   * @private
+   */
   this.type_ = type;
 
   /**
-     * Range offset.
-     * @type {{start: number, end: number}}
-     * @private
-     */
+   * Range offset.
+   * @type {{start: number, end: number}}
+   * @private
+   */
   this.range_ = range;
 
 
   /**
-     * @type {string}
-     * @private
-     */
+   * @type {string}
+   * @private
+   */
   this.data_;
 };
 

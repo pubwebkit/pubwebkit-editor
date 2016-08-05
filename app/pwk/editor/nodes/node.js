@@ -33,7 +33,6 @@ goog.require('goog.ui.Component');
 goog.require('pwk.NodeFormatter');
 
 
-
 /**
  * @param {pwk.NodeTypes} type Type of node
  * @param {pwk.Document} doc Parent document object.
@@ -45,26 +44,26 @@ pwk.Node = function(type, doc) {
   goog.base(this);
 
   /**
-     * @type {Array.<pwk.NodeAttribute>}
-     * @private
-     */
+   * @type {Array.<pwk.NodeAttribute>}
+   * @private
+   */
   this.attributes_ = [];
 
   /**
-     * @type {pwk.NodeTypes}
-     * @private
-     */
+   * @type {pwk.NodeTypes}
+   * @private
+   */
   this.type_ = type;
 
   /**
-     * @type {boolean}
-     */
+   * @type {boolean}
+   */
   this.isChild_ = false;
 
   /**
-     * @type {pwk.Document}
-     * @protected
-     */
+   * @type {pwk.Document}
+   * @protected
+   */
   this.document_ = doc;
 
   // Apply global attributes
@@ -86,7 +85,7 @@ pwk.Node.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 
   // Remove attributes
-  for (var i = 0; i < this.attributes_.length; i++) {
+  for(var i = 0; i < this.attributes_.length; i++) {
     goog.array.removeAt(this.attributes_, i);
   }
 
@@ -104,7 +103,7 @@ pwk.Node.prototype.addChild = function(child, opt_render) {
 
 /** @inheritDoc */
 pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
-  if (child instanceof pwk.Node) {
+  if(child instanceof pwk.Node) {
     child.isChild(true);
   }
 
@@ -118,7 +117,7 @@ pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
  * @return {boolean}
  */
 pwk.Node.prototype.isChild = function(opt_child) {
-  if (goog.isDefAndNotNull(opt_child)) {
+  if(goog.isDefAndNotNull(opt_child)) {
     this.isChild_ = opt_child;
   }
   return this.isChild_;
@@ -163,9 +162,9 @@ pwk.Node.prototype.getSize = function() {
 
 
 /**
- * Set attribute. If attribute with specified type already exist, old data will be rewritten or not, depended from
- * opt_isMergeData argument. Data will be rewritten by default.
- *
+ * Set attribute. If attribute with specified type already exist, old data will
+ * be rewritten or not, depended from opt_isMergeData argument. Data will be
+ * rewritten by default.
  * @param {pwk.NodeAttributeTypes} type
  * @param {string} value
  * @param {boolean=} opt_isMergeData
@@ -175,7 +174,7 @@ pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
     return att.getType() == type;
   });
 
-  if (goog.isDefAndNotNull(attribute)) {
+  if(goog.isDefAndNotNull(attribute)) {
     attribute.setValue(value, opt_isMergeData);
   } else {
     goog.array.insert(this.attributes_, new pwk.NodeAttribute(type, value));
@@ -209,7 +208,8 @@ pwk.Node.prototype.unselect = goog.abstractMethod;
 /**
  * Remove content range from node
  * @param {pwk.primitives.NodeSelectionRange} nodeSelectionRange
- * @param {boolean=} opt_isBack Direction, in case if range is collapsed required to determine which key was pressed, Backspace or Delete
+ * @param {boolean=} opt_isBack Direction, in case if range is collapsed
+ *    required to determine which key was pressed, Backspace or Delete.
  */
 pwk.Node.prototype.removeRange = goog.abstractMethod;
 
@@ -239,7 +239,8 @@ pwk.Node.prototype.getOffsetByLineOffset = goog.abstractMethod;
 
 /**
  * Remove node content based on current selection
- * @param {boolean=} opt_isBack Direction, in case if range is collapsed required to determine which key was pressed, Backspace or Delete
+ * @param {boolean=} opt_isBack Direction, in case if range is collapsed
+ *    required to determine which key was pressed, Backspace or Delete.
  */
 pwk.Node.prototype.removeSelection = goog.abstractMethod;
 // Actions:
@@ -257,8 +258,9 @@ pwk.Node.prototype.isSplittable = goog.abstractMethod;
 
 
 /**
- * @param {number} offset   0-based index node offset.
- * @return {pwk.Node}   Returns new node or next linked node, in case if offset is end of the current node and next exist linked node.
+ * @param {number} offset  0-based index node offset.
+ * @return {pwk.Node}  Returns new node or next linked node, in case if offset
+ * is end of the current node and next exist linked node.
  */
 pwk.Node.prototype.split = goog.abstractMethod;
 

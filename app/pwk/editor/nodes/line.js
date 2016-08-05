@@ -46,21 +46,21 @@ pwk.Line = function(opt_text) {
   goog.base(this);
 
   /**
-     * @type {pwk.LineContent}
-     * @private
-     */
+   * @type {pwk.LineContent}
+   * @private
+   */
   this.content_ = new pwk.LineContent(opt_text);
 
 
   /**
-     * @type {pwk.layer.SelectionOverlay}
-     * @private
-     */
+   * @type {pwk.layer.SelectionOverlay}
+   * @private
+   */
   this.selectionOverlay_;
 
   /**
-     * @type {?{start:number, end:number}}
-     */
+   * @type {?{start:number, end:number}}
+   */
   this.selectionOffsets_;
 
 };
@@ -244,26 +244,28 @@ pwk.Line.prototype.getParentNode = function() {
 pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
 
   // Remove previous selection, if exist
-  if (goog.isDefAndNotNull(this.selectionOverlay_)) {
+  if(goog.isDefAndNotNull(this.selectionOverlay_)) {
     this.removeChild(this.selectionOverlay_, true);
     goog.dispose(this.selectionOverlay_);
   }
 
-  var googStyle = goog.style ,
-      el = this.getElement() ,
-      elSize = googStyle.getSize(el) ,
-      elPageOffset = googStyle.getPageOffset(el) ,
+  var googStyle = goog.style,
+      el = this.getElement(),
+      elSize = googStyle.getSize(el),
+      elPageOffset = googStyle.getPageOffset(el),
       clientRectRange;
 
-  if (this.getLength() == 0) {
+  if(this.getLength() == 0) {
     clientRectRange = new pwk.primitives.ClientRectRange(10, elSize.height, 0, 0);
   } else {
     var lineContentClientRect = this.content_.getBoundingClientRectForOffset(opt_startOffset, opt_endOffset);
     clientRectRange = new pwk.primitives.ClientRectRange(lineContentClientRect.width, elSize.height, 0, lineContentClientRect.left - elPageOffset.x);
   }
 
-  this.selectionOffsets_ = { start: goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0,
-    end: goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength() };
+  this.selectionOffsets_ = {
+    start: goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0,
+    end: goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength()
+  };
 
   this.selectionOverlay_ = new pwk.layer.SelectionOverlay(clientRectRange);
   this.addChildAt(this.selectionOverlay_, 0, true);
@@ -274,7 +276,7 @@ pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
  * Remove selection overlay from the line
  */
 pwk.Line.prototype.unselect = function() {
-  if (this.selectionOverlay_) {
+  if(this.selectionOverlay_) {
     this.removeChild(this.selectionOverlay_);
     goog.dispose(this.selectionOverlay_);
     delete this.selectionOverlay_;
@@ -288,7 +290,7 @@ pwk.Line.prototype.unselect = function() {
  * @return {boolean}
  */
 pwk.Line.prototype.isSelectedEntirely = function() {
-  if (goog.isDefAndNotNull(this.selectionOffsets_)) {
+  if(goog.isDefAndNotNull(this.selectionOffsets_)) {
     return this.selectionOffsets_.start == 0 && this.selectionOffsets_.end == this.getLength();
   }
   return false;
@@ -301,7 +303,7 @@ pwk.Line.prototype.isSelectedEntirely = function() {
  */
 pwk.Line.prototype.removeSelection = function() {
   var result = this.selectionOffsets_ != null ? goog.object.clone(this.selectionOffsets_) : null;
-  if (goog.isDefAndNotNull(this.selectionOffsets_)) {
+  if(goog.isDefAndNotNull(this.selectionOffsets_)) {
     this.content_.removeAt(this.selectionOffsets_.start, this.selectionOffsets_.end);
     this.unselect();
   }

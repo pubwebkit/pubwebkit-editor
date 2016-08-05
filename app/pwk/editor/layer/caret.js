@@ -38,7 +38,6 @@ goog.require('goog.ui.Component');
 goog.require('pwk.utils.dom');
 
 
-
 /**
  * Initialize {pwk.layer.Caret} component.
  * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
@@ -50,38 +49,38 @@ pwk.layer.Caret = function(opt_domHelper) {
   goog.base(this, opt_domHelper);
 
   /**
-     * Is cursor visible.
-     *
-     * @type {boolean}
-     * @private
-     */
+   * Is cursor visible.
+   *
+   * @type {boolean}
+   * @private
+   */
   this.isVisible_ = false;
 
   /**
-     * Parent caret wrapper.
-     *
-     * @type {Node}
-     * @private
-     */
+   * Parent caret wrapper.
+   *
+   * @type {Node}
+   * @private
+   */
   this.layer_;
 
   /**
-     * @type {number}
-     * @private
-     */
+   * @type {number}
+   * @private
+   */
   this.blinkId_;
 
   /**
-     * @type {Element}
-     * @private
-     */
+   * @type {Element}
+   * @private
+   */
   this.documentElement_;
 
   /**
-     * A zero width space character.
-     * @type {string}
-     * @private
-     */
+   * A zero width space character.
+   * @type {string}
+   * @private
+   */
   this.ZERO_WIDTH_SPACE_ = '\ufeff';
 
   this.count_ = 0;
@@ -156,7 +155,7 @@ pwk.layer.Caret.prototype.disposeInternal = function() {
   clearInterval(this.blinkId_);
 
   // Remove DOM nodes
-  if (this.layer_) {
+  if(this.layer_) {
     goog.dom.removeNode(this.layer_);
   }
   delete this.layer_;
@@ -197,17 +196,17 @@ pwk.layer.Caret.prototype.show = function() {
  */
 pwk.layer.Caret.prototype.restartTimer = function() {
   clearInterval(this.blinkId_);
-  if (!this.isVisible_) {
+  if(!this.isVisible_) {
     return;
   }
 
-  var self = this.getElement() ,
+  var self = this.getElement(),
       obj = this;
   this.blinkId_ = setInterval(function() {
     self.style.visibility = 'hidden';
     setTimeout(function() {
-      if (obj.isVisible_) {
-                self.style.visibility = 'visible';
+      if(obj.isVisible_) {
+        self.style.visibility = 'visible';
       }
     }, 400);
   }, 1000);
@@ -224,8 +223,8 @@ pwk.layer.Caret.prototype.update = function(selection) {
 
   this.dispatchEvent(pwk.layer.Caret.EventType.BEFORE_UPDATE);
 
-	var el = this.getElement() ,
-      bounds = selection.getBoundsForRange() ,
+  var el = this.getElement(),
+      bounds = selection.getBoundsForRange(),
       elStyle = el.style;
 
   elStyle.left = bounds.left + 'px';
@@ -265,7 +264,6 @@ pwk.layer.Caret.EventType = {
 };
 
 
-
 /**
  * @param {pwk.layer.Caret} caret
  * @param {goog.math.Rect} bounds
@@ -276,9 +274,9 @@ pwk.layer.Caret.AfterUpdateEvent = function(caret, bounds) {
   goog.events.Event.call(this, pwk.layer.Caret.EventType.AFTER_UPDATE, caret);
 
   /**
-     * @type {goog.math.Rect}
-     * @private
-     */
+   * @type {goog.math.Rect}
+   * @private
+   */
   this.bounds_ = bounds;
 };
 goog.inherits(pwk.layer.Caret.AfterUpdateEvent, goog.events.Event);

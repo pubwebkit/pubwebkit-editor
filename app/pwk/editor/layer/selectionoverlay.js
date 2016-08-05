@@ -46,9 +46,9 @@ pwk.layer.SelectionOverlay = function(clientRectRange, opt_domHelper) {
   goog.base(this, opt_domHelper);
 
   /**
-     * @type {pwk.primitives.ClientRectRange}
-     * @private
-     */
+   * @type {pwk.primitives.ClientRectRange}
+   * @private
+   */
   this.clientRectRange_ = clientRectRange;
 };
 goog.inherits(pwk.layer.SelectionOverlay, goog.ui.Component);
@@ -65,10 +65,10 @@ pwk.layer.SelectionOverlay.CSS_CLASS = 'pwk-selection-overlay';
 
 /** @inheritDoc */
 pwk.layer.SelectionOverlay.prototype.createDom = function() {
-  var element = goog.dom.createDom('div') ,
-      clientRect = this.clientRectRange_ ,
-      googStyle = goog.style ,
-      googMath = goog.math;
+  let element = goog.dom.createDom('div');
+  let clientRect = this.clientRectRange_;
+  let googStyle = goog.style;
+  let googMath = goog.math;
 
   this.setElementInternal(element);
   goog.dom.classlist.add(this.getElement(), pwk.layer.SelectionOverlay.CSS_CLASS);

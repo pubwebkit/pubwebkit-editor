@@ -152,7 +152,7 @@ pwk.Document.prototype.addValue = function(value) {
 
   value = typeof value == 'object' ? value.nodeValue : value;
 
-  if (range.isCollapsed()) {
+  if(range.isCollapsed()) {
 
     let googString = goog.string;
     let isSpace = googString.isSpace(
@@ -175,20 +175,20 @@ pwk.Document.prototype.addValue = function(value) {
         .getLineAt(linkedNodeRangeInfo.lineIndex + 1, true);
     let offset = value.length;
 
-    if (lineBelow != null && !isSpace && isLastPositionBefore &&
+    if(lineBelow != null && !isSpace && isLastPositionBefore &&
         isPrevNodeValueSpace) {
       range.setStartPosition(lineBelow, startNodeOffset + offset);
       range.setEndPosition(lineBelow, startNodeOffset + offset);
       lineBelow.insertValue(/** @type {string} */(value), 0);
 
-    } else if (linkedLineBelow != null &&
+    } else if(linkedLineBelow != null &&
         linkedLineBelow.getParentNode() !== range.getStartNode() && !isSpace &&
         isLastPositionBefore && isPrevNodeValueSpace) {
       range.setStartPosition(linkedLineBelow, offset);
       range.setEndPosition(linkedLineBelow, offset);
       linkedLineBelow.insertValue(/** @type {string} */(value), 0);
 
-    } else if (startLineOffset == 0 && startNodeOffset != 0 && isSpace) {
+    } else if(startLineOffset == 0 && startNodeOffset != 0 && isSpace) {
       // If is start of line and value is space, add it to the end of line above
       // Logic to align text
       range.getStartNode()
@@ -196,7 +196,7 @@ pwk.Document.prototype.addValue = function(value) {
       range.setStartPosition(startLine, startNodeOffset + offset, true);
       range.setEndPosition(startLine, startNodeOffset + offset, true);
 
-    } else if (startLineOffset == 0 &&
+    } else if(startLineOffset == 0 &&
         linkedNodeRangeInfo.linkedNodeOffset > 0 && isSpace) {
       // If is start of line and value is space and it is first line of linked
       // node, add it to the end of last linked line above
@@ -213,12 +213,12 @@ pwk.Document.prototype.addValue = function(value) {
       var isLastPositionAfter =
           !(range.getStartLine().getLength() - range.getStartLineOffset());
 
-      if (isSpace && !isLastPositionBefore && isLastPositionAfter) {
+      if(isSpace && !isLastPositionBefore && isLastPositionAfter) {
         var rangeStartNode = range.getStartNode();
         lineBelow = rangeStartNode.getLineAt(
             range.getStartLineRangeInfo().lineIndex + 1);
 
-        if (lineBelow != null) {
+        if(lineBelow != null) {
           startNodeOffset = range.getStartNodeOffset();
 
           range.setStartPosition(lineBelow, startNodeOffset, true);
@@ -251,22 +251,21 @@ pwk.Document.prototype.newLine = function() {
   // TODO: Collapse/Selection detection
 
   // Create new line depend of current focused node.
-  switch (startNode.getType()) {
+  switch(startNode.getType()) {
     case pwk.NodeTypes.PARAGRAPH:
       let startNodeLength = startNode.getLength();
       let paragraph;
       let paragraphIndex;
 
       // Checking, if line should be splitted
-      if (range.getStartNodeOffset() == 0 &&
-          !goog.isDefAndNotNull(startNode.getPreviousLinkedNode())) {
+      if(range.getStartNodeOffset() == 0 && !goog.isDefAndNotNull(startNode.getPreviousLinkedNode())) {
         // Just create empty node above
         paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
 
         // Create new paragraph above
         this.addNodeAt(paragraph, this.indexOfNode(startNode));
       } else {
-        if (startNodeLength >= range.getStartNodeOffset()) {
+        if(startNodeLength >= range.getStartNodeOffset()) {
           paragraph = startNode.split(range.getStartNodeOffset());
         } else {
           paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
@@ -275,7 +274,7 @@ pwk.Document.prototype.newLine = function() {
         // Get current paragraph position
         paragraphIndex = this.indexOfNode(startNode) + 1;
 
-        if (!paragraph.isInDocument()) {
+        if(!paragraph.isInDocument()) {
           // Create new paragraph if it's not in the document
           this.addNodeAt(paragraph, paragraphIndex, true);
         }
@@ -309,9 +308,9 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
       this.indexOfNode(range.getStartNode()) :
       this.indexOfNode(range.getEndNode());
 
-  if (range.isCollapsed()) { //
+  if(range.isCollapsed()) { //
 
-    if (opt_isBack === true) { // Backspace
+    if(opt_isBack === true) { // Backspace
       console.log('Backspace');
 
     } else { // Delete
@@ -326,11 +325,11 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     let endNode;
 
     // Process content
-    for (var i = topNodeIndex; i <= bottomNodeIndex; i++) {
+    for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
 
       var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
-      switch (i) {
+      switch(i) {
         case topNodeIndex:
           startNode = processedNode;
           break;
@@ -343,7 +342,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
       // - Check if length equal 0,then remove node (start == start, end == end)
       // - Update range
       processedNode.removeSelection();
-      if (!processedNode.isInDocument() && !range.isCollapsed()) {
+      if(!processedNode.isInDocument() && !range.isCollapsed()) {
         // Looks like this node is selected entirely and was removed from
         // document, so let's correct variables
         bottomNodeIndex = isReversed ?
@@ -379,7 +378,7 @@ pwk.Document.prototype.addPageAt = function(page, index) {
   let prevPageIndex;
   let prevPageId = this.pageIndex_.length ? this.pageIndex_[index - 1] : null;
 
-  if (goog.isDefAndNotNull(prevPageId)) {
+  if(goog.isDefAndNotNull(prevPageId)) {
     prevPage = this.getChild(prevPageId);
     prevPageIndex = this.indexOfChild(prevPage);
     this.addChildAt(page, prevPageIndex + 1, true);
@@ -401,7 +400,7 @@ pwk.Document.prototype.addPageAt = function(page, index) {
  * @param {Object=} opt_obj Used as the 'this' object in f when called.
  */
 pwk.Document.prototype.forEachPage = function(f, opt_obj) {
-  if (this.pageIndex_) {
+  if(this.pageIndex_) {
     goog.array.forEach(this.pageIndex_, function(padeId, index) {
       var page = this.getChild(padeId);
       f.call(opt_obj, page, index);
@@ -477,7 +476,7 @@ pwk.Document.prototype.indexOfPage = function(page) {
 pwk.Document.prototype.removePage = function(page) {
   goog.array.remove(this.pageIndex_, goog.isString(page) ? page : page.getId());
   var removedPage = /** @type {pwk.Page} */(this.removeChild(page, true));
-  if (removedPage) {
+  if(removedPage) {
     goog.dispose(removedPage);
   }
   return removedPage;
@@ -508,7 +507,7 @@ pwk.Document.prototype.addNode = function(node) {
 
   // To prevent duplicates in case of creating new page
   var nodeId = node.getId();
-  if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
+  if(goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
     goog.array.insertAt(this.nodeIndex_, nodeId, nodeIndex);
   }
   this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
@@ -530,8 +529,8 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
       this.nodeIndex_[index - 1] :
       null);
 
-  if (goog.isDefAndNotNull(prevNodeId) || index == 0) {
-    if (index == 0) {
+  if(goog.isDefAndNotNull(prevNodeId) || index == 0) {
+    if(index == 0) {
       this.addChildAt(node, 0);
     } else {
       prevNode = this.getNode(prevNodeId);
@@ -543,7 +542,7 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
 
     // To prevent duplicates in case of creating new page
     let nodeId = node.getId();
-    if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
+    if(goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
       goog.array.insertAt(this.nodeIndex_, nodeId, index);
     }
     this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
@@ -563,7 +562,7 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
  * @param {Object=} opt_obj Used as the 'this' object in f when called.
  */
 pwk.Document.prototype.forEachNode = function(f, opt_obj) {
-  if (this.nodeIndex_) {
+  if(this.nodeIndex_) {
     goog.array.forEach(this.nodeIndex_, function(nodeId, index) {
       var node = this.getChild(nodeId);
       f.call(opt_obj, node, index);
@@ -649,7 +648,7 @@ pwk.Document.prototype.unlinkNode = function(node) {
 pwk.Document.prototype.removeNode = function(node) {
   goog.array.remove(this.nodeIndex_, goog.isString(node) ? node : node.getId());
   var removedNode = this.unlinkNode(node);
-  if (removedNode) {
+  if(removedNode) {
     goog.dispose(removedNode);
   }
 
@@ -698,7 +697,7 @@ pwk.Document.prototype.getPaginationIndex = function() {
 pwk.Document.prototype.initializeDocument_ = function() {
 
   // If document empty, add empty paragraph
-  if (!this.getNodeCount()) {
+  if(!this.getNodeCount()) {
     var paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
 
     this.addNode(paragraph);
@@ -736,7 +735,7 @@ pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
   let selection = this.selection_;
   let range = selection.getRange();
 
-  if (range != null) {
+  if(range != null) {
     // If document become bigger then available on current pages, move nodes to
     // other pages or create more page and move them there
     pagination.checkOverflow(range.getStartNode().getId());
@@ -762,7 +761,6 @@ pwk.Document.EventType = {
   FILLING_CHANGE: goog.events.getUniqueId('filling_changed'),
   NODE_REMOVED: goog.events.getUniqueId('node_removed')
 };
-
 
 
 /**

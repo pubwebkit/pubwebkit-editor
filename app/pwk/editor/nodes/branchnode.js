@@ -27,7 +27,6 @@
 
 goog.provide('pwk.BranchNode');
 
-
 goog.require('pwk.Node');
 
 
