@@ -56,8 +56,8 @@ app.core.Application = function() {
         'name': 'history_state',
         'style': 'display:none'
       })));
-
   document.body.appendChild(historyStateInput);
+  
   /**
    * @type {app.core.Router}
    * @private
