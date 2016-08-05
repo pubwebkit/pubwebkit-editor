@@ -48,38 +48,50 @@ app.contentLoaded_ = function(win, fn) {
   let rem = modern ? 'removeEventListener' : 'detachEvent';
   let pre = modern ? '' : 'on';
 
-  let init =
-    function(e) {
-      if (e.type == 'readystatechange' && doc.readyState != 'complete') return;
-      (e.type == 'load' ? win : doc)[rem](pre + e.type, init, false);
-      if (!done && (done = true)) fn.call(win, e.type || e);
-    };
+  function init(e) {
+    if (e.type == 'readystatechange' && doc.readyState != 'complete') {
+      return;
+    }
+    // remove listener, no longer needed
+    (e.type == 'load' ? win : doc)[rem](pre + e.type, init, false);
 
-  let poll =
-    function() {
-        try {
-          root.doScroll('left');
-        }
-        catch(e) {
-          setTimeout(poll, 50); return;
-        }
-        init('poll');
-    };
+    if (!done && (done = true)) {
+      fn.call(win, e.type || e);
+    }
+  }
+
+  function poll() {
+    try {
+      root.doScroll('left');
+    }
+    catch (e) {
+      setTimeout(poll, 50);
+      return;
+    }
+    init('poll');
+  }
 
   if (doc.readyState == 'complete') {
     fn.call(win, 'lazy');
-  } else {
-      if (!modern && root.doScroll) {
-          try { top = !win.frameElement; } catch(e) { }
-          if (top) poll();
+  }
+  else {
+    if (!modern && root.doScroll) {
+
+      try {
+        top = !win.frameElement;
+      } catch (e) {}
+
+      if (top) {
+        poll();
       }
-      doc[add](pre + 'DOMContentLoaded', init, false);
-      doc[add](pre + 'readystatechange', init, false);
-      win[add](pre + 'load', init, false);
+    }
+    doc[add](pre + 'DOMContentLoaded', init, false);
+    doc[add](pre + 'readystatechange', init, false);
+    win[add](pre + 'load', init, false);
   }
 };
 
 // Run application
 app.contentLoaded_(window, function() {
-    (new app.Core()).init();
+  (new app.Core()).init();
 });

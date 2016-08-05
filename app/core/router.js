@@ -2,7 +2,8 @@
  * @fileoverview app.core.Router uses goog.History and hash tokens to hold and manage the state of the application.
  * This class is modified mvc.Router class from PlastronJS library.
  * @see https://github.com/rhysbrettbowen/PlastronJS#mvcrouter
- * @author Rhys Brett-Bowen<rhysbrettbowen@gmail.com>, Dmytro Antonenko<dmitry.antonenko@pubwebkit.com>
+ * @author rhysbrettbowen@gmail.com (Rhys Brett-Bowen),
+ * dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
 goog.provide('app.core.Router');
