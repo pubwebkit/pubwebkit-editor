@@ -22,7 +22,8 @@
 //
 
 /**
- * @fileoverview Document contains all information about edited information and information itself, as child components.
+ * @fileoverview Document contains all information about edited information and
+ * information itself, as child components.
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
@@ -30,19 +31,21 @@ goog.provide('pwk.Document');
 goog.provide('pwk.Document.EventType');
 goog.provide('pwk.Document.NodeRemovedEvent');
 
-goog.require('goog.ui.Component');
-goog.require('goog.events.Event');
 goog.require('goog.dom.classlist');
-goog.require('pwk.PageSettings');
+goog.require('goog.events.Event');
+goog.require('goog.ui.Component');
 goog.require('pwk.BranchNode');
+goog.require('pwk.DocumentSettings');
 goog.require('pwk.LeafNode');
 goog.require('pwk.NodeTypes');
+goog.require('pwk.Page');
+goog.require('pwk.PageSettings');
+goog.require('pwk.Pagination');
 goog.require('pwk.Range');
 goog.require('pwk.Selection');
-goog.require('pwk.Page');
-goog.require('pwk.Pagination');
 goog.require('pwk.utils.style');
-goog.require('pwk.DocumentSettings');
+
+
 
 /**
  * Represent document of editor.
@@ -50,79 +53,81 @@ goog.require('pwk.DocumentSettings');
  * @constructor
  */
 pwk.Document = function() {
-    goog.base(this);
+  goog.base(this);
 
-    /**
-     * @type {pwk.Selection}
-     * @private
-     */
-    this.selection_ = new pwk.Selection(this);
+  /**
+   * @type {pwk.Selection}
+   * @private
+   */
+  this.selection_ = new pwk.Selection(this);
 
-    /**
-     * @type {pwk.Pagination}
-     * @private
-    */
-    this.pagination_ = new pwk.Pagination(this);
+  /**
+   * @type {pwk.Pagination}
+   * @private
+   */
+  this.pagination_ = new pwk.Pagination(this);
 
-    /**
-     * Array of ids of child @code{pwk.Node} components. Used to hold order of nodes in document.
-     * @type {Array.<string>}
-     * @private
-     */
-    this.nodeIndex_ = [];
+  /**
+   * Array of ids of child @code{pwk.Node} components. Used to hold order of
+   * nodes in document.
+   * @type {Array.<string>}
+   * @private
+   */
+  this.nodeIndex_ = [];
 
-    /**
-     * Array of ids of child @code{pwk.Page} components. Used to hold order of pages in document.
-     * @type {Array.<string>}
-     * @private
-     */
-    this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component?
+  /**
+   * Array of ids of child @code{pwk.Page} components. Used to hold order of
+   * pages in document.
+   * @type {Array.<string>}
+   * @private
+   */
+  this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component?
 
-    /**
-     * @type {pwk.PageSettings}
-     * @private
-     */
-    this.pageSettings_ = pwk.PageSettings.getInstance();
+  /**
+   * @type {pwk.PageSettings}
+   * @private
+   */
+  this.pageSettings_ = pwk.PageSettings.getInstance();
 
-    /**
-     * @type {pwk.DocumentSettings}
-     * @private
-     */
-    this.documentSettings_ = pwk.DocumentSettings.getInstance();
+  /**
+   * @type {pwk.DocumentSettings}
+   * @private
+   */
+  this.documentSettings_ = pwk.DocumentSettings.getInstance();
 };
 goog.inherits(pwk.Document, goog.ui.Component);
 
 
 /** @inheritDoc */
 pwk.Document.prototype.createDom = function() {
-    // Create element and apply classes
-    this.setElementInternal(this.dom_.createElement('div'));
+  // Create element and apply classes
+  this.setElementInternal(this.dom_.createElement('div'));
 
-    var el = this.getElement();
+  var el = this.getElement();
 
-    goog.dom.classlist.add(el, pwk.Document.CSS_CLASS);
+  goog.dom.classlist.add(el, pwk.Document.CSS_CLASS);
 
-    // Set document size, should be equal of page width
-    goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');
+  // Set document size, should be equal of page width
+  goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');
 
-    // Initialize document instance for global settings
-    this.documentSettings_.initialize(this);
-    this.pageSettings_.initialize(this);
+  // Initialize document instance for global settings
+  this.documentSettings_.initialize(this);
+  this.pageSettings_.initialize(this);
 };
 
 
 /** @inheritDoc */
 pwk.Document.prototype.enterDocument = function() {
-    goog.base(this, 'enterDocument');
+  goog.base(this, 'enterDocument');
 
-    // Initialize events
-    this.initializeEvents_();
+  // Initialize events
+  this.initializeEvents_();
 
-    // Initialize selection
-    this.selection_.initialize();
+  // Initialize selection
+  this.selection_.initialize();
 
-    // First document initialization
-    this.initializeDocument_();
+  // First document initialization
+  this.initializeDocument_();
 };
 
 
@@ -130,7 +135,7 @@ pwk.Document.prototype.enterDocument = function() {
  * @return {pwk.Selection}
  */
 pwk.Document.prototype.getSelection = function() {
-    return this.selection_;
+  return this.selection_;
 };
 
 
@@ -139,81 +144,99 @@ pwk.Document.prototype.getSelection = function() {
  * @param {string|Text} value
  */
 pwk.Document.prototype.addValue = function(value) {
-    var selection = this.selection_
-      , range = selection.getRange();
+  let selection = this.selection_;
+  let range = selection.getRange();
 
-    // remove selection
-    selection.removeSelection();
+  // remove selection
+  selection.removeSelection();
 
-    value = typeof value == 'object' ? value.nodeValue : value;
+  value = typeof value == 'object' ? value.nodeValue : value;
 
-    if(range.isCollapsed()) {
+  if (range.isCollapsed()) {
 
-        var googString = goog.string
-          , isSpace = googString.isSpace(googString.normalizeWhitespace(/** @type {string} */(value)))
-          , startLine = range.getStartLine()
-          , startLineOffset = range.getStartLineOffset()
-          , isLastPositionBefore = !(startLine.getLength() - startLineOffset)
-          , startLineLength = startLine.getLength()
-          , prevNodeValue = startLine.getTextNodeValueAtOffset(startLineLength - 1)
-          , isPrevNodeValueSpace = prevNodeValue ? googString.isSpace(googString.normalizeWhitespace(prevNodeValue)) : false
-          , startNodeOffset = range.getStartNodeOffset()
-          , lineBelow = range.getStartNode().getLineAt(range.getStartLineRangeInfo().lineIndex + 1)
-          , linkedNodeRangeInfo = range.getStartNode().getRangeInfoByLinkedNodesOffset(range.getStartLineRangeInfo().linkedNodeOffset)
-          , linkedLineBelow = range.getStartNode().getLineAt(linkedNodeRangeInfo.lineIndex + 1, true)
-          , offset = value.length;
+    let googString = goog.string;
+    let isSpace = googString.isSpace(
+        googString.normalizeWhitespace(/** @type {string} */(value)));
+    let startLine = range.getStartLine();
+    let startLineOffset = range.getStartLineOffset();
+    let isLastPositionBefore = !(startLine.getLength() - startLineOffset);
+    let startLineLength = startLine.getLength();
+    let prevNodeValue = startLine.getTextNodeValueAtOffset(startLineLength - 1);
+    let isPrevNodeValueSpace = prevNodeValue ?
+        googString.isSpace(googString.normalizeWhitespace(prevNodeValue)) :
+        false;
+    let startNodeOffset = range.getStartNodeOffset();
+    let lineBelow = range.getStartNode()
+        .getLineAt(range.getStartLineRangeInfo().lineIndex + 1);
+    let linkedNodeRangeInfo = range.getStartNode()
+        .getRangeInfoByLinkedNodesOffset(
+            range.getStartLineRangeInfo().linkedNodeOffset);
+    let linkedLineBelow = range.getStartNode()
+        .getLineAt(linkedNodeRangeInfo.lineIndex + 1, true);
+    let offset = value.length;
 
-        if(lineBelow != null && !isSpace && isLastPositionBefore && isPrevNodeValueSpace) {
-            range.setStartPosition(lineBelow, startNodeOffset + offset);
-            range.setEndPosition(lineBelow, startNodeOffset + offset);
-            lineBelow.insertValue(/** @type {string} */(value), 0);
+    if (lineBelow != null && !isSpace && isLastPositionBefore &&
+        isPrevNodeValueSpace) {
+      range.setStartPosition(lineBelow, startNodeOffset + offset);
+      range.setEndPosition(lineBelow, startNodeOffset + offset);
+      lineBelow.insertValue(/** @type {string} */(value), 0);
 
-        } else if(linkedLineBelow != null && linkedLineBelow.getParentNode() !== range.getStartNode() && !isSpace && isLastPositionBefore && isPrevNodeValueSpace) {
-            range.setStartPosition(linkedLineBelow, offset);
-            range.setEndPosition(linkedLineBelow, offset);
-            linkedLineBelow.insertValue(/** @type {string} */(value), 0);
+    } else if (linkedLineBelow != null &&
+        linkedLineBelow.getParentNode() !== range.getStartNode() && !isSpace &&
+        isLastPositionBefore && isPrevNodeValueSpace) {
+      range.setStartPosition(linkedLineBelow, offset);
+      range.setEndPosition(linkedLineBelow, offset);
+      linkedLineBelow.insertValue(/** @type {string} */(value), 0);
 
-        } else if(startLineOffset == 0 && startNodeOffset != 0 && isSpace) {
-            // If is start of line and value is space, add it to the end of line above
-            // Logic to align text
-            range.getStartNode().insertValue(/** @type {string} */(value), startNodeOffset);
-            range.setStartPosition(startLine, startNodeOffset + offset, true);
-            range.setEndPosition(startLine, startNodeOffset + offset, true);
+    } else if (startLineOffset == 0 && startNodeOffset != 0 && isSpace) {
+      // If is start of line and value is space, add it to the end of line above
+      // Logic to align text
+      range.getStartNode()
+          .insertValue(/** @type {string} */(value), startNodeOffset);
+      range.setStartPosition(startLine, startNodeOffset + offset, true);
+      range.setEndPosition(startLine, startNodeOffset + offset, true);
 
-        } else if(startLineOffset == 0 && linkedNodeRangeInfo.linkedNodeOffset > 0 && isSpace) {
-            // If is start of line and value is space and it is first line of linked node, add it to the end of last linked
-            // line above
-            linkedNodeRangeInfo.line.getParentNode().insertValue(/** @type {string} */(value), linkedNodeRangeInfo.nodeOffset);
-            range.setStartPosition(startLine, startNodeOffset, true);
-            range.setEndPosition(startLine, startNodeOffset, true);
+    } else if (startLineOffset == 0 &&
+        linkedNodeRangeInfo.linkedNodeOffset > 0 && isSpace) {
+      // If is start of line and value is space and it is first line of linked
+      // node, add it to the end of last linked line above
+      linkedNodeRangeInfo.line.getParentNode()
+          .insertValue(/** @type {string} */(value),
+              linkedNodeRangeInfo.nodeOffset);
+      range.setStartPosition(startLine, startNodeOffset, true);
+      range.setEndPosition(startLine, startNodeOffset, true);
 
+    } else {
+      startLine.insertValue(/** @type {string} */(value), startLineOffset);
+      selection.moveCaretRight(true);
+
+      var isLastPositionAfter =
+          !(range.getStartLine().getLength() - range.getStartLineOffset());
+
+      if (isSpace && !isLastPositionBefore && isLastPositionAfter) {
+        var rangeStartNode = range.getStartNode();
+        lineBelow = rangeStartNode.getLineAt(
+            range.getStartLineRangeInfo().lineIndex + 1);
+
+        if (lineBelow != null) {
+          startNodeOffset = range.getStartNodeOffset();
+
+          range.setStartPosition(lineBelow, startNodeOffset, true);
+          range.setEndPosition(lineBelow, startNodeOffset, true);
         } else {
-            startLine.insertValue(/** @type {string} */(value), startLineOffset);
-            selection.moveCaretRight(true);
+          linkedNodeRangeInfo = rangeStartNode.getRangeInfoByLinkedNodesOffset(
+              range.getStartLineRangeInfo().linkedNodeOffset);
+          linkedLineBelow = rangeStartNode.getLineAt(
+              linkedNodeRangeInfo.lineIndex + 1, true);
 
-            var isLastPositionAfter = !(range.getStartLine().getLength() - range.getStartLineOffset());
-
-            if(isSpace && !isLastPositionBefore && isLastPositionAfter) {
-                var rangeStartNode = range.getStartNode();
-                lineBelow = rangeStartNode.getLineAt(range.getStartLineRangeInfo().lineIndex + 1);
-
-                if(lineBelow != null) {
-                    startNodeOffset = range.getStartNodeOffset();
-
-                    range.setStartPosition(lineBelow, startNodeOffset, true);
-                    range.setEndPosition(lineBelow, startNodeOffset, true);
-                } else {
-                    linkedNodeRangeInfo = rangeStartNode.getRangeInfoByLinkedNodesOffset(range.getStartLineRangeInfo().linkedNodeOffset);
-                    linkedLineBelow = rangeStartNode.getLineAt(linkedNodeRangeInfo.lineIndex + 1, true);
-
-                    range.setStartPosition(linkedLineBelow, 0, true);
-                    range.setEndPosition(linkedLineBelow, 0, true);
-                }
-            }
+          range.setStartPosition(linkedLineBelow, 0, true);
+          range.setEndPosition(linkedLineBelow, 0, true);
         }
-
-        selection.updateCaretFromRange();
+      }
     }
+
+    selection.updateCaretFromRange();
+  }
 };
 
 
@@ -221,50 +244,53 @@ pwk.Document.prototype.addValue = function(value) {
  * Create new line.
  */
 pwk.Document.prototype.newLine = function() {
-    var selection = this.selection_
-      , range = selection.getRange()
-      , startNode = range.getStartNode();
+  let selection = this.selection_;
+  let range = selection.getRange();
+  let startNode = range.getStartNode();
 
-    // TODO: Collapse/Selection detection
+  // TODO: Collapse/Selection detection
 
-    // Create new line depend of current focused node.
-    switch(startNode.getType()) {
-        case pwk.NodeTypes.PARAGRAPH:
-            var startNodeLength = startNode.getLength()
-              , paragraph
-              , paragraphIndex;
+  // Create new line depend of current focused node.
+  switch (startNode.getType()) {
+    case pwk.NodeTypes.PARAGRAPH:
+      let startNodeLength = startNode.getLength();
+      let paragraph;
+      let paragraphIndex;
 
-            // Checking, if line should be splitted
-            if(range.getStartNodeOffset() == 0 && !goog.isDefAndNotNull(startNode.getPreviousLinkedNode())) {
-                // Just create empty node above
-                paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
+      // Checking, if line should be splitted
+      if (range.getStartNodeOffset() == 0 &&
+          !goog.isDefAndNotNull(startNode.getPreviousLinkedNode())) {
+        // Just create empty node above
+        paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
 
-                // Create new paragraph above
-                this.addNodeAt(paragraph, this.indexOfNode(startNode));
-            } else {
-                if(startNodeLength >= range.getStartNodeOffset()) {
-                    paragraph = startNode.split(range.getStartNodeOffset());
-                } else {
-                    paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
-                }
+        // Create new paragraph above
+        this.addNodeAt(paragraph, this.indexOfNode(startNode));
+      } else {
+        if (startNodeLength >= range.getStartNodeOffset()) {
+          paragraph = startNode.split(range.getStartNodeOffset());
+        } else {
+          paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
+        }
 
-                // Get current paragraph position
-                paragraphIndex = this.indexOfNode(startNode) + 1;
+        // Get current paragraph position
+        paragraphIndex = this.indexOfNode(startNode) + 1;
 
-                if(!paragraph.isInDocument()) {
-                    // Create new paragraph if it's not in the document
-                    this.addNodeAt(paragraph, paragraphIndex, true);
-                }
+        if (!paragraph.isInDocument()) {
+          // Create new paragraph if it's not in the document
+          this.addNodeAt(paragraph, paragraphIndex, true);
+        }
 
-                // Update range
-                var line = paragraph.getFirstLine();
-                selection.setRange(pwk.Range.createFromNodes(line, 0, line, 0));
-            }
+        // Update range
+        var line = paragraph.getFirstLine();
+        selection.setRange(pwk.Range.createFromNodes(line, 0, line, 0));
+      }
 
-            selection.updateCaretFromRange();
-            paragraph.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(paragraph.getLineAt(1, true)));
-            break;
-    }
+      selection.updateCaretFromRange();
+      paragraph.dispatchEvent(
+          new pwk.LeafNode.NodeContentChangedEvent(
+              paragraph.getLineAt(1, true)));
+      break;
+  }
 };
 
 
@@ -273,56 +299,63 @@ pwk.Document.prototype.newLine = function() {
  * @param {boolean=} opt_isBack Direction
  */
 pwk.Document.prototype.deleteSelection = function(opt_isBack) {
-    var selection = this.selection_
-      , range = selection.getRange()
-      , isReversed = range.isReversed()
-      , topNodeIndex = isReversed ? this.indexOfNode(range.getEndNode()) : this.indexOfNode(range.getStartNode())
-      , bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
+  let selection = this.selection_;
+  let range = selection.getRange();
+  let isReversed = range.isReversed();
+  let topNodeIndex = isReversed ?
+      this.indexOfNode(range.getEndNode()) :
+      this.indexOfNode(range.getStartNode());
+  let bottomNodeIndex = isReversed ?
+      this.indexOfNode(range.getStartNode()) :
+      this.indexOfNode(range.getEndNode());
 
-    if(range.isCollapsed()) { //
+  if (range.isCollapsed()) { //
 
-        if(opt_isBack === true) { // Backspace
-            console.log('Backspace');
+    if (opt_isBack === true) { // Backspace
+      console.log('Backspace');
 
-        } else { // Delete
-            console.log('Delete');
+    } else { // Delete
+      console.log('Delete');
 
-        }
-
-    // Remove selection range
-    } else {
-
-        var /** @type {pwk.Node} */startNode
-          , /** @type {pwk.Node} */endNode;
-
-        // Process content
-        for(var i = topNodeIndex; i <= bottomNodeIndex; i++) {
-
-            var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
-
-            switch(i) {
-                case topNodeIndex:
-                    startNode = processedNode;
-                    break;
-                case bottomNodeIndex:
-                    endNode = processedNode;
-                    break;
-            }
-
-            // - Remove selection [ + ]
-            // - Check if length equal 0,then remove node (start == start, end == end) [ + ]
-            // - Update range [ +/- ]
-            processedNode.removeSelection();
-            if(!processedNode.isInDocument() && !range.isCollapsed()) {
-                // Looks like this node is selected entirely and was removed from document, so let's correct variables
-                bottomNodeIndex = isReversed ? this.indexOfNode(range.getStartNode()) : this.indexOfNode(range.getEndNode());
-                i--;
-            }
-        }
     }
 
-    selection.updateCaretFromRange(range);
-    this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+    // Remove selection range
+  } else {
+
+    let startNode;
+    let endNode;
+
+    // Process content
+    for (var i = topNodeIndex; i <= bottomNodeIndex; i++) {
+
+      var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
+
+      switch (i) {
+        case topNodeIndex:
+          startNode = processedNode;
+          break;
+        case bottomNodeIndex:
+          endNode = processedNode;
+          break;
+      }
+
+      // - Remove selection
+      // - Check if length equal 0,then remove node (start == start, end == end)
+      // - Update range
+      processedNode.removeSelection();
+      if (!processedNode.isInDocument() && !range.isCollapsed()) {
+        // Looks like this node is selected entirely and was removed from
+        // document, so let's correct variables
+        bottomNodeIndex = isReversed ?
+            this.indexOfNode(range.getStartNode()) :
+            this.indexOfNode(range.getEndNode());
+        i--;
+      }
+    }
+  }
+
+  selection.updateCaretFromRange(range);
+  this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
 
@@ -331,8 +364,8 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
  * @param {pwk.Page} page
  */
 pwk.Document.prototype.addPage = function(page) {
-    this.addChild(page, true);
-    goog.array.insert(this.pageIndex_, page.getId());
+  this.addChild(page, true);
+  goog.array.insert(this.pageIndex_, page.getId());
 };
 
 
@@ -342,19 +375,19 @@ pwk.Document.prototype.addPage = function(page) {
  * @param {number} index
  */
 pwk.Document.prototype.addPageAt = function(page, index) {
-    var prevPage
-      , prevPageIndex
-      , prevPageId = this.pageIndex_.length ? this.pageIndex_[index - 1] : null;
+  let prevPage;
+  let prevPageIndex;
+  let prevPageId = this.pageIndex_.length ? this.pageIndex_[index - 1] : null;
 
-    if(goog.isDefAndNotNull(prevPageId)) {
-        prevPage = this.getChild(prevPageId);
-        prevPageIndex = this.indexOfChild(prevPage);
-        this.addChildAt(page, prevPageIndex + 1, true);
-        goog.array.insertAt(this.pageIndex_, page.getId(), index);
-    } else {
-        this.addChild(page, true);
-        goog.array.insert(this.pageIndex_, page.getId());
-    }
+  if (goog.isDefAndNotNull(prevPageId)) {
+    prevPage = this.getChild(prevPageId);
+    prevPageIndex = this.indexOfChild(prevPage);
+    this.addChildAt(page, prevPageIndex + 1, true);
+    goog.array.insertAt(this.pageIndex_, page.getId(), index);
+  } else {
+    this.addChild(page, true);
+    goog.array.insert(this.pageIndex_, page.getId());
+  }
 };
 
 
@@ -368,12 +401,12 @@ pwk.Document.prototype.addPageAt = function(page, index) {
  * @param {Object=} opt_obj Used as the 'this' object in f when called.
  */
 pwk.Document.prototype.forEachPage = function(f, opt_obj) {
-    if (this.pageIndex_) {
-        goog.array.forEach(this.pageIndex_, function(padeId, index) {
-            var page = this.getChild(padeId);
-            f.call(opt_obj, page, index);
-        });
-    }
+  if (this.pageIndex_) {
+    goog.array.forEach(this.pageIndex_, function(padeId, index) {
+      var page = this.getChild(padeId);
+      f.call(opt_obj, page, index);
+    });
+  }
 };
 
 
@@ -383,7 +416,7 @@ pwk.Document.prototype.forEachPage = function(f, opt_obj) {
  * @return {pwk.Page?} The page with the given ID; null if none.
  */
 pwk.Document.prototype.getPage = function(id) {
-    return /** @type {pwk.Page?} */(this.getChild(id));
+  return /** @type {pwk.Page?} */(this.getChild(id));
 };
 
 
@@ -393,8 +426,8 @@ pwk.Document.prototype.getPage = function(id) {
  * @return {pwk.Page?} The page at the given index; null if none.
  */
 pwk.Document.prototype.getPageAt = function(index) {
-    var pageId = this.pageIndex_.length ? this.pageIndex_[index] || '' : '';
-    return this.getPage(pageId);
+  var pageId = this.pageIndex_.length ? this.pageIndex_[index] || '' : '';
+  return this.getPage(pageId);
 };
 
 
@@ -403,7 +436,7 @@ pwk.Document.prototype.getPageAt = function(index) {
  * @return {number} The number of pages.
  */
 pwk.Document.prototype.getPageCount = function() {
-    return this.pageIndex_.length;
+  return this.pageIndex_.length;
 };
 
 
@@ -413,7 +446,7 @@ pwk.Document.prototype.getPageCount = function() {
  * @return {Array.<string>} Page component IDs.
  */
 pwk.Document.prototype.getPageIds = function() {
-    return this.pageIndex_;
+  return this.pageIndex_;
 };
 
 
@@ -424,9 +457,11 @@ pwk.Document.prototype.getPageIds = function() {
  * @return {number} 0-based index of the page component; -1 if not found.
  */
 pwk.Document.prototype.indexOfPage = function(page) {
-    var pageId = goog.isString(page) ? page : page.getId();
+  var pageId = goog.isString(page) ? page : page.getId();
 
-    return (this.pageIndex_ && pageId) ? goog.array.indexOf(this.pageIndex_, pageId) : -1;
+  return (this.pageIndex_ && pageId) ?
+      goog.array.indexOf(this.pageIndex_, pageId) :
+      -1;
 };
 
 
@@ -435,19 +470,18 @@ pwk.Document.prototype.indexOfPage = function(page) {
  * if the argument is invalid or if the specified page isn't found in the
  * document.  The argument can either be a string (interpreted as the
  * ID of the page component to remove) or the page component itself.
- *
- * @param {string|pwk.Page} page The ID of the page to remove, or the page component itself.
+ * @param {string|pwk.Page} page The ID of the page to remove, or the page
+ *    component itself.
  * @return {pwk.Page} The removed component, if any.
  */
 pwk.Document.prototype.removePage = function(page) {
-    goog.array.remove(this.pageIndex_, goog.isString(page) ? page : page.getId());
-    var removedPage = /** @type {pwk.Page} */(this.removeChild(page, true));
-    if(removedPage) {
-        goog.dispose(removedPage);
-    }
-    return removedPage;
+  goog.array.remove(this.pageIndex_, goog.isString(page) ? page : page.getId());
+  var removedPage = /** @type {pwk.Page} */(this.removeChild(page, true));
+  if (removedPage) {
+    goog.dispose(removedPage);
+  }
+  return removedPage;
 };
-
 
 
 /**
@@ -459,7 +493,7 @@ pwk.Document.prototype.removePage = function(page) {
  * @return {pwk.Page} The removed page, if any.
  */
 pwk.Document.prototype.removePageAt = function(index) {
-    return this.removePage(this.pageIndex_[index]);
+  return this.removePage(this.pageIndex_[index]);
 };
 
 
@@ -468,15 +502,16 @@ pwk.Document.prototype.removePageAt = function(index) {
  * @param {pwk.Node} node
  */
 pwk.Document.prototype.addNode = function(node) {
-    this.addChild(node);
-    var nodeIndex = this.nodeIndex_.length;
-    this.pagination_.addNode(node);
+  this.addChild(node);
+  var nodeIndex = this.nodeIndex_.length;
+  this.pagination_.addNode(node);
 
-    var nodeId = node.getId(); // For prevent duplicates in case of creating new page
-    if(goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
-        goog.array.insertAt(this.nodeIndex_, nodeId, nodeIndex);
-    }
-    this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+  // To prevent duplicates in case of creating new page
+  var nodeId = node.getId();
+  if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
+    goog.array.insertAt(this.nodeIndex_, nodeId, nodeIndex);
+  }
+  this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
 
@@ -484,32 +519,37 @@ pwk.Document.prototype.addNode = function(node) {
  * Add node to the document at the given 0-based index.
  * @param {pwk.Node} node
  * @param {number} index
- * @param {boolean=} opt_renderAfter Is required to render the node after previous node or before sibling?
+ * @param {boolean=} opt_renderAfter Is required to render the node after
+ *    previous node or before sibling?
  */
 pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
-    var prevNode
-      , prevNodeIndex
-      , prevNodeId = /**@type {string}*/(this.nodeIndex_.length ? this.nodeIndex_[index - 1] : null);
+  let prevNode;
+  let prevNodeIndex;
 
-    if(goog.isDefAndNotNull(prevNodeId) || index == 0) {
-        if(index == 0) {
-            this.addChildAt(node, 0);
-        } else {
-            prevNode = this.getNode(prevNodeId);
-            prevNodeIndex = this.indexOfNode(prevNode);
-            this.addChildAt(node, prevNodeIndex + 1);
-        }
+  let prevNodeId = /** @type {string} */(this.nodeIndex_.length ?
+      this.nodeIndex_[index - 1] :
+      null);
 
-        this.pagination_.addNodeAt(node, index, opt_renderAfter);
-
-        var nodeId = node.getId(); // For prevent duplicates in case of creating new page
-        if(goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
-            goog.array.insertAt(this.nodeIndex_, nodeId, index);
-        }
-        this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+  if (goog.isDefAndNotNull(prevNodeId) || index == 0) {
+    if (index == 0) {
+      this.addChildAt(node, 0);
     } else {
-        this.addNode(node);
+      prevNode = this.getNode(prevNodeId);
+      prevNodeIndex = this.indexOfNode(prevNode);
+      this.addChildAt(node, prevNodeIndex + 1);
     }
+
+    this.pagination_.addNodeAt(node, index, opt_renderAfter);
+
+    // To prevent duplicates in case of creating new page
+    let nodeId = node.getId();
+    if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
+      goog.array.insertAt(this.nodeIndex_, nodeId, index);
+    }
+    this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+  } else {
+    this.addNode(node);
+  }
 };
 
 
@@ -523,12 +563,12 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
  * @param {Object=} opt_obj Used as the 'this' object in f when called.
  */
 pwk.Document.prototype.forEachNode = function(f, opt_obj) {
-    if (this.nodeIndex_) {
-        goog.array.forEach(this.nodeIndex_, function(nodeId, index) {
-            var node = this.getChild(nodeId);
-            f.call(opt_obj, node, index);
-        }, this);
-    }
+  if (this.nodeIndex_) {
+    goog.array.forEach(this.nodeIndex_, function(nodeId, index) {
+      var node = this.getChild(nodeId);
+      f.call(opt_obj, node, index);
+    }, this);
+  }
 };
 
 
@@ -538,7 +578,7 @@ pwk.Document.prototype.forEachNode = function(f, opt_obj) {
  * @return {pwk.Node?} The node with the given ID; null if none.
  */
 pwk.Document.prototype.getNode = function(id) {
-    return /** @type {pwk.Node?} */(this.getChild(id));
+  return /** @type {pwk.Node?} */(this.getChild(id));
 };
 
 
@@ -548,8 +588,8 @@ pwk.Document.prototype.getNode = function(id) {
  * @return {pwk.Node?} The node at the given index; null if none.
  */
 pwk.Document.prototype.getNodeAt = function(index) {
-    var nodeId = this.nodeIndex_.length ? this.nodeIndex_[index] || '' : '';
-    return this.getNode(nodeId);
+  var nodeId = this.nodeIndex_.length ? this.nodeIndex_[index] || '' : '';
+  return this.getNode(nodeId);
 };
 
 
@@ -558,7 +598,7 @@ pwk.Document.prototype.getNodeAt = function(index) {
  * @return {number} The number of nodes.
  */
 pwk.Document.prototype.getNodeCount = function() {
-    return this.nodeIndex_.length;
+  return this.nodeIndex_.length;
 };
 
 
@@ -568,7 +608,7 @@ pwk.Document.prototype.getNodeCount = function() {
  * @return {Array.<string>} Node component IDs.
  */
 pwk.Document.prototype.getNodeIds = function() {
-    return this.nodeIndex_;
+  return this.nodeIndex_;
 };
 
 
@@ -579,55 +619,57 @@ pwk.Document.prototype.getNodeIds = function() {
  * @return {number} 0-based index of the node component; -1 if not found.
  */
 pwk.Document.prototype.indexOfNode = function(node) {
-    return (this.nodeIndex_ && node) ? goog.array.indexOf(this.nodeIndex_, node.getId()) : -1;
+  return (this.nodeIndex_ && node) ?
+      goog.array.indexOf(this.nodeIndex_, node.getId()) :
+      -1;
 };
 
 
 /**
- * Do the same as {@code pwk.Document.prototype.removeNode} but did not deleting it from index.
- *
- * @param {string|pwk.Node} node The ID of the node to remove, or the node component itself.
+ * Do the same as {@code pwk.Document.prototype.removeNode} but did not deleting
+ * it from index.
+ * @param {string|pwk.Node} node The ID of the node to remove, or the node
+ *    component itself.
  * @return {pwk.Node} The removed node, if any.
  */
 pwk.Document.prototype.unlinkNode = function(node) {
-    return /** @type {pwk.Node} */(this.removeChild(node, true));
+  return /** @type {pwk.Node} */(this.removeChild(node, true));
 };
 
 
 /**
- * Removes the given node from this document, returns and disposes of it.  Throws an error
- * if the argument is invalid or if the specified node isn't found in the
- * document.  The argument can either be a string (interpreted as the
- * ID of the node component to remove) or the node component itself.
- *
- * @param {string|pwk.Node} node The ID of the node to remove, or the node component itself.
+ * Removes the given node from this document, returns and disposes of it.
+ * Throws an error if the argument is invalid or if the specified node isn't
+ * found in the document. The argument can either be a string (interpreted as
+ * the ID of the node component to remove) or the node component itself.
+ * @param {string|pwk.Node} node The ID of the node to remove, or the node
+ *    component itself.
  * @return {pwk.Node} The removed node, if any.
  */
 pwk.Document.prototype.removeNode = function(node) {
-    goog.array.remove(this.nodeIndex_, goog.isString(node) ? node : node.getId());
-    var removedNode = this.unlinkNode(node);
-    if(removedNode) {
-        goog.dispose(removedNode);
-    }
+  goog.array.remove(this.nodeIndex_, goog.isString(node) ? node : node.getId());
+  var removedNode = this.unlinkNode(node);
+  if (removedNode) {
+    goog.dispose(removedNode);
+  }
 
-    // trigger events
-    this.dispatchEvent(new pwk.Document.NodeRemovedEvent(removedNode));
+  // trigger events
+  this.dispatchEvent(new pwk.Document.NodeRemovedEvent(removedNode));
 
-    // return removed node
-    return removedNode;
+  // return removed node
+  return removedNode;
 };
 
 
 /**
- * Removes the node at the given index from this document, returns and disposes of it.
- * Throws an error if the argument is out of bounds, or if the specified node
- * isn't found in the document.
- *
+ * Removes the node at the given index from this document, returns and disposes
+ * of it. Throws an error if the argument is out of bounds, or if the specified
+ * node isn't found in the document.
  * @param {number} index 0-based index of the node to remove.
  * @return {pwk.Node} The removed node, if any.
  */
 pwk.Document.prototype.removeNodeAt = function(index) {
-    return this.removeNode(this.nodeIndex_[index]);
+  return this.removeNode(this.nodeIndex_[index]);
 };
 
 
@@ -636,7 +678,7 @@ pwk.Document.prototype.removeNodeAt = function(index) {
  * @return {pwk.Pagination}
  */
 pwk.Document.prototype.getPagination = function() {
-    return this.pagination_;
+  return this.pagination_;
 };
 
 
@@ -645,7 +687,7 @@ pwk.Document.prototype.getPagination = function() {
  * @return {Array.<Array.<string>>}
  */
 pwk.Document.prototype.getPaginationIndex = function() {
-    return this.pagination_.getPaginationIndex();
+  return this.pagination_.getPaginationIndex();
 };
 
 
@@ -655,19 +697,19 @@ pwk.Document.prototype.getPaginationIndex = function() {
  */
 pwk.Document.prototype.initializeDocument_ = function() {
 
-    // If document empty, add empty paragraph
-    if(!this.getNodeCount()) {
-        var paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
+  // If document empty, add empty paragraph
+  if (!this.getNodeCount()) {
+    var paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
 
-        this.addNode(paragraph);
+    this.addNode(paragraph);
 
-        this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
+    this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
 
-        // Initialize Range
-        var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0, paragraph.getFirstLine(), 0);
-        this.selection_.setRange(range);
-        this.selection_.updateCaretFromRange();
-    }
+    // Initialize Range
+    var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0, paragraph.getFirstLine(), 0);
+    this.selection_.setRange(range);
+    this.selection_.updateCaretFromRange();
+  }
 };
 
 
@@ -676,7 +718,7 @@ pwk.Document.prototype.initializeDocument_ = function() {
  * @private
  */
 pwk.Document.prototype.initializeEvents_ = function() {
-    this.listen(pwk.Document.EventType.FILLING_CHANGE, this.onDocumentFillingChangedEventHandler_)
+  this.listen(pwk.Document.EventType.FILLING_CHANGE, this.onDocumentFillingChangedEventHandler_)
 };
 
 
@@ -686,18 +728,18 @@ pwk.Document.prototype.initializeEvents_ = function() {
  * @private
  */
 pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
-    var pagination = this.pagination_
+  var pagination = this.pagination_
       , selection = this.selection_
       , range = selection.getRange();
 
-    if(range != null) {
-        // If document become bigger then available on current pages, move nodes to other pages or create more page and
-        // move them there
-        pagination.checkOverflow(range.getStartNode().getId());
+  if (range != null) {
+    // If document become bigger then available on current pages, move nodes to other pages or create more page and
+    // move them there
+    pagination.checkOverflow(range.getStartNode().getId());
 
-        // Fill document pages if content height was changed
-        pagination.checkFilling();
-    }
+    // Fill document pages if content height was changed
+    pagination.checkFilling();
+  }
 };
 
 
@@ -713,8 +755,8 @@ pwk.Document.CSS_CLASS = 'pwk-document';
  * @enum {string}
  */
 pwk.Document.EventType = {
-    FILLING_CHANGE: goog.events.getUniqueId('filling_changed'),
-    NODE_REMOVED: goog.events.getUniqueId('node_removed')
+  FILLING_CHANGE: goog.events.getUniqueId('filling_changed'),
+  NODE_REMOVED: goog.events.getUniqueId('node_removed')
 };
 
 
@@ -724,11 +766,11 @@ pwk.Document.EventType = {
  * @constructor
  */
 pwk.Document.NodeRemovedEvent = function(node) {
-    goog.events.Event.call(this, pwk.Document.EventType.NODE_REMOVED, node);
+  goog.events.Event.call(this, pwk.Document.EventType.NODE_REMOVED, node);
 
-    /**
-     * @type {pwk.Node}
-     */
-    this.removedNode = node;
+  /**
+   * @type {pwk.Node}
+   */
+  this.removedNode = node;
 };
 goog.inherits(pwk.Document.NodeRemovedEvent, goog.events.Event);
