@@ -36,9 +36,8 @@ goog.require('pwk.Node');
 
 
 /**
- * Initialize {pwk.PageContent} component.
- *
- * @param {pwk.Document} doc
+ * Initialize {@code pwk.PageContent} component.
+ * @param {pwk.Document} doc Editor document instance.
  * @constructor
  * @extends {goog.ui.Component}
  */
@@ -46,15 +45,15 @@ pwk.PageContent = function(doc) {
   goog.base(this);
 
   /**
-     * @type {pwk.Document}
-     * @private
-     */
+   * @type {pwk.Document}
+   * @private
+   */
   this.document_ = doc;
 
   /**
-     * @type {pwk.PageSettings}
-     * @private
-     */
+   * @type {pwk.PageSettings}
+   * @private
+   */
   this.pageSettings_ = pwk.PageSettings.getInstance();
 };
 goog.inherits(pwk.PageContent, goog.ui.Component);
@@ -140,7 +139,7 @@ pwk.PageContent.prototype.linkNodeAfter = function(node, previous) {
 
   node.render(previous.getParent().getElement());
 
-  var nodeEl = node.getElement() ,
+  var nodeEl = node.getElement(),
       previousNodeEl = previous.getElement();
 
   if (nodeEl.previousElementSibling != previousNodeEl) {
@@ -152,6 +151,7 @@ pwk.PageContent.prototype.linkNodeAfter = function(node, previous) {
 /**
  * Remove node from document and return if any.
  * @param {string|pwk.Node} node
+ * @return {pwk.Node}
  */
 pwk.PageContent.prototype.unlinkNode = function(node) {
   return this.document_.unlinkNode(node);

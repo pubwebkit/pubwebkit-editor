@@ -22,7 +22,7 @@
 //
 
 /**
- * @fileoverview
+ * @fileoverview TODO: add description
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
@@ -39,13 +39,11 @@ goog.provide('pwk.primitives.NodeSelectionRange');
  */
 pwk.primitives.NodeSelectionRange = function(startLine, startLineOffset,
                                              endLine, endLineOffset) {
-
   /**
    * @type {pwk.Line}
    * @public
    */
   this.startLine = startLine;
-
 
   /**
    * @type {number}
@@ -53,13 +51,11 @@ pwk.primitives.NodeSelectionRange = function(startLine, startLineOffset,
    */
   this.startLineOffset = startLineOffset;
 
-
   /**
    * @type {pwk.Line}
    * @public
    */
   this.endLine = endLine;
-
 
   /**
    * @type {number}
@@ -85,7 +81,7 @@ pwk.primitives.NodeSelectionRange.prototype.isCollapsed = function() {
 pwk.primitives.NodeSelectionRange.prototype.equals =
     function(otherNodeSelectionRange) {
   return (otherNodeSelectionRange.startLine == this.startLine &&
-  otherNodeSelectionRange.endLine == this.endLine &&
-  otherNodeSelectionRange.startLineOffset == this.startLineOffset &&
-  otherNodeSelectionRange.endLineOffset == this.endLineOffset);
+      otherNodeSelectionRange.endLine == this.endLine &&
+      otherNodeSelectionRange.startLineOffset == this.startLineOffset &&
+      otherNodeSelectionRange.endLineOffset == this.endLineOffset);
 };

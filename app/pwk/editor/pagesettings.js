@@ -41,57 +41,59 @@ goog.require('goog.math.Size');
 pwk.PageSettings = function() {
 
   /**
-     * @type {pwk.PageSettings.Paper}
-     * @private
-     */
+   * @type {pwk.PageSettings.Paper}
+   * @private
+   */
   this.pagePaper_ = pwk.PageSettings.Paper.Executive;
 
   /**
-     * Page width. (in pixels)
-     * @type {number}
-     * @private
-     */
+   * Page width. (in pixels)
+   * @type {number}
+   * @private
+   */
   this.width_ = this.pagePaper_.width.pixel;
 
   /**
-     * Page height. (in pixels)
-     * @type {number}
-     * @private
-     */
+   * Page height. (in pixels)
+   * @type {number}
+   * @private
+   */
   this.heigth_ = this.pagePaper_.height.pixel;
 
   /**
-     * Left margin in pixels
-     * @type {number}
-     * @private
-     */
+   * Left margin in pixels
+   * @type {number}
+   * @private
+   */
   this.leftMargin_ = 90;
 
   /**
-     * Right margin in pixels
-     * @type {number}
-     * @private
-     */
+   * Right margin in pixels
+   * @type {number}
+   * @private
+   */
   this.rightMargin_ = 90;
 
   /**
-     * Document instance.
-     * @type {pwk.Document}
-     * @private
-     */
+   * Document instance.
+   * @type {pwk.Document}
+   * @private
+   */
   this.document_;
 };
 goog.addSingletonGetter(pwk.PageSettings);
 
 
 /**
- * @param {pwk.Document} doc Document required to manage global settings of pages of document.
+ * @param {pwk.Document} doc Document required to manage global settings of
+ *    pages of document.
  */
 pwk.PageSettings.prototype.initialize = function(doc) {
   this.document_ = doc;
 };
 
-// TODO: To implement the functionality to set left/right margin and apply this settings on UI side
+// TODO: To implement the functionality to set left/right margin and apply this
+// settings on UI side
 
 
 /**

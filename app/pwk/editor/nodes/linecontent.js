@@ -64,7 +64,7 @@ pwk.LineContent.prototype.createDom = function() {
   this.setElementInternal(goog.dom.createElement('span'));
   goog.dom.classlist.add(this.getElement(), pwk.LineContent.CSS_CLASS);
 
-  if(this.text_.length) {
+  if (this.text_.length) {
     var textValue = this.text_;
     this.text_ = '';
     this.insertText(textValue);
@@ -83,7 +83,7 @@ pwk.LineContent.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 
   // Remove annotations
-  for(var i = 0; i < this.annotations_.length; i++) {
+  for (var i = 0; i < this.annotations_.length; i++) {
     goog.array.removeAt(this.annotations_, i);
   }
 
@@ -98,7 +98,7 @@ pwk.LineContent.prototype.disposeInternal = function() {
  * @param {number=} opt_offset
  */
 pwk.LineContent.prototype.insertText = function(text, opt_offset) {
-  if(text && text.length > 0) {
+  if (text && text.length > 0) {
     var el = this.getElement(),
         fragment = document.createDocumentFragment(),
         fragmentFirstChild,
@@ -108,12 +108,12 @@ pwk.LineContent.prototype.insertText = function(text, opt_offset) {
     fragmentFirstChild = /** @type {Element} */(fragment.firstChild);
     textLength = goog.string.normalizeWhitespace(text).length;
 
-    if(goog.isDefAndNotNull(opt_offset)) {
-      while(textLength--) {
+    if (goog.isDefAndNotNull(opt_offset)) {
+      while (textLength--) {
         this.insertValue(text[textLength], opt_offset, fragmentFirstChild);
       }
     } else {
-      while(textLength--) {
+      while (textLength--) {
         this.insertValue(text[textLength], 0, fragmentFirstChild);
       }
     }
@@ -131,7 +131,8 @@ pwk.LineContent.prototype.insertText = function(text, opt_offset) {
  * @param {number=} opt_offset
  * @param {Node|Element=} opt_parent
  */
-pwk.LineContent.prototype.insertValue = function(value, opt_offset, opt_parent) {
+pwk.LineContent.prototype.insertValue = function(value, opt_offset,
+                                                 opt_parent) {
   var text = this.text_,
       parent = opt_parent || this.getElement(),
       offset = opt_offset || 0,
@@ -141,7 +142,8 @@ pwk.LineContent.prototype.insertValue = function(value, opt_offset, opt_parent) 
   parent.insertBefore(textNode, parent.childNodes[offset] || null);
 
   // Update indexes
-  this.text_ = text.substr(0, offset) + textNode.nodeValue + text.substr(offset);
+  this.text_ =
+      text.substr(0, offset) + textNode.nodeValue + text.substr(offset);
 };
 
 
@@ -182,18 +184,20 @@ pwk.LineContent.prototype.pop = function() {
 
 
 /**
- * Removes latest text nodes, separated by space/tab, from the content and returns their values.
+ * Remove latest text nodes, word, separated by space/tab from the content and
+ * return their value.
  * @return {string} Merged values of the popped text nodes.
  */
 pwk.LineContent.prototype.popLastWord = function() {
-  var googString = goog.string,
-      el = this.getElement(),
-      text = this.text_,
-      normalizedText = this.getNormalizedText(),
-      spaceIndex = googString.trimRight(normalizedText).lastIndexOf(' '),
-      offset = spaceIndex != -1 ? spaceIndex + 1 : 0,
-      gRange = goog.dom.Range.createFromNodes(el, offset, el, normalizedText.length),
-      value = text.slice(offset);
+  let googString = goog.string;
+  let el = this.getElement();
+  let text = this.text_;
+  let normalizedText = this.getNormalizedText();
+  let spaceIndex = googString.trimRight(normalizedText).lastIndexOf(' ');
+  let offset = spaceIndex != -1 ? spaceIndex + 1 : 0;
+  let gRange =
+      goog.dom.Range.createFromNodes(el, offset, el, normalizedText.length);
+  let value = text.slice(offset);
 
   gRange.removeContents();
 
@@ -205,6 +209,11 @@ pwk.LineContent.prototype.popLastWord = function() {
 };
 
 
+/**
+ * Remove first text nodes, word, separated by space/tab from the content and
+ * return their value.
+ * @return {string}
+ */
 pwk.LineContent.prototype.popFirstWord = function() {
   var googString = goog.string,
       el = this.getElement(),
@@ -213,18 +222,18 @@ pwk.LineContent.prototype.popFirstWord = function() {
       spaceIndex = normalizedText.indexOf(' '),
       offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
 
-  if(spaceIndex == 0) {
+  if (spaceIndex == 0) {
     var trimedText = googString.trimLeft(normalizedText);
     var firstCharIndex = text.indexOf(trimedText[0]);
     offset = normalizedText.indexOf(' ', firstCharIndex);
   }
 
-  while(googString.isSpace(normalizedText[offset])) {
+  while (googString.isSpace(normalizedText[offset])) {
     offset++;
   }
 
-  var gRange = goog.dom.Range.createFromNodes(el, 0, el, offset),
-      value = text.slice(0, offset);
+  let gRange = goog.dom.Range.createFromNodes(el, 0, el, offset);
+  let value = text.slice(0, offset);
 
   gRange.removeContents();
 
@@ -236,6 +245,9 @@ pwk.LineContent.prototype.popFirstWord = function() {
 };
 
 
+/**
+ * Remove first word from the content and return it.
+ */
 pwk.LineContent.prototype.removeFirstWord = function() {
   var googString = goog.string,
       el = this.getElement(),
@@ -244,17 +256,17 @@ pwk.LineContent.prototype.removeFirstWord = function() {
       spaceIndex = normalizedText.indexOf(' '),
       offset = spaceIndex != -1 ? spaceIndex + 1 : text.length;
 
-  if(spaceIndex == 0) {
+  if (spaceIndex == 0) {
     var trimedText = googString.trimLeft(normalizedText);
     var firstCharIndex = text.indexOf(trimedText[0]);
     offset = normalizedText.indexOf(' ', firstCharIndex);
   }
 
-  while(googString.isSpace(normalizedText[offset])) {
+  while (googString.isSpace(normalizedText[offset])) {
     offset++;
   }
 
-  var gRange = goog.dom.Range.createFromNodes(el, 0, el, offset);
+  let gRange = goog.dom.Range.createFromNodes(el, 0, el, offset);
 
   gRange.removeContents();
 
@@ -265,7 +277,7 @@ pwk.LineContent.prototype.removeFirstWord = function() {
 
 
 /**
- * Returns first word
+ * Returns first word.
  * @return {string}
  */
 pwk.LineContent.prototype.copyFirstWord = function() {
@@ -275,13 +287,13 @@ pwk.LineContent.prototype.copyFirstWord = function() {
       spaceIndex = normalizedText.indexOf(' '),
       offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
 
-  if(spaceIndex == 0) {
+  if (spaceIndex == 0) {
     var trimedText = googString.trimLeft(normalizedText);
     var firstCharIndex = text.indexOf(trimedText[0]);
     offset = normalizedText.indexOf(' ', firstCharIndex);
   }
 
-  while(googString.isSpace(normalizedText[offset])) {
+  while (googString.isSpace(normalizedText[offset])) {
     offset++;
   }
 
@@ -368,7 +380,7 @@ pwk.LineContent.prototype.getLength = function() {
 
 
 /**
- * @param offset
+ * @param {number} offset
  * @return {Node?}
  */
 pwk.LineContent.prototype.getTextNodeAtOffset = function(offset) {
@@ -395,12 +407,15 @@ pwk.LineContent.prototype.getWidth = function(isOnlyPrintableContent) {
   var el = this.getElement(),
       width;
 
-  if(isOnlyPrintableContent) {
+  if (isOnlyPrintableContent) {
     var lastCharIndex = goog.string.trimRight(this.getNormalizedText()).length;
 
-    if(goog.userAgent.IE) {
-      var textRange = document.body.createTextRange(),
-          browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
+    if (goog.userAgent.IE) {
+      let textRange = document.body.createTextRange();
+      let browserZoomLevel =
+          (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ?
+              1 :
+              screen.deviceXDPI / screen.logicalXDPI;
 
       textRange.moveToElementText(el);
       textRange.moveStart('character', 0);
@@ -427,19 +442,30 @@ pwk.LineContent.prototype.getWidth = function(isOnlyPrintableContent) {
 
 
 /**
- * Returns a text rectangle object that encloses a group of text rectangles at specific offset.
+ * Returns a text rectangle object that encloses a group of text rectangles at
+ * specific offset.
+ * @param {number=} opt_startOffset
+ * @param {number=} opt_endOffset
  * @return {pwk.primitives.ClientRectRange}
  */
-pwk.LineContent.prototype.getBoundingClientRectForOffset = function(opt_startOffset, opt_endOffset) {
-  var el = this.getElement(),
-      clientRectResult;
+pwk.LineContent.prototype.getBoundingClientRectForOffset =
+    function(opt_startOffset, opt_endOffset) {
+  let el = this.getElement();
+  let clientRectResult;
 
-  opt_startOffset = goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0;
-  opt_endOffset = goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength();
+  opt_startOffset = goog.isDefAndNotNull(opt_startOffset) ?
+      opt_startOffset :
+      0;
+  opt_endOffset = goog.isDefAndNotNull(opt_endOffset) ?
+      opt_endOffset :
+      this.getLength();
 
-  if(goog.userAgent.IE) {
+  if (goog.userAgent.IE) {
     var textRange = document.body.createTextRange(),
-        browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
+        browserZoomLevel =
+            (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ?
+                1 :
+                screen.deviceXDPI / screen.logicalXDPI;
 
     textRange.moveToElementText(el);
     textRange.moveStart('character', opt_startOffset);
@@ -478,16 +504,20 @@ pwk.LineContent.prototype.getBoundingClientRectForOffset = function(opt_startOff
  * @param {number=} opt_endOffset
  * @return {{width: number, text: string}}
  */
-pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_endOffset) {
-  var text = this.text_,
-      normalizedText = this.getNormalizedText(),
-      endOffset = opt_endOffset || normalizedText.length,
-      el = this.getElement(),
-      width;
+pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset,
+                                                             opt_endOffset) {
+  let text = this.text_;
+  let normalizedText = this.getNormalizedText();
+  let endOffset = opt_endOffset || normalizedText.length;
+  let el = this.getElement();
+  let width;
 
-  if(goog.userAgent.IE) {
-    var textRange = document.body.createTextRange(),
-        browserZoomLevel = (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ? 1 : screen.deviceXDPI / screen.logicalXDPI;
+  if (goog.userAgent.IE) {
+    let textRange = document.body.createTextRange();
+    let browserZoomLevel =
+        (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ?
+            1 :
+            screen.deviceXDPI / screen.logicalXDPI;
 
     textRange.moveToElementText(el);
     textRange.moveStart('character', startOffset);
@@ -497,7 +527,7 @@ pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_en
     width = textRange.boundingWidth / browserZoomLevel;
 
   } else {
-    var range = document.createRange();
+    let range = document.createRange();
 
     range.selectNodeContents(el);
     range.setStart(el, startOffset);
@@ -515,19 +545,21 @@ pwk.LineContent.prototype.getContentInfoForOffset = function(startOffset, opt_en
  * @return {{width: number, text: string}}
  */
 pwk.LineContent.prototype.getFirstWordInfo = function() {
-  var googString = goog.string,
-      text = this.text_,
-      normalizedText = this.getNormalizedText(),
-      spaceIndex = normalizedText.indexOf(' '),
-      offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
+  let googString = goog.string;
+  let text = this.text_;
+  let normalizedText = this.getNormalizedText();
+  let spaceIndex = normalizedText.indexOf(' ');
+  let offset;
 
-  if(spaceIndex == 0) {
-    var trimedText = googString.trimLeft(normalizedText);
-    var firstCharIndex = text.indexOf(trimedText[0]);
+  if (spaceIndex == 0) {
+    let trimedText = googString.trimLeft(normalizedText);
+    let firstCharIndex = text.indexOf(trimedText[0]);
     offset = normalizedText.indexOf(' ', firstCharIndex);
+  } else {
+    offset = spaceIndex != -1 ? spaceIndex + 1 : normalizedText.length;
   }
 
-  while(googString.isSpace(normalizedText[offset])) {
+  while (googString.isSpace(normalizedText[offset])) {
     offset++;
   }
 
@@ -551,4 +583,8 @@ pwk.LineContent.prototype.addAnnotation = function(annotation) {
 };
 
 
+/**
+ * Component default css class.
+ * @type {string}
+ */
 pwk.LineContent.CSS_CLASS = 'pwk-line-content';

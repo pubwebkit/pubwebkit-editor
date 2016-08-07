@@ -44,7 +44,6 @@ pwk.NodeAttribute = function(type, value) {
    */
   this.type_ = type;
 
-
   /**
    * @type {string}
    * @private
@@ -74,21 +73,22 @@ pwk.NodeAttribute.prototype.getValue = function() {
 
 /**
  * Set attribute value.
- * @param {string} value
- * @param {boolean=} opt_isAppendValue Add value to the exist value. Adding depend from attribute type
+ * @param {string} value Attribute value.
+ * @param {boolean=} opt_isAppendValue Add value to the exist value. Adding
+ *    depend from attribute type.
  */
 pwk.NodeAttribute.prototype.setValue = function(value, opt_isAppendValue) {
-  if(goog.isDefAndNotNull(this.value_)) {
+  if (goog.isDefAndNotNull(this.value_)) {
 
-    switch(this.type_) {
+    switch (this.type_) {
 
       case pwk.NodeAttributeTypes.HTML_CLASS:
         var classes = this.value_.split(' ');
         // Is class already assigned?
-        if(!goog.array.contains(classes, value)) {
+        if (!goog.array.contains(classes, value)) {
 
           // Is required to append value of just define it?
-          if(opt_isAppendValue) {
+          if (opt_isAppendValue) {
             this.value_ = this.value_ + ' ' + value;
           } else {
             this.value_ = value;
@@ -105,7 +105,6 @@ pwk.NodeAttribute.prototype.setValue = function(value, opt_isAppendValue) {
 
 /**
  * Node attribute types.
- *
  * @enum {string}
  */
 pwk.NodeAttributeTypes = {

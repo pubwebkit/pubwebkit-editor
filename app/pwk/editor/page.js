@@ -53,33 +53,33 @@ pwk.Page = function(doc) {
   goog.base(this);
 
   /**
-     * @type {pwk.Document}
-     * @private
-     */
+   * @type {pwk.Document}
+   * @private
+   */
   this.document_ = doc;
 
   /**
-     * @type {pwk.PageHeader}
-     * @private
-     */
+   * @type {pwk.PageHeader}
+   * @private
+   */
   this.header_ = new pwk.PageHeader();
 
   /**
-     * @type {pwk.PageFooter}
-     * @private
-     */
+   * @type {pwk.PageFooter}
+   * @private
+   */
   this.footer_ = new pwk.PageFooter();
 
   /**
-     * @type {pwk.PageContent}
-     * @private
-     */
+   * @type {pwk.PageContent}
+   * @private
+   */
   this.content_ = new pwk.PageContent(doc);
 
   /**
-     * @type {pwk.PageSettings}
-     * @private
-     */
+   * @type {pwk.PageSettings}
+   * @private
+   */
   this.pageSettings_ = pwk.PageSettings.getInstance();
 };
 goog.inherits(pwk.Page, goog.ui.Component);
@@ -88,9 +88,9 @@ goog.inherits(pwk.Page, goog.ui.Component);
 /** @inheritDoc */
 pwk.Page.prototype.createDom = function() {
   // Create element
-  var el = this.dom_.createElement('div') ,
-      pageSettings = this.pageSettings_ ,
-      pageSize = pageSettings.getSize();
+  let el = this.dom_.createElement('div');
+  let pageSettings = this.pageSettings_;
+  let pageSize = pageSettings.getSize();
 
   this.setElementInternal(el);
   this.decorateInternal(el);
@@ -179,10 +179,12 @@ pwk.Page.prototype.linkNodeAfter = function(node, previous) {
  * @return {number}
  */
 pwk.Page.prototype.getMaxContentSize = function() {
-  var googStyle = goog.style ,
-      headerSize = googStyle.getSize(this.header_.getElement()) , // TODO: move to constant
-      footerSize = googStyle.getSize(this.footer_.getElement()) , // TODO: move to constant
-      pageSize = this.pageSettings_.getSize();
+  let googStyle = goog.style;
+  // TODO: move to constant
+  let headerSize = googStyle.getSize(this.header_.getElement());
+  // TODO: move to constant
+  let footerSize = googStyle.getSize(this.footer_.getElement());
+  let pageSize = this.pageSettings_.getSize();
 
   return pageSize.height - footerSize.height - headerSize.height;
 };
@@ -193,27 +195,29 @@ pwk.Page.prototype.getMaxContentSize = function() {
  * @return {number}
  */
 pwk.Page.prototype.getAvailableContentSize = function() {
-  return this.getMaxContentSize() - goog.style.getSize(this.content_.getElement()).height;
+  return this.getMaxContentSize() -
+      goog.style.getSize(this.content_.getElement()).height;
 };
 
 
 /**
- * Checking size of page content on overflows and dispatching OVERFLOW event in case page is overflowed.
+ * Checking size of page content on overflows and dispatching OVERFLOW event in
+ * case page is overflowed.
  */
 pwk.Page.prototype.checkPageOverflow = function() {
-  var googStyle = goog.style ,
-      doc = this.document_ ,
-      contentEl = this.content_.getElement() ,
-      contentSize = googStyle.getSize(contentEl) ,
+  var googStyle = goog.style,
+      doc = this.document_,
+      contentEl = this.content_.getElement(),
+      contentSize = googStyle.getSize(contentEl),
       maxContentHeight = this.getMaxContentSize();
 
   // If page content higher than allowed value
   if (contentSize.height > maxContentHeight) {
-    var nodes = [] , // Nodes which will be moved to the next page
-        pageIndex = doc.indexOfPage(this) ,
-        pageNodes = doc.getPaginationIndex()[pageIndex] ,
-        pageNodesLength = pageNodes.length ,
-        loopNode ,
+    var nodes = [], // Nodes which will be moved to the next page
+        pageIndex = doc.indexOfPage(this),
+        pageNodes = doc.getPaginationIndex()[pageIndex],
+        pageNodesLength = pageNodes.length,
+        loopNode,
         newLinkedNode;
 
     while (pageNodesLength--) {
@@ -221,14 +225,14 @@ pwk.Page.prototype.checkPageOverflow = function() {
 
       switch (loopNode.getType()) {
         case pwk.NodeTypes.PARAGRAPH:
-          var leafNode = /** @type {pwk.LeafNode} */(loopNode) ,
-              nodeHeight = googStyle.getSize(leafNode.getElement()).height ,
-                      linkedNode = leafNode.getNextLinkedNode();
+          var leafNode = /** @type {pwk.LeafNode} */(loopNode),
+              nodeHeight = googStyle.getSize(leafNode.getElement()).height,
+              linkedNode = leafNode.getNextLinkedNode();
 
           // Is required to move the whole node?
           if ((contentEl.offsetHeight - nodeHeight) < maxContentHeight) {
-            var lineLength = leafNode.getLinesCount() ,
-                loopLine ,
+            var lineLength = leafNode.getLinesCount(),
+                loopLine,
                 heightToCut = 0;
 
             while (lineLength--) {
@@ -247,11 +251,13 @@ pwk.Page.prototype.checkPageOverflow = function() {
 
               if (!goog.isDefAndNotNull(linkedNode)) {
                 // Move lines to the new linked node
-                for (var i = leafNode.getLinesCount() - 1; i >= lineLength; i--) {
+                for (var i = leafNode.getLinesCount() - 1;
+                     i >= lineLength; i--) {
                   lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
 
                   if (!goog.isDefAndNotNull(newLinkedNode)) {
-                    newLinkedNode = new pwk.LeafNode(loopNode.getType(), doc, lastLine);
+                    newLinkedNode =
+                        new pwk.LeafNode(loopNode.getType(), doc, lastLine);
                     loopNode.setNextLinkedNode(newLinkedNode);
                   } else {
                     newLinkedNode.insertLine(lastLine, false, 0);
@@ -261,12 +267,15 @@ pwk.Page.prototype.checkPageOverflow = function() {
                 goog.array.insert(nodes, newLinkedNode);
               } else {
                 // Move lines to the exist next linked node
-                for (var i = leafNode.getLinesCount() - 1; i >= lineLength; i--) {
+                for (var i = leafNode.getLinesCount() - 1;
+                     i >= lineLength; i--) {
                   lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
                   linkedNode.insertLine(lastLine, true, 0);
                 }
 
-                doc.getPageAt(doc.getPagination().getPageIndexByNodeId(linkedNode.getId())).checkPageOverflow();
+                doc.getPageAt(
+                    doc.getPagination().getPageIndexByNodeId(
+                        linkedNode.getId())).checkPageOverflow();
               }
             }
 
@@ -297,7 +306,6 @@ pwk.Page.prototype.checkPageOverflow = function() {
 /**
  * Default CSS class to be applied to the root element of components rendered
  * by this renderer.
- *
  * @type {string}
  */
 pwk.Page.CSS_CLASS = 'pwk-page';
@@ -324,15 +332,15 @@ pwk.Page.PageOverflowEvent = function(page, nodes, pageIndex) {
   goog.events.Event.call(this, pwk.Page.EventType.OVERFLOW, page);
 
   /**
-     * @type {Array.<pwk.Node>}
-     * @private
-     */
+   * @type {Array.<pwk.Node>}
+   * @private
+   */
   this.nodes_ = nodes;
 
   /**
-     * @type {number}
-     * @private
-     */
+   * @type {number}
+   * @private
+   */
   this.pageIndex_ = pageIndex;
 };
 goog.inherits(pwk.Page.PageOverflowEvent, goog.events.Event);

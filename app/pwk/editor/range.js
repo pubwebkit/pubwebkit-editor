@@ -22,7 +22,8 @@
 //
 
 /**
- * @fileoverview  This object is used in various places to indicate a region within the editor.
+ * @fileoverview This object is used in various places to indicate a region
+ * within the editor.
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
@@ -42,7 +43,8 @@ goog.require('goog.events.EventTarget');
  * @constructor
  * @extends {goog.events.EventTarget}
  */
-pwk.Range = function(startLine, startNodeOffset, endLine, endNodeOffset, opt_isStartOfStartLine, opt_isStartOfEndLine) {
+pwk.Range = function(startLine, startNodeOffset, endLine, endNodeOffset,
+                     opt_isStartOfStartLine, opt_isStartOfEndLine) {
   goog.events.EventTarget.call(this);
 
   /**
@@ -85,7 +87,8 @@ pwk.Range = function(startLine, startNodeOffset, endLine, endNodeOffset, opt_isS
    * @type {?pwk.LineOffsetInfo}
    * @private
    */
-  this.startLineRangeInfo_ = this.startNode_.getRangeInfoForOffset(startNodeOffset);
+  this.startLineRangeInfo_ =
+      this.startNode_.getRangeInfoForOffset(startNodeOffset);
 
   /**
    * @type {?pwk.LineOffsetInfo}
@@ -265,7 +268,8 @@ pwk.Range.prototype.setEndPosition = function(line, nodeOffset,
  * @return {boolean}
  */
 pwk.Range.prototype.isCollapsed = function() {
-  return this.startLine_ === this.endLine_ && this.startNodeOffset_ === this.endNodeOffset_;
+  return this.startLine_ === this.endLine_ &&
+      this.startNodeOffset_ === this.endNodeOffset_;
 };
 
 
@@ -308,8 +312,14 @@ pwk.Range.prototype.collapse = function(toStart) {
  *
  * @return {pwk.Range}
  */
-pwk.Range.createFromNodes = function(startLine, startNodeOffset, endLine, endNodeOffset, opt_isStartOfStartLine, opt_isStartOfEndLine) {
-  return new pwk.Range(startLine, startNodeOffset, endLine, endNodeOffset, opt_isStartOfStartLine, opt_isStartOfEndLine);
+pwk.Range.createFromNodes = function(startLine,
+                                     startNodeOffset,
+                                     endLine,
+                                     endNodeOffset,
+                                     opt_isStartOfStartLine,
+                                     opt_isStartOfEndLine) {
+  return new pwk.Range(startLine, startNodeOffset, endLine, endNodeOffset,
+      opt_isStartOfStartLine, opt_isStartOfEndLine);
 };
 
 

@@ -37,7 +37,7 @@ goog.require('goog.ui.KeyboardShortcutHandler');
  * @type {goog.ui.KeyboardShortcutHandler.Modifiers}
  */
 pwk.Shortcuts.CMD_BUTTON = (function() {
-  if(goog.userAgent.MAC) {
+  if (goog.userAgent.MAC) {
     return goog.ui.KeyboardShortcutHandler.Modifiers.META;
   } else {
     return goog.ui.KeyboardShortcutHandler.Modifiers.CTRL;

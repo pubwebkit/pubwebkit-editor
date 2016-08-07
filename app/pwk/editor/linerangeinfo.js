@@ -29,6 +29,7 @@
 goog.provide('pwk.LineOffsetInfo');
 
 
+
 /**
  * Store line offset information.
  * @constructor
@@ -84,7 +85,7 @@ pwk.LineOffsetInfo.prototype.getLineIndex = function() {
 
 /**
  * Set line index.
- * @param value Line index value.
+ * @param {number} value Line index value.
  */
 pwk.LineOffsetInfo.prototype.setLineIndex = function(value) {
   this.lineIndex = value;
@@ -105,7 +106,7 @@ pwk.LineOffsetInfo.prototype.getLine = function() {
  * @param {pwk.Line} line Line instance.
  */
 pwk.LineOffsetInfo.prototype.setLine = function(line) {
-  return this.line = line;
+  this.line = line;
 };
 
 
@@ -169,8 +170,8 @@ pwk.LineOffsetInfo.prototype.setLineLength = function(value) {
  */
 pwk.LineOffsetInfo.prototype.isEndOfLine = function() {
   return this.lineOffset > 0 ?
-    this.lineLength == this.lineOffset :
-    ((this.lineLength - 1) == 0)
+      this.lineLength == this.lineOffset :
+      ((this.lineLength - 1) == 0);
 };
 
 
