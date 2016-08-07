@@ -17,9 +17,9 @@ To automate the build, cleaning, code style checking is used Grunt tasks runner.
 Below list of the most important task that can used during development:
 * `grunt build` - Compile JavaScript to better JavaScript by Google Closure Compiler, compile Less files to css and minimize. Compiled project will be placed to `dist/` folder.
 * `grunt eslint` - Check JavaScript files of the project by  ESLint linting utility.
-* `grunt closureLint` - Check JavaScript files for style issues by Google Closure Linter; 
+* `grunt closureLint` - Check JavaScript files for style issues by Google Closure Linter.
 * `grunt connect` - Run local server with root project directory. Web server will be available by http://localhost:9000.
-* `grunt jsdoc` - Generate JSDoc based documentation.
+* `grunt jsdoc` - Generate JSDoc based documentation. All documentation available under `documentation/` folder. If you will run local web server, then you can access documentation by http://localhost:9000/documentation.
 
 ## Supported Browsers:
 * Internet Explorer 9+

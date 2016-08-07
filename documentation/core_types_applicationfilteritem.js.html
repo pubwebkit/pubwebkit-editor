@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>PubWebKit Editor | Source: core/types/applicationfilteritem.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">PubWebKit Editor |</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.controllers.HelloController.html">app.controllers.HelloController</a></li><li><a href="app.controllers.HomeController.html">app.controllers.HomeController</a></li><li><a href="app.Core.html">app.Core</a></li><li><a href="app.core.Application.html">app.core.Application</a></li><li><a href="app.core.Application_processRoute_-instance.html">app.core.Application#processRoute_~instance</a></li><li><a href="app.core.Controller.html">app.core.Controller</a></li><li><a href="app.core.events.ActionEvent.html">app.core.events.ActionEvent</a></li><li><a href="app.core.events.ActionExceptionEvent.html">app.core.events.ActionExceptionEvent</a></li><li><a href="app.core.Request.html">app.core.Request</a></li><li><a href="app.core.Response.html">app.core.Response</a></li><li><a href="app.core.Router.html">app.core.Router</a></li><li><a href="app.core.types.ActionFilterContext.html">app.core.types.ActionFilterContext</a></li><li><a href="app.core.types.ActionFilterItem.html">app.core.types.ActionFilterItem</a></li><li><a href="app.core.types.ApplicationFilterItem.html">app.core.types.ApplicationFilterItem</a></li><li><a href="pwk.BranchNode.html">pwk.BranchNode</a></li><li><a href="pwk.Document.html">pwk.Document</a></li><li><a href="pwk.Document.NodeRemovedEvent.html">pwk.Document.NodeRemovedEvent</a></li><li><a href="pwk.DocumentSettings.html">pwk.DocumentSettings</a></li><li><a href="pwk.Editor.html">pwk.Editor</a></li><li><a href="pwk.EditorContainer.html">pwk.EditorContainer</a></li><li><a href="pwk.layer.Caret.html">pwk.layer.Caret</a></li><li><a href="pwk.layer.Caret.AfterUpdateEvent.html">pwk.layer.Caret.AfterUpdateEvent</a></li><li><a href="pwk.layer.SelectionOverlay.html">pwk.layer.SelectionOverlay</a></li><li><a href="pwk.LeafNode.html">pwk.LeafNode</a></li><li><a href="pwk.LeafNode.NodeContentChangedEvent.html">pwk.LeafNode.NodeContentChangedEvent</a></li><li><a href="pwk.Line.html">pwk.Line</a></li><li><a href="pwk.LineContent.html">pwk.LineContent</a></li><li><a href="pwk.LineOffsetInfo.html">pwk.LineOffsetInfo</a></li><li><a href="pwk.Node.html">pwk.Node</a></li><li><a href="pwk.NodeAnnotation.html">pwk.NodeAnnotation</a></li><li><a href="pwk.NodeAttribute.html">pwk.NodeAttribute</a></li><li><a href="pwk.Page.html">pwk.Page</a></li><li><a href="pwk.Page.PageOverflowEvent.html">pwk.Page.PageOverflowEvent</a></li><li><a href="pwk.PageContent.html">pwk.PageContent</a></li><li><a href="pwk.PageFooter.html">pwk.PageFooter</a></li><li><a href="pwk.PageHeader.html">pwk.PageHeader</a></li><li><a href="pwk.PageSettings.html">pwk.PageSettings</a></li><li><a href="pwk.Pagination.html">pwk.Pagination</a></li><li><a href="pwk.primitives.ClientRectRange.html">pwk.primitives.ClientRectRange</a></li><li><a href="pwk.primitives.NodeSelectionRange.html">pwk.primitives.NodeSelectionRange</a></li><li><a href="pwk.Range.html">pwk.Range</a></li><li><a href="pwk.Ruler.html">pwk.Ruler</a></li><li><a href="pwk.Selection.html">pwk.Selection</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="interfaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Interfaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.core.ActionFilter.html">app.core.ActionFilter</a></li><li><a href="app.core.ApplicationFilter.html">app.core.ApplicationFilter</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: core/types/applicationfilteritem.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">//
+// Pubwebkit editor is powerful editor to create your ebook in various styles.
+// It's includes: Cover Designer, Template Editor, Community Snippets and more.
+// Also, it's a part of www.pubwebkit.com portal.
+// Copyright (C) 2016 Dmytro Antonenko
+//
+// This file is part of Pubwebkit editor
+//
+// Pubwebkit editor is free software: you can redistribute it and/or modify it
+// under  the terms of the GNU Affero General Public License as published by the
+// Free Software Foundation, version 3
+//
+// Pubwebkit editor is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE.
+//
+// See the GNU Affero General Public License for more details. You should have
+// received a copy of the GNU General Public License along with Hatch.js. If
+// not, see &lt;http://www.gnu.org/licenses/>.
+//
+// Authors: Dmytro Antonenko
+//
+
+goog.provide('app.core.types.ApplicationFilterItem');
+
+
+
+/**
+ * @param {!app.core.ApplicationFilter|T} filter
+ * @param {number=} opt_order
+ * @constructor
+ * @template T
+ */
+app.core.types.ApplicationFilterItem = function(filter, opt_order) {
+
+  /**
+   * @type {!app.core.ApplicationFilter|T}
+   * @private
+   */
+  this.filter_ = filter;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.order_ = goog.isDefAndNotNull(opt_order) ? opt_order : 0;
+};
+
+
+/**
+ * @return {!app.core.ApplicationFilter|T}
+ */
+app.core.types.ApplicationFilterItem.prototype.getFilter = function() {
+  return this.filter_;
+};
+
+
+/**
+ * @return {number}
+ */
+app.core.types.ApplicationFilterItem.prototype.getOrder = function() {
+  return this.order_;
+};
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright © 2016 PubWebKit
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Sun Aug 7th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>PubWebKit Editor | Source: pwk/editor/document.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">PubWebKit Editor |</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.controllers.HelloController.html">app.controllers.HelloController</a></li><li><a href="app.controllers.HomeController.html">app.controllers.HomeController</a></li><li><a href="app.Core.html">app.Core</a></li><li><a href="app.core.Application.html">app.core.Application</a></li><li><a href="app.core.Application_processRoute_-instance.html">app.core.Application#processRoute_~instance</a></li><li><a href="app.core.Controller.html">app.core.Controller</a></li><li><a href="app.core.events.ActionEvent.html">app.core.events.ActionEvent</a></li><li><a href="app.core.events.ActionExceptionEvent.html">app.core.events.ActionExceptionEvent</a></li><li><a href="app.core.Request.html">app.core.Request</a></li><li><a href="app.core.Response.html">app.core.Response</a></li><li><a href="app.core.Router.html">app.core.Router</a></li><li><a href="app.core.types.ActionFilterContext.html">app.core.types.ActionFilterContext</a></li><li><a href="app.core.types.ActionFilterItem.html">app.core.types.ActionFilterItem</a></li><li><a href="app.core.types.ApplicationFilterItem.html">app.core.types.ApplicationFilterItem</a></li><li><a href="pwk.BranchNode.html">pwk.BranchNode</a></li><li><a href="pwk.Document.html">pwk.Document</a></li><li><a href="pwk.Document.NodeRemovedEvent.html">pwk.Document.NodeRemovedEvent</a></li><li><a href="pwk.DocumentSettings.html">pwk.DocumentSettings</a></li><li><a href="pwk.Editor.html">pwk.Editor</a></li><li><a href="pwk.EditorContainer.html">pwk.EditorContainer</a></li><li><a href="pwk.layer.Caret.html">pwk.layer.Caret</a></li><li><a href="pwk.layer.Caret.AfterUpdateEvent.html">pwk.layer.Caret.AfterUpdateEvent</a></li><li><a href="pwk.layer.SelectionOverlay.html">pwk.layer.SelectionOverlay</a></li><li><a href="pwk.LeafNode.html">pwk.LeafNode</a></li><li><a href="pwk.LeafNode.NodeContentChangedEvent.html">pwk.LeafNode.NodeContentChangedEvent</a></li><li><a href="pwk.Line.html">pwk.Line</a></li><li><a href="pwk.LineContent.html">pwk.LineContent</a></li><li><a href="pwk.LineOffsetInfo.html">pwk.LineOffsetInfo</a></li><li><a href="pwk.Node.html">pwk.Node</a></li><li><a href="pwk.NodeAnnotation.html">pwk.NodeAnnotation</a></li><li><a href="pwk.NodeAttribute.html">pwk.NodeAttribute</a></li><li><a href="pwk.Page.html">pwk.Page</a></li><li><a href="pwk.Page.PageOverflowEvent.html">pwk.Page.PageOverflowEvent</a></li><li><a href="pwk.PageContent.html">pwk.PageContent</a></li><li><a href="pwk.PageFooter.html">pwk.PageFooter</a></li><li><a href="pwk.PageHeader.html">pwk.PageHeader</a></li><li><a href="pwk.PageSettings.html">pwk.PageSettings</a></li><li><a href="pwk.Pagination.html">pwk.Pagination</a></li><li><a href="pwk.primitives.ClientRectRange.html">pwk.primitives.ClientRectRange</a></li><li><a href="pwk.primitives.NodeSelectionRange.html">pwk.primitives.NodeSelectionRange</a></li><li><a href="pwk.Range.html">pwk.Range</a></li><li><a href="pwk.Ruler.html">pwk.Ruler</a></li><li><a href="pwk.Selection.html">pwk.Selection</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="interfaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Interfaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.core.ActionFilter.html">app.core.ActionFilter</a></li><li><a href="app.core.ApplicationFilter.html">app.core.ApplicationFilter</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: pwk/editor/document.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">//
+// Pubwebkit editor is powerful editor to create your ebook in various styles.
+// It's includes: Cover Designer, Template Editor, Community Snippets and more.
+// Also, it's a part of www.pubwebkit.com portal.
+// Copyright (C) 2016 Dmytro Antonenko
+//
+// This file is part of Pubwebkit editor
+//
+// Pubwebkit editor is free software: you can redistribute it and/or modify it
+// under  the terms of the GNU Affero General Public License as published by the
+// Free Software Foundation, version 3
+//
+// Pubwebkit editor is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE.
+//
+// See the GNU Affero General Public License for more details. You should have
+// received a copy of the GNU General Public License along with Hatch.js. If
+// not, see &lt;http://www.gnu.org/licenses/>.
+//
+// Authors: Dmytro Antonenko
+//
+
+/**
+ * @fileoverview Document contains all information about edited information and
+ * information itself, as child components.
+ * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
+ */
+
+goog.provide('pwk.Document');
+goog.provide('pwk.Document.EventType');
+goog.provide('pwk.Document.NodeRemovedEvent');
+
+goog.require('goog.dom.classlist');
+goog.require('goog.events.Event');
+goog.require('goog.ui.Component');
+goog.require('pwk.BranchNode');
+goog.require('pwk.DocumentSettings');
+goog.require('pwk.LeafNode');
+goog.require('pwk.NodeTypes');
+goog.require('pwk.Page');
+goog.require('pwk.PageSettings');
+goog.require('pwk.Pagination');
+goog.require('pwk.Range');
+goog.require('pwk.Selection');
+goog.require('pwk.utils.style');
+
+
+
+/**
+ * Represent document of editor.
+ * @extends {goog.ui.Component}
+ * @constructor
+ */
+pwk.Document = function() {
+  goog.base(this);
+
+  /**
+   * @type {pwk.Selection}
+   * @private
+   */
+  this.selection_ = new pwk.Selection(this);
+
+  /**
+   * @type {pwk.Pagination}
+   * @private
+   */
+  this.pagination_ = new pwk.Pagination(this);
+
+  /**
+   * Array of ids of child @code{pwk.Node} components. Used to hold order of
+   * nodes in document.
+   * @type {Array.&lt;string>}
+   * @private
+   */
+  this.nodeIndex_ = [];
+
+  /**
+   * Array of ids of child @code{pwk.Page} components. Used to hold order of
+   * pages in document.
+   * @type {Array.&lt;string>}
+   * @private
+   */
+  this.pageIndex_ = []; // TODO: move it to the pwk.Pagination component?
+
+  /**
+   * @type {pwk.PageSettings}
+   * @private
+   */
+  this.pageSettings_ = pwk.PageSettings.getInstance();
+
+  /**
+   * @type {pwk.DocumentSettings}
+   * @private
+   */
+  this.documentSettings_ = pwk.DocumentSettings.getInstance();
+};
+goog.inherits(pwk.Document, goog.ui.Component);
+
+
+/** @inheritDoc */
+pwk.Document.prototype.createDom = function() {
+  // Create element and apply classes
+  this.setElementInternal(this.dom_.createElement('div'));
+
+  var el = this.getElement();
+
+  goog.dom.classlist.add(el, pwk.Document.CSS_CLASS);
+
+  // Set document size, should be equal of page width
+  goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');
+
+  // Initialize document instance for global settings
+  this.documentSettings_.initialize(this);
+  this.pageSettings_.initialize(this);
+};
+
+
+/** @inheritDoc */
+pwk.Document.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+
+  // Initialize events
+  this.initializeEvents_();
+
+  // Initialize selection
+  this.selection_.initialize();
+
+  // First document initialization
+  this.initializeDocument_();
+};
+
+
+/**
+ * @return {pwk.Selection}
+ */
+pwk.Document.prototype.getSelection = function() {
+  return this.selection_;
+};
+
+
+/**
+ * Add text value to current caret position.
+ * @param {string|Text} value
+ */
+pwk.Document.prototype.addValue = function(value) {
+  // TODO: Refactoring required
+  let selection = this.selection_;
+  let range = selection.getRange();
+
+  // remove selection
+  selection.removeSelection();
+
+  value = typeof value == 'object' ? value.nodeValue : value;
+
+  if (range.isCollapsed()) {
+
+    let googString = goog.string;
+    let isSpace = googString.isSpace(
+        googString.normalizeWhitespace(/** @type {string} */(value)));
+    let startLine = range.getStartLine();
+    let startLineOffset = range.getStartLineOffset();
+    let isLastPositionBefore = !(startLine.getLength() - startLineOffset);
+    let startLineLength = startLine.getLength();
+    let prevNodeValue = startLine.getTextNodeValueAtOffset(startLineLength - 1);
+    let isPrevNodeValueSpace = prevNodeValue ?
+        googString.isSpace(googString.normalizeWhitespace(prevNodeValue)) :
+        false;
+    let startNodeOffset = range.getStartNodeOffset();
+    let lineBelow = range.getStartNode()
+        .getLineAt(range.getStartLineRangeInfo().getLineIndex() + 1);
+    let linkedNodeRangeInfo = range.getStartNode()
+        .getRangeInfoByLinkedNodesOffset(
+            range.getStartLineRangeInfo().getLinkedNodeOffset());
+    let linkedLineBelow = range.getStartNode()
+        .getLineAt(linkedNodeRangeInfo.getLineIndex() + 1, true);
+    let offset = value.length;
+
+    if (lineBelow != null &amp;&amp; !isSpace &amp;&amp; isLastPositionBefore &amp;&amp;
+        isPrevNodeValueSpace) {
+      range.setStartPosition(lineBelow, startNodeOffset + offset);
+      range.setEndPosition(lineBelow, startNodeOffset + offset);
+      lineBelow.insertValue(/** @type {string} */(value), 0);
+
+    } else if (linkedLineBelow != null &amp;&amp;
+        linkedLineBelow.getParentNode() !== range.getStartNode() &amp;&amp; !isSpace &amp;&amp;
+        isLastPositionBefore &amp;&amp; isPrevNodeValueSpace) {
+      range.setStartPosition(linkedLineBelow, offset);
+      range.setEndPosition(linkedLineBelow, offset);
+      linkedLineBelow.insertValue(/** @type {string} */(value), 0);
+
+    } else if (startLineOffset == 0 &amp;&amp; startNodeOffset != 0 &amp;&amp; isSpace) {
+      // If is start of line and value is space, add it to the end of line above
+      // Logic to align text
+      range.getStartNode()
+          .insertValue(/** @type {string} */(value), startNodeOffset);
+      range.setStartPosition(startLine, startNodeOffset + offset, true);
+      range.setEndPosition(startLine, startNodeOffset + offset, true);
+
+    } else if (startLineOffset == 0 &amp;&amp;
+        linkedNodeRangeInfo.getLinkedNodeOffset() > 0 &amp;&amp; isSpace) {
+      // If is start of line and value is space and it is first line of linked
+      // node, add it to the end of last linked line above
+      linkedNodeRangeInfo.getLine().getParentNode()
+          .insertValue(/** @type {string} */(value),
+              linkedNodeRangeInfo.getNodeOffset());
+      range.setStartPosition(startLine, startNodeOffset, true);
+      range.setEndPosition(startLine, startNodeOffset, true);
+
+    } else {
+      startLine.insertValue(/** @type {string} */(value), startLineOffset);
+      selection.moveCaretRight(true);
+
+      var isLastPositionAfter =
+          !(range.getStartLine().getLength() - range.getStartLineOffset());
+
+      if (isSpace &amp;&amp; !isLastPositionBefore &amp;&amp; isLastPositionAfter) {
+        var rangeStartNode = range.getStartNode();
+        lineBelow = rangeStartNode.getLineAt(
+            range.getStartLineRangeInfo().getLineIndex() + 1);
+
+        if (lineBelow != null) {
+          startNodeOffset = range.getStartNodeOffset();
+
+          range.setStartPosition(lineBelow, startNodeOffset, true);
+          range.setEndPosition(lineBelow, startNodeOffset, true);
+        } else {
+          linkedNodeRangeInfo = rangeStartNode.getRangeInfoByLinkedNodesOffset(
+              range.getStartLineRangeInfo().getLinkedNodeOffset());
+          linkedLineBelow = rangeStartNode.getLineAt(
+              linkedNodeRangeInfo.getLineIndex() + 1, true);
+
+          range.setStartPosition(linkedLineBelow, 0, true);
+          range.setEndPosition(linkedLineBelow, 0, true);
+        }
+      }
+    }
+
+    selection.updateCaretFromRange();
+  }
+};
+
+
+/**
+ * Create new line.
+ */
+pwk.Document.prototype.newLine = function() {
+  let selection = this.selection_;
+  let range = selection.getRange();
+  let startNode = range.getStartNode();
+
+  // TODO: Collapse/Selection detection
+
+  // Create new line depend of current focused node.
+  switch (startNode.getType()) {
+    case pwk.NodeTypes.PARAGRAPH:
+      let startNodeLength = startNode.getLength();
+      let paragraph;
+      let paragraphIndex;
+
+      // Checking, if line should be splitted
+      if (range.getStartNodeOffset() == 0 &amp;&amp;
+          !goog.isDefAndNotNull(startNode.getPreviousLinkedNode())) {
+        // Just create empty node above
+        paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
+
+        // Create new paragraph above
+        this.addNodeAt(paragraph, this.indexOfNode(startNode));
+      } else {
+        if (startNodeLength >= range.getStartNodeOffset()) {
+          paragraph = startNode.split(range.getStartNodeOffset());
+        } else {
+          paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
+        }
+
+        // Get current paragraph position
+        paragraphIndex = this.indexOfNode(startNode) + 1;
+
+        if (!paragraph.isInDocument()) {
+          // Create new paragraph if it's not in the document
+          this.addNodeAt(paragraph, paragraphIndex, true);
+        }
+
+        // Update range
+        var line = paragraph.getFirstLine();
+        selection.setRange(pwk.Range.createFromNodes(line, 0, line, 0));
+      }
+
+      selection.updateCaretFromRange();
+      paragraph.dispatchEvent(
+          new pwk.LeafNode.NodeContentChangedEvent(
+              paragraph.getLineAt(1, true)));
+      break;
+  }
+};
+
+
+/**
+ * Delete document content based on current selection range.
+ * @param {boolean=} opt_isBack Direction
+ */
+pwk.Document.prototype.deleteSelection = function(opt_isBack) {
+  let selection = this.selection_;
+  let range = selection.getRange();
+  let isReversed = range.isReversed();
+  let topNodeIndex = isReversed ?
+      this.indexOfNode(range.getEndNode()) :
+      this.indexOfNode(range.getStartNode());
+  let bottomNodeIndex = isReversed ?
+      this.indexOfNode(range.getStartNode()) :
+      this.indexOfNode(range.getEndNode());
+
+  if (range.isCollapsed()) { //
+
+    if (opt_isBack === true) { // Backspace
+      console.log('Backspace');
+
+    } else { // Delete
+      console.log('Delete');
+
+    }
+
+    // Remove selection range
+  } else {
+
+    let startNode;
+    let endNode;
+
+    // Process content
+    for (var i = topNodeIndex; i &lt;= bottomNodeIndex; i++) {
+
+      var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
+
+      switch (i) {
+        case topNodeIndex:
+          startNode = processedNode;
+          break;
+        case bottomNodeIndex:
+          endNode = processedNode;
+          break;
+      }
+
+      // - Remove selection
+      // - Check if length equal 0,then remove node (start == start, end == end)
+      // - Update range
+      processedNode.removeSelection();
+      if (!processedNode.isInDocument() &amp;&amp; !range.isCollapsed()) {
+        // Looks like this node is selected entirely and was removed from
+        // document, so let's correct variables
+        bottomNodeIndex = isReversed ?
+            this.indexOfNode(range.getStartNode()) :
+            this.indexOfNode(range.getEndNode());
+        i--;
+      }
+    }
+  }
+
+  selection.updateCaretFromRange(range);
+  this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+};
+
+
+/**
+ * Add page to the end of document.
+ * @param {pwk.Page} page
+ */
+pwk.Document.prototype.addPage = function(page) {
+  this.addChild(page, true);
+  goog.array.insert(this.pageIndex_, page.getId());
+};
+
+
+/**
+ * Add page to the document at the given 0-based index.
+ * @param {pwk.Page} page
+ * @param {number} index
+ */
+pwk.Document.prototype.addPageAt = function(page, index) {
+  let prevPage;
+  let prevPageIndex;
+  let prevPageId = this.pageIndex_.length ? this.pageIndex_[index - 1] : null;
+
+  if (goog.isDefAndNotNull(prevPageId)) {
+    prevPage = this.getChild(prevPageId);
+    prevPageIndex = this.indexOfChild(prevPage);
+    this.addChildAt(page, prevPageIndex + 1, true);
+    goog.array.insertAt(this.pageIndex_, page.getId(), index);
+  } else {
+    this.addChild(page, true);
+    goog.array.insert(this.pageIndex_, page.getId());
+  }
+};
+
+
+/**
+ * Calls the given function on each of this document's page in order.  If
+ * {@code opt_obj} is provided, it will be used as the 'this' object in the
+ * function when called. The function should take two arguments:  the page
+ * component and its 0-based index.  The return value is ignored.
+ * @param {Function} f The function to call for every page component; should
+ *    take 2 arguments (the page and its index).
+ * @param {Object=} opt_obj Used as the 'this' object in f when called.
+ */
+pwk.Document.prototype.forEachPage = function(f, opt_obj) {
+  if (this.pageIndex_) {
+    goog.array.forEach(this.pageIndex_, function(padeId, index) {
+      var page = this.getChild(padeId);
+      f.call(opt_obj, page, index);
+    });
+  }
+};
+
+
+/**
+ * Returns the page with the given ID, or null if no such page exists.
+ * @param {string} id Page ID.
+ * @return {pwk.Page?} The page with the given ID; null if none.
+ */
+pwk.Document.prototype.getPage = function(id) {
+  return /** @type {pwk.Page?} */(this.getChild(id));
+};
+
+
+/**
+ * Returns the page at the given index, or null if the index is out of bounds.
+ * @param {number} index 0-based index.
+ * @return {pwk.Page?} The page at the given index; null if none.
+ */
+pwk.Document.prototype.getPageAt = function(index) {
+  var pageId = this.pageIndex_.length ? this.pageIndex_[index] || '' : '';
+  return this.getPage(pageId);
+};
+
+
+/**
+ * Returns the number of pages of this document.
+ * @return {number} The number of pages.
+ */
+pwk.Document.prototype.getPageCount = function() {
+  return this.pageIndex_.length;
+};
+
+
+/**
+ * Returns an array containing the IDs of the pages of this document, or an
+ * empty array if the document has no pages.
+ * @return {Array.&lt;string>} Page component IDs.
+ */
+pwk.Document.prototype.getPageIds = function() {
+  return this.pageIndex_;
+};
+
+
+/**
+ * Returns the 0-based index of the given page component, or -1 if no such
+ * page is found.
+ * @param {?pwk.Page|string} page The page component.
+ * @return {number} 0-based index of the page component; -1 if not found.
+ */
+pwk.Document.prototype.indexOfPage = function(page) {
+  var pageId = goog.isString(page) ? page : page.getId();
+
+  return (this.pageIndex_ &amp;&amp; pageId) ?
+      goog.array.indexOf(this.pageIndex_, pageId) :
+      -1;
+};
+
+
+/**
+ * Removes the given page from this document, and returns it.  Throws an error
+ * if the argument is invalid or if the specified page isn't found in the
+ * document.  The argument can either be a string (interpreted as the
+ * ID of the page component to remove) or the page component itself.
+ * @param {string|pwk.Page} page The ID of the page to remove, or the page
+ *    component itself.
+ * @return {pwk.Page} The removed component, if any.
+ */
+pwk.Document.prototype.removePage = function(page) {
+  goog.array.remove(this.pageIndex_, goog.isString(page) ? page : page.getId());
+  var removedPage = /** @type {pwk.Page} */(this.removeChild(page, true));
+  if (removedPage) {
+    goog.dispose(removedPage);
+  }
+  return removedPage;
+};
+
+
+/**
+ * Removes the page at the given index from this document, and returns it.
+ * Throws an error if the argument is out of bounds, or if the specified page
+ * isn't found in the document.
+ *
+ * @param {number} index 0-based index of the page to remove.
+ * @return {pwk.Page} The removed page, if any.
+ */
+pwk.Document.prototype.removePageAt = function(index) {
+  return this.removePage(this.pageIndex_[index]);
+};
+
+
+/**
+ * Add node to the end of document.
+ * @param {pwk.Node} node
+ */
+pwk.Document.prototype.addNode = function(node) {
+  this.addChild(node);
+  var nodeIndex = this.nodeIndex_.length;
+  this.pagination_.addNode(node);
+
+  // To prevent duplicates in case of creating new page
+  var nodeId = node.getId();
+  if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
+    goog.array.insertAt(this.nodeIndex_, nodeId, nodeIndex);
+  }
+  this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+};
+
+
+/**
+ * Add node to the document at the given 0-based index.
+ * @param {pwk.Node} node
+ * @param {number} index
+ * @param {boolean=} opt_renderAfter Is required to render the node after
+ *    previous node or before sibling?
+ */
+pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
+  let prevNode;
+  let prevNodeIndex;
+
+  let prevNodeId = /** @type {string} */(this.nodeIndex_.length ?
+      this.nodeIndex_[index - 1] :
+      null);
+
+  if (goog.isDefAndNotNull(prevNodeId) || index == 0) {
+    if (index == 0) {
+      this.addChildAt(node, 0);
+    } else {
+      prevNode = this.getNode(prevNodeId);
+      prevNodeIndex = this.indexOfNode(prevNode);
+      this.addChildAt(node, prevNodeIndex + 1);
+    }
+
+    this.pagination_.addNodeAt(node, index, opt_renderAfter);
+
+    // To prevent duplicates in case of creating new page
+    let nodeId = node.getId();
+    if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
+      goog.array.insertAt(this.nodeIndex_, nodeId, index);
+    }
+    this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+  } else {
+    this.addNode(node);
+  }
+};
+
+
+/**
+ * Calls the given function on each of this document's node in order.  If
+ * {@code opt_obj} is provided, it will be used as the 'this' object in the
+ * function when called. The function should take two arguments:  the node
+ * component and its 0-based index.  The return value is ignored.
+ * @param {Function} f The function to call for every node component; should
+ *    take 2 arguments (the node and its index).
+ * @param {Object=} opt_obj Used as the 'this' object in f when called.
+ */
+pwk.Document.prototype.forEachNode = function(f, opt_obj) {
+  if (this.nodeIndex_) {
+    goog.array.forEach(this.nodeIndex_, function(nodeId, index) {
+      var node = this.getChild(nodeId);
+      f.call(opt_obj, node, index);
+    }, this);
+  }
+};
+
+
+/**
+ * Returns the node with the given ID, or null if no such node exists.
+ * @param {string} id Node ID.
+ * @return {pwk.Node?} The node with the given ID; null if none.
+ */
+pwk.Document.prototype.getNode = function(id) {
+  return /** @type {pwk.Node?} */(this.getChild(id));
+};
+
+
+/**
+ * Returns the node at the given index, or null if the index is out of bounds.
+ * @param {number} index 0-based index.
+ * @return {pwk.Node?} The node at the given index; null if none.
+ */
+pwk.Document.prototype.getNodeAt = function(index) {
+  var nodeId = this.nodeIndex_.length ? this.nodeIndex_[index] || '' : '';
+  return this.getNode(nodeId);
+};
+
+
+/**
+ * Returns the number of nodes of this document.
+ * @return {number} The number of nodes.
+ */
+pwk.Document.prototype.getNodeCount = function() {
+  return this.nodeIndex_.length;
+};
+
+
+/**
+ * Returns an array containing the IDs of the nodes of this document, or an
+ * empty array if the document has no nodes.
+ * @return {Array.&lt;string>} Node component IDs.
+ */
+pwk.Document.prototype.getNodeIds = function() {
+  return this.nodeIndex_;
+};
+
+
+/**
+ * Returns the 0-based index of the given node component, or -1 if no such
+ * node is found.
+ * @param {?pwk.Node} node The node component.
+ * @return {number} 0-based index of the node component; -1 if not found.
+ */
+pwk.Document.prototype.indexOfNode = function(node) {
+  return (this.nodeIndex_ &amp;&amp; node) ?
+      goog.array.indexOf(this.nodeIndex_, node.getId()) :
+      -1;
+};
+
+
+/**
+ * Do the same as {@code pwk.Document.prototype.removeNode} but did not deleting
+ * it from index.
+ * @param {string|pwk.Node} node The ID of the node to remove, or the node
+ *    component itself.
+ * @return {pwk.Node} The removed node, if any.
+ */
+pwk.Document.prototype.unlinkNode = function(node) {
+  return /** @type {pwk.Node} */(this.removeChild(node, true));
+};
+
+
+/**
+ * Removes the given node from this document, returns and disposes of it.
+ * Throws an error if the argument is invalid or if the specified node isn't
+ * found in the document. The argument can either be a string (interpreted as
+ * the ID of the node component to remove) or the node component itself.
+ * @param {string|pwk.Node} node The ID of the node to remove, or the node
+ *    component itself.
+ * @return {pwk.Node} The removed node, if any.
+ */
+pwk.Document.prototype.removeNode = function(node) {
+  goog.array.remove(this.nodeIndex_, goog.isString(node) ? node : node.getId());
+  var removedNode = this.unlinkNode(node);
+  if (removedNode) {
+    goog.dispose(removedNode);
+  }
+
+  // trigger events
+  this.dispatchEvent(new pwk.Document.NodeRemovedEvent(removedNode));
+
+  // return removed node
+  return removedNode;
+};
+
+
+/**
+ * Removes the node at the given index from this document, returns and disposes
+ * of it. Throws an error if the argument is out of bounds, or if the specified
+ * node isn't found in the document.
+ * @param {number} index 0-based index of the node to remove.
+ * @return {pwk.Node} The removed node, if any.
+ */
+pwk.Document.prototype.removeNodeAt = function(index) {
+  return this.removeNode(this.nodeIndex_[index]);
+};
+
+
+/**
+ * Get {@code pwk.Pagination} document instance
+ * @return {pwk.Pagination}
+ */
+pwk.Document.prototype.getPagination = function() {
+  return this.pagination_;
+};
+
+
+/**
+ * Return index of page/nodes equivalent.
+ * @return {Array.&lt;Array.&lt;string>>}
+ */
+pwk.Document.prototype.getPaginationIndex = function() {
+  return this.pagination_.getPaginationIndex();
+};
+
+
+/**
+ * Initialize document
+ * @private
+ */
+pwk.Document.prototype.initializeDocument_ = function() {
+
+  // If document empty, add empty paragraph
+  if (!this.getNodeCount()) {
+    var paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
+
+    this.addNode(paragraph);
+
+    this.dispatchEvent(
+        new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
+
+    // Initialize Range
+    var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0,
+        paragraph.getFirstLine(), 0);
+    this.selection_.setRange(range);
+    this.selection_.updateCaretFromRange();
+  }
+};
+
+
+/**
+ * Initialize component and related components events
+ * @private
+ */
+pwk.Document.prototype.initializeEvents_ = function() {
+  this.listen(pwk.Document.EventType.FILLING_CHANGE,
+      this.onDocumentFillingChangedEventHandler_);
+};
+
+
+/**
+ * Handler of filling document content. Called each time, when height of
+ * document content was changed.
+ * @param {goog.events.Event} e
+ * @private
+ */
+pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
+  let pagination = this.pagination_;
+  let selection = this.selection_;
+  let range = selection.getRange();
+
+  if (range != null) {
+    // If document become bigger then available on current pages, move nodes to
+    // other pages or create more page and move them there
+    pagination.checkOverflow(range.getStartNode().getId());
+
+    // Fill document pages if content height was changed
+    pagination.checkFilling();
+  }
+};
+
+
+/**
+ * Component default css class
+ * @type {string}
+ */
+pwk.Document.CSS_CLASS = 'pwk-document';
+
+
+/**
+ * Event types that can be stopped/started.
+ * @enum {string}
+ */
+pwk.Document.EventType = {
+  FILLING_CHANGE: goog.events.getUniqueId('filling_changed'),
+  NODE_REMOVED: goog.events.getUniqueId('node_removed')
+};
+
+
+
+/**
+ * @param {pwk.Node} node
+ * @extends {goog.events.Event}
+ * @constructor
+ */
+pwk.Document.NodeRemovedEvent = function(node) {
+  goog.events.Event.call(this, pwk.Document.EventType.NODE_REMOVED, node);
+
+  /**
+   * @type {pwk.Node}
+   */
+  this.removedNode = node;
+};
+goog.inherits(pwk.Document.NodeRemovedEvent, goog.events.Event);
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright © 2016 PubWebKit
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Sun Aug 7th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

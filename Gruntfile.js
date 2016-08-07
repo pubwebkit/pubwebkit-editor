@@ -4,11 +4,11 @@
  * Copyright 2016 Dmytro Antonenko
  */
 
-var mountFolder = function (connect, dir) {
+var mountFolder = function(connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   'use strict';
 
   var CONFIGURATION = {
@@ -54,6 +54,8 @@ module.exports = function (grunt) {
   // Configure
   grunt.initConfig({
 
+    pkg: '<json:package.json>',
+
     eslint: {
       target: ['app/**/*.js']
     },
@@ -61,7 +63,7 @@ module.exports = function (grunt) {
     file_append: {
       default_options: {
         files: [
-          function () {
+          function() {
             return {
               append: "\n/*\n//@ sourceMappingURL=testing2.js.map\n*/",
               input: CONFIGURATION.destCompiled
@@ -149,7 +151,7 @@ module.exports = function (grunt) {
           cwd: 'app',
           dest: 'dist/',
           src: ['index-prod.html'],
-          rename: function (dest, src) {
+          rename: function(dest, src) {
             return dest + src.replace('-prod.html', '.html');
           }
         }]
@@ -180,7 +182,7 @@ module.exports = function (grunt) {
       },
       app: {
         options: {
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               mountFolder(connect, './')
             ];
@@ -191,19 +193,21 @@ module.exports = function (grunt) {
 
     jsdoc: {
       dist: {
-        src: ['app/*.js', 'app/**/*.js'],
+        src: ['app/**/*.js'],
         options: {
-          'destination': 'doc',
-          'private': true,
-          'recurse': true
+          destination: 'documentation',
+          template: "jsdoc_template",
+          configure: "jsdoc_template/jsdoc.conf.json",
+          private: true,
+          recurse: true,
+          readme: 'README.md'
         }
       }
     },
 
     shell: {
       compileClosureCompiler: {
-        command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests',
-
+        command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests'
       }
     }
   });
