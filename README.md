@@ -10,7 +10,7 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 - Build Google Closure Templates for javascript usage. Navigate to `libs/closure-templates/` folder and run command `mvn`.
 - Install Closure Linter from `libs/closure-linter` by next command `python ./setup.py install`.
     - Make gjslint.py executable `chmod +x libs/closure-linter/closure_linter/gjslint.py`.
-    - Make gjslint.py executable `chmod +x libs/closure-linter/closure_linter/fixjsstyle.py`.
+    - Make fixjsstyle.py executable `chmod +x libs/closure-linter/closure_linter/fixjsstyle.py`.
 
 ## Grunt task
 To automate the build, cleaning, code style checking is used Grunt tasks runner.
