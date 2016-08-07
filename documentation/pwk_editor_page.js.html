@@ -282,35 +282,35 @@ pwk.Page.prototype.getAvailableContentSize = function() {
  * case page is overflowed.
  */
 pwk.Page.prototype.checkPageOverflow = function() {
-  var googStyle = goog.style,
-      doc = this.document_,
-      contentEl = this.content_.getElement(),
-      contentSize = googStyle.getSize(contentEl),
-      maxContentHeight = this.getMaxContentSize();
+  let googStyle = goog.style;
+  let doc = this.document_;
+  let contentEl = this.content_.getElement();
+  let contentSize = googStyle.getSize(contentEl);
+  let maxContentHeight = this.getMaxContentSize();
 
   // If page content higher than allowed value
   if (contentSize.height > maxContentHeight) {
-    var nodes = [], // Nodes which will be moved to the next page
-        pageIndex = doc.indexOfPage(this),
-        pageNodes = doc.getPaginationIndex()[pageIndex],
-        pageNodesLength = pageNodes.length,
-        loopNode,
-        newLinkedNode;
+    let nodes = []; // Nodes which will be moved to the next page
+    let pageIndex = doc.indexOfPage(this);
+    let pageNodes = doc.getPaginationIndex()[pageIndex];
+    let pageNodesLength = pageNodes.length;
+    let loopNode;
+    let newLinkedNode;
 
     while (pageNodesLength--) {
       loopNode = doc.getNode(pageNodes[pageNodesLength]);
 
       switch (loopNode.getType()) {
         case pwk.NodeTypes.PARAGRAPH:
-          var leafNode = /** @type {pwk.LeafNode} */(loopNode),
-              nodeHeight = googStyle.getSize(leafNode.getElement()).height,
-              linkedNode = leafNode.getNextLinkedNode();
+          let leafNode = /** @type {pwk.LeafNode} */(loopNode);
+          let nodeHeight = googStyle.getSize(leafNode.getElement()).height;
+          let linkedNode = leafNode.getNextLinkedNode();
 
           // Is required to move the whole node?
           if ((contentEl.offsetHeight - nodeHeight) &lt; maxContentHeight) {
-            var lineLength = leafNode.getLinesCount(),
-                loopLine,
-                heightToCut = 0;
+            let lineLength = leafNode.getLinesCount();
+            let loopLine;
+            let heightToCut = 0;
 
             while (lineLength--) {
               loopLine = leafNode.getLineAt(lineLength);
@@ -324,11 +324,11 @@ pwk.Page.prototype.checkPageOverflow = function() {
               // Move all node to the next page
               goog.array.insert(nodes, this.content_.unlinkNode(leafNode));
             } else {
-              var lastLine;
+              let lastLine;
 
               if (!goog.isDefAndNotNull(linkedNode)) {
                 // Move lines to the new linked node
-                for (var i = leafNode.getLinesCount() - 1;
+                for (let i = leafNode.getLinesCount() - 1;
                      i >= lineLength; i--) {
                   lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
 
@@ -344,7 +344,7 @@ pwk.Page.prototype.checkPageOverflow = function() {
                 goog.array.insert(nodes, newLinkedNode);
               } else {
                 // Move lines to the exist next linked node
-                for (var i = leafNode.getLinesCount() - 1;
+                for (let i = leafNode.getLinesCount() - 1;
                      i >= lineLength; i--) {
                   lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
                   linkedNode.insertLine(lastLine, true, 0);

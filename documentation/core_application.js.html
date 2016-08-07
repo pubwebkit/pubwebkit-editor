@@ -125,7 +125,7 @@ goog.require('goog.string');
 app.core.Application = function() {
   goog.events.EventTarget.call(this);
 
-  var historyStateInput = (/** @type {HTMLInputElement} **/(
+  let historyStateInput = (/** @type {HTMLInputElement} **/(
       goog.dom.createDom('input',
           {
             'type': 'text',
@@ -417,10 +417,10 @@ app.core.Application.prototype.forEachApplicationFilter_ = function(callback) {
  * @private
  */
 app.core.Application.prototype.forEachActionFilter_ = function(callback) {
-  var currentRoute = this.currentRoute_;
+  let currentRoute = this.currentRoute_;
   goog.array.forEach(this.actionFilters_, function(filterItem) {
     // Check route and run
-    var route = filterItem.getRoute();
+    let route = filterItem.getRoute();
 
     if (goog.string.isEmptySafe(route) || currentRoute.exec(route)) {
       callback.call(this, filterItem);

@@ -158,27 +158,27 @@ pwk.NodeFormatter.applyGlobalDocumentFormation = function(doc, node) {
  * @param {goog.ui.Component} node Node or any child component
  */
 pwk.NodeFormatter.applyNodeAttributes = function(attributes, node) {
-  var el = node.getElement();
+  let element = node.getElement();
 
   goog.array.forEach(attributes, function(attr) {
-    var value = attr.getValue();
+    let value = attr.getValue();
 
     switch (attr.getType()) {
 
       case pwk.NodeAttributeTypes.HTML_CLASS:
-        goog.dom.classlist.set(el, value);
+        goog.dom.classlist.set(element, value);
         break;
 
       case pwk.NodeAttributeTypes.STYLE_FONT_SIZE:
-        el.style.fontSize = value;
+        element.style.fontSize = value;
         break;
 
       case pwk.NodeAttributeTypes.STYLE_HEIGHT:
-        goog.style.setHeight(el, value);
+        goog.style.setHeight(element, value);
         break;
 
       case pwk.NodeAttributeTypes.STYLE_LINE_HEIGHT:
-        el.style.lineHeight = value;
+        element.style.lineHeight = value;
         break;
 
       default:

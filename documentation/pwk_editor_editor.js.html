@@ -204,12 +204,12 @@ pwk.Editor.prototype.createDom = function() {
 
   // Create element and apply classes
   this.setElementInternal(this.dom_.createElement('div'));
-  let el = this.getElement();
-  goog.dom.classlist.add(el, pwk.Editor.CSS_CLASS);
+  let element = this.getElement();
+  goog.dom.classlist.add(element, pwk.Editor.CSS_CLASS);
 
   // Set editor focusable
-  goog.dom.setFocusableTabIndex(el, true);
-  el.focus();
+  goog.dom.setFocusableTabIndex(element, true);
+  element.focus();
 };
 
 
@@ -217,7 +217,7 @@ pwk.Editor.prototype.createDom = function() {
 pwk.Editor.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
-  var element = this.getElement();
+  let element = this.getElement();
 
   // Initialize private members
   this.keyHandler_ = new goog.events.KeyHandler(element);
