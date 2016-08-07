@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: pwk/editor/pagecontent.js</title>
+    <title>JSDoc: Source: pwk/editor/linerangeinfo.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: pwk/editor/pagecontent.js</h1>
+    <h1 class="page-title">Source: pwk/editor/linerangeinfo.js</h1>
 
     
 
@@ -50,149 +50,174 @@
 //
 
 /**
- * @fileoverview Page content component.
+ * @fileoverview Represent class to store line offset information.
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-goog.provide('pwk.PageContent');
-
-goog.require('goog.dom.classlist');
-goog.require('goog.style');
-goog.require('goog.ui.Component');
-goog.require('pwk.Node');
-
+goog.provide('pwk.LineOffsetInfo');
 
 
 /**
- * Initialize {pwk.PageContent} component.
- *
- * @param {pwk.Document} doc
+ * Store line offset information.
  * @constructor
- * @extends {goog.ui.Component}
  */
-pwk.PageContent = function(doc) {
-  goog.base(this);
+pwk.LineOffsetInfo = function() {
 
   /**
-     * @type {pwk.Document}
-     * @private
-     */
-  this.document_ = doc;
+   * @type {number}
+   * @private
+   */
+  this.lineIndex;
 
   /**
-     * @type {pwk.PageSettings}
-     * @private
-     */
-  this.pageSettings_ = pwk.PageSettings.getInstance();
-};
-goog.inherits(pwk.PageContent, goog.ui.Component);
+   * @type {pwk.Line}
+   * @private
+   */
+  this.line;
 
+  /**
+   * @type {number}
+   * @private
+   */
+  this.lineOffset;
 
-/** @inheritDoc */
-pwk.PageContent.prototype.createDom = function() {
-  var element = this.dom_.createElement('div');
-  this.setElementInternal(element);
-  this.decorateInternal(element);
-};
+  /**
+   * @type {number}
+   * @private
+   */
+  this.nodeOffset;
 
+  /**
+   * @type {number}
+   * @private
+   */
+  this.lineLength;
 
-/** @inheritDoc */
-pwk.PageContent.prototype.decorateInternal = function(element) {
-  goog.base(this, 'decorateInternal', element);
-
-  goog.dom.classlist.add(element, pwk.PageContent.CSS_CLASS);
-
-  // apply settings
-  var pageSettings = this.pageSettings_;
-  element.style.paddingRight = pageSettings.getRightMargin() + 'px';
-  element.style.paddingLeft = pageSettings.getLeftMargin() + 'px';
-};
-
-
-/** @inheritDoc */
-pwk.PageContent.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
-};
-
-
-/** @inheritDoc */
-pwk.PageContent.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
-
-  // Remove references
-  this.document_ = null;
+  /**
+   * @type {number}
+   * @private
+   */
+  this.linkedNodeOffset;
 };
 
 
 /**
- * Render node inside this page content and insert at the end of page.
- * @param {pwk.Node} node
+ * Get line index.
+ * @return {number}
  */
-pwk.PageContent.prototype.linkNode = function(node) {
-  // Check if node already rendered
-  if (node.isInDocument()) {
-    throw new Error('Node shouldn\'t be already in the document.');
-  }
-
-  var el = this.getElement();
-  node.render(el);
+pwk.LineOffsetInfo.prototype.getLineIndex = function() {
+  return this.lineIndex;
 };
 
 
 /**
- * Render node inside this page content and insert before specific node.
- * @param {pwk.Node} node
- * @param {pwk.Node} sibling
+ * Set line index.
+ * @param value Line index value.
  */
-pwk.PageContent.prototype.linkNodeBefore = function(node, sibling) {
-  // Check if node already rendered
-  if (node.isInDocument()) {
-    throw new Error('Node shouldn\'t be already in the document.');
-  }
-
-  var siblingEl = sibling.getElement();
-  node.renderBefore(siblingEl);
+pwk.LineOffsetInfo.prototype.setLineIndex = function(value) {
+  this.lineIndex = value;
 };
 
 
 /**
- * Render node inside this page content and insert before specific node.
- * @param {pwk.Node} node
- * @param {pwk.Node} previous
+ * Get line instance {@code pwk.Line}.
+ * @return {pwk.Line}
  */
-pwk.PageContent.prototype.linkNodeAfter = function(node, previous) {
-  // Check if node already rendered
-  if (node.isInDocument()) {
-    throw new Error('Node shouldn\'t be already in the document.');
-  }
-
-  node.render(previous.getParent().getElement());
-
-  var nodeEl = node.getElement() ,
-      previousNodeEl = previous.getElement();
-
-  if (nodeEl.previousElementSibling != previousNodeEl) {
-    goog.dom.insertSiblingAfter(node.getElement(), previous.getElement());
-  }
+pwk.LineOffsetInfo.prototype.getLine = function() {
+  return this.line;
 };
 
 
 /**
- * Remove node from document and return if any.
- * @param {string|pwk.Node} node
+ * Set line.
+ * @param {pwk.Line} line Line instance.
  */
-pwk.PageContent.prototype.unlinkNode = function(node) {
-  return this.document_.unlinkNode(node);
+pwk.LineOffsetInfo.prototype.setLine = function(line) {
+  return this.line = line;
 };
 
 
 /**
- * Default CSS class to be applied to the root element of components rendered
- * by this renderer.
- *
- * @type {string}
+ * Get line offset.
+ * @return {number}
  */
-pwk.PageContent.CSS_CLASS = 'pwk-page-content';
+pwk.LineOffsetInfo.prototype.getLineOffset = function() {
+  return this.lineOffset;
+};
+
+
+/**
+ * Set line offset.
+ * @param {number} value Line offset value.
+ */
+pwk.LineOffsetInfo.prototype.setLineOffset = function(value) {
+  this.lineOffset = value;
+};
+
+
+/**
+ * Get node offset.
+ * @return {number}
+ */
+pwk.LineOffsetInfo.prototype.getNodeOffset = function() {
+  return this.nodeOffset;
+};
+
+
+/**
+ * Set node offset.
+ * @param {number} value Node offset value.
+ */
+pwk.LineOffsetInfo.prototype.setNodeOffset = function(value) {
+  this.nodeOffset = value;
+};
+
+
+/**
+ * Get line length.
+ * @return {number}
+ */
+pwk.LineOffsetInfo.prototype.getLineLength = function() {
+  return this.lineLength;
+};
+
+
+/**
+ * Set line length.
+ * @param {number} value Line length value.
+ */
+pwk.LineOffsetInfo.prototype.setLineLength = function(value) {
+  this.lineLength = value;
+};
+
+
+/**
+ * Current offset pointing to the end of line?
+ * @return {boolean}
+ */
+pwk.LineOffsetInfo.prototype.isEndOfLine = function() {
+  return this.lineOffset > 0 ?
+    this.lineLength == this.lineOffset :
+    ((this.lineLength - 1) == 0)
+};
+
+
+/**
+ * Get linked node offset.
+ * @return {number}
+ */
+pwk.LineOffsetInfo.prototype.getLinkedNodeOffset = function() {
+  return this.linkedNodeOffset;
+};
+
+
+/**
+ * Set node offset.
+ * @param {number} value Linked node offset value.
+ */
+pwk.LineOffsetInfo.prototype.setLinkedNodeOffset = function(value) {
+  this.linkedNodeOffset = value;
+};
 </code></pre>
         </article>
     </section>

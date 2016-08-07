@@ -82,13 +82,13 @@ pwk.Range = function(startLine, startNodeOffset, endLine, endNodeOffset, opt_isS
   this.endNodeOffset_ = endNodeOffset;
 
   /**
-   * @type {?pwk.primitives.LineOffsetInfo}
+   * @type {?pwk.LineOffsetInfo}
    * @private
    */
   this.startLineRangeInfo_ = this.startNode_.getRangeInfoForOffset(startNodeOffset);
 
   /**
-   * @type {?pwk.primitives.LineOffsetInfo}
+   * @type {?pwk.LineOffsetInfo}
    * @private
    */
   this.endLineRangeInfo_ = this.endNode_.getRangeInfoForOffset(endNodeOffset);
@@ -206,7 +206,7 @@ pwk.Range.prototype.getEndLineOffset = function() {
 
 
 /**
- * @return {?pwk.primitives.LineOffsetInfo}
+ * @return {?pwk.LineOffsetInfo}
  */
 pwk.Range.prototype.getStartLineRangeInfo = function() {
   return this.startLineRangeInfo_;
@@ -214,7 +214,7 @@ pwk.Range.prototype.getStartLineRangeInfo = function() {
 
 
 /**
- * @return {?pwk.primitives.LineOffsetInfo}
+ * @return {?pwk.LineOffsetInfo}
  */
 pwk.Range.prototype.getEndLineRangeInfo = function() {
   return this.endLineRangeInfo_;

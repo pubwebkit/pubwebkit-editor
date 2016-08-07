@@ -26,14 +26,14 @@
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-goog.provide('pwk.primitives.LineOffsetInfo');
+goog.provide('pwk.LineOffsetInfo');
 
 
 /**
  * Store line offset information.
  * @constructor
  */
-pwk.primitives.LineOffsetInfo = function() {
+pwk.LineOffsetInfo = function() {
 
   /**
    * @type {number}
@@ -77,7 +77,7 @@ pwk.primitives.LineOffsetInfo = function() {
  * Get line index.
  * @return {number}
  */
-pwk.primitives.LineOffsetInfo.prototype.getLineIndex = function() {
+pwk.LineOffsetInfo.prototype.getLineIndex = function() {
   return this.lineIndex;
 };
 
@@ -86,7 +86,7 @@ pwk.primitives.LineOffsetInfo.prototype.getLineIndex = function() {
  * Set line index.
  * @param value Line index value.
  */
-pwk.primitives.LineOffsetInfo.prototype.setLineIndex = function(value) {
+pwk.LineOffsetInfo.prototype.setLineIndex = function(value) {
   this.lineIndex = value;
 };
 
@@ -95,7 +95,7 @@ pwk.primitives.LineOffsetInfo.prototype.setLineIndex = function(value) {
  * Get line instance {@code pwk.Line}.
  * @return {pwk.Line}
  */
-pwk.primitives.LineOffsetInfo.prototype.getLine = function() {
+pwk.LineOffsetInfo.prototype.getLine = function() {
   return this.line;
 };
 
@@ -104,7 +104,7 @@ pwk.primitives.LineOffsetInfo.prototype.getLine = function() {
  * Set line.
  * @param {pwk.Line} line Line instance.
  */
-pwk.primitives.LineOffsetInfo.prototype.setLine = function(line) {
+pwk.LineOffsetInfo.prototype.setLine = function(line) {
   return this.line = line;
 };
 
@@ -113,7 +113,7 @@ pwk.primitives.LineOffsetInfo.prototype.setLine = function(line) {
  * Get line offset.
  * @return {number}
  */
-pwk.primitives.LineOffsetInfo.prototype.getLineOffset = function() {
+pwk.LineOffsetInfo.prototype.getLineOffset = function() {
   return this.lineOffset;
 };
 
@@ -122,7 +122,7 @@ pwk.primitives.LineOffsetInfo.prototype.getLineOffset = function() {
  * Set line offset.
  * @param {number} value Line offset value.
  */
-pwk.primitives.LineOffsetInfo.prototype.setLineOffset = function(value) {
+pwk.LineOffsetInfo.prototype.setLineOffset = function(value) {
   this.lineOffset = value;
 };
 
@@ -131,7 +131,7 @@ pwk.primitives.LineOffsetInfo.prototype.setLineOffset = function(value) {
  * Get node offset.
  * @return {number}
  */
-pwk.primitives.LineOffsetInfo.prototype.getNodeOffset = function() {
+pwk.LineOffsetInfo.prototype.getNodeOffset = function() {
   return this.nodeOffset;
 };
 
@@ -140,7 +140,7 @@ pwk.primitives.LineOffsetInfo.prototype.getNodeOffset = function() {
  * Set node offset.
  * @param {number} value Node offset value.
  */
-pwk.primitives.LineOffsetInfo.prototype.setNodeOffset = function(value) {
+pwk.LineOffsetInfo.prototype.setNodeOffset = function(value) {
   this.nodeOffset = value;
 };
 
@@ -149,7 +149,7 @@ pwk.primitives.LineOffsetInfo.prototype.setNodeOffset = function(value) {
  * Get line length.
  * @return {number}
  */
-pwk.primitives.LineOffsetInfo.prototype.getLineLength = function() {
+pwk.LineOffsetInfo.prototype.getLineLength = function() {
   return this.lineLength;
 };
 
@@ -158,7 +158,7 @@ pwk.primitives.LineOffsetInfo.prototype.getLineLength = function() {
  * Set line length.
  * @param {number} value Line length value.
  */
-pwk.primitives.LineOffsetInfo.prototype.setLineLength = function(value) {
+pwk.LineOffsetInfo.prototype.setLineLength = function(value) {
   this.lineLength = value;
 };
 
@@ -167,7 +167,7 @@ pwk.primitives.LineOffsetInfo.prototype.setLineLength = function(value) {
  * Current offset pointing to the end of line?
  * @return {boolean}
  */
-pwk.primitives.LineOffsetInfo.prototype.isEndOfLine = function() {
+pwk.LineOffsetInfo.prototype.isEndOfLine = function() {
   return this.lineOffset > 0 ?
     this.lineLength == this.lineOffset :
     ((this.lineLength - 1) == 0)
@@ -178,7 +178,7 @@ pwk.primitives.LineOffsetInfo.prototype.isEndOfLine = function() {
  * Get linked node offset.
  * @return {number}
  */
-pwk.primitives.LineOffsetInfo.prototype.getLinkedNodeOffset = function() {
+pwk.LineOffsetInfo.prototype.getLinkedNodeOffset = function() {
   return this.linkedNodeOffset;
 };
 
@@ -187,6 +187,6 @@ pwk.primitives.LineOffsetInfo.prototype.getLinkedNodeOffset = function() {
  * Set node offset.
  * @param {number} value Linked node offset value.
  */
-pwk.primitives.LineOffsetInfo.prototype.setLinkedNodeOffset = function(value) {
+pwk.LineOffsetInfo.prototype.setLinkedNodeOffset = function(value) {
   this.linkedNodeOffset = value;
 };

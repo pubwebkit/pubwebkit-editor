@@ -36,7 +36,7 @@ goog.require('pwk.Node');
 goog.require('pwk.NodeAttribute');
 goog.require('pwk.NodeAttributeTypes');
 goog.require('pwk.NodeFormatter');
-goog.require('pwk.primitives.LineOffsetInfo');
+goog.require('pwk.LineOffsetInfo');
 goog.require('pwk.primitives.NodeSelectionRange');
 
 
@@ -298,7 +298,7 @@ pwk.LeafNode.prototype.getLinesOfAllLinkedNodes_ = function() {
 /**
  * Get line range information for specific offset at the node.
  * @param {number} nodeOffset Text range offset (summary for all lines)
- * @return {?pwk.primitives.LineOffsetInfo}
+ * @return {?pwk.LineOffsetInfo}
  */
 pwk.LeafNode.prototype.getRangeInfoForOffset = function(nodeOffset) {
 
@@ -311,7 +311,7 @@ pwk.LeafNode.prototype.getRangeInfoForOffset = function(nodeOffset) {
   let lines = this.lines_;
   let lineLength;
   let line;
-  let rangeInfo = new pwk.primitives.LineOffsetInfo();
+  let rangeInfo = new pwk.LineOffsetInfo();
 
   if (nodeOffset == 0) {
     line = lines[0];
@@ -358,13 +358,13 @@ pwk.LeafNode.prototype.getRangeInfoForOffset = function(nodeOffset) {
 /**
  * Get line range information for specific offset based on all linked nodes.
  * @param {number} nodeOffset Text range offset (summary for all lines)
- * @return {?pwk.primitives.LineOffsetInfo}
+ * @return {?pwk.LineOffsetInfo}
  */
 pwk.LeafNode.prototype.getRangeInfoByLinkedNodesOffset = function(nodeOffset) {
   let lines = this.getLinesOfAllLinkedNodes_();
   let lineLength;
   let line;
-  let rangeInfo = new pwk.primitives.LineOffsetInfo();
+  let rangeInfo = new pwk.LineOffsetInfo();
 
   if (nodeOffset == 0) {
     line = lines[0];
