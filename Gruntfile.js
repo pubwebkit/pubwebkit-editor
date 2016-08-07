@@ -35,10 +35,10 @@ module.exports = function (grunt) {
     externsPath: 'app/externs/',
 
     // The compiled file
-    destCompiled: 'build/pubwebkit.editor.min.js',
+    destCompiled: 'dist/pubwebkit.editor.min.js',
 
     // The location of the source map
-    sourceMap: 'build/pubwebkit.editor.js.map',
+    sourceMap: 'dist/pubwebkit.editor.js.map',
 
     //local filename|remote url
     source_map_location_mapping: ['libs/|http://localhost:63342/pubwebkit-editor/libs/', 'app/|http://localhost:63342/pubwebkit-editor/app/'],
@@ -147,7 +147,7 @@ module.exports = function (grunt) {
           expand: true,
           dot: true,
           cwd: 'app',
-          dest: 'build/',
+          dest: 'dist/',
           src: ['index-prod.html'],
           rename: function (dest, src) {
             return dest + src.replace('-prod.html', '.html');
@@ -157,7 +157,7 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      dist: ['build/*']
+      dist: ['dist/*']
     },
 
     less: {
@@ -167,7 +167,7 @@ module.exports = function (grunt) {
           cleancss: true
         },
         files: {
-          "build/editor.min.css": "less/theme.less"
+          "dist/editor.min.css": "less/theme.less"
         }
       }
     },

@@ -15,7 +15,7 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 ## Grunt task
 To automate the build, cleaning, code style checking is used Grunt tasks runner.
 Below list of the most important task that can used during development:
-* `grunt build` - Compile JavaScript to better JavaScript by Google Closure Compiler, compile Less files to css and minimize. Compiled project will be placed to `build` folder.
+* `grunt build` - Compile JavaScript to better JavaScript by Google Closure Compiler, compile Less files to css and minimize. Compiled project will be placed to `dist/` folder.
 * `grunt eslint` - Check JavaScript files of the project by  ESLint linting utility.
 * `grunt closureLint` - Check JavaScript files for style issues by Google Closure Linter; 
 * `grunt connect` - Run local server with root project directory. Web server will be available by http://localhost:9000.
