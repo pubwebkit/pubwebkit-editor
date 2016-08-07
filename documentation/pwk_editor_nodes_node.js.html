@@ -110,6 +110,7 @@ goog.require('goog.ui.Component');
 goog.require('pwk.NodeFormatter');
 
 
+
 /**
  * @param {pwk.NodeTypes} type Type of node
  * @param {pwk.Document} doc Parent document object.
@@ -134,12 +135,13 @@ pwk.Node = function(type, doc) {
 
   /**
    * @type {boolean}
+   * @private
    */
   this.isChild_ = false;
 
   /**
    * @type {pwk.Document}
-   * @protected
+   * @private
    */
   this.document_ = doc;
 
@@ -147,6 +149,15 @@ pwk.Node = function(type, doc) {
   pwk.NodeFormatter.applyGlobalDocumentFormation(doc, this);
 };
 goog.inherits(pwk.Node, goog.ui.Component);
+
+
+/**
+ * Get editor {@code pwk.Document} instance.
+ * @return {pwk.Document} Editor {@code pwk.Document} instance.
+ */
+pwk.Node.prototype.getDocument = function() {
+  return this.document_;
+};
 
 
 /** @inheritDoc */
@@ -162,7 +173,7 @@ pwk.Node.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 
   // Remove attributes
-  for(var i = 0; i &lt; this.attributes_.length; i++) {
+  for (var i = 0; i &lt; this.attributes_.length; i++) {
     goog.array.removeAt(this.attributes_, i);
   }
 
@@ -180,7 +191,7 @@ pwk.Node.prototype.addChild = function(child, opt_render) {
 
 /** @inheritDoc */
 pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
-  if(child instanceof pwk.Node) {
+  if (child instanceof pwk.Node) {
     child.isChild(true);
   }
 
@@ -194,7 +205,7 @@ pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
  * @return {boolean}
  */
 pwk.Node.prototype.isChild = function(opt_child) {
-  if(goog.isDefAndNotNull(opt_child)) {
+  if (goog.isDefAndNotNull(opt_child)) {
     this.isChild_ = opt_child;
   }
   return this.isChild_;
@@ -251,7 +262,7 @@ pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
     return att.getType() == type;
   });
 
-  if(goog.isDefAndNotNull(attribute)) {
+  if (goog.isDefAndNotNull(attribute)) {
     attribute.setValue(value, opt_isMergeData);
   } else {
     goog.array.insert(this.attributes_, new pwk.NodeAttribute(type, value));

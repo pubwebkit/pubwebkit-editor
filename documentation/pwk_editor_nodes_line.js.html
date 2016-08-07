@@ -236,7 +236,8 @@ pwk.Line.prototype.pop = function() {
 
 
 /**
- * Removes latest text nodes, separated by space/tab, from the content and returns their values.
+ * Removes latest text nodes, separated by space/tab, from the content and
+ *    returns their values.
  * @return {string} The values of the popped text nodes.
  */
 pwk.Line.prototype.popLastWord = function() {
@@ -269,7 +270,7 @@ pwk.Line.prototype.insertText = function(text, opt_offset) {
 
 
 /**
- * @param offset
+ * @param {number} offset
  * @return {Node?}
  */
 pwk.Line.prototype.getTextNodeAtOffset = function(offset) {
@@ -278,7 +279,7 @@ pwk.Line.prototype.getTextNodeAtOffset = function(offset) {
 
 
 /**
- * @param offset
+ * @param {number} offset
  * @return {string}
  */
 pwk.Line.prototype.getTextNodeValueAtOffset = function(offset) {
@@ -321,22 +322,27 @@ pwk.Line.prototype.getParentNode = function() {
 pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
 
   // Remove previous selection, if exist
-  if(goog.isDefAndNotNull(this.selectionOverlay_)) {
+  if (goog.isDefAndNotNull(this.selectionOverlay_)) {
     this.removeChild(this.selectionOverlay_, true);
     goog.dispose(this.selectionOverlay_);
   }
 
-  var googStyle = goog.style,
-      el = this.getElement(),
-      elSize = googStyle.getSize(el),
-      elPageOffset = googStyle.getPageOffset(el),
-      clientRectRange;
+  let googStyle = goog.style;
+  let el = this.getElement();
+  let elSize = googStyle.getSize(el);
+  let elPageOffset = googStyle.getPageOffset(el);
+  let clientRectRange;
 
-  if(this.getLength() == 0) {
-    clientRectRange = new pwk.primitives.ClientRectRange(10, elSize.height, 0, 0);
+  if (this.getLength() == 0) {
+    clientRectRange =
+        new pwk.primitives.ClientRectRange(10, elSize.height, 0, 0);
   } else {
-    var lineContentClientRect = this.content_.getBoundingClientRectForOffset(opt_startOffset, opt_endOffset);
-    clientRectRange = new pwk.primitives.ClientRectRange(lineContentClientRect.width, elSize.height, 0, lineContentClientRect.left - elPageOffset.x);
+    let lineContentClientRect =
+        this.content_.getBoundingClientRectForOffset(opt_startOffset,
+            opt_endOffset);
+    clientRectRange =
+        new pwk.primitives.ClientRectRange(lineContentClientRect.width,
+            elSize.height, 0, lineContentClientRect.left - elPageOffset.x);
   }
 
   this.selectionOffsets_ = {
@@ -350,10 +356,10 @@ pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
 
 
 /**
- * Remove selection overlay from the line
+ * Remove selection overlay from the line.
  */
 pwk.Line.prototype.unselect = function() {
-  if(this.selectionOverlay_) {
+  if (this.selectionOverlay_) {
     this.removeChild(this.selectionOverlay_);
     goog.dispose(this.selectionOverlay_);
     delete this.selectionOverlay_;
@@ -363,25 +369,30 @@ pwk.Line.prototype.unselect = function() {
 
 
 /**
- * Is line selected entirely?
+ * To determine whether selected line completely.
  * @return {boolean}
  */
 pwk.Line.prototype.isSelectedEntirely = function() {
-  if(goog.isDefAndNotNull(this.selectionOffsets_)) {
-    return this.selectionOffsets_.start == 0 &amp;&amp; this.selectionOffsets_.end == this.getLength();
+  if (goog.isDefAndNotNull(this.selectionOffsets_)) {
+    return this.selectionOffsets_.start == 0 &amp;&amp;
+        this.selectionOffsets_.end == this.getLength();
   }
   return false;
 };
 
 
 /**
- * Remove selected content
+ * Remove selected content.
  * @return {{start:number, end:number}|Object&lt;string,string>|null}
  */
 pwk.Line.prototype.removeSelection = function() {
-  var result = this.selectionOffsets_ != null ? goog.object.clone(this.selectionOffsets_) : null;
-  if(goog.isDefAndNotNull(this.selectionOffsets_)) {
-    this.content_.removeAt(this.selectionOffsets_.start, this.selectionOffsets_.end);
+  let result = this.selectionOffsets_ != null ?
+      goog.object.clone(this.selectionOffsets_) :
+      null;
+
+  if (goog.isDefAndNotNull(this.selectionOffsets_)) {
+    this.content_.removeAt(this.selectionOffsets_.start,
+        this.selectionOffsets_.end);
     this.unselect();
   }
 

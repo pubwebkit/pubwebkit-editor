@@ -262,6 +262,87 @@
         <dl>
             
 <hr>
+<dt class="name" id=".CSS_CLASS">
+    <h4><span class="type-signature">&lt;static> </span>CSS_CLASS<span class="type-signature"> :string</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Component default css class.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-590">line 590</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id="annotations_">
     <h4><span class="type-signature">&lt;private> </span>annotations_<span class="type-signature"> :Array.&lt;<a href="pwk.NodeAnnotation.html">pwk.NodeAnnotation</a>></span></h4>
 
@@ -524,7 +605,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-549">line 549</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-581">line 581</a>
 			</li>
 		</ul>
 	</dd>
@@ -702,7 +783,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-336">line 336</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-348">line 348</a>
 			</li>
 		</ul>
 	</dd>
@@ -810,7 +891,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-305">line 305</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-317">line 317</a>
 			</li>
 		</ul>
 	</dd>
@@ -871,7 +952,7 @@
 
     
     <div class="description">
-        <p>Returns first word</p>
+        <p>Returns first word.</p>
     </div>
     
 
@@ -918,7 +999,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-271">line 271</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-283">line 283</a>
 			</li>
 		</ul>
 	</dd>
@@ -1200,7 +1281,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-315">line 315</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-327">line 327</a>
 			</li>
 		</ul>
 	</dd>
@@ -1472,7 +1553,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-541">line 541</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-573">line 573</a>
 			</li>
 		</ul>
 	</dd>
@@ -1525,7 +1606,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getBoundingClientRectForOffset"><span class="type-signature"></span>pwk.LineContent#getBoundingClientRectForOffset()</h4>
+    <h4 class="name" id="getBoundingClientRectForOffset"><span class="type-signature"></span>pwk.LineContent#getBoundingClientRectForOffset( [opt_startOffset] [, opt_endOffset])</h4>
 
     
 </dt>
@@ -1533,7 +1614,8 @@
 
     
     <div class="description">
-        <p>Returns a text rectangle object that encloses a group of text rectangles at specific offset.</p>
+        <p>Returns a text rectangle object that encloses a group of text rectangles at
+specific offset.</p>
     </div>
     
 
@@ -1542,6 +1624,102 @@
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opt_startOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opt_endOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -1580,7 +1758,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-433">line 433</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-451">line 451</a>
 			</li>
 		</ul>
 	</dd>
@@ -1782,7 +1960,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-481">line 481</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-507">line 507</a>
 			</li>
 		</ul>
 	</dd>
@@ -1890,7 +2068,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-517">line 517</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-547">line 547</a>
 			</li>
 		</ul>
 	</dd>
@@ -1998,7 +2176,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-296">line 296</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-308">line 308</a>
 			</li>
 		</ul>
 	</dd>
@@ -2106,7 +2284,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-365">line 365</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-377">line 377</a>
 			</li>
 		</ul>
 	</dd>
@@ -2210,7 +2388,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-159">line 159</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-161">line 161</a>
 			</li>
 		</ul>
 	</dd>
@@ -2314,7 +2492,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-151">line 151</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-153">line 153</a>
 			</li>
 		</ul>
 	</dd>
@@ -2411,6 +2589,12 @@
 
             <td class="type">
             
+                
+<span class="param-type">number</span>
+
+
+
+            
             </td>
 
             
@@ -2462,7 +2646,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-374">line 374</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-386">line 386</a>
 			</li>
 		</ul>
 	</dd>
@@ -2616,7 +2800,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-383">line 383</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-395">line 395</a>
 			</li>
 		</ul>
 	</dd>
@@ -2774,7 +2958,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-394">line 394</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-406">line 406</a>
 			</li>
 		</ul>
 	</dd>
@@ -3281,7 +3465,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-168">line 168</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-170">line 170</a>
 			</li>
 		</ul>
 	</dd>
@@ -3338,7 +3522,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="popLastWord"><span class="type-signature"></span>pwk.LineContent#popLastWord()</h4>
+    <h4 class="name" id="popFirstWord"><span class="type-signature"></span>pwk.LineContent#popFirstWord()</h4>
 
     
 </dt>
@@ -3346,7 +3530,8 @@
 
     
     <div class="description">
-        <p>Removes latest text nodes, separated by space/tab, from the content and returns their values.</p>
+        <p>Remove first text nodes, word, separated by space/tab from the content and
+return their value.</p>
     </div>
     
 
@@ -3393,7 +3578,116 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-188">line 188</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-217">line 217</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="popLastWord"><span class="type-signature"></span>pwk.LineContent#popLastWord()</h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Remove latest text nodes, word, separated by space/tab from the content and
+return their value.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-191">line 191</a>
 			</li>
 		</ul>
 	</dd>
@@ -3595,7 +3889,95 @@
 		<ul class="dummy">
 			<li>
 				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
-				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-349">line 349</a>
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-361">line 361</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="removeFirstWord"><span class="type-signature"></span>pwk.LineContent#removeFirstWord()</h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Remove first word from the content and return it.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="pwk_editor_nodes_linecontent.js.html">pwk/editor/nodes/linecontent.js</a>,
+				 <a href="pwk_editor_nodes_linecontent.js.html#sunlight-1-line-251">line 251</a>
 			</li>
 		</ul>
 	</dd>

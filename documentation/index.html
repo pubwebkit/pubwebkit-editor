@@ -100,7 +100,7 @@ Also, it's a part of <a href="http://www.pubwebkit.com/">www.pubwebkit.com</a> p
 <li>Build Google Closure Templates for javascript usage. Navigate to <code>libs/closure-templates/</code> folder and run command <code>mvn</code>.</li>
 <li>Install Closure Linter from <code>libs/closure-linter</code> by next command <code>python ./setup.py install</code>.<ul>
 <li>Make gjslint.py executable <code>chmod +x libs/closure-linter/closure_linter/gjslint.py</code>.</li>
-<li>Make gjslint.py executable <code>chmod +x libs/closure-linter/closure_linter/fixjsstyle.py</code>.</li>
+<li>Make fixjsstyle.py executable <code>chmod +x libs/closure-linter/closure_linter/fixjsstyle.py</code>.</li>
 </ul>
 </li>
 </ul>
@@ -111,7 +111,8 @@ Below list of the most important task that can used during development:</p>
 <li><code>grunt eslint</code> - Check JavaScript files of the project by  ESLint linting utility.</li>
 <li><code>grunt closureLint</code> - Check JavaScript files for style issues by Google Closure Linter.</li>
 <li><code>grunt connect</code> - Run local server with root project directory. Web server will be available by http://localhost:9000.</li>
-<li><code>grunt jsdoc</code> - Generate JSDoc based documentation. All documentation available under <code>documentation/</code> folder. If you will run local web server, then you can access documentation by http://localhost:9000/documentation.</li>
+<li><code>grunt jsdoc</code> - Generate JSDoc based documentation. All documentation available under <code>documentation/</code> folder. If you will run local web server, then you can access documentation by http://localhost:9000/documentation.
+Also, you can browse latest API documentation by this <a href="http://htmlpreview.github.io/?https://github.com/pubwebkit/pubwebkit-editor/blob/master/documentation/index.html">link</a> using GitHub &amp; BitBucket HTML Preview tool.</li>
 </ul>
 <h2>Supported Browsers:</h2><ul>
 <li>Internet Explorer 9+</li>
@@ -3234,6 +3235,8 @@ settings specific to the node, stored inside it.</p></div>
     <div class="container-overview">
     
         
+            <div class="description"><p>TODO: add description</p></div>
+        
 
         
 <dl class="details">
@@ -3338,7 +3341,8 @@ settings specific to the node, stored inside it.</p></div>
     <div class="container-overview">
     
         
-            <div class="description"><p>This object is used in various places to indicate a region within the editor.</p></div>
+            <div class="description"><p>This object is used in various places to indicate a region
+within the editor.</p></div>
         
 
         
