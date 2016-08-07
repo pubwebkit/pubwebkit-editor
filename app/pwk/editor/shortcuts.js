@@ -33,7 +33,7 @@ goog.require('goog.ui.KeyboardShortcutHandler');
 
 
 /**
- * Get command button for current OS
+ * Get command button for current OS.
  * @type {goog.ui.KeyboardShortcutHandler.Modifiers}
  */
 pwk.Shortcuts.CMD_BUTTON = (function() {

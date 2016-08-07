@@ -43,8 +43,12 @@ goog.require('goog.events.EventTarget');
  * @constructor
  * @extends {goog.events.EventTarget}
  */
-pwk.Range = function(startLine, startNodeOffset, endLine, endNodeOffset,
-                     opt_isStartOfStartLine, opt_isStartOfEndLine) {
+pwk.Range = function(startLine,
+                     startNodeOffset,
+                     endLine,
+                     endNodeOffset,
+                     opt_isStartOfStartLine,
+                     opt_isStartOfEndLine) {
   goog.events.EventTarget.call(this);
 
   /**
@@ -254,7 +258,7 @@ pwk.Range.prototype.setEndPosition = function(line, nodeOffset,
   this.endNode_ = line.getParentNode();
   this.endLine_ = line;
 
-  var rangeInfo = this.endNode_.getRangeInfoForOffset(nodeOffset);
+  let rangeInfo = this.endNode_.getRangeInfoForOffset(nodeOffset);
   if (rangeInfo == null) {
     throw new Error('Passed incorrect offset!');
   }

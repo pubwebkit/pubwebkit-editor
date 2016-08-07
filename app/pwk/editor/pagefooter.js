@@ -36,7 +36,6 @@ goog.require('pwk.PageSettings');
 
 /**
  * Initialize {pwk.PageFooter} component.
- *
  * @constructor
  * @extends {goog.ui.Component}
  */
@@ -54,13 +53,13 @@ goog.inherits(pwk.PageFooter, goog.ui.Component);
 
 /** @inheritDoc */
 pwk.PageFooter.prototype.createDom = function() {
-  var el = this.dom_.createElement('div');
-  this.setElementInternal(el);
-  this.decorateInternal(el);
+  let element = this.dom_.createElement('div');
+  this.setElementInternal(element);
+  this.decorateInternal(element);
 
   // Width should be equal page width
-  goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');
-  goog.style.setUnselectable(el, true);
+  goog.style.setWidth(element, this.pageSettings_.getSize().width + 'px');
+  goog.style.setUnselectable(element, true);
 };
 
 

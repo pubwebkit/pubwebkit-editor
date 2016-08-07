@@ -51,7 +51,6 @@ pwk.Line = function(opt_text) {
    */
   this.content_ = new pwk.LineContent(opt_text);
 
-
   /**
    * @type {pwk.layer.SelectionOverlay}
    * @private
@@ -69,7 +68,7 @@ goog.inherits(pwk.Line, goog.ui.Component);
 
 /** @inheritDoc */
 pwk.Line.prototype.createDom = function() {
-  var element = goog.dom.createElement('div');
+  let element = goog.dom.createElement('div');
 
   // Create element and apply classes
   this.setElementInternal(element);

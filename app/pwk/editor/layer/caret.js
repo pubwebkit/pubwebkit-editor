@@ -108,7 +108,7 @@ pwk.layer.Caret.CSS_CLASS_LAYER = 'pwk-caret-layer';
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.createDom = function() {
-  var element = goog.dom.createDom('div');
+  let element = goog.dom.createDom('div');
 
   this.documentElement_ = goog.dom.getElementByClass(pwk.Document.CSS_CLASS);
 
@@ -137,7 +137,7 @@ pwk.layer.Caret.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   // Wrap by layer
-  var parent =
+  let parent =
       /** @type {!Node} */(goog.dom.getParentElement(this.getElement()));
   goog.dom.append(parent, this.layer_);
   this.layer_.appendChild(this.getElement());
@@ -174,7 +174,7 @@ pwk.layer.Caret.prototype.disposeInternal = function() {
  * Hide cursor.
  */
 pwk.layer.Caret.prototype.hide = function() {
-  var el = this.getElement();
+  let el = this.getElement();
 
   clearInterval(this.blinkId_);
   this.isVisible_ = false;
@@ -186,7 +186,7 @@ pwk.layer.Caret.prototype.hide = function() {
  * Show cursor.
  */
 pwk.layer.Caret.prototype.show = function() {
-  var el = this.getElement();
+  let el = this.getElement();
 
   this.isVisible_ = true;
   el.style.visibility = 'visible';
@@ -203,8 +203,9 @@ pwk.layer.Caret.prototype.restartTimer = function() {
     return;
   }
 
-  var self = this.getElement(),
-      obj = this;
+  let self = this.getElement();
+  let obj = this;
+
   this.blinkId_ = setInterval(function() {
     self.style.visibility = 'hidden';
     setTimeout(function() {
@@ -218,7 +219,6 @@ pwk.layer.Caret.prototype.restartTimer = function() {
 
 /**
  * Update cursor position by range
- *
  * @param {pwk.Selection} selection
  * @return {goog.math.Rect}
  */
@@ -226,9 +226,9 @@ pwk.layer.Caret.prototype.update = function(selection) {
 
   this.dispatchEvent(pwk.layer.Caret.EventType.BEFORE_UPDATE);
 
-  var el = this.getElement(),
-      bounds = selection.getBoundsForRange(),
-      elStyle = el.style;
+  let el = this.getElement();
+  let bounds = selection.getBoundsForRange();
+  let elStyle = el.style;
 
   elStyle.left = bounds.left + 'px';
   elStyle.top = bounds.top + 'px';

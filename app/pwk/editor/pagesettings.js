@@ -26,7 +26,6 @@
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-
 goog.provide('pwk.PageSettings');
 goog.provide('pwk.PageSettings.Paper');
 

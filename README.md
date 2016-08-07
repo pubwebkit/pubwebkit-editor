@@ -22,7 +22,7 @@ Below list of the most important task that can used during development:
 * `grunt jsdoc` - Generate JSDoc based documentation. All documentation available under `documentation/` folder. If you will run local web server, then you can access documentation by http://localhost:9000/documentation.
 Also, you can browse latest API documentation by this [link](http://htmlpreview.github.io/?https://github.com/pubwebkit/pubwebkit-editor/blob/master/documentation/index.html) using GitHub & BitBucket HTML Preview tool.
 
-## Supported Browsers:
+## Supported Browsers
 * Internet Explorer 9+
 * Opera 12 (PC and Mac looks good)
 * Chrome (21+) (Looks good, not tested on previous builds)

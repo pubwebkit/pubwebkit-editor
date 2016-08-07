@@ -61,7 +61,7 @@ goog.inherits(pwk.PageContent, goog.ui.Component);
 
 /** @inheritDoc */
 pwk.PageContent.prototype.createDom = function() {
-  var element = this.dom_.createElement('div');
+  let element = this.dom_.createElement('div');
   this.setElementInternal(element);
   this.decorateInternal(element);
 };
@@ -74,7 +74,7 @@ pwk.PageContent.prototype.decorateInternal = function(element) {
   goog.dom.classlist.add(element, pwk.PageContent.CSS_CLASS);
 
   // apply settings
-  var pageSettings = this.pageSettings_;
+  let pageSettings = this.pageSettings_;
   element.style.paddingRight = pageSettings.getRightMargin() + 'px';
   element.style.paddingLeft = pageSettings.getLeftMargin() + 'px';
 };
@@ -105,8 +105,8 @@ pwk.PageContent.prototype.linkNode = function(node) {
     throw new Error('Node shouldn\'t be already in the document.');
   }
 
-  var el = this.getElement();
-  node.render(el);
+  let element = this.getElement();
+  node.render(element);
 };
 
 
@@ -121,7 +121,7 @@ pwk.PageContent.prototype.linkNodeBefore = function(node, sibling) {
     throw new Error('Node shouldn\'t be already in the document.');
   }
 
-  var siblingEl = sibling.getElement();
+  let siblingEl = sibling.getElement();
   node.renderBefore(siblingEl);
 };
 
@@ -139,8 +139,8 @@ pwk.PageContent.prototype.linkNodeAfter = function(node, previous) {
 
   node.render(previous.getParent().getElement());
 
-  var nodeEl = node.getElement(),
-      previousNodeEl = previous.getElement();
+  let nodeEl = node.getElement();
+  let previousNodeEl = previous.getElement();
 
   if (nodeEl.previousElementSibling != previousNodeEl) {
     goog.dom.insertSiblingAfter(node.getElement(), previous.getElement());

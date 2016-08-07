@@ -103,14 +103,14 @@ goog.inherits(pwk.LeafNode, pwk.Node);
 pwk.LeafNode.prototype.createDom = function() {
   this.setElementInternal(this.dom_.createElement('div'));
 
-  var element = this.getElement();
+  let element = this.getElement();
+  let lines = this.lines_;
+  let linesLength = lines.length;
+  let loopLine;
+
   // adjust dom element
   element.setAttribute('id', this.getId());
   goog.dom.classlist.add(element, this.CSS_CLASS);
-
-  var lines = this.lines_,
-      linesLength = lines.length,
-      loopLine;
 
   while (linesLength--) {
     loopLine = lines[linesLength];
@@ -205,7 +205,7 @@ pwk.LeafNode.prototype.unlinkPreviousLinkedNode = function() {
  * Unlink linked node below
  */
 pwk.LeafNode.prototype.unlinkNextLinkedNode = function() {
-  var nextLinkedNode = this.nextLinkedNode_;
+  let nextLinkedNode = this.nextLinkedNode_;
   this.nextLinkedNode_ = null;
 
   if (nextLinkedNode != null &&
@@ -222,7 +222,7 @@ pwk.LeafNode.prototype.unlinkNextLinkedNode = function() {
  * @param {number=} opt_i The index at which to insert the object.
  */
 pwk.LeafNode.prototype.insertLine = function(line, render, opt_i) {
-  var i = goog.isDefAndNotNull(opt_i) ? opt_i : this.lines_.length;
+  let i = goog.isDefAndNotNull(opt_i) ? opt_i : this.lines_.length;
   goog.array.insertAt(this.lines_, line, i);
 
   if (render) {
@@ -250,8 +250,8 @@ pwk.LeafNode.prototype.insertLines = function(lines, render, opt_i) {
 pwk.LeafNode.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 
-  var lines = this.lines_,
-      linesLen = lines.length;
+  let lines = this.lines_;
+  let linesLen = lines.length;
 
   // Dispose of all Disposable objects owned by this class.
   while (linesLen--) {
@@ -275,9 +275,9 @@ pwk.LeafNode.prototype.disposeInternal = function() {
  * @private
  */
 pwk.LeafNode.prototype.getLinesOfAllLinkedNodes_ = function() {
-  var lines = [],
-      previousLinkedNode = this.previousLinkedNode_,
-      nextLinkedNode = this.nextLinkedNode_;
+  let lines = [];
+  let previousLinkedNode = this.previousLinkedNode_;
+  let nextLinkedNode = this.nextLinkedNode_;
 
   while (goog.isDefAndNotNull(previousLinkedNode)) {
     lines = goog.array.concat(previousLinkedNode.getLines(), lines);
@@ -330,7 +330,7 @@ pwk.LeafNode.prototype.getRangeInfoForOffset = function(nodeOffset) {
   let lengthSummary = 0;
   let linesCount = lines.length;
 
-  for (var i = 0; i < linesCount; i++) {
+  for (let i = 0; i < linesCount; i++) {
     line = lines[i];
     lineLength = line.getLength();
     lengthSummary += lineLength;
@@ -382,7 +382,7 @@ pwk.LeafNode.prototype.getRangeInfoByLinkedNodesOffset = function(nodeOffset) {
   let lengthSummary = 0;
   let linesCount = lines.length;
 
-  for (var i = 0; i < linesCount; i++) {
+  for (let i = 0; i < linesCount; i++) {
     line = lines[i];
     lineLength = line.getLength();
     lengthSummary += lineLength;
@@ -413,12 +413,12 @@ pwk.LeafNode.prototype.getRangeInfoByLinkedNodesOffset = function(nodeOffset) {
  * @return {number}
  */
 pwk.LeafNode.prototype.getOffsetByLineOffset = function(line, lineOffset) {
-  var lines = this.lines_,
-      index = this.indexOfLine(line),
-      linesCount = lines.length,
-      lengthSummary = 0,
-      i = 0,
-      loopLine;
+  let lines = this.lines_;
+  let index = this.indexOfLine(line);
+  let linesCount = lines.length;
+  let lengthSummary = 0;
+  let i = 0;
+  let loopLine;
 
   while (i < linesCount) {
     loopLine = lines[i];
@@ -443,12 +443,12 @@ pwk.LeafNode.prototype.getOffsetByLineOffset = function(line, lineOffset) {
  * @private
  */
 pwk.LeafNode.prototype.getOffsetForLinkedNodes_ = function(line, lineOffset) {
-  var lines = this.getLinesOfAllLinkedNodes_(),
-      index = goog.array.indexOf(lines, line),
-      linesCount = lines.length,
-      lengthSummary = 0,
-      i = 0,
-      loopLine;
+  let lines = this.getLinesOfAllLinkedNodes_();
+  let index = goog.array.indexOf(lines, line);
+  let linesCount = lines.length;
+  let lengthSummary = 0;
+  let i = 0;
+  let loopLine;
 
   while (i < linesCount) {
     loopLine = lines[i];
@@ -469,9 +469,9 @@ pwk.LeafNode.prototype.getOffsetForLinkedNodes_ = function(line, lineOffset) {
  * @inheritDoc
  */
 pwk.LeafNode.prototype.getLength = function() {
-  var length = 0,
-      lines = this.lines_,
-      lineLength = lines.length;
+  let length = 0;
+  let lines = this.lines_;
+  let lineLength = lines.length;
 
   while (lineLength--) {
     length += lines[lineLength].getLength();
@@ -482,13 +482,13 @@ pwk.LeafNode.prototype.getLength = function() {
 
 
 /**
- * Get concatenated lines text
+ * Get concatenated lines text.
  * @return {string}
  */
 pwk.LeafNode.prototype.getText = function() {
-  var text = '',
-      lines = this.lines_,
-      lineLength = lines.length;
+  let text = '';
+  let lines = this.lines_;
+  let lineLength = lines.length;
 
   while (lineLength--) {
     text = lines[lineLength].getText() + text;
@@ -558,7 +558,7 @@ pwk.LeafNode.prototype.getLinesCount = function() {
  */
 pwk.LeafNode.prototype.removeLine = function(line) {
   goog.array.remove(this.lines_, line);
-  var removedLine = /** @type {pwk.Line} */(this.removeChild(line, true));
+  let removedLine = /** @type {pwk.Line} */(this.removeChild(line, true));
   if (removedLine) {
     goog.dispose(removedLine);
     // Clear cache for offsets range information
@@ -598,7 +598,7 @@ pwk.LeafNode.prototype.indexOfLine = function(line) {
  * @param {number=} opt_offset Offset inside node, whole all lines
  */
 pwk.LeafNode.prototype.insertValue = function(value, opt_offset) {
-  var rangeInfo = this.getRangeInfoForOffset(opt_offset || 0);
+  let rangeInfo = this.getRangeInfoForOffset(opt_offset || 0);
   rangeInfo.getLine().insertValue(value, opt_offset);
 };
 
@@ -610,7 +610,7 @@ pwk.LeafNode.prototype.insertValue = function(value, opt_offset) {
  * @param {number=} opt_offset Offset inside node, whole all lines
  */
 pwk.LeafNode.prototype.insertText = function(text, opt_offset) {
-  var rangeInfo = this.getRangeInfoForOffset(opt_offset || 0);
+  let rangeInfo = this.getRangeInfoForOffset(opt_offset || 0);
   rangeInfo.getLine().insertText(text, opt_offset);
 };
 
@@ -639,10 +639,8 @@ pwk.LeafNode.prototype.isSplittable = function() {
  *    offset is end of the current node and next exist linked node.
  */
 pwk.LeafNode.prototype.split = function(offset) {
-
-  var rangeInfo = this.getRangeInfoForOffset(offset),
-      parentNodeLength = rangeInfo.getLine().getParentNode().getLength();
-
+  let rangeInfo = this.getRangeInfoForOffset(offset);
+  let parentNodeLength = rangeInfo.getLine().getParentNode().getLength();
 
   // If this is end of the node and exist linked node,
   // then just unlink next linked node and return it
@@ -693,8 +691,8 @@ pwk.LeafNode.prototype.split = function(offset) {
 pwk.LeafNode.prototype.clearRangeInfoForOffsetCache = function(opt_callerNode) {
   goog.array.clear(this.rangeOffsetInfoCache_);
 
-  var prevLinkedNode = this.previousLinkedNode_,
-      nextLinkedNode = this.nextLinkedNode_;
+  let prevLinkedNode = this.previousLinkedNode_;
+  let nextLinkedNode = this.nextLinkedNode_;
 
   // Clearing for linked nodes
   if (prevLinkedNode != null) {
@@ -771,7 +769,7 @@ pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
 
   // Checking the width of node content and splitting it if it wider than page
   // content or parent node if it's child node.
-  var parentContentWidth = this.isChild() ?
+  let parentContentWidth = this.isChild() ?
       this.getParent().getSize().width :
       this.pageSettings_.getInnerWidth();
 
@@ -794,21 +792,21 @@ pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
  */
 pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine,
                                                      parentContentWidth) {
-  var googArray = goog.array,
-      lines = this.getLinesOfAllLinkedNodes_(),
-      lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine),
-      lineAbove = lines[lastUpdateLineIndex - 1];
+  let googArray = goog.array;
+  let lines = this.getLinesOfAllLinkedNodes_();
+  let lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine);
+  let lineAbove = lines[lastUpdateLineIndex - 1];
 
   if (goog.isDefAndNotNull(lineAbove)) { // Is first line?
-    var googString = goog.string,
-        lineAboveContent = lineAbove.getContent(),
-        lastUpdatedLineContent = lastUpdatedLine.getContent(),
-        loopsCount = 0,
-        isSpace = false,
-        lineBelowLength,
-        contentToMoveInfo,
-        calculatedAboveWidth,
-        lastWord;
+    let googString = goog.string;
+    let lineAboveContent = lineAbove.getContent();
+    let lastUpdatedLineContent = lastUpdatedLine.getContent();
+    let loopsCount = 0;
+    let isSpace = false;
+    let lineBelowLength;
+    let contentToMoveInfo;
+    let calculatedAboveWidth;
+    let lastWord;
 
     do {
       if (contentToMoveInfo != null) { // Skip this case for first time
@@ -851,7 +849,7 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine,
 
     if (loopsCount > 1) {
       lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine);
-      var lineBelow = lines[lastUpdateLineIndex + 1];
+      let lineBelow = lines[lastUpdateLineIndex + 1];
       if (lineBelow != null) {
         return this.normalizeBackward_(lineBelow, parentContentWidth);
       }
@@ -869,29 +867,29 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine,
  */
 pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine,
                                                     parentContentWidth) {
-  var lineContentWidth = lastUpdatedLine.getWidth(true),
-      lastUpdatedLineBelow;
+  let lineContentWidth = lastUpdatedLine.getWidth(true);
+  let lastUpdatedLineBelow;
 
   if (lineContentWidth > parentContentWidth) {
-    var googString = goog.string,
-        googArray = goog.array,
-        lines = this.getLinesOfAllLinkedNodes_(),
-        lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine),
-        lastUpdatedLineContent = lastUpdatedLine.getContent(),
-        isLastLine = !goog.isDefAndNotNull(lines[lastUpdateLineIndex + 1]),
-        lastUpdatedLineContentLength = lastUpdatedLineContent.getLength(),
-        firstSpaceIndex =
-            googString.trimRight(googString.normalizeWhitespace(
-                lastUpdatedLineContent.getText())).indexOf(' '),
-        lastUpdatedContentText = '',
-        contentToMove = '',
-        lastUpdatedModifiedLineContentLength = 0,
-        lastSpaceIndex,
-        lineParentNode;
+    let googString = goog.string;
+    let googArray = goog.array;
+    let lines = this.getLinesOfAllLinkedNodes_();
+    let lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine);
+    let lastUpdatedLineContent = lastUpdatedLine.getContent();
+    let isLastLine = !goog.isDefAndNotNull(lines[lastUpdateLineIndex + 1]);
+    let lastUpdatedLineContentLength = lastUpdatedLineContent.getLength();
+    let firstSpaceIndex =
+        googString.trimRight(googString.normalizeWhitespace(
+            lastUpdatedLineContent.getText())).indexOf(' ');
+    let lastUpdatedContentText = '';
+    let contentToMove = '';
+    let lastUpdatedModifiedLineContentLength = 0;
+    let lastSpaceIndex;
+    let lineParentNode;
 
     if (firstSpaceIndex != -1 && (lineContentWidth >= parentContentWidth * 2)) {
-      var prevContentToMove,
-          prevLastUpdatedModifiedLineContentLength;
+      let prevContentToMove;
+      let prevLastUpdatedModifiedLineContentLength;
 
       do {
         prevContentToMove = contentToMove;
@@ -920,7 +918,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine,
           prevLastUpdatedModifiedLineContentLength;
     }
     else {
-      var tempWord;
+      let tempWord;
       lastUpdatedContentText = lastUpdatedLineContent.getText();
       lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
 
@@ -1014,7 +1012,7 @@ pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
     let isSelectionInsideSingleLine =
         opt_nodeSelectionRange.startLine == opt_nodeSelectionRange.endLine;
 
-    for (var i = 0; i < linesLength; i++) {
+    for (let i = 0; i < linesLength; i++) {
       if (i == startLineIndex) {
         if (isSelectionInsideSingleLine) {
           lines[i].select(opt_nodeSelectionRange.startLineOffset,
@@ -1049,7 +1047,7 @@ pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
  * Remove selection from node
  */
 pwk.LeafNode.prototype.unselect = function() {
-  var lines = this.lines_;
+  let lines = this.lines_;
 
   goog.array.forEach(lines, function(line) {
     line.unselect();
@@ -1070,25 +1068,25 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
   //  - update selection range
   //  - remove
   //  - unselect
-  var nodeSelectionRange = this.nodeSelectionRange_,
-      pwkDocument = this.getDocument(),
-      pwkSelection = pwkDocument.getSelection(),
-      selectionRange = pwkSelection.getRange(),
-      isReversed = selectionRange.isReversed(),
-      topSelectionRangeNode = isReversed ?
+  let nodeSelectionRange = this.nodeSelectionRange_;
+  let pwkDocument = this.getDocument();
+  let pwkSelection = pwkDocument.getSelection();
+  let selectionRange = pwkSelection.getRange();
+  let isReversed = selectionRange.isReversed();
+  let topSelectionRangeNode = isReversed ?
           selectionRange.getEndNode() :
-          selectionRange.getStartNode(),
-      bottomSelectionRangeNode = isReversed ?
+          selectionRange.getStartNode();
+  let bottomSelectionRangeNode = isReversed ?
           selectionRange.getStartNode() :
-          selectionRange.getEndNode(),
-      isNodeSelectedEntirely = this.isSelectedEntirely_();
+          selectionRange.getEndNode();
+  let isNodeSelectedEntirely = this.isSelectedEntirely_();
 
   if (nodeSelectionRange.isCollapsed() && goog.isDefAndNotNull(opt_isBack)) {
     //TODO: Process "Delete" / "Backspace" buttons
 
   } else {
     // Required to mark if range has been updated and no more update required
-    var isRangeUpdateRequired = true;
+    let isRangeUpdateRequired = true;
 
     // Update selection range
     // Move start/end position to the next/previous node
@@ -1155,9 +1153,9 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       }
 
     } else {
-      var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine),
-          endLineIndex = this.indexOfLine(nodeSelectionRange.endLine),
-          loopLine;
+      let startLineIndex = this.indexOfLine(nodeSelectionRange.startLine);
+      let endLineIndex = this.indexOfLine(nodeSelectionRange.endLine);
+      let loopLine;
 
       // Remove selected node content
       // Cases:
@@ -1165,7 +1163,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       // 2. Selected could be entire line
       // 3. Cursor could be located on the latest position without selection any
       // word
-      for (var i = startLineIndex; i <= endLineIndex; i++) {
+      for (let i = startLineIndex; i <= endLineIndex; i++) {
         loopLine = this.lines_[i];
         if (loopLine.isSelectedEntirely()) {
 
@@ -1174,7 +1172,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
           endLineIndex--;
           i--;
         } else {
-          var selectionOffsets = this.lines_[i].removeSelection();
+          let selectionOffsets = this.lines_[i].removeSelection();
 
           // TODO: Update selection range. Move start/end position to the end
           // position of the selection range of current line

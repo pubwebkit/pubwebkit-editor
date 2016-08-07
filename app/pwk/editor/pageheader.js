@@ -36,18 +36,16 @@ goog.require('pwk.PageSettings');
 
 /**
  * Initialize {pwk.PageHeader} component.
- *
  * @constructor
  * @extends {goog.ui.Component}
  */
 pwk.PageHeader = function() {
   goog.base(this);
 
-
   /**
-     * @type {pwk.PageSettings}
-     * @private
-     */
+   * @type {pwk.PageSettings}
+   * @private
+   */
   this.pageSettings_ = pwk.PageSettings.getInstance();
 };
 goog.inherits(pwk.PageHeader, goog.ui.Component);
@@ -55,13 +53,13 @@ goog.inherits(pwk.PageHeader, goog.ui.Component);
 
 /** @inheritDoc */
 pwk.PageHeader.prototype.createDom = function() {
-  var el = this.dom_.createElement('div');
-  this.setElementInternal(el);
-  this.decorateInternal(el);
+  let element = this.dom_.createElement('div');
+  this.setElementInternal(element);
+  this.decorateInternal(element);
 
   // Width should be equal page width
-  goog.style.setWidth(el, this.pageSettings_.getSize().width + 'px');
-  goog.style.setUnselectable(el, true);
+  goog.style.setWidth(element, this.pageSettings_.getSize().width + 'px');
+  goog.style.setUnselectable(element, true);
 };
 
 
@@ -91,7 +89,6 @@ pwk.PageHeader.prototype.disposeInternal = function() {
 /**
  * Default CSS class to be applied to the root element of components rendered
  * by this renderer.
- *
  * @type {string}
  */
 pwk.PageHeader.CSS_CLASS = 'pwk-page-header';

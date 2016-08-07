@@ -39,8 +39,9 @@ app.core.Router = function(opt_noFragment, opt_blankPage, opt_input,
       new goog.history.Html5History() :
       new goog.History(!!(opt_blankPage && opt_noFragment), opt_blankPage,
           opt_input, opt_iframe);
-  if (this.history_.setUseFragment)
+  if (this.history_.setUseFragment) {
     this.history_.setUseFragment(!opt_noFragment);
+  }
   goog.events.listen(this.history_, goog.history.EventType.NAVIGATE,
       this.onChange_, false, this);
   this.routes_ = [];
@@ -99,7 +100,7 @@ app.core.Router.prototype.route = function(route, fn, opt_context) {
             .replace(/\\\]/g, ')?')
             .replace(/\\\{/g, '(?:')
             .replace(/\\\}/g, ')?') + '$');
-  var completeRoute = {
+  let completeRoute = {
     route: route,
     callback: fn,
     context: opt_context
@@ -117,7 +118,7 @@ app.core.Router.prototype.route = function(route, fn, opt_context) {
  * @private
  */
 app.core.Router.prototype.runRouteIfMatches_ = function(route, fragment) {
-  var args = route.route.exec(fragment);
+  let args = route.route.exec(fragment);
   if (args) {
     route.callback.apply(route.context, args);
     return true;
@@ -131,8 +132,8 @@ app.core.Router.prototype.runRouteIfMatches_ = function(route, fragment) {
  * @private
  */
 app.core.Router.prototype.onChange_ = function() {
-  var fragment = this.history_.getToken();
-  var locationPathname = window.location.pathname;
+  let fragment = this.history_.getToken();
+  let locationPathname = window.location.pathname;
 
   if (goog.string.isEmptyOrWhitespace(fragment) &&
       locationPathname.length > 1) {
@@ -157,8 +158,8 @@ app.core.Router.prototype.onChange_ = function() {
  * Go through all defined routes and run first matched.
  */
 app.core.Router.prototype.checkRoutes = function() {
-  var fragment = this.history_.getToken();
-  var locationPathname = window.location.pathname;
+  let fragment = this.history_.getToken();
+  let locationPathname = window.location.pathname;
 
   if (goog.string.isEmptyOrWhitespace(fragment) &&
       locationPathname.length > 1) {
