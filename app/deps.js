@@ -26,7 +26,7 @@ goog.addDependency('../../../../app/pwk/editor/layer/ruler.js', ['pwk.Ruler'], [
 goog.addDependency('../../../../app/pwk/editor/layer/selectionoverlay.js', ['pwk.layer.SelectionOverlay'], ['goog.dom.classlist', 'goog.events.Event', 'goog.ui.Component', 'pwk.primitives.ClientRectRange'], false);
 goog.addDependency('../../../../app/pwk/editor/nodeformatter.js', ['pwk.NodeFormatter'], ['goog.dom.classlist', 'pwk.DocumentSettings', 'pwk.NodeAttributeTypes'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/branchnode.js', ['pwk.BranchNode'], ['pwk.Node'], false);
-goog.addDependency('../../../../app/pwk/editor/nodes/leafnode.js', ['pwk.LeafNode', 'pwk.LeafNode.NodeContentChangedEvent'], ['goog.dom.Range', 'goog.dom.classlist', 'pwk.Line', 'pwk.Node', 'pwk.NodeAttribute', 'pwk.NodeAttributeTypes', 'pwk.NodeFormatter', 'pwk.primitives.NodeSelectionRange'], false);
+goog.addDependency('../../../../app/pwk/editor/nodes/leafnode.js', ['pwk.LeafNode', 'pwk.LeafNode.NodeContentChangedEvent'], ['goog.dom.Range', 'goog.dom.classlist', 'pwk.Line', 'pwk.Node', 'pwk.NodeAttribute', 'pwk.NodeAttributeTypes', 'pwk.NodeFormatter', 'pwk.primitives.LineOffsetInfo', 'pwk.primitives.NodeSelectionRange'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/line.js', ['pwk.Line'], ['goog.dom.classlist', 'goog.style', 'goog.ui.Component', 'pwk.LineContent', 'pwk.layer.SelectionOverlay'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/linecontent.js', ['pwk.LineContent'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.NodeAnnotation', 'pwk.primitives.ClientRectRange'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/node.js', ['pwk.Node'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.NodeFormatter'], false);
@@ -40,6 +40,7 @@ goog.addDependency('../../../../app/pwk/editor/pageheader.js', ['pwk.PageHeader'
 goog.addDependency('../../../../app/pwk/editor/pagesettings.js', ['pwk.PageSettings', 'pwk.PageSettings.Paper'], ['goog.math.Size'], false);
 goog.addDependency('../../../../app/pwk/editor/pagination.js', ['pwk.Pagination'], ['goog.events.EventTarget'], false);
 goog.addDependency('../../../../app/pwk/editor/primitives/clientrectrange.js', ['pwk.primitives.ClientRectRange'], [], false);
+goog.addDependency('../../../../app/pwk/editor/primitives/linerangeinfo.js', ['pwk.primitives.LineOffsetInfo'], [], false);
 goog.addDependency('../../../../app/pwk/editor/primitives/nodeselectionrange.js', ['pwk.primitives.NodeSelectionRange'], [], false);
 goog.addDependency('../../../../app/pwk/editor/range.js', ['pwk.Range'], ['goog.events.EventTarget'], false);
 goog.addDependency('../../../../app/pwk/editor/selection.js', ['pwk.Selection'], ['goog.dom.classlist', 'goog.events.EventTarget', 'goog.fx.dom', 'goog.fx.easing', 'pwk.layer.Caret'], false);

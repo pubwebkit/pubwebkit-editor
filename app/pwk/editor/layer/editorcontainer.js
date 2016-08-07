@@ -58,7 +58,8 @@ pwk.EditorContainer.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   // Initialize events
-  goog.events.listen(window, goog.events.EventType.RESIZE, this.onWindowResize_, false, this);
+  goog.events.listen(window, goog.events.EventType.RESIZE, this.onWindowResize_,
+      false, this);
   this.onWindowResize_();
 };
 

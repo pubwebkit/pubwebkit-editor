@@ -29,7 +29,8 @@ goog.provide('app.core.ApplicationFilter');
  * Application filter.
  * @interface
  */
-app.core.ApplicationFilter = function() {};
+app.core.ApplicationFilter = function() {
+};
 
 
 /**

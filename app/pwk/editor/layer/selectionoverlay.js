@@ -26,7 +26,6 @@
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-
 goog.provide('pwk.layer.SelectionOverlay');
 
 goog.require('goog.dom.classlist');
@@ -38,7 +37,8 @@ goog.require('pwk.primitives.ClientRectRange');
 
 /**
  * @param {pwk.primitives.ClientRectRange} clientRectRange
- * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for document interaction.
+ * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
+ *    document interaction.
  * @constructor
  * @extends {goog.ui.Component}
  */
@@ -71,8 +71,11 @@ pwk.layer.SelectionOverlay.prototype.createDom = function() {
   let googMath = goog.math;
 
   this.setElementInternal(element);
-  goog.dom.classlist.add(this.getElement(), pwk.layer.SelectionOverlay.CSS_CLASS);
-  googStyle.setPosition(element, new googMath.Coordinate(clientRect.left, clientRect.top));
-  googStyle.setSize(element, new googMath.Size(clientRect.width, clientRect.height));
+  goog.dom.classlist.add(this.getElement(),
+      pwk.layer.SelectionOverlay.CSS_CLASS);
+  googStyle.setPosition(element,
+      new googMath.Coordinate(clientRect.left, clientRect.top));
+  googStyle.setSize(element,
+      new googMath.Size(clientRect.width, clientRect.height));
 };
 

@@ -38,6 +38,7 @@ goog.require('goog.ui.Component');
 goog.require('pwk.utils.dom');
 
 
+
 /**
  * Initialize {pwk.layer.Caret} component.
  * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
@@ -131,11 +132,13 @@ pwk.layer.Caret.prototype.decorateInternal = function(element) {
 };
 
 
+/** @inheritDoc */
 pwk.layer.Caret.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   // Wrap by layer
-  var parent = /** @type {!Node} */(goog.dom.getParentElement(this.getElement()));
+  var parent =
+      /** @type {!Node} */(goog.dom.getParentElement(this.getElement()));
   goog.dom.append(parent, this.layer_);
   this.layer_.appendChild(this.getElement());
 
@@ -155,7 +158,7 @@ pwk.layer.Caret.prototype.disposeInternal = function() {
   clearInterval(this.blinkId_);
 
   // Remove DOM nodes
-  if(this.layer_) {
+  if (this.layer_) {
     goog.dom.removeNode(this.layer_);
   }
   delete this.layer_;
@@ -196,7 +199,7 @@ pwk.layer.Caret.prototype.show = function() {
  */
 pwk.layer.Caret.prototype.restartTimer = function() {
   clearInterval(this.blinkId_);
-  if(!this.isVisible_) {
+  if (!this.isVisible_) {
     return;
   }
 
@@ -205,7 +208,7 @@ pwk.layer.Caret.prototype.restartTimer = function() {
   this.blinkId_ = setInterval(function() {
     self.style.visibility = 'hidden';
     setTimeout(function() {
-      if(obj.isVisible_) {
+      if (obj.isVisible_) {
         self.style.visibility = 'visible';
       }
     }, 400);
@@ -262,6 +265,7 @@ pwk.layer.Caret.EventType = {
   BEFORE_UPDATE: goog.events.getUniqueId('before_update'),
   AFTER_UPDATE: goog.events.getUniqueId('after_update')
 };
+
 
 
 /**

@@ -48,6 +48,7 @@ goog.require('pwk.Shortcuts.MacOS');
 
 
 /**
+ * Main class of PWK Editor.
  * @constructor
  * @extends {goog.ui.Component}
  */
@@ -55,67 +56,67 @@ pwk.Editor = function() {
   goog.base(this);
 
   /**
-     * @type {goog.events.KeyHandler}
-     * @private
-     */
+   * @type {goog.events.KeyHandler}
+   * @private
+   */
   this.keyHandler_;
 
   /**
-     * Event target that the event listener should be attached to.
-     * @type {goog.events.EventTarget|EventTarget}
-     * @private
-     */
+   * Event target that the event listener should be attached to.
+   * @type {goog.events.EventTarget|EventTarget}
+   * @private
+   */
   this.keyTarget_;
 
   /**
-     * Keyboard shortcuts handler.
-     * @type {goog.ui.KeyboardShortcutHandler}
-     * @private
-     */
+   * Keyboard shortcuts handler.
+   * @type {goog.ui.KeyboardShortcutHandler}
+   * @private
+   */
   this.keyboardShortcutHandler_;
 
   /**
-     * @type {pwk.Document}
-     * @private
-     */
+   * @type {pwk.Document}
+   * @private
+   */
   this.document_ = new pwk.Document();
 
   /**
-     * Focus handler.
-     * @type {goog.events.FocusHandler}
-     * @private
-     */
+   * Focus handler.
+   * @type {goog.events.FocusHandler}
+   * @private
+   */
   this.focusHandler_ = null;
 
   /**
-     * @type {pwk.Selection}
-     * @private
-     */
+   * @type {pwk.Selection}
+   * @private
+   */
   this.selection_ = this.document_.getSelection();
 
   /**
-     * @type {pwk.Range}
-     * @private
-     */
+   * @type {pwk.Range}
+   * @private
+   */
   this.startSelectionRange_;
 
   /**
-     * Indicated is selection of document started or not
-     * @type {boolean}
-     * @private
-     */
+   * Indicated is selection of document started or not
+   * @type {boolean}
+   * @private
+   */
   this.isSelectionStarted_ = false;
 
   /**
-     * @type {goog.events.BrowserEvent}
-     * @private
-     */
+   * @type {goog.events.BrowserEvent}
+   * @private
+   */
   this.scrollLoopBrowserEvent_;
 
   /**
-     * @type {boolean}
-     * @private
-     */
+   * @type {boolean}
+   * @private
+   */
   this.scrollLoopInProgress_ = false;
 };
 goog.inherits(pwk.Editor, goog.ui.Component);
@@ -144,7 +145,8 @@ pwk.Editor.prototype.enterDocument = function() {
   // Initialize private members
   this.keyHandler_ = new goog.events.KeyHandler(element);
   this.keyTarget_ = element;
-  this.keyboardShortcutHandler_ = new goog.ui.KeyboardShortcutHandler(this.keyTarget_);
+  this.keyboardShortcutHandler_ =
+      new goog.ui.KeyboardShortcutHandler(this.keyTarget_);
   this.focusHandler_ = new goog.events.FocusHandler(element);
 
   // Add children component
@@ -166,22 +168,26 @@ pwk.Editor.prototype.enterDocument = function() {
 
 
 /**
- * Initialize key event handler
+ * Initialize key event handler.
  * @private
  */
 pwk.Editor.prototype.initializeEvents_ = function() {
   this.getHandler()
-      // Handle keyboard shortcuts
-      .listen(this.keyboardShortcutHandler_, goog.ui.KeyboardShortcutHandler.EventType.SHORTCUT_TRIGGERED, this.handleKeyboardShortcut_)
-      // Handle editor focus
-      .listen(this.focusHandler_, goog.events.FocusHandler.EventType.FOCUSIN, this.onFocusIn_)
-      .listen(this.focusHandler_, goog.events.FocusHandler.EventType.FOCUSOUT, this.onFocusOut_)
-      // Handle keys pressing
-      .listen(this.keyHandler_, goog.events.KeyHandler.EventType.KEY, this.handleKeyEvent_)
-      // Handle selection
-      .listen(this.keyTarget_, goog.events.EventType.MOUSEDOWN, this.onMouseDown_, true)
-      .listen(document, goog.events.EventType.MOUSEMOVE, this.onMouseMove_, true)
-      .listen(document, goog.events.EventType.MOUSEUP, this.onMouseUp_, true);
+      .listen(this.keyboardShortcutHandler_,
+          goog.ui.KeyboardShortcutHandler.EventType.SHORTCUT_TRIGGERED,
+          this.handleKeyboardShortcut_)
+      .listen(this.focusHandler_,
+          goog.events.FocusHandler.EventType.FOCUSIN, this.onFocusIn_)
+      .listen(this.focusHandler_,
+          goog.events.FocusHandler.EventType.FOCUSOUT, this.onFocusOut_)
+      .listen(this.keyHandler_, goog.events.KeyHandler.EventType.KEY,
+          this.handleKeyEvent_)
+      .listen(this.keyTarget_, goog.events.EventType.MOUSEDOWN,
+          this.onMouseDown_, true)
+      .listen(document, goog.events.EventType.MOUSEMOVE,
+          this.onMouseMove_, true)
+      .listen(document, goog.events.EventType.MOUSEUP,
+          this.onMouseUp_, true);
 
   // Register keyboard shortcuts
   this.registerKeyboardShortcut_(this.keyboardShortcutHandler_);
@@ -189,15 +195,15 @@ pwk.Editor.prototype.initializeEvents_ = function() {
 
 
 /**
- *
+ * Handles mousedown event.
  * @param {goog.events.BrowserEvent} e Mouse event to handle.
  * @private
  */
 pwk.Editor.prototype.onMouseDown_ = function(e) {
 
   if (e.isMouseActionButton()) {
-    let editorEl = this.getElement() ,
-        selection = this.selection_;
+    let editorEl = this.getElement();
+    let selection = this.selection_;
 
     // Editor is focused?
     if (document.activeElement != editorEl) {
@@ -207,7 +213,9 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
     this.isSelectionStarted_ = true;
     selection.removeSelection();
 
-    let selectionRange = selection.getSelectionRangeFromPoint(e.clientX, e.clientY);
+    let selectionRange =
+        selection.getSelectionRangeFromPoint(e.clientX, e.clientY);
+
     if (goog.isDefAndNotNull(selectionRange)) {
       selection.setRange(selectionRange);
       selection.updateCaretFromRange();
@@ -220,7 +228,7 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
 
 
 /**
- *
+ * Handles mousemove event.
  * @param {goog.events.BrowserEvent} e Mouse event to handle.
  * @private
  */
@@ -231,11 +239,13 @@ pwk.Editor.prototype.onMouseMove_ = function(e) {
 
     if (e.clientY < viewPortSize.height - 10 && e.clientY > 0) {
       this.scrollLoopInProgress_ = false;
-      this.selectFromRangeToPoint_(this.startSelectionRange_, e.clientX, e.clientY);
+      this.selectFromRangeToPoint_(this.startSelectionRange_, e.clientX,
+          e.clientY);
 
     } else {
       if (e.clientY == 0) {
-        // In case if browser opened in full screen mode, we can't receive negative clientY, so let's assign fake offset
+        // In case if browser opened in full screen mode, we can't receive
+        // negative clientY, so let's assign fake offset
         e.clientY = -15;
       }
       // Cursor is out of document, let's scroll it
@@ -252,7 +262,9 @@ pwk.Editor.prototype.onMouseMove_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.scrollDocumentForSelection_ = function(e) {
-  if (e) { this.scrollLoopBrowserEvent_ = e; }
+  if (e) {
+    this.scrollLoopBrowserEvent_ = e;
+  }
 
   if (!this.scrollLoopInProgress_) {
     this.scrollLoopInProgress_ = true;
@@ -267,15 +279,17 @@ pwk.Editor.prototype.scrollDocumentForSelection_ = function(e) {
  * @param {number} y
  * @private
  */
-pwk.Editor.prototype.selectFromRangeToPoint_ = function(startSelectionRange, x, y) {
-  let selection = this.selection_ ,
-      endSelectionRange = selection.getSelectionRangeFromPoint(x, y) ,
-      selectionRange = pwk.Range.createFromNodes(startSelectionRange.getStartLine() ,
-                                                 startSelectionRange.getStartNodeOffset() ,
-                                                 endSelectionRange.getEndLine() ,
-                                                 endSelectionRange.getEndNodeOffset() ,
-                                                 startSelectionRange.isStartOfStartLine() ,
-                                                 endSelectionRange.isStartOfEndLine());
+pwk.Editor.prototype.selectFromRangeToPoint_ = function(startSelectionRange, x,
+                                                        y) {
+  let selection = this.selection_;
+  let endSelectionRange = selection.getSelectionRangeFromPoint(x, y);
+  let selectionRange =
+      pwk.Range.createFromNodes(startSelectionRange.getStartLine(),
+          startSelectionRange.getStartNodeOffset(),
+          endSelectionRange.getEndLine(),
+          endSelectionRange.getEndNodeOffset(),
+          startSelectionRange.isStartOfStartLine(),
+          endSelectionRange.isStartOfEndLine());
   selection.selectDocument(selectionRange);
 };
 
@@ -288,15 +302,15 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
 
     // TODO: Make a smooth scrolling
 
-    let googDom = goog.dom ,
-        viewPortSize = googDom.getViewportSize() ,
-        viewPortWidth = viewPortSize.width ,
-        viewPortHeight = viewPortSize.height ,
-        container = googDom.getElementByClass(pwk.EditorContainer.CSS_CLASS) ,
-        e = this.scrollLoopBrowserEvent_ ,
-        clientX = e.clientX ,
-        clientY = e.clientY ,
-        offsetY = 0;
+    let googDom = goog.dom;
+    let viewPortSize = googDom.getViewportSize();
+    let viewPortWidth = viewPortSize.width;
+    let viewPortHeight = viewPortSize.height;
+    let container = googDom.getElementByClass(pwk.EditorContainer.CSS_CLASS);
+    let e = this.scrollLoopBrowserEvent_;
+    let clientX = e.clientX;
+    let clientY = e.clientY;
+    let offsetY = 0;
 
     if (clientX < 0 || clientX >= viewPortWidth) {
       clientX = clientX < 0 ? 1 : viewPortWidth;
@@ -307,13 +321,16 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
       clientY = clientY < 0 ? 50 : viewPortHeight - 50;
     }
 
-    let y = goog.style.getContainerOffsetToScrollInto(this.selection_.getRange().getEndLine().getElement(), container).y;
-    let scroll = new goog.fx.dom.Scroll(container, [0, container.scrollTop], [0, y + ((offsetY == 0 ? 15 : offsetY) * 5)], 50);
+    let y = goog.style.getContainerOffsetToScrollInto(
+        this.selection_.getRange().getEndLine().getElement(), container).y;
+    let scroll = new goog.fx.dom.Scroll(container, [0, container.scrollTop],
+        [0, y + ((offsetY == 0 ? 15 : offsetY) * 5)], 50);
 
     scroll.listen(goog.fx.Transition.EventType.END, goog.bind(function() {
       if (this.scrollLoopInProgress_) {
-                this.selectFromRangeToPoint_(this.startSelectionRange_, clientX, clientY);
-                this.scrollInLoop_();
+        this.selectFromRangeToPoint_(this.startSelectionRange_, clientX,
+            clientY);
+        this.scrollInLoop_();
       }
     }, this));
 
@@ -323,7 +340,7 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
 
 
 /**
- *
+ * Handles mouseup event.
  * @param {goog.events.BrowserEvent} e Mouse event to handle.
  * @private
  */
@@ -366,8 +383,9 @@ pwk.Editor.prototype.onFocusOut_ = function(e) {
 
 
 /**
- * Attempts to handle a keyboard event,
- * @param {goog.events.KeyEvent} e
+ * Attempts to handle a keyboard event.
+ * @param {goog.events.KeyEvent} e The key event.
+ * @return {boolean}
  * @private
  */
 pwk.Editor.prototype.handleKeyEvent_ = function(e) {
@@ -474,8 +492,9 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
-  // NOTE: Process shortcuts here. For details see {goog.ui.KeyboardShortcutHandler}
-  // NOTE: Remember about Mac and Win keyboard
+  // NOTE: Process shortcuts here. For details see
+  // {goog.ui.KeyboardShortcutHandler}
+  // NOTE: Keep in mind about Mac and Win keyboard
 
   switch (e.identifier) {
     case pwk.Shortcuts.Default.SAVE[0]:
@@ -502,26 +521,28 @@ pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
 pwk.Editor.prototype.registerKeyboardShortcut_ = function(handler) {
   for (let shortcut in pwk.Shortcuts.Default) {
     handler.registerShortcut(pwk.Shortcuts.Default[shortcut][0],
-            goog.array.slice(pwk.Shortcuts.Default[shortcut], 1));
+        goog.array.slice(pwk.Shortcuts.Default[shortcut], 1));
   }
 };
 
 
 /**
- * Keep in mind that this case is implemented for test purpose only and does not work properly with Range / Selection
+ * Keep in mind that this case is implemented for test purpose only and does not
+ * work properly with Range / Selection.
  * @param {boolean=} opt_init
  */
 pwk.Editor.prototype.addTestText = function(opt_init) {
-  let generator = new goog.text.LoremIpsum() ,
-      paragraph ,
-      line ,
-      node;
+  let generator = new goog.text.LoremIpsum();
+  let paragraph;
+  let line;
+  let node;
 
   //console.profile('Normalization performance');
   for (let i = 0; i < 10; i++) {
     paragraph = generator.generateParagraph(false);
     if (i == 0 && opt_init) {
-      line = (/** @type {pwk.LeafNode} */ (this.document_.getNodeAt(0))).getFirstLine();
+      line = (/** @type {pwk.LeafNode} */(this.document_.getNodeAt(0)))
+          .getFirstLine();
       line.insertText(paragraph);
     } else {
       line = new pwk.Line(paragraph);
@@ -534,14 +555,14 @@ pwk.Editor.prototype.addTestText = function(opt_init) {
 
 
 /**
- * Component default css class
+ * Component default css class.
  * @type {string}
  */
 pwk.Editor.CSS_CLASS = 'pwk-editor';
 
 
 /**
- * iFrame text event target CSS class
+ * iFrame text event target CSS class.
  * @type {string}
  */
 pwk.Editor.CSS_TEXT_EVENT_TARGET = 'pwk-editor-textevettarget-iframe';

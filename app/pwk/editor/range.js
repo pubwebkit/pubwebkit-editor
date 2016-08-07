@@ -39,7 +39,6 @@ goog.require('goog.events.EventTarget');
  * @param {number} endNodeOffset
  * @param {boolean=} opt_isStartOfStartLine
  * @param {boolean=} opt_isStartOfEndLine
- *
  * @constructor
  * @extends {goog.events.EventTarget}
  */
@@ -47,75 +46,79 @@ pwk.Range = function(startLine, startNodeOffset, endLine, endNodeOffset, opt_isS
   goog.events.EventTarget.call(this);
 
   /**
-     * @type {pwk.Line}
-     * @private
-     */
+   * @type {pwk.Line}
+   * @private
+   */
   this.startLine_ = startLine;
 
   /**
-     * @type {pwk.Line}
-     * @private
-     */
+   * @type {pwk.Line}
+   * @private
+   */
   this.endLine_ = endLine;
 
   /**
-     * @type {pwk.LeafNode}
-     * @private
-     */
+   * @type {pwk.LeafNode}
+   * @private
+   */
   this.startNode_ = startLine.getParentNode();
 
   /**
-     * @type {pwk.LeafNode}
-     * @private
-     */
+   * @type {pwk.LeafNode}
+   * @private
+   */
   this.endNode_ = endLine.getParentNode();
 
   /**
-     * @type {number}
-     * @private
-     */
+   * @type {number}
+   * @private
+   */
   this.startNodeOffset_ = startNodeOffset;
 
   /**
-     * @type {number}
-     * @private
-     */
+   * @type {number}
+   * @private
+   */
   this.endNodeOffset_ = endNodeOffset;
 
   /**
-     * @type {?{lineIndex: number, line: pwk.Line, lineOffset: number, lineLength: number, nodeOffset: number, isEndOfLine: boolean, linkedNodeOffset: number}}
-     * @private
-     */
+   * @type {?pwk.primitives.LineOffsetInfo}
+   * @private
+   */
   this.startLineRangeInfo_ = this.startNode_.getRangeInfoForOffset(startNodeOffset);
 
   /**
-     * @type {?{lineIndex: number, line: pwk.Line, lineOffset: number, lineLength: number, nodeOffset: number, isEndOfLine: boolean, linkedNodeOffset: number}}
-     * @private
-     */
+   * @type {?pwk.primitives.LineOffsetInfo}
+   * @private
+   */
   this.endLineRangeInfo_ = this.endNode_.getRangeInfoForOffset(endNodeOffset);
 
   /**
-     * @type {number}
-     * @private
-     */
-  this.startLineOffset_ = opt_isStartOfStartLine ? 0 : this.startLineRangeInfo_.lineOffset;
+   * @type {number}
+   * @private
+   */
+  this.startLineOffset_ = opt_isStartOfStartLine ?
+      0 :
+      this.startLineRangeInfo_.getLineOffset();
 
   /**
-     * @type {number}
-     * @private
-     */
-  this.endLineOffset_ = opt_isStartOfEndLine ? 0 : this.endLineRangeInfo_.lineOffset;
+   * @type {number}
+   * @private
+   */
+  this.endLineOffset_ = opt_isStartOfEndLine ?
+      0 :
+      this.endLineRangeInfo_.getLineOffset();
 
   /**
-     * @type {boolean}
-     * @private
-     */
+   * @type {boolean}
+   * @private
+   */
   this.isStartOfStartLine_ = !!opt_isStartOfStartLine;
 
   /**
-     * @type {boolean}
-     * @private
-     */
+   * @type {boolean}
+   * @private
+   */
   this.isStartOfEndLine_ = !!opt_isStartOfEndLine;
 
 };
@@ -203,7 +206,7 @@ pwk.Range.prototype.getEndLineOffset = function() {
 
 
 /**
- * @return {?{lineIndex: number, line: pwk.Line, lineOffset: number, lineLength: number, nodeOffset: number, isEndOfLine: boolean, linkedNodeOffset: number}}
+ * @return {?pwk.primitives.LineOffsetInfo}
  */
 pwk.Range.prototype.getStartLineRangeInfo = function() {
   return this.startLineRangeInfo_;
@@ -211,7 +214,7 @@ pwk.Range.prototype.getStartLineRangeInfo = function() {
 
 
 /**
- * @return {?{lineIndex: number, line: pwk.Line, lineOffset: number, lineLength: number, nodeOffset: number, isEndOfLine: boolean, linkedNodeOffset: number}}
+ * @return {?pwk.primitives.LineOffsetInfo}
  */
 pwk.Range.prototype.getEndLineRangeInfo = function() {
   return this.endLineRangeInfo_;
@@ -223,16 +226,17 @@ pwk.Range.prototype.getEndLineRangeInfo = function() {
  * @param {number} nodeOffset
  * @param {boolean=} opt_isStartOfLine
  */
-pwk.Range.prototype.setStartPosition = function(line, nodeOffset, opt_isStartOfLine) {
+pwk.Range.prototype.setStartPosition = function(line, nodeOffset,
+                                                opt_isStartOfLine) {
   this.startNode_ = line.getParentNode();
   this.startLine_ = line;
 
-  var rangeInfo = this.startNode_.getRangeInfoForOffset(nodeOffset);
+  let rangeInfo = this.startNode_.getRangeInfoForOffset(nodeOffset);
   if (rangeInfo == null) {
     throw new Error('Passed incorrect offset!');
   }
   this.startNodeOffset_ = nodeOffset;
-  this.startLineOffset_ = opt_isStartOfLine ? 0 : rangeInfo.lineOffset;
+  this.startLineOffset_ = opt_isStartOfLine ? 0 : rangeInfo.getLineOffset();
   this.startLineRangeInfo_ = rangeInfo;
 };
 
@@ -242,7 +246,8 @@ pwk.Range.prototype.setStartPosition = function(line, nodeOffset, opt_isStartOfL
  * @param {number} nodeOffset
  * @param {boolean=} opt_isStartOfLine
  */
-pwk.Range.prototype.setEndPosition = function(line, nodeOffset, opt_isStartOfLine) {
+pwk.Range.prototype.setEndPosition = function(line, nodeOffset,
+                                              opt_isStartOfLine) {
   this.endNode_ = line.getParentNode();
   this.endLine_ = line;
 
@@ -251,7 +256,7 @@ pwk.Range.prototype.setEndPosition = function(line, nodeOffset, opt_isStartOfLin
     throw new Error('Passed incorrect offset!');
   }
   this.endNodeOffset_ = nodeOffset;
-  this.endLineOffset_ = opt_isStartOfLine ? 0 : rangeInfo.lineOffset;
+  this.endLineOffset_ = opt_isStartOfLine ? 0 : rangeInfo.getLineOffset();
   this.endLineRangeInfo_ = rangeInfo;
 };
 

@@ -22,6 +22,7 @@
 //
 
 /**
+ * @fileoverview TODO: add description
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 

@@ -22,7 +22,7 @@
 //
 
 /**
- * @fileoverview
+ * @fileoverview TODO: add description
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
@@ -37,7 +37,8 @@ goog.provide('pwk.primitives.ClientRectRange');
  * @param {number=} opt_left
  * @constructor
  */
-pwk.primitives.ClientRectRange = function(opt_width, opt_height, opt_top, opt_left) {
+pwk.primitives.ClientRectRange = function(opt_width, opt_height, opt_top,
+                                          opt_left) {
 
   /**
    * @type {number}

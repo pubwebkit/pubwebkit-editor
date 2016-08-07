@@ -50,14 +50,14 @@ app.core.Application = function() {
 
   var historyStateInput = (/** @type {HTMLInputElement} **/(
       goog.dom.createDom('input',
-      {
-        'type': 'text',
-        'id': 'history_state',
-        'name': 'history_state',
-        'style': 'display:none'
-      })));
+          {
+            'type': 'text',
+            'id': 'history_state',
+            'name': 'history_state',
+            'style': 'display:none'
+          })));
   document.body.appendChild(historyStateInput);
-  
+
   /**
    * @type {app.core.Router}
    * @private
@@ -152,19 +152,22 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
           .then(function() {
             return new goog.Promise(function(resolve, reject) {
               resolve(instance[routeData['action']](request, response));
-            })}, undefined, this)
+            });
+          }, undefined, this)
           .then(function() {
             return new goog.Promise(function(resolve, reject) {
               this.dispatchEvent(new app.core.events.ActionEvent(filterContext,
                   app.core.Application.EventType.ACTIONEXECUTED, resolve,
                   this));
-            }, this)}, undefined, this)
+            }, this);
+          }, undefined, this)
           .then(function() {
             return new goog.Promise(function(resolve, reject) {
               // Application loaded
               resolve(this.dispatchEvent(
                   app.core.Application.EventType.APPLICATIONLOADED));
-            }, this)}, undefined, this);
+            }, this);
+          }, undefined, this);
 
     }
     catch (err) {
