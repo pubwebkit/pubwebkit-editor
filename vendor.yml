@@ -8,5 +8,5 @@
 
 ## Documentation ##
 
-- jsdoc_template/
-- docs/
+- (^|/)jsdoc_template/
+- (^|/)docs/
