@@ -23,13 +23,13 @@ module.exports = function(grunt) {
     entryPoint: 'app',
 
     // The path to the closure library
-    closureLibrary: 'libs/closure-library',
+    closureLibrary: 'vendors/closure-library',
 
     // Path to closure compiler source
-    closureCompilerSrc: 'libs/closure-compiler',
+    closureCompilerSrc: 'vendors/closure-compiler',
 
     // Path to closure linter
-    closureLinter: 'libs/closure-linter/closure_linter',
+    closureLinter: 'vendors/closure-linter/closure_linter',
 
     // The folder that contains all the externs files
     externsPath: 'app/externs/',
@@ -41,10 +41,10 @@ module.exports = function(grunt) {
     sourceMap: 'dist/pubwebkit.editor.js.map',
 
     //local filename|remote url
-    source_map_location_mapping: ['libs/|http://localhost:63342/pubwebkit-editor/libs/', 'app/|http://localhost:63342/pubwebkit-editor/app/'],
+    source_map_location_mapping: ['vendors/|http://localhost:63342/pubwebkit-editor/vendors/', 'app/|http://localhost:63342/pubwebkit-editor/app/'],
 
     // Closure Compiler
-    compiler: 'libs/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar',
+    compiler: 'vendors/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar',
 
     // This sting will wrap your code marked as %output%
     // Take care to edit the sourcemap path

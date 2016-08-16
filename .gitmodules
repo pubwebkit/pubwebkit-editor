@@ -1,25 +1,25 @@
-[submodule "libs/closure-compiler"]
-	path = libs/closure-compiler
+[submodule "vendors/closure-compiler"]
+	path = vendors/closure-compiler
 	url = https://banguit@github.com/google/closure-compiler.git
-[submodule "libs/closure-templates"]
-	path = libs/closure-templates
+[submodule "vendors/closure-templates"]
+	path = vendors/closure-templates
 	url = https://banguit@github.com/google/closure-templates.git
-[submodule "libs/bootstrap"]
-	path = libs/bootstrap
+[submodule "vendors/bootstrap"]
+	path = vendors/bootstrap
 	url = https://banguit@github.com/twbs/bootstrap.git
 	branch = master
-[submodule "libs/less.js"]
-	path = libs/less.js
+[submodule "vendors/less.js"]
+	path = vendors/less.js
 	url = https://github.com/less/less.js.git
 	branch = master
-[submodule "libs/PlastronJS"]
-	path = libs/PlastronJS
+[submodule "vendors/PlastronJS"]
+	path = vendors/PlastronJS
 	url = https://banguit@github.com/rhysbrettbowen/PlastronJS.git
 	branch = master
-[submodule "libs/closure-library"]
-	path = libs/closure-library
+[submodule "vendors/closure-library"]
+	path = vendors/closure-library
 	url = https://banguit@github.com/google/closure-library.git
-[submodule "libs/closure-linter"]
-	path = libs/closure-linter
+[submodule "vendors/closure-linter"]
+	path = vendors/closure-linter
 	url = https://github.com/google/closure-linter.git
 	branch = master
