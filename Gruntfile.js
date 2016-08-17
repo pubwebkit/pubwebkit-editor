@@ -222,6 +222,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-file-append');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-shell');
 
   // Register tasks
   grunt.registerTask('build', [
