@@ -1083,6 +1083,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
   if (nodeSelectionRange.isCollapsed() && goog.isDefAndNotNull(opt_isBack)) {
     //TODO: Process "Delete" / "Backspace" buttons
+    console.log('Process "Delete" / "Backspace" buttons');
 
   } else {
     // Required to mark if range has been updated and no more update required

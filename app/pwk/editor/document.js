@@ -310,18 +310,11 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
       this.indexOfNode(range.getStartNode()) :
       this.indexOfNode(range.getEndNode());
 
-  if (range.isCollapsed()) { //
+  if (range.isCollapsed()) {
 
-    if (opt_isBack === true) { // Backspace
-      console.log('Backspace');
+    // Select previous/next node/symbol and call .removeSelection()
 
-    } else { // Delete
-      console.log('Delete');
-
-    }
-
-    // Remove selection range
-  } else {
+  } else { // Remove selection range
 
     var startNode;
     var endNode;

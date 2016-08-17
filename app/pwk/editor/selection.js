@@ -309,7 +309,7 @@ pwk.Selection.prototype.moveCaretLeft = function() {
 
       // Move to the first position
       if (range.getStartLine() != rangeInfo.getLine() &&
-          rangeInfo.isEndOfLine) {
+          rangeInfo.isEndOfLine()) {
         range.setStartPosition(range.getStartLine(), newOffset, true);
         range.setEndPosition(range.getStartLine(), newOffset, true);
       } else {
@@ -382,14 +382,14 @@ pwk.Selection.prototype.moveCaretRight = function(opt_isTyping) {
 
       } else if (newPositionLinkedRangeInfo != null) {
 
-        var isStartOfLIne = !opt_isTyping;
+        var isStartOfLine = !opt_isTyping;
         var offset =
-            newPositionLinkedRangeInfo.getNodeOffset() - Number(opt_isTyping);
+            newPositionLinkedRangeInfo.getNodeOffset() - Number(isStartOfLine);
 
         range.setStartPosition(newPositionLinkedRangeInfo.getLine(), offset,
-            isStartOfLIne);
+            isStartOfLine);
         range.setEndPosition(newPositionLinkedRangeInfo.getLine(), offset,
-            isStartOfLIne);
+            isStartOfLine);
 
       }
     }

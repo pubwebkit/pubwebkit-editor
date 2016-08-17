@@ -6,7 +6,7 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 ## Initialize development enviroment:
 - Run `npm install` from terminal to update all npm references
 - Make sure you have installed Maven.
-- Build Google Closure Compiler. Navigate to `vendors/closure-compiler/` folder and run command `mvn -DskipTests`.
+- Build Google Closure Compiler. Navigate to `vendors/closure-compiler/` folder and run command `mvn -DskipTests` or run `grunt shell:compileClosureCompiler` on the root of the project.
 - Build Google Closure Templates for javascript usage. Navigate to `vendors/closure-templates/` folder and run command `mvn`.
 - Install Closure Linter from `vendors/closure-linter` by next command `python ./setup.py install`.
     - Make gjslint.py executable `chmod +x vendors/closure-linter/closure_linter/gjslint.py`.
