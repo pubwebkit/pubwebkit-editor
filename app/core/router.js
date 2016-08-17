@@ -100,7 +100,7 @@ app.core.Router.prototype.route = function(route, fn, opt_context) {
             .replace(/\\\]/g, ')?')
             .replace(/\\\{/g, '(?:')
             .replace(/\\\}/g, ')?') + '$');
-  let completeRoute = {
+  var completeRoute = {
     route: route,
     callback: fn,
     context: opt_context
@@ -118,7 +118,7 @@ app.core.Router.prototype.route = function(route, fn, opt_context) {
  * @private
  */
 app.core.Router.prototype.runRouteIfMatches_ = function(route, fragment) {
-  let args = route.route.exec(fragment);
+  var args = route.route.exec(fragment);
   if (args) {
     route.callback.apply(route.context, args);
     return true;
@@ -132,8 +132,8 @@ app.core.Router.prototype.runRouteIfMatches_ = function(route, fragment) {
  * @private
  */
 app.core.Router.prototype.onChange_ = function() {
-  let fragment = this.history_.getToken();
-  let locationPathname = window.location.pathname;
+  var fragment = this.history_.getToken();
+  var locationPathname = window.location.pathname;
 
   if (goog.string.isEmptyOrWhitespace(fragment) &&
       locationPathname.length > 1) {
@@ -158,8 +158,8 @@ app.core.Router.prototype.onChange_ = function() {
  * Go through all defined routes and run first matched.
  */
 app.core.Router.prototype.checkRoutes = function() {
-  let fragment = this.history_.getToken();
-  let locationPathname = window.location.pathname;
+  var fragment = this.history_.getToken();
+  var locationPathname = window.location.pathname;
 
   if (goog.string.isEmptyOrWhitespace(fragment) &&
       locationPathname.length > 1) {

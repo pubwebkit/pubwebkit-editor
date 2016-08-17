@@ -83,7 +83,7 @@ pwk.NodeAttribute.prototype.setValue = function(value, opt_isAppendValue) {
     switch (this.type_) {
 
       case pwk.NodeAttributeTypes.HTML_CLASS:
-        let classes = this.value_.split(' ');
+        var classes = this.value_.split(' ');
         // Is class already assigned?
         if (!goog.array.contains(classes, value)) {
 

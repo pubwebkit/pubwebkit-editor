@@ -70,8 +70,8 @@ app.core.Response.prototype.getRouter = function() {
  * Defaults to document.body.
  */
 app.core.Response.prototype.render = function(template, opt_data, opt_element) {
-  let element = opt_element || document.body;
-  let data = opt_data || {};
+  var element = opt_element || document.body;
+  var data = opt_data || {};
 
   goog.soy.renderElement(element, template, data, this.request_.toJSON());
 };

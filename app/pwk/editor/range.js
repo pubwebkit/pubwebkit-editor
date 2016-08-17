@@ -238,7 +238,7 @@ pwk.Range.prototype.setStartPosition = function(line, nodeOffset,
   this.startNode_ = line.getParentNode();
   this.startLine_ = line;
 
-  let rangeInfo = this.startNode_.getRangeInfoForOffset(nodeOffset);
+  var rangeInfo = this.startNode_.getRangeInfoForOffset(nodeOffset);
   if (rangeInfo == null) {
     throw new Error('Passed incorrect offset!');
   }
@@ -258,7 +258,7 @@ pwk.Range.prototype.setEndPosition = function(line, nodeOffset,
   this.endNode_ = line.getParentNode();
   this.endLine_ = line;
 
-  let rangeInfo = this.endNode_.getRangeInfoForOffset(nodeOffset);
+  var rangeInfo = this.endNode_.getRangeInfoForOffset(nodeOffset);
   if (rangeInfo == null) {
     throw new Error('Passed incorrect offset!');
   }

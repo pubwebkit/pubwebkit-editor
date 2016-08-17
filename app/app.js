@@ -39,14 +39,14 @@ goog.require('app.exports');
  * @private
  */
 app.contentLoaded_ = function(win, fn) {
-  let done = false;
-  let top = true;
-  let doc = win.document;
-  let root = doc.documentElement;
-  let modern = doc.addEventListener;
-  let add = modern ? 'addEventListener' : 'attachEvent';
-  let rem = modern ? 'removeEventListener' : 'detachEvent';
-  let pre = modern ? '' : 'on';
+  var done = false;
+  var top = true;
+  var doc = win.document;
+  var root = doc.documentElement;
+  var modern = doc.addEventListener;
+  var add = modern ? 'addEventListener' : 'attachEvent';
+  var rem = modern ? 'removeEventListener' : 'detachEvent';
+  var pre = modern ? '' : 'on';
 
   function init(e) {
     if (e.type == 'readystatechange' && doc.readyState != 'complete') {

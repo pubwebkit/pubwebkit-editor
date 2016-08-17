@@ -68,7 +68,7 @@ goog.inherits(pwk.Line, goog.ui.Component);
 
 /** @inheritDoc */
 pwk.Line.prototype.createDom = function() {
-  let element = goog.dom.createElement('div');
+  var element = goog.dom.createElement('div');
 
   // Create element and apply classes
   this.setElementInternal(element);
@@ -249,17 +249,17 @@ pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
     goog.dispose(this.selectionOverlay_);
   }
 
-  let googStyle = goog.style;
-  let el = this.getElement();
-  let elSize = googStyle.getSize(el);
-  let elPageOffset = googStyle.getPageOffset(el);
-  let clientRectRange;
+  var googStyle = goog.style;
+  var el = this.getElement();
+  var elSize = googStyle.getSize(el);
+  var elPageOffset = googStyle.getPageOffset(el);
+  var clientRectRange;
 
   if (this.getLength() == 0) {
     clientRectRange =
         new pwk.primitives.ClientRectRange(10, elSize.height, 0, 0);
   } else {
-    let lineContentClientRect =
+    var lineContentClientRect =
         this.content_.getBoundingClientRectForOffset(opt_startOffset,
             opt_endOffset);
     clientRectRange =
@@ -308,7 +308,7 @@ pwk.Line.prototype.isSelectedEntirely = function() {
  * @return {{start:number, end:number}|Object<string,string>|null}
  */
 pwk.Line.prototype.removeSelection = function() {
-  let result = this.selectionOffsets_ != null ?
+  var result = this.selectionOffsets_ != null ?
       goog.object.clone(this.selectionOffsets_) :
       null;
 

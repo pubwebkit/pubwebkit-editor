@@ -108,7 +108,7 @@ pwk.layer.Caret.CSS_CLASS_LAYER = 'pwk-caret-layer';
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.createDom = function() {
-  let element = goog.dom.createDom('div');
+  var element = goog.dom.createDom('div');
 
   this.documentElement_ = goog.dom.getElementByClass(pwk.Document.CSS_CLASS);
 
@@ -137,7 +137,7 @@ pwk.layer.Caret.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   // Wrap by layer
-  let parent =
+  var parent =
       /** @type {!Node} */(goog.dom.getParentElement(this.getElement()));
   goog.dom.append(parent, this.layer_);
   this.layer_.appendChild(this.getElement());
@@ -174,7 +174,7 @@ pwk.layer.Caret.prototype.disposeInternal = function() {
  * Hide cursor.
  */
 pwk.layer.Caret.prototype.hide = function() {
-  let el = this.getElement();
+  var el = this.getElement();
 
   clearInterval(this.blinkId_);
   this.isVisible_ = false;
@@ -186,7 +186,7 @@ pwk.layer.Caret.prototype.hide = function() {
  * Show cursor.
  */
 pwk.layer.Caret.prototype.show = function() {
-  let el = this.getElement();
+  var el = this.getElement();
 
   this.isVisible_ = true;
   el.style.visibility = 'visible';
@@ -203,8 +203,8 @@ pwk.layer.Caret.prototype.restartTimer = function() {
     return;
   }
 
-  let self = this.getElement();
-  let obj = this;
+  var self = this.getElement();
+  var obj = this;
 
   this.blinkId_ = setInterval(function() {
     self.style.visibility = 'hidden';
@@ -226,9 +226,9 @@ pwk.layer.Caret.prototype.update = function(selection) {
 
   this.dispatchEvent(pwk.layer.Caret.EventType.BEFORE_UPDATE);
 
-  let el = this.getElement();
-  let bounds = selection.getBoundsForRange();
-  let elStyle = el.style;
+  var el = this.getElement();
+  var bounds = selection.getBoundsForRange();
+  var elStyle = el.style;
 
   elStyle.left = bounds.left + 'px';
   elStyle.top = bounds.top + 'px';

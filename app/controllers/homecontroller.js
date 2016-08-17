@@ -45,8 +45,8 @@ goog.inherits(app.controllers.HomeController, app.core.Controller);
  * @param {app.core.Response} response
  */
 app.controllers.HomeController.prototype.index = function(request, response) {
-  let editor = new pwk.Editor();
-  let container = new pwk.EditorContainer();
+  var editor = new pwk.Editor();
+  var container = new pwk.EditorContainer();
 
   container.addChild(editor, true);
   container.render(document.body);

@@ -77,11 +77,11 @@ pwk.Pagination.prototype.addNode = function(node) {
     throw new Error('Node should not be already in the document.');
   }
 
-  let page;
-  let pageIndex;
-  let editorDocument = this.document_;
-  let pageNodeIndex = this.pageNodeIndex_;
-  let pageNodeIndexLen = this.pageNodeIndex_.length;
+  var page;
+  var pageIndex;
+  var editorDocument = this.document_;
+  var pageNodeIndex = this.pageNodeIndex_;
+  var pageNodeIndexLen = this.pageNodeIndex_.length;
 
   // Get node index for latest page
   if (!goog.isArray(pageNodeIndex[pageNodeIndexLen - 1])) {
@@ -120,18 +120,18 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
     throw new Error('Node should not be already in the document.');
   }
 
-  let doc = this.document_;
-  let pageNodeIndex = this.pageNodeIndex_;
-  let pageIndex;
-  let page;
+  var doc = this.document_;
+  var pageNodeIndex = this.pageNodeIndex_;
+  var pageIndex;
+  var page;
 
   if (opt_after) {
-    let prevNode = doc.getNodeAt(index - 1);
+    var prevNode = doc.getNodeAt(index - 1);
 
     if (goog.isDefAndNotNull(prevNode)) {
       pageIndex = this.getPageIndexByNodeId(prevNode.getId());
 
-      let prevNodeIndex =
+      var prevNodeIndex =
           goog.array.indexOf(pageNodeIndex[pageIndex], prevNode.getId());
       goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(),
           prevNodeIndex + 1);
@@ -143,14 +143,14 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
       this.addNode(node);
     }
   } else {
-    let nextNode = this.document_.getNodeAt(index);
+    var nextNode = this.document_.getNodeAt(index);
 
     if (goog.isDefAndNotNull(nextNode)) {
       // Get page index
       pageIndex = this.getPageIndexByNodeId(nextNode.getId());
 
       // Add node index to index
-      let nextNodeIndex =
+      var nextNodeIndex =
           goog.array.indexOf(pageNodeIndex[pageIndex], nextNode.getId());
       goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(),
           nextNodeIndex);
@@ -172,8 +172,8 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
  *    as start point for overflow check.
  */
 pwk.Pagination.prototype.checkOverflow = function(nodeId) {
-  let pageIndex = this.getPageIndexByNodeId(nodeId);
-  let activePage = this.document_.getPageAt(pageIndex);
+  var pageIndex = this.getPageIndexByNodeId(nodeId);
+  var activePage = this.document_.getPageAt(pageIndex);
 
   activePage.checkPageOverflow();
 };
@@ -183,36 +183,36 @@ pwk.Pagination.prototype.checkOverflow = function(nodeId) {
  * Checking pages filling. Checking started from topless range node.
  */
 pwk.Pagination.prototype.checkFilling = function() {
-  let doc = this.document_;
-  let range = doc.getSelection().getRange();
+  var doc = this.document_;
+  var range = doc.getSelection().getRange();
 
   if (range != null) {
 
     //console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
 
-    let abovePageIndex = // Topmost edited page index
+    var abovePageIndex = // Topmost edited page index
         this.getPageIndexByNodeId(range.isReversed() ?
             range.getEndNode().getId() :
             range.getStartNode().getId());
-    let _getBelowPageIndex = goog.bind(function() {
+    var _getBelowPageIndex = goog.bind(function() {
       return this.pageNodeIndex_.length > abovePageIndex + 1 ?
           abovePageIndex + 1 :
           -1;
     }, this);
-    let belowPageIndex = _getBelowPageIndex();
-    let abovePage;
+    var belowPageIndex = _getBelowPageIndex();
+    var abovePage;
 
     while (belowPageIndex > 0) { // We have page below modified page?
       abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
 
-      let availableHeightAbove = abovePage.getAvailableContentSize();
+      var availableHeightAbove = abovePage.getAvailableContentSize();
       // TODO: Should fixed in future, then will be implemented proper range
       // deleting
-      let nodeToMove = /** @type {pwk.Node}*/
+      var nodeToMove = /** @type {pwk.Node}*/
           (this.pageNodeIndex_[belowPageIndex].length > 0 ?
               doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) :
               null);
-      let nodeToMoveSize;
+      var nodeToMoveSize;
 
       if (goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
 
@@ -296,12 +296,12 @@ pwk.Pagination.prototype.checkFilling = function() {
  * @return {number}
  */
 pwk.Pagination.prototype.getPageIndexByNodeId = function(id) {
-  let result;
-  let pageNodeIndex = this.pageNodeIndex_;
-  let indexLen = pageNodeIndex.length;
-  let googArray = goog.array;
+  var result;
+  var pageNodeIndex = this.pageNodeIndex_;
+  var indexLen = pageNodeIndex.length;
+  var googArray = goog.array;
 
-  for (let i = 0; i < indexLen; i++) {
+  for (var i = 0; i < indexLen; i++) {
     result = googArray.indexOf(pageNodeIndex[i], id);
     if (result != -1) {
       return i;
@@ -317,11 +317,11 @@ pwk.Pagination.prototype.getPageIndexByNodeId = function(id) {
  * @private
  */
 pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
-  let nodes = e.getNodesForMoving();
-  let page = e.target;
-  let pageIndex = e.getPageIndex();
-  let doc = this.document_;
-  let siblingPage = doc.getPageAt(pageIndex + 1);
+  var nodes = e.getNodesForMoving();
+  var page = e.target;
+  var pageIndex = e.getPageIndex();
+  var doc = this.document_;
+  var siblingPage = doc.getPageAt(pageIndex + 1);
 
   // Update index
   goog.array.forEach(nodes, function(node) {
@@ -330,9 +330,9 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
 
   // Is required to create a new page?
   if (goog.isDefAndNotNull(siblingPage)) { // - No
-    let siblingPageNodes = this.pageNodeIndex_[pageIndex + 1];
-    let siblingNode = doc.getNode(siblingPageNodes[0]);
-    let siblingNodeIndex = doc.indexOfNode(siblingNode);
+    var siblingPageNodes = this.pageNodeIndex_[pageIndex + 1];
+    var siblingNode = doc.getNode(siblingPageNodes[0]);
+    var siblingNodeIndex = doc.indexOfNode(siblingNode);
 
     goog.array.forEach(nodes, function(node) {
       doc.addNodeAt(node, siblingNodeIndex);
@@ -371,7 +371,7 @@ pwk.Pagination.prototype.getPaginationIndex = function() {
  * @private
  */
 pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
-  let removedNodeId = e.removedNode.getId();
+  var removedNodeId = e.removedNode.getId();
   goog.array.forEach(this.pageNodeIndex_, function(arr) {
     if (goog.array.remove(arr, removedNodeId)) {
 

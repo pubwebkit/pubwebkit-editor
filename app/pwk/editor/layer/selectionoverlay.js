@@ -65,10 +65,10 @@ pwk.layer.SelectionOverlay.CSS_CLASS = 'pwk-selection-overlay';
 
 /** @inheritDoc */
 pwk.layer.SelectionOverlay.prototype.createDom = function() {
-  let element = goog.dom.createDom('div');
-  let clientRect = this.clientRectRange_;
-  let googStyle = goog.style;
-  let googMath = goog.math;
+  var element = goog.dom.createDom('div');
+  var clientRect = this.clientRectRange_;
+  var googStyle = goog.style;
+  var googMath = goog.math;
 
   this.setElementInternal(element);
   goog.dom.classlist.add(this.getElement(),

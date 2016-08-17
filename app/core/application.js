@@ -48,7 +48,7 @@ goog.require('goog.string');
 app.core.Application = function() {
   goog.events.EventTarget.call(this);
 
-  let historyStateInput = (/** @type {HTMLInputElement} **/(
+  var historyStateInput = (/** @type {HTMLInputElement} **/(
       goog.dom.createDom('input',
           {
             'type': 'text',
@@ -113,14 +113,14 @@ app.core.Application.prototype.mapRoute = function(route, controller) {
 app.core.Application.prototype.processRoute_ = function(route, controller) {
   this.setCurrentRoute_(route);
 
-  let i = 2;
-  let routeData = {'controller': controller.getControllerName()};
-  let pattern = /:[a-zA-Z0-9._-]*/g;
-  let request;
-  let response;
-  let filterContext;
-  let match;
-  let queryVals = arguments[arguments.length - 1];
+  var i = 2;
+  var routeData = {'controller': controller.getControllerName()};
+  var pattern = /:[a-zA-Z0-9._-]*/g;
+  var request;
+  var response;
+  var filterContext;
+  var match;
+  var queryVals = arguments[arguments.length - 1];
 
   while ((match = pattern.exec(route)) != null) {
     i++;
@@ -340,10 +340,10 @@ app.core.Application.prototype.forEachApplicationFilter_ = function(callback) {
  * @private
  */
 app.core.Application.prototype.forEachActionFilter_ = function(callback) {
-  let currentRoute = this.currentRoute_;
+  var currentRoute = this.currentRoute_;
   goog.array.forEach(this.actionFilters_, function(filterItem) {
     // Check route and run
-    let route = filterItem.getRoute();
+    var route = filterItem.getRoute();
 
     if (goog.string.isEmptySafe(route) || currentRoute.exec(route)) {
       callback.call(this, filterItem);

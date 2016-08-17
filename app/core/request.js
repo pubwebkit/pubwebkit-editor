@@ -74,7 +74,7 @@ app.core.Request.prototype.getRouteData = function(opt_key) {
  * @return {Object}
  */
 app.core.Request.prototype.toJSON = function() {
-  let obj = {
+  var obj = {
     domain: this.getDomain(),
     path: this.getPath(),
     port: this.getPort(),
@@ -84,11 +84,11 @@ app.core.Request.prototype.toJSON = function() {
     routeData: this.routeData_,
     queryData: {}
   };
-  let queryData = this.getQueryData();
-  let keys = queryData.getKeys();
+  var queryData = this.getQueryData();
+  var keys = queryData.getKeys();
 
-  for (let a = 0; a < keys.length; a++) {
-    let values = queryData.getValues(keys[a]);
+  for (var a = 0; a < keys.length; a++) {
+    var values = queryData.getValues(keys[a]);
 
     if (values.length > 1) {
       obj.queryData[keys[a]] = values;

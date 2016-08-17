@@ -127,7 +127,7 @@ pwk.Editor.prototype.createDom = function() {
 
   // Create element and apply classes
   this.setElementInternal(this.dom_.createElement('div'));
-  let element = this.getElement();
+  var element = this.getElement();
   goog.dom.classlist.add(element, pwk.Editor.CSS_CLASS);
 
   // Set editor focusable
@@ -140,7 +140,7 @@ pwk.Editor.prototype.createDom = function() {
 pwk.Editor.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
-  let element = this.getElement();
+  var element = this.getElement();
 
   // Initialize private members
   this.keyHandler_ = new goog.events.KeyHandler(element);
@@ -202,8 +202,8 @@ pwk.Editor.prototype.initializeEvents_ = function() {
 pwk.Editor.prototype.onMouseDown_ = function(e) {
 
   if (e.isMouseActionButton()) {
-    let editorEl = this.getElement();
-    let selection = this.selection_;
+    var editorEl = this.getElement();
+    var selection = this.selection_;
 
     // Editor is focused?
     if (document.activeElement != editorEl) {
@@ -213,7 +213,7 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
     this.isSelectionStarted_ = true;
     selection.removeSelection();
 
-    let selectionRange =
+    var selectionRange =
         selection.getSelectionRangeFromPoint(e.clientX, e.clientY);
 
     if (goog.isDefAndNotNull(selectionRange)) {
@@ -235,7 +235,7 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
 pwk.Editor.prototype.onMouseMove_ = function(e) {
   if (e.isMouseActionButton() && this.isSelectionStarted_) {
 
-    let viewPortSize = goog.dom.getViewportSize();
+    var viewPortSize = goog.dom.getViewportSize();
 
     if (e.clientY < viewPortSize.height - 10 && e.clientY > 0) {
       this.scrollLoopInProgress_ = false;
@@ -281,9 +281,9 @@ pwk.Editor.prototype.scrollDocumentForSelection_ = function(e) {
  */
 pwk.Editor.prototype.selectFromRangeToPoint_ = function(startSelectionRange, x,
                                                         y) {
-  let selection = this.selection_;
-  let endSelectionRange = selection.getSelectionRangeFromPoint(x, y);
-  let selectionRange =
+  var selection = this.selection_;
+  var endSelectionRange = selection.getSelectionRangeFromPoint(x, y);
+  var selectionRange =
       pwk.Range.createFromNodes(startSelectionRange.getStartLine(),
           startSelectionRange.getStartNodeOffset(),
           endSelectionRange.getEndLine(),
@@ -302,15 +302,15 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
 
     // TODO: Make a smooth scrolling
 
-    let googDom = goog.dom;
-    let viewPortSize = googDom.getViewportSize();
-    let viewPortWidth = viewPortSize.width;
-    let viewPortHeight = viewPortSize.height;
-    let container = googDom.getElementByClass(pwk.EditorContainer.CSS_CLASS);
-    let e = this.scrollLoopBrowserEvent_;
-    let clientX = e.clientX;
-    let clientY = e.clientY;
-    let offsetY = 0;
+    var googDom = goog.dom;
+    var viewPortSize = googDom.getViewportSize();
+    var viewPortWidth = viewPortSize.width;
+    var viewPortHeight = viewPortSize.height;
+    var container = googDom.getElementByClass(pwk.EditorContainer.CSS_CLASS);
+    var e = this.scrollLoopBrowserEvent_;
+    var clientX = e.clientX;
+    var clientY = e.clientY;
+    var offsetY = 0;
 
     if (clientX < 0 || clientX >= viewPortWidth) {
       clientX = clientX < 0 ? 1 : viewPortWidth;
@@ -321,9 +321,9 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
       clientY = clientY < 0 ? 50 : viewPortHeight - 50;
     }
 
-    let y = goog.style.getContainerOffsetToScrollInto(
+    var y = goog.style.getContainerOffsetToScrollInto(
         this.selection_.getRange().getEndLine().getElement(), container).y;
-    let scroll = new goog.fx.dom.Scroll(container, [0, container.scrollTop],
+    var scroll = new goog.fx.dom.Scroll(container, [0, container.scrollTop],
         [0, y + ((offsetY == 0 ? 15 : offsetY) * 5)], 50);
 
     scroll.listen(goog.fx.Transition.EventType.END, goog.bind(function() {
@@ -362,7 +362,7 @@ pwk.Editor.prototype.onMouseUp_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.onFocusIn_ = function(e) {
-  let selection = this.selection_;
+  var selection = this.selection_;
   if (selection.getRange().isCollapsed()) {
     this.selection_.getCaret().show();
   }
@@ -375,7 +375,7 @@ pwk.Editor.prototype.onFocusIn_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.onFocusOut_ = function(e) {
-  let selection = this.selection_;
+  var selection = this.selection_;
   if (selection.getRange().isCollapsed()) {
     this.selection_.getCaret().hide();
   }
@@ -389,7 +389,7 @@ pwk.Editor.prototype.onFocusOut_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.handleKeyEvent_ = function(e) {
-  let isStopPropagation = false;
+  var isStopPropagation = false;
 
   // Fix charCode for Opera on Mac
   if (goog.userAgent.OPERA && goog.userAgent.MAC) {
@@ -477,7 +477,7 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
   }
 
   // Editor is focused?
-  let element = this.getElement();
+  var element = this.getElement();
   if (document.activeElement != element) {
     element.focus();
   }
@@ -519,7 +519,7 @@ pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.registerKeyboardShortcut_ = function(handler) {
-  for (let shortcut in pwk.Shortcuts.Default) {
+  for (var shortcut in pwk.Shortcuts.Default) {
     handler.registerShortcut(pwk.Shortcuts.Default[shortcut][0],
         goog.array.slice(pwk.Shortcuts.Default[shortcut], 1));
   }
@@ -532,13 +532,13 @@ pwk.Editor.prototype.registerKeyboardShortcut_ = function(handler) {
  * @param {boolean=} opt_init
  */
 pwk.Editor.prototype.addTestText = function(opt_init) {
-  let generator = new goog.text.LoremIpsum();
-  let paragraph;
-  let line;
-  let node;
+  var generator = new goog.text.LoremIpsum();
+  var paragraph;
+  var line;
+  var node;
 
   //console.profile('Normalization performance');
-  for (let i = 0; i < 10; i++) {
+  for (var i = 0; i < 10; i++) {
     paragraph = generator.generateParagraph(false);
     if (i == 0 && opt_init) {
       line = (/** @type {pwk.LeafNode} */(this.document_.getNodeAt(0)))

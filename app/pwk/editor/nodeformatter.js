@@ -38,15 +38,15 @@ goog.require('pwk.NodeAttributeTypes');
  * @param {pwk.Node|pwk.LeafNode} node
  */
 pwk.NodeFormatter.applyGlobalDocumentFormation = function(doc, node) {
-  let nodeIndex = doc.indexOfNode(node);
-  let documentSettings =
+  var nodeIndex = doc.indexOfNode(node);
+  var documentSettings =
       (/**@type {pwk.DocumentSettings}*/(pwk.DocumentSettings.getInstance()));
 
   switch (node.getType()) {
     case pwk.NodeTypes.PARAGRAPH:
 
-      let prevNode = doc.getNodeAt(nodeIndex - 1);
-      let types = pwk.NodeAttributeTypes;
+      var prevNode = doc.getNodeAt(nodeIndex - 1);
+      var types = pwk.NodeAttributeTypes;
 
       if (goog.isDefAndNotNull(prevNode)) {
         node.setAttribute(types.STYLE_LINE_HEIGHT,
@@ -57,11 +57,11 @@ pwk.NodeFormatter.applyGlobalDocumentFormation = function(doc, node) {
             prevNode.getAttribute(types.STYLE_FONT_SIZE).getValue());
 
       } else {
-        let fontSize =
+        var fontSize =
             parseFloat(pwk.utils.style.PointsToPixels(
                 documentSettings.getFontSize()));
-        let lineHeight = parseFloat(documentSettings.getLineHeight());
-        let height = (fontSize * lineHeight) + 'px';
+        var lineHeight = parseFloat(documentSettings.getLineHeight());
+        var height = (fontSize * lineHeight) + 'px';
 
         node.setAttribute(types.STYLE_LINE_HEIGHT,
             documentSettings.getLineHeight());
@@ -81,10 +81,10 @@ pwk.NodeFormatter.applyGlobalDocumentFormation = function(doc, node) {
  * @param {goog.ui.Component} node Node or any child component
  */
 pwk.NodeFormatter.applyNodeAttributes = function(attributes, node) {
-  let element = node.getElement();
+  var element = node.getElement();
 
   goog.array.forEach(attributes, function(attr) {
-    let value = attr.getValue();
+    var value = attr.getValue();
 
     switch (attr.getType()) {
 

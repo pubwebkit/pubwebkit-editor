@@ -53,7 +53,7 @@ goog.inherits(pwk.PageFooter, goog.ui.Component);
 
 /** @inheritDoc */
 pwk.PageFooter.prototype.createDom = function() {
-  let element = this.dom_.createElement('div');
+  var element = this.dom_.createElement('div');
   this.setElementInternal(element);
   this.decorateInternal(element);
 

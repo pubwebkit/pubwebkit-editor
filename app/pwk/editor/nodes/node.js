@@ -96,7 +96,7 @@ pwk.Node.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 
   // Remove attributes
-  for (let i = 0; i < this.attributes_.length; i++) {
+  for (var i = 0; i < this.attributes_.length; i++) {
     goog.array.removeAt(this.attributes_, i);
   }
 
@@ -181,7 +181,7 @@ pwk.Node.prototype.getSize = function() {
  * @param {boolean=} opt_isMergeData
  */
 pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
-  let attribute = goog.array.find(this.attributes_, function(att) {
+  var attribute = goog.array.find(this.attributes_, function(att) {
     return att.getType() == type;
   });
 
