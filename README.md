@@ -22,6 +22,14 @@ Below list of the most important task that can used during development:
 * `grunt jsdoc` - Generate JSDoc based documentation. All documentation available under `docs/` folder. If you will run local web server, then you can access documentation by http://localhost:9000/documentation.
 Also, you can browse latest API documentation by this [link](http://htmlpreview.github.io/?https://github.com/pubwebkit/pubwebkit-editor/blob/master/docs/index.html) using GitHub & BitBucket HTML Preview tool.
 
+## File structure
+* `app` - Pubwebkit editor source.
+* `dist` - Contains compiled editor after build process.
+* `docs` - API documentation.
+* `jsdoc_template` - API documentation templates.
+* `less` - LESS files related to Pubwebkit Editor
+* `vendors` - Libraries, plugins, modules, components, etc. Not just libraries, but anything that's provided by a third party.
+
 ## Supported Browsers
 * Internet Explorer 9+
 * Opera 12 (PC and Mac looks good)
