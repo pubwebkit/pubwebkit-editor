@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     closureCompilerSrc: 'vendors/closure-compiler',
 
     // Path to closure linter
-    closureLinter: 'vendors/closure-linter/closure_linter',
+    closureLinter: '/usr/local/bin',
 
     // The folder that contains all the externs files
     externsPath: 'app/externs/',
@@ -91,6 +91,7 @@ module.exports = function(grunt) {
     closureLint: {
       data: {
         closureLinterPath: CONFIGURATION.closureLinter,
+        command: 'gjslint',
         src: ['app']
       },
       options: {
@@ -103,6 +104,7 @@ module.exports = function(grunt) {
     closureFixStyle: {
       data: {
         closureLinterPath: CONFIGURATION.closureLinter,
+        command: 'fixjsstyle',
         src: ['app']
       },
       options: {
