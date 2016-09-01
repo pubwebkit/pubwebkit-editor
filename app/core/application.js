@@ -122,7 +122,7 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
   var match;
   var queryVals = arguments[arguments.length - 1];
 
-  while ((match = pattern.exec(route)) != null) {
+  while ((match = pattern.exec(route)) !== null) {
     i++;
     routeData[goog.string.removeAll(match[0], ':')] = arguments[i];
   }

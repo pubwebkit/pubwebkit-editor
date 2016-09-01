@@ -48,18 +48,25 @@ app.contentLoaded_ = function(win, fn) {
   var rem = modern ? 'removeEventListener' : 'detachEvent';
   var pre = modern ? '' : 'on';
 
+  /**
+   * Content loader handler.
+   * @param {Event|string} e
+   */
   function init(e) {
-    if (e.type == 'readystatechange' && doc.readyState != 'complete') {
+    if (e.type === 'readystatechange' && doc.readyState !== 'complete') {
       return;
     }
     // remove listener, no longer needed
-    (e.type == 'load' ? win : doc)[rem](pre + e.type, init, false);
+    (e.type === 'load' ? win : doc)[rem](pre + e.type, init, false);
 
     if (!done && (done = true)) {
       fn.call(win, e.type || e);
     }
   }
 
+  /**
+   * Recursive function to check content loading for legacy IE browser.
+   */
   function poll() {
     try {
       root.doScroll('left');
@@ -71,7 +78,7 @@ app.contentLoaded_ = function(win, fn) {
     init('poll');
   }
 
-  if (doc.readyState == 'complete') {
+  if (doc.readyState === 'complete') {
     fn.call(win, 'lazy');
   }
   else {

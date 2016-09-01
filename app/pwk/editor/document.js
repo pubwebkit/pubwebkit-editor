@@ -729,8 +729,8 @@ pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
   var range = selection.getRange();
 
   if (range != null) {
-    // If document become bigger then available on current pages, move nodes to
-    // other pages or create more page and move them there
+    // If content become bigger then available on current pages, move nodes to
+    // other pages or create more page and move them there.
     pagination.checkOverflow(range.getStartNode().getId());
 
     // Fill document pages if content height was changed

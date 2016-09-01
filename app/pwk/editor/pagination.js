@@ -187,19 +187,20 @@ pwk.Pagination.prototype.checkFilling = function() {
   var range = doc.getSelection().getRange();
 
   if (range != null) {
-
     //console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
 
-    var abovePageIndex = // Topmost edited page index
+    // Topmost edited page index
+    var abovePageIndex =
         this.getPageIndexByNodeId(range.isReversed() ?
             range.getEndNode().getId() :
             range.getStartNode().getId());
-    var _getBelowPageIndex = goog.bind(function() {
+
+    var getBelowPageIndex = goog.bind(function() {
       return this.pageNodeIndex_.length > abovePageIndex + 1 ?
           abovePageIndex + 1 :
           -1;
     }, this);
-    var belowPageIndex = _getBelowPageIndex();
+    var belowPageIndex = getBelowPageIndex();
     var abovePage;
 
     while (belowPageIndex > 0) { // We have page below modified page?
