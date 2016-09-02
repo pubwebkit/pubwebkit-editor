@@ -19,6 +19,9 @@ module.exports = function(grunt) {
     // Path to the app
     appPath: 'app/',
 
+    // Path to the tests
+    testsPath: 'tests/',
+
     // define the main namespace of your app.
     entryPoint: 'app',
 
@@ -34,8 +37,14 @@ module.exports = function(grunt) {
     // The folder that contains all the externs files
     externsPath: 'app/externs/',
 
+    // Distribution folder
+    distFolder: 'dist',
+
     // The compiled file
     destCompiled: 'dist/pubwebkit.editor.min.js',
+
+    // Concatenated tests
+    allTests: 'dist/all-test.js',
 
     // The location of the source map
     sourceMap: 'dist/pubwebkit.editor.js.map',
@@ -128,7 +137,7 @@ module.exports = function(grunt) {
           warning_level: 'verbose',
           jscomp_off: [],
           summary_detail_level: 3,
-          only_closure_dependencies: true,
+          only_closure_dependencies: false,
           closure_entry_point: CONFIGURATION.entryPoint,
           create_source_map: CONFIGURATION.sourceMap,
           source_map_format: 'V3',
@@ -142,7 +151,7 @@ module.exports = function(grunt) {
           CONFIGURATION.closureLibrary
         ],
         dest: CONFIGURATION.destCompiled
-      }
+      },
     },
 
     copy: {
@@ -211,24 +220,46 @@ module.exports = function(grunt) {
       compileClosureCompiler: {
         command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests -pl "!pom-gwt.xml"'
       },
+      compileTests: {
+        command: () => 'python ' + CONFIGURATION.closureLibrary + '/closure/bin/build/closurebuilder.py -i ' +
+                        CONFIGURATION.allTests +
+                        ' --root=' + CONFIGURATION.appPath +
+                        ' --root=' + CONFIGURATION.closureLibrary +
+                        ' --compiler_jar=' + CONFIGURATION.compiler +
+                        ' --compiler_flags="--compilation_level=WHITESPACE_ONLY"' +
+                        ' --compiler_flags="--warning_level=verbose"' +
+                        ' --compiler_flags="--summary_detail_level=3"' +
+                        ' -o script --output_file=' + CONFIGURATION.allTests
+      },
       options: {
         execOptions: {
           maxBuffer: Infinity
         }
       }
+    },
+
+    concat: {
+      options: {
+        separator: ';',
+      },
+      tests: {
+        src: [CONFIGURATION.testsPath + '*.js'],
+        dest: CONFIGURATION.allTests,
+      },
     }
   });
 
   // Load tasks
-  grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-closure-linter');
+  grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-file-append');
   grunt.loadNpmTasks('grunt-jsdoc');
-  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-shell');
 
   // Register tasks
@@ -239,6 +270,10 @@ module.exports = function(grunt) {
     'closureDepsWriter:app',
     'closureBuilder:app',
     'file_append'
+  ]);
+  grunt.registerTask('test', [
+      'concat:tests',
+      'shell:compileTests'
   ]);
   grunt.registerTask('deps', [
     'closureDepsWriter:app'
