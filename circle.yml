@@ -15,5 +15,5 @@ dependencies:
     - npm install
 
   post:
-    - grunt build
     - grunt shell:compileClosureCompiler
+    - grunt build
