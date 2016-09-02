@@ -1,0 +1,9 @@
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+
+dependencies:
+  post:
+    - npm install
+    - grunt build
