@@ -210,6 +210,11 @@ module.exports = function(grunt) {
     shell: {
       compileClosureCompiler: {
         command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests'
+      },
+      options: {
+        execOptions: {
+          maxBuffer: Infinity
+        }
       }
     }
   });
