@@ -1,5 +1,4 @@
 # [Pubwebkit](http://www.pubwebkit.com/) editor
-===
 
 CircleCI: [![CircleCI](https://circleci.com/gh/pubwebkit/pubwebkit-editor.svg?style=shield&circle-token=3752c66c0d775a9f309ab8b150f98a6ffd0289fe)](https://circleci.com/gh/pubwebkit/pubwebkit-editor)
 
