@@ -4,6 +4,9 @@ checkout:
     - git submodule update --init
 
 dependencies:
-  post:
+  override:
     - npm install
+  pre:
+    - grunt shell:compileClosureCompiler
+  post:
     - grunt build
