@@ -209,7 +209,7 @@ module.exports = function(grunt) {
 
     shell: {
       compileClosureCompiler: {
-        command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests'
+        command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests -pl "!pom-gwt.xml"'
       },
       options: {
         execOptions: {
