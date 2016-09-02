@@ -9,9 +9,11 @@ checkout:
 
 dependencies:
   pre:
-    - sudo apt-get update; sudo apt-get install maven3
+    - sudo apt-get purge maven maven2 maven3; sudo add-apt-repository ppa:andrei-pozolotin/maven3; sudo apt-get update; sudo apt-get install maven3
+
   override:
     - npm install
+
   post:
     - grunt build
     - grunt shell:compileClosureCompiler
