@@ -10,7 +10,7 @@ checkout:
 dependencies:
   pre:
     - npm install
-    - python ./vendors/closure-linter/setup.py install
+    - cd vendors/closure-linter/ && python ./setup.py install
 
   override:
     - npm run closure-lint
