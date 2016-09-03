@@ -14,7 +14,3 @@ dependencies:
   post:
     - npm run build:closure-compiler
     - npm run build
-
-test:
-  post:
-    - npm run test
