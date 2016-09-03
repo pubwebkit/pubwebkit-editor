@@ -96,7 +96,6 @@ module.exports = function(grunt) {
 
     closureLint: {
       data: {
-        closureLinterPath: CONFIGURATION.closureLinter,
         command: 'gjslint',
         src: ['app/**/*.js', 'tests/**/*.js']
       },
@@ -109,7 +108,6 @@ module.exports = function(grunt) {
 
     closureFixStyle: {
       data: {
-        closureLinterPath: CONFIGURATION.closureLinter,
         command: 'fixjsstyle',
         src: ['app']
       },
