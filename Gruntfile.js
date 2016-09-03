@@ -217,10 +217,6 @@ module.exports = function(grunt) {
       compileClosureCompiler: {
         command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests -pl "!pom-gwt.xml"'
       },
-      testDeps: {
-        command: () => 'python ' + CONFIGURATION.closureLibrary + '/closure/bin/build/depswriter.py' +
-                       ' --root_with_prefix="' + CONFIGURATION.testsPath + ' ../../../../' + CONFIGURATION.testsPath + '" --output_file=tests//deps.js'
-      },
       options: {
         execOptions: {
           maxBuffer: Infinity
@@ -251,7 +247,6 @@ module.exports = function(grunt) {
     'copy:html',
     'less:build',
     'closureDepsWriter:app',
-    'shell:testDeps',
     'closureBuilder:app',
     'file_append'
   ]);

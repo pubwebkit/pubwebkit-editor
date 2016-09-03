@@ -61,6 +61,6 @@
   "scripts": {
     "build": "grunt build",
     "build:closure-compiler": "grunt shell:compileClosureCompiler",
-    "test": "grunt shell:testDeps && rm -rf tmp/ && karma start karma.conf.js --single-run --browsers PhantomJS"
+    "test": "rm -rf tmp/ && karma start karma.conf.js --single-run --browsers PhantomJS"
   }
 }

@@ -12,10 +12,10 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 * Build Google Closure Templates for javascript usage. Navigate to `vendors/closure-templates/` folder and run command `mvn`.
 * Install Closure Linter from `vendors/closure-linter` by next command `python ./setup.py install`.
 
-## Available npm run scripts
+## Available npm commands
 * `npm run build` - Build project.
 * `npm run build:closure-compiler` - Build Google Closure Compiler.
-* `npm run test` - Run tests.
+* `npm test` - Run tests.
 
 ## File structure
 * `app` - Pubwebkit editor source.

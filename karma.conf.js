@@ -11,7 +11,6 @@ module.exports = function(config) {
 
       // included files - tests
       {pattern: 'tests/*.js'},
-      {pattern: 'tests/deps.js', included: false, served: false},
 
       // source files - these are only watched and served
       {pattern: 'app/**/*.js', included: false},
