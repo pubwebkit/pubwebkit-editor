@@ -11,6 +11,8 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 * Build Google Closure Compiler. Run command `npm run build:closure-compiler` on the root of the pubwebkit-editor project.
 * Build Google Closure Templates for javascript usage. Navigate to `vendors/closure-templates/` folder and run command `mvn`.
 * Install Closure Linter from `vendors/closure-linter` by next command `python ./setup.py install`.
+  - Make gjslint.py executable `chmod +x vendors/closure-linter/closure_linter/gjslint.py`.
+  - Make fixjsstyle.py executable `chmod +x vendors/closure-linter/closure_linter/fixjsstyle.py`.
 
 ## Available npm commands
 * `npm run build` - Build project.
