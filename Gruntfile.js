@@ -43,9 +43,6 @@ module.exports = function(grunt) {
     // The compiled file
     destCompiled: 'dist/pubwebkit.editor.min.js',
 
-    // Concatenated tests
-    allTests: 'dist/all-test.js',
-
     // The location of the source map
     sourceMap: 'dist/pubwebkit.editor.js.map',
 
@@ -220,16 +217,9 @@ module.exports = function(grunt) {
       compileClosureCompiler: {
         command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests -pl "!pom-gwt.xml"'
       },
-      compileTests: {
-        command: () => 'python ' + CONFIGURATION.closureLibrary + '/closure/bin/build/closurebuilder.py -i ' +
-                        CONFIGURATION.allTests +
-                        ' --root=' + CONFIGURATION.appPath +
-                        ' --root=' + CONFIGURATION.closureLibrary +
-                        ' --compiler_jar=' + CONFIGURATION.compiler +
-                        ' --compiler_flags="--compilation_level=WHITESPACE_ONLY"' +
-                        ' --compiler_flags="--warning_level=verbose"' +
-                        ' --compiler_flags="--summary_detail_level=3"' +
-                        ' -o script --output_file=' + CONFIGURATION.allTests
+      testDeps: {
+        command: () => 'python ' + CONFIGURATION.closureLibrary + '/closure/bin/build/depswriter.py' +
+                       ' --root_with_prefix="' + CONFIGURATION.testsPath + ' ../../../../' + CONFIGURATION.testsPath + '" --output_file=tests//deps.js'
       },
       options: {
         execOptions: {
@@ -239,13 +229,6 @@ module.exports = function(grunt) {
     },
 
     concat: {
-      options: {
-        separator: ';',
-      },
-      tests: {
-        src: [CONFIGURATION.testsPath + '*.js'],
-        dest: CONFIGURATION.allTests,
-      },
     }
   });
 
@@ -268,12 +251,9 @@ module.exports = function(grunt) {
     'copy:html',
     'less:build',
     'closureDepsWriter:app',
+    'shell:testDeps',
     'closureBuilder:app',
     'file_append'
-  ]);
-  grunt.registerTask('test', [
-      'concat:tests',
-      'shell:compileTests'
   ]);
   grunt.registerTask('deps', [
     'closureDepsWriter:app'
