@@ -35,7 +35,6 @@
     "ink-docstrap": "^1.2.1",
     "jasmine": "^2.5.0",
     "karma": "^1.2.0",
-    "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-closure": "~0.1",
     "karma-coverage": "^1.1.1",
@@ -46,7 +45,8 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
-    "phantomjs-prebuilt": "^2.1.12"
+    "phantomjs-prebuilt": "^2.1.12",
+    "webpack": "^1.13.2"
   },
   "engines": {
     "node": ">=0.8.0"
@@ -61,6 +61,7 @@
   "scripts": {
     "build": "grunt build",
     "build:closure-compiler": "grunt shell:compileClosureCompiler",
-    "test": "rm -rf tmp/ && karma start karma.conf.js --single-run --browsers PhantomJS"
+    "test": "karma start karma.conf.js --single-run --browsers PhantomJS",
+    "closure-lint": "grunt closureLint:data"
   }
 }

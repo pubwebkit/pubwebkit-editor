@@ -1,7 +1,7 @@
 goog.require('goog.testing.asserts');
 
-describe("A suite", function() {
-  it("contains spec with an expectation", function() {
+describe('Foo test', function() {
+  it('test method from goog.testing.asserts namespace', function() {
     assertEquals(1, 1);
   });
 });

@@ -15,6 +15,7 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 ## Available npm commands
 * `npm run build` - Build project.
 * `npm run build:closure-compiler` - Build Google Closure Compiler.
+* `npm run closure-lint` - Check files by Closure Linter. Will be checked all scripts inside `app/` & `test/` folders.
 * `npm test` - Run tests.
 
 ## File structure

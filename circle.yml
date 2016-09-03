@@ -8,8 +8,11 @@ checkout:
     - git submodule update --init
 
 dependencies:
-  override:
+  pre:
     - npm install
+
+  override:
+    - npm run closure-lint
 
   post:
     - npm run build:closure-compiler

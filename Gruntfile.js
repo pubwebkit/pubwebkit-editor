@@ -98,7 +98,7 @@ module.exports = function(grunt) {
       data: {
         closureLinterPath: CONFIGURATION.closureLinter,
         command: 'gjslint',
-        src: ['app']
+        src: ['app/**/*.js', 'tests/**/*.js']
       },
       options: {
         strict: true,
