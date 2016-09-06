@@ -1032,7 +1032,7 @@ pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
         lines[i].select();
       }
     }
-    this.nodeSelectionRange_ = opt_nodeSelectionRange
+    this.nodeSelectionRange_ = opt_nodeSelectionRange;
 
   } else { // Select all
     goog.array.forEach(this.lines_, function(line) {

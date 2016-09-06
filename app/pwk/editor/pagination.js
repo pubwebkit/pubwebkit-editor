@@ -196,7 +196,7 @@ pwk.Pagination.prototype.checkFilling = function() {
 
   var getBelowPageIndex = goog.bind(function() {
     return this.pageNodeIndex_.length > abovePageIndex + 1 ?
-    abovePageIndex + 1 :
+        abovePageIndex + 1 :
         -1;
   }, this);
   var belowPageIndex = getBelowPageIndex();
