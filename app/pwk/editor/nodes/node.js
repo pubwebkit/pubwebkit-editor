@@ -195,6 +195,19 @@ pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
 
 
 /**
+ * Get parent page index.
+ * @return {number} Parent page index
+ */
+pwk.Node.prototype.getParentPageIndex = function() {
+  var pageElement =
+      goog.dom.getAncestorByClass(this.getElement(), pwk.Page.CSS_CLASS);
+  return this.getDocument()
+      .getPagination()
+      .getPageIndexByNodeId(pageElement.id);
+};
+
+
+/**
  * Returns the 0-based index of the given node component, or -1 if no such
  * node is found.
  * @return {number}

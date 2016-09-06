@@ -183,100 +183,101 @@ pwk.Pagination.prototype.checkOverflow = function(nodeId) {
  * Checking pages filling. Checking started from topless range node.
  */
 pwk.Pagination.prototype.checkFilling = function() {
+
+  console.log('checkFilling');
+
   var doc = this.document_;
   var range = doc.getSelection().getRange();
 
-  if (range != null) {
-    //console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
+  var abovePageIndex =
+      this.getPageIndexByNodeId(range.isReversed() ?
+          range.getEndNode().getId() :
+          range.getStartNode().getId());
 
-    // Topmost edited page index
-    var abovePageIndex =
-        this.getPageIndexByNodeId(range.isReversed() ?
-            range.getEndNode().getId() :
-            range.getStartNode().getId());
+  var getBelowPageIndex = goog.bind(function() {
+    return this.pageNodeIndex_.length > abovePageIndex + 1 ?
+    abovePageIndex + 1 :
+        -1;
+  }, this);
+  var belowPageIndex = getBelowPageIndex();
 
-    var getBelowPageIndex = goog.bind(function() {
-      return this.pageNodeIndex_.length > abovePageIndex + 1 ?
-          abovePageIndex + 1 :
-          -1;
-    }, this);
-    var belowPageIndex = getBelowPageIndex();
-    var abovePage;
+  // console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
 
-    while (belowPageIndex > 0) { // We have page below modified page?
-      abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
+  var abovePage;
 
-      var availableHeightAbove = abovePage.getAvailableContentSize();
-      // TODO: Should fixed in future, then will be implemented proper range
-      // deleting
-      var nodeToMove = /** @type {pwk.Node}*/
-          (this.pageNodeIndex_[belowPageIndex].length > 0 ?
-              doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) :
-              null);
-      var nodeToMoveSize;
+  while (belowPageIndex > 0) { // We have page below modified page?
+    abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
 
-      if (goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
+    var availableHeightAbove = abovePage.getAvailableContentSize();
+    // TODO: Should fixed in future, then will be implemented proper range
+    // deleting
+    var nodeToMove = /** @type {pwk.Node}*/
+        (this.pageNodeIndex_[belowPageIndex].length > 0 ?
+            doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) :
+            null);
+    var nodeToMoveSize;
 
-        nodeToMoveSize = nodeToMove.getSize();
-        // Node above could be moved to the page above completely
-        // if (nodeToMoveSize.height <= availableHeightAbove) {
-        //
-        //   // Check if it's linked node
-        //   var previousLinkedNode = nodeToMove.getPreviousLinkedNode();
-        //   if (previousLinkedNode != null) {
-        //     switch (previousLinkedNode.getType()) {
-        //       case pwk.NodeTypes.PARAGRAPH:
-        //         var poppedLines = [];
-        //
-        //         // Move lines to the previous linked node
-        //         while (nodeToMove.getLinesCount() != 0) {
-        //           poppedLines.push(nodeToMove.unlinkLine(
-        //               nodeToMove.getLineAt(0)));
-        //         }
-        //
-        //         previousLinkedNode.insertLines(poppedLines, true);
-        //
-        //         doc.removeNode(nodeToMove);
-        //         break;
-        //
-        //       default:
-        //         throw new Error('Node type "' +
-        //             previousLinkedNode.getType() +
-        //             '" does not handled.');
-        //
-        //     }
-        //   } else { // It's not linked node, so just move it to the above page
-        //     nodeToMove = doc.unlinkNode(nodeToMove);
-        //     doc.addNodeAt(nodeToMove, doc.indexOfNode(previousLinkedNode),
-        // true);
-        //   }
-        //
-        // } else if (nodeToMove.isSplittable()) {
-        //   //            // TODO: Split node
-        //   //
-        // } else {
-        //
-        //   //            break;
-        // }
-      }
-      //      else {
-      //        break;
-      // - - - -    }
+    if (goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
 
-      // - check if current page is could be filled by content below {√}
-      //      - get available height
-      // - get minimal available splittable part on the page below
-      //      - get minimal splittable part height of the node below and node
-      //        height itself
-      //      - if height acceptable, move it to the above page
-      //          - remove empty page LAST page
-      //      - if not, exit ...
-      // - set page below to belowPageIndex variable
-
-      //console.log('- = - = - = - = - = -');
-      return;
-
+      nodeToMoveSize = nodeToMove.getSize();
+      // Node above could be moved to the page above completely
+      // if (nodeToMoveSize.height <= availableHeightAbove) {
+      //
+      //   // Check if it's linked node
+      //   var previousLinkedNode = nodeToMove.getPreviousLinkedNode();
+      //   if (previousLinkedNode != null) {
+      //     switch (previousLinkedNode.getType()) {
+      //       case pwk.NodeTypes.PARAGRAPH:
+      //         var poppedLines = [];
+      //
+      //         // Move lines to the previous linked node
+      //         while (nodeToMove.getLinesCount() != 0) {
+      //           poppedLines.push(nodeToMove.unlinkLine(
+      //               nodeToMove.getLineAt(0)));
+      //         }
+      //
+      //         previousLinkedNode.insertLines(poppedLines, true);
+      //
+      //         doc.removeNode(nodeToMove);
+      //         break;
+      //
+      //       default:
+      //         throw new Error('Node type "' +
+      //             previousLinkedNode.getType() +
+      //             '" does not handled.');
+      //
+      //     }
+      //   } else { // It's not linked node, so just move it to the above page
+      //     nodeToMove = doc.unlinkNode(nodeToMove);
+      //     doc.addNodeAt(nodeToMove, doc.indexOfNode(previousLinkedNode),
+      // true);
+      //   }
+      //
+      // } else if (nodeToMove.isSplittable()) {
+      //   //            // TODO: Split node
+      //   //
+      // } else {
+      //
+      //   //            break;
+      // }
     }
+    //      else {
+    //        break;
+    // - - - -    }
+
+    // - check if current page is could be filled by content below {√}
+    //      - get available height
+    // - get minimal available splittable part on the page below
+    //      - get minimal splittable part height of the node below and node
+    //        height itself
+    //      - if height acceptable, move it to the above page
+    //          - remove empty page LAST page
+    //      - if not, exit ...
+    // - set page below to belowPageIndex variable
+
+    //console.log('- = - = - = - = - = -');
+    return;
+
   }
 
   // Steps to fill pages top:

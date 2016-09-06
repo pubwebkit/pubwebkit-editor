@@ -984,6 +984,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine,
 pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
   // NOTE: Call select method for each line (exclude lines from linked node,
   // add this functionality in future if required)
+  // TODO: Review performance and try to improve it for selection functionality.
 
   if (this.isSelected_) {
     if (!goog.isDefAndNotNull(opt_nodeSelectionRange) &&
@@ -1031,15 +1032,19 @@ pwk.LeafNode.prototype.select = function(opt_nodeSelectionRange) {
         lines[i].select();
       }
     }
+    this.nodeSelectionRange_ = opt_nodeSelectionRange
 
   } else { // Select all
     goog.array.forEach(this.lines_, function(line) {
       line.select();
     });
+
+    this.nodeSelectionRange_ =
+        new pwk.primitives.NodeSelectionRange(this.getFirstLine(), 0,
+            this.getLastLine(), this.getLastLine().getLength());
   }
 
   this.isSelected_ = true;
-  this.nodeSelectionRange_ = opt_nodeSelectionRange || null;
 };
 
 

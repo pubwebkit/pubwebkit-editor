@@ -333,9 +333,6 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
           break;
       }
 
-      // - Remove selection
-      // - Check if length equal 0,then remove node (start == start, end == end)
-      // - Update range
       processedNode.removeSelection();
       if (!processedNode.isInDocument() && !range.isCollapsed()) {
         // Looks like this node is selected entirely and was removed from
