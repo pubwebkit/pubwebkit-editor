@@ -304,6 +304,15 @@ pwk.Page.prototype.checkPageOverflow = function() {
 
 
 /**
+ * Is there any content on this page?
+ * @return {boolean}
+ */
+pwk.Page.prototype.isEmpty = function() {
+  return !this.content_.getElement().hasChildNodes();
+};
+
+
+/**
  * Default CSS class to be applied to the root element of components rendered
  * by this renderer.
  * @type {string}

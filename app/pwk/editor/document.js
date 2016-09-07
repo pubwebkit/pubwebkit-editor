@@ -334,6 +334,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
       }
 
       processedNode.removeSelection();
+
       if (!processedNode.isInDocument() && !range.isCollapsed()) {
         // Looks like this node is selected entirely and was removed from
         // document, so let's correct variables
@@ -616,7 +617,7 @@ pwk.Document.prototype.indexOfNode = function(node) {
 
 /**
  * Do the same as {@code pwk.Document.prototype.removeNode} but did not deleting
- * it from index.
+ * it from index. Usually used to detach node from DOM to move to other place.
  * @param {string|pwk.Node} node The ID of the node to remove, or the node
  *    component itself.
  * @return {pwk.Node} The removed node, if any.
@@ -636,14 +637,17 @@ pwk.Document.prototype.unlinkNode = function(node) {
  * @return {pwk.Node} The removed node, if any.
  */
 pwk.Document.prototype.removeNode = function(node) {
+  var parentPageIndex = node.getParentPageIndex();
   goog.array.remove(this.nodeIndex_, goog.isString(node) ? node : node.getId());
   var removedNode = this.unlinkNode(node);
+
   if (removedNode) {
     goog.dispose(removedNode);
   }
 
   // trigger events
-  this.dispatchEvent(new pwk.Document.NodeRemovedEvent(removedNode));
+  this.dispatchEvent(
+      new pwk.Document.NodeRemovedEvent(removedNode, parentPageIndex));
 
   // return removed node
   return removedNode;
@@ -756,11 +760,17 @@ pwk.Document.EventType = {
 
 /**
  * @param {pwk.Node} node
+ * @param {number} parentPageIndex
  * @extends {goog.events.Event}
  * @constructor
  */
-pwk.Document.NodeRemovedEvent = function(node) {
+pwk.Document.NodeRemovedEvent = function(node, parentPageIndex) {
   goog.events.Event.call(this, pwk.Document.EventType.NODE_REMOVED, node);
+
+  /**
+   * @type {number}
+   */
+  this.parentPageIndex = parentPageIndex;
 
   /**
    * @type {pwk.Node}

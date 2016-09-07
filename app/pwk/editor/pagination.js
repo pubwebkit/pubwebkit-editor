@@ -368,16 +368,26 @@ pwk.Pagination.prototype.getPaginationIndex = function() {
 
 /**
  * Event handler for pwk.Document.EventType.NODE_REMOVED event type.
- *
  * @param {pwk.Document.NodeRemovedEvent} e
  * @private
- */
+*/
 pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
+  var doc = this.document_;
+  var parentPage = this.document_.getPageAt(e.parentPageIndex);
   var removedNodeId = e.removedNode.getId();
-  goog.array.forEach(this.pageNodeIndex_, function(arr) {
-    if (goog.array.remove(arr, removedNodeId)) {
 
-    }
-  }, this);
+  // if page empty, remove it from document
+  if (parentPage.isEmpty()) {
+    doc.removePage(parentPage);
 
+    goog.array.removeAt(this.pageNodeIndex_, e.parentPageIndex);
+  } else {
+
+    // remove node from page index
+    goog.array.forEach(this.pageNodeIndex_, function(arr) {
+      if (goog.array.remove(arr, removedNodeId)) {
+        return;
+      }
+    }, this);
+  }
 };

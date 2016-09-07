@@ -199,11 +199,9 @@ pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
  * @return {number} Parent page index
  */
 pwk.Node.prototype.getParentPageIndex = function() {
-  var pageElement =
-      goog.dom.getAncestorByClass(this.getElement(), pwk.Page.CSS_CLASS);
   return this.getDocument()
       .getPagination()
-      .getPageIndexByNodeId(pageElement.id);
+      .getPageIndexByNodeId(this.getId());
 };
 
 
