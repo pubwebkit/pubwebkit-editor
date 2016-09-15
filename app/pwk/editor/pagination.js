@@ -168,12 +168,14 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
 /**
  * Checking size of page content on overflows and dispatching OVERFLOW event in
  * case page is overflowed.
- * @param {string} nodeId Id of changed node. The page of this node will be used
- *    as start point for overflow check.
  */
-pwk.Pagination.prototype.checkOverflow = function(nodeId) {
-  var pageIndex = this.getPageIndexByNodeId(nodeId);
-  var activePage = this.document_.getPageAt(pageIndex);
+pwk.Pagination.prototype.checkOverflow = function() {
+  // The page of start node in the range will be used as start point for
+  // overflow check.
+  var doc = this.document_;
+  var range = doc.getSelection().getRange();
+  var pageIndex = this.getPageIndexByNodeId(range.getStartNode().getId());
+  var activePage = doc.getPageAt(pageIndex);
 
   activePage.checkPageOverflow();
 };
@@ -373,21 +375,33 @@ pwk.Pagination.prototype.getPaginationIndex = function() {
 */
 pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
   var doc = this.document_;
-  var parentPage = this.document_.getPageAt(e.parentPageIndex);
+  var parentPage = doc.getPageAt(e.parentPageIndex);
   var removedNodeId = e.removedNode.getId();
+  var range = doc.getSelection().getRange();
 
-  // if page empty, remove it from document
+  // if page empty and it's not a last one, remove it from document
   if (parentPage.isEmpty()) {
     doc.removePage(parentPage);
 
     goog.array.removeAt(this.pageNodeIndex_, e.parentPageIndex);
-  } else {
 
+    // If no more pages in the document
+    if (this.pageNodeIndex_.length === 0) {
+      // Add new empty paragraph in document
+      var newNode = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, doc);
+      doc.addNode(newNode);
+
+      range.setStartPosition(newNode.getFirstLine(), 0);
+      range.setEndPosition(newNode.getLastLine(), 0);
+    }
+
+  } else {
     // remove node from page index
     goog.array.forEach(this.pageNodeIndex_, function(arr) {
       if (goog.array.remove(arr, removedNodeId)) {
         return;
       }
     }, this);
+
   }
 };

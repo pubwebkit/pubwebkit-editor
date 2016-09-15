@@ -270,7 +270,8 @@ pwk.Selection.prototype.getRange = function() {
 
 
 /**
- * Set range
+ * Set range. Usually you should not use this method, instead of creating new
+ * range, you should change current, using public methods of pwk.Range instance.
  * @param {pwk.Range} range
  */
 pwk.Selection.prototype.setRange = function(range) {
