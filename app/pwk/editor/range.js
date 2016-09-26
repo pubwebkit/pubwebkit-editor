@@ -307,15 +307,6 @@ pwk.Range.prototype.collapse = function(toStart) {
 
 
 /**
- * Checks if current range is still actual
- * @return {boolean}
- */
-pwk.Range.prototype.isActual = function() {
-  return this.startNode_.isInDocument() && this.endNode_.isInDocument();
-};
-
-
-/**
  * @param {pwk.Line} startLine
  * @param {number} startNodeOffset
  * @param {pwk.Line} endLine

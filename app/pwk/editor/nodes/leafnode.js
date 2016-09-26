@@ -1104,8 +1104,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         bottomSelectionRangeNode !== this ||
         // Case 2: it's single selected node and below exist other node that
         // could be selected
-        topSelectionRangeNode === this &&
-        bottomSelectionRangeNode === this &&
+        topSelectionRangeNode === bottomSelectionRangeNode &&
         isNodeSelectedEntirely &&
         pwkDocument.indexOfNode(topSelectionRangeNode) <
         pwkDocument.getNodeCount() - 1) {
@@ -1128,8 +1127,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         bottomSelectionRangeNode === this ||
         // Case 2: it's single selected node and above exist other node that
         // could be selected
-        topSelectionRangeNode === this &&
-        bottomSelectionRangeNode === this &&
+        topSelectionRangeNode === bottomSelectionRangeNode &&
         isNodeSelectedEntirely &&
         pwkDocument.indexOfNode(bottomSelectionRangeNode) > 0) {
 
@@ -1146,14 +1144,44 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       } else {
         selectionRange.setEndPosition(lastLine, lastLineOffset, false);
       }
+
       isRangeUpdateRequired = false;
     }
 
     // Remove node from document entirely
     if (isNodeSelectedEntirely) {
       pwkDocument.removeNode(this);
-      if (topSelectionRangeNode === this && bottomSelectionRangeNode === this) {
-        isRangeUpdateRequired = true;
+      if (topSelectionRangeNode === bottomSelectionRangeNode) {
+        // Update selection by updated range
+        var updateRangeInfo;
+        var startNode = selectionRange.getStartNode();
+        var endNode = selectionRange.getEndNode();
+
+        if (endNode.isInDocument()) {
+          updateRangeInfo = endNode.getRangeInfoForOffset(
+              selectionRange.getEndNodeOffset());
+          selectionRange.setStartPosition(updateRangeInfo.getLine(),
+              selectionRange.getEndNodeOffset());
+
+          if (startNode == endNode && !isNodeSelectedEntirely) {
+            updateRangeInfo = startNode.getRangeInfoForOffset(
+                selectionRange.getStartNodeOffset());
+            selectionRange.setEndPosition(updateRangeInfo.getLine(),
+                selectionRange.getStartNodeOffset());
+          }
+        } else {
+          updateRangeInfo = startNode.getRangeInfoForOffset(
+              selectionRange.getStartNodeOffset());
+          selectionRange.setEndPosition(updateRangeInfo.getLine(),
+              selectionRange.getStartNodeOffset());
+
+          if (startNode == endNode && !isNodeSelectedEntirely) {
+            updateRangeInfo = endNode.getRangeInfoForOffset(
+                selectionRange.getEndNodeOffset());
+            selectionRange.setStartPosition(updateRangeInfo.getLine(),
+                selectionRange.getEndNodeOffset());
+          }
+        }
       } else {
         return;
       }
@@ -1182,15 +1210,12 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
           // TODO: Update selection range. Move start/end position to the end
           // position of the selection range of current line
-          if (isRangeUpdateRequired && selectionOffsets) {
+          if (isRangeUpdateRequired && selectionOffsets != null) {
             var nodeOffset =
                 this.getOffsetByLineOffset(loopLine, selectionOffsets.start);
 
-            if (isReversed) {
-              selectionRange.setEndPosition(loopLine, nodeOffset, false);
-            } else {
-              selectionRange.setStartPosition(loopLine, nodeOffset, false);
-            }
+            selectionRange.setEndPosition(loopLine, nodeOffset, false);
+            selectionRange.setStartPosition(loopLine, nodeOffset, false);
           }
         }
       }
@@ -1201,38 +1226,6 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
                 this.lines_[startLineIndex + 1]));
       }
 
-    }
-
-    if (isRangeUpdateRequired) {
-      // Update selection by updated range
-      var updateRangeInfo;
-      if (isReversed) {
-        updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(
-            selectionRange.getEndNodeOffset());
-        selectionRange.setStartPosition(updateRangeInfo.getLine(),
-            selectionRange.getEndNodeOffset());
-
-        if (selectionRange.getStartNode() == selectionRange.getEndNode() &&
-            !isNodeSelectedEntirely) {
-          updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(
-              selectionRange.getStartNodeOffset());
-          selectionRange.setEndPosition(updateRangeInfo.getLine(),
-              selectionRange.getStartNodeOffset());
-        }
-      } else {
-        updateRangeInfo = selectionRange.getStartNode().getRangeInfoForOffset(
-            selectionRange.getStartNodeOffset());
-        selectionRange.setEndPosition(updateRangeInfo.getLine(),
-            selectionRange.getStartNodeOffset());
-
-        if (selectionRange.getStartNode() == selectionRange.getEndNode() &&
-            !isNodeSelectedEntirely) {
-          updateRangeInfo = selectionRange.getEndNode().getRangeInfoForOffset(
-              selectionRange.getEndNodeOffset());
-          selectionRange.setStartPosition(updateRangeInfo.getLine(),
-              selectionRange.getEndNodeOffset());
-        }
-      }
     }
   }
 

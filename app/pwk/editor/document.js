@@ -729,7 +729,11 @@ pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
   var selection = this.selection_;
   var range = selection.getRange();
 
-  if (range != null && range.isActual()) {
+  // Check that range has been updated and start and end nodes is rendered
+  if (range != null &&
+      range.getStartNode().isInDocument() &&
+      range.getEndNode().isInDocument()) {
+
     // If content become bigger then available on current pages, move nodes to
     // other pages or create more page and move them there.
     pagination.checkOverflow();
