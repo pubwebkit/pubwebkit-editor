@@ -186,7 +186,7 @@ pwk.Pagination.prototype.checkOverflow = function() {
  */
 pwk.Pagination.prototype.checkFilling = function() {
 
-  console.log('checkFilling');
+  // console.log('checkFilling');
 
   var doc = this.document_;
   var range = doc.getSelection().getRange();

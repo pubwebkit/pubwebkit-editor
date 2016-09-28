@@ -331,6 +331,47 @@ pwk.Node.prototype.CSS_CLASS = 'pwk-node';
 
 
 /**
+ * Merge nodes
+ * @param {pwk.Document} document
+ * @param {pwk.Node} topNode
+ * @param {pwk.Node} bottomNode
+ */
+pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
+  if(topNode instanceof pwk.LeafNode) {
+
+    // Proceed pwk.LeafNode to pwk.LeafNode merge
+    if (topNode instanceof pwk.LeafNode) {
+
+      length = bottomNode.getLinesCount();
+
+      while (length--) {
+        topNode.insertLine(
+            bottomNode.unlinkLine(
+                bottomNode.getLineAt(0)), true);
+      }
+
+      // Update linked nodes
+      var bottomNodeNextLinkedNode = bottomNode.getNextLinkedNode();
+
+      if (topNode.getNextLinkedNode() === bottomNode) {
+        topNode.unlinkNextLinkedNode();
+      }
+
+      if (bottomNodeNextLinkedNode != null) {
+        topNode.setNextLinkedNode(bottomNodeNextLinkedNode);
+      }
+
+      document.removeNode(bottomNode);
+
+      // Update range
+      var range = document.getSelection().getRange();
+      // TODO: Update range
+    }
+  }
+};
+
+
+/**
  * @enum {string}
  */
 pwk.Node.EventType = {

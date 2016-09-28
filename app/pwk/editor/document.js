@@ -149,7 +149,7 @@ pwk.Document.prototype.addValue = function(value) {
   var range = selection.getRange();
 
   // remove selection
-  selection.removeSelection();
+  this.deleteSelection();
 
   value = typeof value == 'object' ? value.nodeValue : value;
 
@@ -303,46 +303,34 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
   var selection = this.selection_;
   var range = selection.getRange();
   var isReversed = range.isReversed();
-  var topNodeIndex = isReversed ?
-      this.indexOfNode(range.getEndNode()) :
-      this.indexOfNode(range.getStartNode());
-  var bottomNodeIndex = isReversed ?
-      this.indexOfNode(range.getStartNode()) :
-      this.indexOfNode(range.getEndNode());
+  var topNode = isReversed ? range.getEndNode() : range.getStartNode();
+  var bottomNode = isReversed ? range.getStartNode() : range.getEndNode();
+  var topNodeIndex = this.indexOfNode(topNode);
+  var bottomNodeIndex = this.indexOfNode(bottomNode);
 
-  if (range.isCollapsed()) {
+  for (var i = topNodeIndex; i <= bottomNodeIndex; i++) {
 
-    // Select previous/next node/symbol and call .removeSelection()
+    // Try merge nodes
+    if (bottomNodeIndex - topNodeIndex == 1) {
+      pwk.Node.mergeNodes(this, topNode, bottomNode);
 
-  } else { // Remove selection range
-
-    var startNode;
-    var endNode;
-
-    // Process content
-    for (var i = topNodeIndex; i <= bottomNodeIndex; i++) {
-
-      var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
-
-      switch (i) {
-        case topNodeIndex:
-          startNode = processedNode;
-          break;
-        case bottomNodeIndex:
-          endNode = processedNode;
-          break;
-      }
-
-      processedNode.removeSelection();
-
-      if (!processedNode.isInDocument() && !range.isCollapsed()) {
-        // Looks like this node is selected entirely and was removed from
-        // document, so let's correct variables
-        bottomNodeIndex = isReversed ?
-            this.indexOfNode(range.getStartNode()) :
-            this.indexOfNode(range.getEndNode());
+      if(!bottomNode.isInDocument()) {
+        bottomNode = topNode;
+        bottomNodeIndex = topNodeIndex;
         i--;
       }
+    }
+
+    var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
+
+    processedNode.removeSelection(opt_isBack);
+
+    if (!processedNode.isInDocument() && !range.isCollapsed()) {
+      // Looks like this node is selected entirely and was removed from
+      // document, so let's correct variables
+      bottomNode = isReversed ? range.getStartNode() : range.getEndNode();
+      bottomNodeIndex = this.indexOfNode(bottomNode);
+      i--;
     }
   }
 

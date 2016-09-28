@@ -22,7 +22,7 @@
 //
 
 /**
- * @fileoverview TODO: add description
+ * @fileoverview Used to represent selection range for node.
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
@@ -75,6 +75,7 @@ pwk.primitives.NodeSelectionRange.prototype.isCollapsed = function() {
 
 
 /**
+ * Compare two NodeSelectionRange objects.
  * @param {pwk.primitives.NodeSelectionRange} otherNodeSelectionRange
  * @return {boolean}
  */
