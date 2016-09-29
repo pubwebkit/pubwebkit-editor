@@ -497,7 +497,8 @@ pwk.Document.prototype.addNode = function(node) {
   if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
     goog.array.insertAt(this.nodeIndex_, nodeId, nodeIndex);
   }
-  this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+  //TODO: Temporary commented, to check that is not affected filling functionality
+  //this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
 
@@ -531,7 +532,8 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
     if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
       goog.array.insertAt(this.nodeIndex_, nodeId, index);
     }
-    this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
+    //TODO: Temporary commented, to check that is not affected filling functionality
+    //this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
   } else {
     this.addNode(node);
   }

@@ -106,17 +106,13 @@ pwk.LeafNode.prototype.createDom = function() {
   var element = this.getElement();
   var lines = this.lines_;
   var linesLength = lines.length;
-  var loopLine;
 
   // adjust dom element
   element.setAttribute('id', this.getId());
   goog.dom.classlist.add(element, this.CSS_CLASS);
 
   while (linesLength--) {
-    loopLine = lines[linesLength];
-    this.addChildAt(loopLine, 0, true);
-    // apply node attributes
-    pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), loopLine);
+    this.renderLine_(lines[linesLength], 0);
   }
 };
 
@@ -226,9 +222,21 @@ pwk.LeafNode.prototype.insertLine = function(line, render, opt_i) {
   goog.array.insertAt(this.lines_, line, i);
 
   if (render) {
-    this.addChildAt(line, i, true);
-    pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
+    this.renderLine_(line, i);
   }
+};
+
+
+/**
+ * Render line.
+ * @param {pwk.Line} line Line object to insert.
+ * @param {number} index 0-based index at which the new child component is to be
+ *    added; must be between 0 and the current child count (inclusive).
+ * @private
+ */
+pwk.LeafNode.prototype.renderLine_ = function(line, index) {
+  this.addChildAt(line, index, true);
+  pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
 };
 
 
