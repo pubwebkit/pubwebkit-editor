@@ -337,12 +337,12 @@ pwk.Node.prototype.CSS_CLASS = 'pwk-node';
  * @param {pwk.Node} bottomNode
  */
 pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
-  if(topNode instanceof pwk.LeafNode) {
+  if (topNode instanceof pwk.LeafNode) {
 
     // Proceed pwk.LeafNode to pwk.LeafNode merge
     if (topNode instanceof pwk.LeafNode) {
 
-      length = bottomNode.getLinesCount();
+      var length = bottomNode.getLinesCount();
 
       while (length--) {
         topNode.insertLine(

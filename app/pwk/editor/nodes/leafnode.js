@@ -1162,9 +1162,9 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
       var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine);
       var endLineIndex = this.indexOfLine(nodeSelectionRange.endLine);
+      var nodeOffset = 0;
       var loopLine;
       var selectionOffsets;
-      var nodeOffset;
       var line;
       var lineOffset;
 
