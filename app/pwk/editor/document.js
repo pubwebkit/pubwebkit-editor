@@ -149,7 +149,9 @@ pwk.Document.prototype.addValue = function(value) {
   var range = selection.getRange();
 
   // remove selection
-  this.deleteSelection();
+  if (!range.isCollapsed()) {
+    this.deleteSelection();
+  }
 
   value = typeof value == 'object' ? value.nodeValue : value;
 
@@ -309,21 +311,26 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
   var bottomNodeIndex = this.indexOfNode(bottomNode);
 
   for (var i = topNodeIndex; i <= bottomNodeIndex; i++) {
-
-    // Try merge nodes
-    if (bottomNodeIndex - topNodeIndex == 1) {
-      pwk.Node.mergeNodes(this, topNode, bottomNode);
-
-      if (!bottomNode.isInDocument()) {
-        bottomNode = topNode;
-        bottomNodeIndex = topNodeIndex;
-        i--;
-      }
-    }
-
     var processedNode = /** @type {pwk.Node} */(this.getNodeAt(i));
 
     processedNode.removeSelection(opt_isBack);
+
+    // Merge node if required
+    if (i == bottomNodeIndex &&
+        topNode.isInDocument() &&
+        bottomNode.isInDocument()) {
+
+      var topNodeOffset =
+          isReversed ? range.getEndNodeOffset() : range.getStartNodeOffset();
+      var bottomNodeOffset =
+          isReversed ? range.getStartNodeOffset() : range.getEndNodeOffset();
+
+      if (topNode.getLength() === topNodeOffset &&
+          bottomNodeOffset === 0) {
+        // Try merge nodes
+        pwk.Node.mergeNodes(this, topNode, bottomNode);
+      }
+    }
 
     if (!processedNode.isInDocument() && !range.isCollapsed()) {
       // Looks like this node is selected entirely and was removed from

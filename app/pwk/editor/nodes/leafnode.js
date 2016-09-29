@@ -1094,62 +1094,52 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
     if (isNodeSelectedEntirely) {
       // Update selection range & remove node from document entirely
 
-      var belowNodeIndex = pwkDocument.getNodeCount() - 1;
+      if (topSelectionRangeNode === this || bottomSelectionRangeNode === this) {
+        var belowNodeIndex = pwkDocument.getNodeCount() - 1;
 
-      // Case 1: it's topmost selected node
-      // Case 2: it's single selected node and below exist other node that
-      // could be selected
-      // -=-=-=-=-=-=-=-=-=-=-=-=-
-      // Case 1: it's bottommost selected node
-      // Case 2: it's single selected node and above exist other node that
-      // could be selected
+        if (pwkDocument.indexOfNode(this) < belowNodeIndex) {
 
-      if (topSelectionRangeNode === this &&
-          bottomSelectionRangeNode !== this ||
-          pwkDocument.indexOfNode(topSelectionRangeNode) < belowNodeIndex) {
+          var bottommostNode =
+              /** @type {pwk.Node} */
+              (pwkDocument.getNodeAt(
+                  pwkDocument.indexOfNode(this) + 1));
 
-        var bottommostNode =
-            /** @type {pwk.Node} */
-            (pwkDocument.getNodeAt(
-                pwkDocument.indexOfNode(topSelectionRangeNode) + 1));
-
-        if (isReversed) {
-          selectionRange.setEndPosition(
-              bottommostNode.getFirstLine(), 0, true);
-          if (isSelectionInsideThisNodeOnly) {
-            selectionRange.setStartPosition(
-                bottommostNode.getFirstLine(), 0, true);
-          }
-        } else {
-          selectionRange.setStartPosition(
-              bottommostNode.getFirstLine(), 0, true);
-          if (isSelectionInsideThisNodeOnly) {
+          if (isReversed) {
             selectionRange.setEndPosition(
                 bottommostNode.getFirstLine(), 0, true);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setStartPosition(
+                  bottommostNode.getFirstLine(), 0, true);
+            }
+          } else {
+            selectionRange.setStartPosition(
+                bottommostNode.getFirstLine(), 0, true);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setEndPosition(
+                  bottommostNode.getFirstLine(), 0, true);
+            }
           }
-        }
 
-      } else if (topSelectionRangeNode !== this &&
-          bottomSelectionRangeNode === this ||
-          pwkDocument.indexOfNode(bottomSelectionRangeNode) > 0) {
+        } else if (pwkDocument.indexOfNode(this) > 0) {
 
-        var topmostNode =
-            /** @type {pwk.Node} */
-            (pwkDocument.getNodeAt(
-                pwkDocument.indexOfNode(bottomSelectionRangeNode) - 1));
-        var lastLine = /** @type {pwk.Line} */(topmostNode.getLastLine());
-        var lastLineOffset =
-            topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
+          var topmostNode =
+              /** @type {pwk.Node} */
+              (pwkDocument.getNodeAt(
+                  pwkDocument.indexOfNode(this) - 1));
+          var lastLine = /** @type {pwk.Line} */(topmostNode.getLastLine());
+          var lastLineOffset =
+              topmostNode.getOffsetByLineOffset(lastLine, lastLine.getLength());
 
-        if (isReversed) {
-          selectionRange.setStartPosition(lastLine, lastLineOffset, false);
-          if (isSelectionInsideThisNodeOnly) {
-            selectionRange.setEndPosition(lastLine, lastLineOffset, false);
-          }
-        } else {
-          selectionRange.setEndPosition(lastLine, lastLineOffset, false);
-          if (isSelectionInsideThisNodeOnly) {
+          if (isReversed) {
             selectionRange.setStartPosition(lastLine, lastLineOffset, false);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setEndPosition(lastLine, lastLineOffset, false);
+            }
+          } else {
+            selectionRange.setEndPosition(lastLine, lastLineOffset, false);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setStartPosition(lastLine, lastLineOffset, false);
+            }
           }
         }
       }

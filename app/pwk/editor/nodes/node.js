@@ -342,7 +342,13 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
     // Proceed pwk.LeafNode to pwk.LeafNode merge
     if (topNode instanceof pwk.LeafNode) {
 
+      // Update range
+      var range = document.getSelection().getRange();
+      range.collapse(true);
+
+      //Merge
       var length = bottomNode.getLinesCount();
+      var lastChangedLine = bottomNode.getLineAt(0);
 
       while (length--) {
         topNode.insertLine(
@@ -363,9 +369,10 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
 
       document.removeNode(bottomNode);
 
-      // Update range
-      var range = document.getSelection().getRange();
-      // TODO: Update range
+      if (lastChangedLine != null) {
+        topNode.dispatchEvent(
+            new pwk.LeafNode.NodeContentChangedEvent(lastChangedLine));
+      }
     }
   }
 };
