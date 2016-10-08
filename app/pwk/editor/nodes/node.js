@@ -357,17 +357,21 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
       }
 
       // Update linked nodes
-      var bottomNodeNextLinkedNode = bottomNode.getNextLinkedNode();
+      var topNodeNextLinkedNode = topNode.getNextLinkedNode();
+      if (bottomNode.getLinesCount() === 0) {
+        if (topNodeNextLinkedNode === bottomNode) {
+          topNode.unlinkNextLinkedNode();
+        }
 
-      if (topNode.getNextLinkedNode() === bottomNode) {
-        topNode.unlinkNextLinkedNode();
+        // Relink next link
+        var bottomNodeNextLinkedNode = bottomNode.getNextLinkedNode();
+        if (bottomNodeNextLinkedNode != null) {
+          bottomNode.unlinkNextLinkedNode();
+          topNode.setNextLinkedNode(bottomNodeNextLinkedNode);
+        }
+
+        document.removeNode(bottomNode);
       }
-
-      if (bottomNodeNextLinkedNode != null) {
-        topNode.setNextLinkedNode(bottomNodeNextLinkedNode);
-      }
-
-      document.removeNode(bottomNode);
 
       if (lastChangedLine != null) {
         topNode.dispatchEvent(

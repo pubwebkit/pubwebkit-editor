@@ -1184,19 +1184,21 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
           switch (i) {
 
-            // Bottom line
-            case this.lines_.length - 1:
-              // set start/end position to the end of the previous line;
-              line = this.lines_[i];
-              lineOffset = line.getLength();
-              break;
-
             // Topmost line
             case -1:
               //set start/end position to the start of the next line
               line = this.lines_[i + 1];
               lineOffset = 0;
               break;
+
+            // Bottom line
+            case this.lines_.length - 1:
+              if (this.lines_.length > 1) {
+                // set start/end position to the end of the previous line;
+                line = this.lines_[i];
+                lineOffset = line.getLength();
+                break;
+              }
 
             default:
               // set start/end position to the start of the current loopLine
