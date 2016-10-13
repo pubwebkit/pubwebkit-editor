@@ -362,7 +362,9 @@ pwk.LineContent.prototype.removeAt = function(startOffset, opt_endOffset) {
   var el = this.getElement();
   var text = this.text_;
   var normalizedText = this.getNormalizedText();
-  var endOffset = opt_endOffset || normalizedText.length;
+  var endOffset = goog.isDefAndNotNull(opt_endOffset) ?
+      opt_endOffset :
+      normalizedText.length;
   var gRange = goog.dom.Range.createFromNodes(el, startOffset, el, endOffset);
 
   gRange.removeContents();

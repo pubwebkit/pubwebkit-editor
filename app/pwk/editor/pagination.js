@@ -190,25 +190,24 @@ pwk.Pagination.prototype.checkFilling = function() {
 
   var doc = this.document_;
   var range = doc.getSelection().getRange();
-
-  var abovePageIndex =
+  var topPageIndex =
       this.getPageIndexByNodeId(range.isReversed() ?
           range.getEndNode().getId() :
           range.getStartNode().getId());
 
-  var getBelowPageIndex = goog.bind(function() {
-    return this.pageNodeIndex_.length > abovePageIndex + 1 ?
-        abovePageIndex + 1 :
+  var getBottomPageIndex = goog.bind(function() {
+    return this.pageNodeIndex_.length > topPageIndex + 1 ?
+        topPageIndex + 1 :
         -1;
   }, this);
-  var belowPageIndex = getBelowPageIndex();
+  var belowPageIndex = getBottomPageIndex();
 
   // console.log('pwk.Pagination.prototype.checkFilling at ' + Date.now());
 
   var abovePage;
 
   while (belowPageIndex > 0) { // We have page below modified page?
-    abovePage = /** @type {pwk.Page}*/(doc.getPageAt(abovePageIndex));
+    abovePage = /** @type {pwk.Page}*/(doc.getPageAt(topPageIndex));
 
     var availableHeightAbove = abovePage.getAvailableContentSize();
     // TODO: Should fixed in future, then will be implemented proper range
