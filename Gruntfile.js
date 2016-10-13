@@ -129,7 +129,9 @@ module.exports = function(grunt) {
         compilerOpts: {
           compilation_level: 'ADVANCED_OPTIMIZATIONS',
           language_in: 'ECMASCRIPT6_STRICT',
-          externs: [CONFIGURATION.externsPath + '*.js'],
+          externs: [
+            CONFIGURATION.externsPath + '*.js'
+          ],
           define: ["'goog.DEBUG=false'"],
           warning_level: 'verbose',
           jscomp_off: [],

@@ -58,9 +58,9 @@ pwk.EditorContainer.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   // Initialize events
-  goog.events.listen(window, goog.events.EventType.RESIZE, this.onWindowResize_,
+  goog.events.listen(window, goog.events.EventType.RESIZE, this.onWindowResizeHandler_,
       false, this);
-  this.onWindowResize_();
+  this.onWindowResizeHandler_();
 };
 
 
@@ -68,7 +68,7 @@ pwk.EditorContainer.prototype.enterDocument = function() {
  * On window resize event handler
  * @private
  */
-pwk.EditorContainer.prototype.onWindowResize_ = function() {
+pwk.EditorContainer.prototype.onWindowResizeHandler_ = function() {
   goog.style.setHeight(this.getElement(), goog.dom.getViewportSize().height);
 };
 

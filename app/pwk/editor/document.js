@@ -328,6 +328,10 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
 
       if (topNode.getLength() === topNodeOffset &&
           bottomNodeOffset === 0) {
+
+        // Update range
+        range.collapse(true);
+
         // Try merge nodes
         pwk.Node.mergeNodes(this, topNode, bottomNode);
       }
