@@ -35,7 +35,7 @@ goog.addDependency('../../../../app/pwk/editor/nodes/nodeannotation.js', ['pwk.N
 goog.addDependency('../../../../app/pwk/editor/nodes/nodeattribute.js', ['pwk.NodeAttribute', 'pwk.NodeAttributeTypes'], [], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/nodetypes.js', ['pwk.NodeTypes'], [], false);
 goog.addDependency('../../../../app/pwk/editor/page.js', ['pwk.Page', 'pwk.Page.EventType', 'pwk.Page.PageOverflowEvent'], ['goog.dom.classlist', 'goog.events.Event', 'goog.ui.Component', 'pwk.Node', 'pwk.NodeFormatter', 'pwk.PageContent', 'pwk.PageFooter', 'pwk.PageHeader', 'pwk.PageSettings'], false);
-goog.addDependency('../../../../app/pwk/editor/pagecontent.js', ['pwk.PageContent'], ['goog.dom.classlist', 'goog.style', 'goog.ui.Component', 'pwk.Node'], false);
+goog.addDependency('../../../../app/pwk/editor/pagecontent.js', ['pwk.PageContent'], ['goog.dom.classlist', 'goog.style', 'goog.ui.Component', 'pwk.Node', 'pwk.utils.ResizeEvent'], false);
 goog.addDependency('../../../../app/pwk/editor/pagefooter.js', ['pwk.PageFooter'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.PageSettings'], false);
 goog.addDependency('../../../../app/pwk/editor/pageheader.js', ['pwk.PageHeader'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.PageSettings'], false);
 goog.addDependency('../../../../app/pwk/editor/pagesettings.js', ['pwk.PageSettings', 'pwk.PageSettings.Paper'], ['goog.math.Size'], false);
@@ -46,4 +46,5 @@ goog.addDependency('../../../../app/pwk/editor/range.js', ['pwk.Range'], ['goog.
 goog.addDependency('../../../../app/pwk/editor/selection.js', ['pwk.Selection'], ['goog.dom.classlist', 'goog.events.EventTarget', 'goog.fx.dom', 'goog.fx.easing', 'pwk.layer.Caret'], false);
 goog.addDependency('../../../../app/pwk/editor/shortcuts.js', ['pwk.Shortcuts.Default', 'pwk.Shortcuts.MacOS'], ['goog.events.KeyCodes', 'goog.ui.KeyboardShortcutHandler'], false);
 goog.addDependency('../../../../app/pwk/editor/utils/dom.js', ['pwk.utils.dom'], [], false);
+goog.addDependency('../../../../app/pwk/editor/utils/resizeevent.js', ['pwk.utils.ResizeEvent'], [], false);
 goog.addDependency('../../../../app/pwk/editor/utils/style.js', ['pwk.utils.style'], ['goog.style'], false);

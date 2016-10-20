@@ -74,7 +74,7 @@ pwk.Page = function(doc) {
    * @type {pwk.PageContent}
    * @private
    */
-  this.content_ = new pwk.PageContent(doc);
+  this.content_ = new pwk.PageContent(this, doc);
 
   /**
    * @type {pwk.PageSettings}
@@ -308,7 +308,7 @@ pwk.Page.prototype.checkPageOverflow = function() {
  * @return {boolean}
  */
 pwk.Page.prototype.isEmpty = function() {
-  return !this.content_.getElement().hasChildNodes();
+  return this.content_.isEmpty();
 };
 
 

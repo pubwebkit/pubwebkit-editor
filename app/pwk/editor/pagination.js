@@ -64,6 +64,8 @@ pwk.Pagination = function(document) {
 pwk.Pagination.prototype.initEvents_ = function() {
   goog.events.listen(this.document_, pwk.Document.EventType.NODE_REMOVED,
       this.onDocumentNodeRemovedEventHandler_, false, this);
+  goog.events.listen(this.document_, pwk.Document.EventType.FILLING_CHANGE,
+      this.onDocumentFillingChangedEventHandler_, false, this);
 };
 
 
@@ -166,18 +168,135 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
 
 
 /**
- * Checking size of page content on overflows and dispatching OVERFLOW event in
- * case page is overflowed.
+ * Get page index where are situated node with specified id.
+ * @param {string} id Node ID.
+ * @return {number}
  */
-pwk.Pagination.prototype.checkOverflow = function() {
-  // The page of start node in the range will be used as start point for
-  // overflow check.
-  var doc = this.document_;
-  var range = doc.getSelection().getRange();
-  var pageIndex = this.getPageIndexByNodeId(range.getStartNode().getId());
-  var activePage = doc.getPageAt(pageIndex);
+pwk.Pagination.prototype.getPageIndexByNodeId = function(id) {
+  var result;
+  var pageNodeIndex = this.pageNodeIndex_;
+  var indexLen = pageNodeIndex.length;
+  var googArray = goog.array;
 
-  activePage.checkPageOverflow();
+  for (var i = 0; i < indexLen; i++) {
+    result = googArray.indexOf(pageNodeIndex[i], id);
+    if (result != -1) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+
+/**
+ * Handler to process the page overflow event.
+ * @param {pwk.Page.PageOverflowEvent} e
+ * @private
+ */
+pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
+  var nodes = e.getNodesForMoving();
+  var page = e.target;
+  var pageIndex = e.getPageIndex();
+  var doc = this.document_;
+  var siblingPage = doc.getPageAt(pageIndex + 1);
+
+  // Update index
+  goog.array.forEach(nodes, function(node) {
+    goog.array.remove(this.pageNodeIndex_[pageIndex], node.getId());
+  }, this);
+
+  // Is required to create a new page?
+  if (goog.isDefAndNotNull(siblingPage)) { // - No
+    var siblingPageNodes = this.pageNodeIndex_[pageIndex + 1];
+    var siblingNode = doc.getNode(siblingPageNodes[0]);
+    var siblingNodeIndex = doc.indexOfNode(siblingNode);
+
+    goog.array.forEach(nodes, function(node) {
+      doc.addNodeAt(node, siblingNodeIndex);
+    }, this);
+
+  } else { // Create new page
+    page = new pwk.Page(doc);
+    doc.addPage(page);
+
+    // NOTE: Important to add handlers after page initialization.
+    page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_,
+        false, this);
+
+    // Update index
+    this.pageNodeIndex_[this.pageNodeIndex_.length] = [];
+
+    goog.array.forEachRight(nodes, function(node) {
+      doc.addNode(node);
+    }, this);
+  }
+};
+
+
+/**
+ * @return {Array.<Array.<string>>}
+ */
+pwk.Pagination.prototype.getPaginationIndex = function() {
+  return this.pageNodeIndex_;
+};
+
+
+/**
+ * Event handler for pwk.Document.EventType.NODE_REMOVED event type.
+ * @param {pwk.Document.NodeRemovedEvent} e
+ * @private
+*/
+pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
+  var doc = this.document_;
+  var parentPage = doc.getPageAt(e.parentPageIndex);
+  var removedNodeId = e.removedNode.getId();
+  var range = doc.getSelection().getRange();
+
+  // if page empty and it's not a last one, remove it from document
+  if (parentPage.isEmpty()) {
+    debugger;
+    doc.removePage(parentPage);
+
+    goog.array.removeAt(this.pageNodeIndex_, e.parentPageIndex);
+
+    // If no more pages in the document
+    if (this.pageNodeIndex_.length === 0) {
+      // Add new empty paragraph in document
+      var newNode = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, doc);
+      doc.addNode(newNode);
+
+      range.setStartPosition(newNode.getFirstLine(), 0);
+      range.setEndPosition(newNode.getLastLine(), 0);
+    }
+
+  } else {
+    // remove node from page index
+    goog.array.forEach(this.pageNodeIndex_, function(arr) {
+      if (goog.array.remove(arr, removedNodeId)) {
+        return;
+      }
+    }, this);
+
+  }
+};
+
+
+/**
+ * Handler of filling document content by pages. Called each time, when page
+ * height was changed.
+ * @param {pwk.Document.FillingChangedEvent} e
+ * @private
+ */
+pwk.Pagination.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
+
+  console.log('FillingChangedEvent');
+
+  // If content become bigger then available on current pages, move nodes to
+  // other pages or create more page and move them there.
+  e.getPage().checkPageOverflow();
+
+  // Fill document pages if content height was changed
+  this.checkFilling();
 };
 
 
@@ -203,7 +322,7 @@ pwk.Pagination.prototype.checkFilling = function() {
 
   // Shift checking pages
   topPageIndex = (topPageIndex - pageOffsetToCheck) >= 0 ?
-    topPageIndex - pageOffsetToCheck :
+      topPageIndex - pageOffsetToCheck :
       0;
 
   // - check if current page is could be filled by content below {√}
@@ -216,7 +335,9 @@ pwk.Pagination.prototype.checkFilling = function() {
   //      - if not, exit ...
   // - set page below to belowPageIndex variable
 
-  console.log('- = - = - = - = - = -');
+  //console.log('checkFilling');
+
+  //console.log('- = - = - = - = - = -');
 
   while (belowPageIndex > 0) { // We have page below modified page?
     abovePage = /** @type {pwk.Page}*/(doc.getPageAt(topPageIndex));
@@ -270,7 +391,7 @@ pwk.Pagination.prototype.checkFilling = function() {
     //        break;
     // - - - -    }
 
-    console.log('- = - = - = - = - = -');
+    //console.log('- = - = - = - = - = -');
     return;
 
   }
@@ -284,117 +405,4 @@ pwk.Pagination.prototype.checkFilling = function() {
   // split (Create abstract method isSplittable to pwk.Node class), then try to
   // split it and move part of them.
   // - Stop checking if content position were not changed
-};
-
-
-/**
- * Get page index where are situated node with specified id.
- * @param {string} id Node ID.
- * @return {number}
- */
-pwk.Pagination.prototype.getPageIndexByNodeId = function(id) {
-  var result;
-  var pageNodeIndex = this.pageNodeIndex_;
-  var indexLen = pageNodeIndex.length;
-  var googArray = goog.array;
-
-  for (var i = 0; i < indexLen; i++) {
-    result = googArray.indexOf(pageNodeIndex[i], id);
-    if (result != -1) {
-      return i;
-    }
-  }
-  return -1;
-};
-
-
-/**
- * Handler to process the page overflow event.
- * @param {pwk.Page.PageOverflowEvent} e
- * @private
- */
-pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
-  var nodes = e.getNodesForMoving();
-  var page = e.target;
-  var pageIndex = e.getPageIndex();
-  var doc = this.document_;
-  var siblingPage = doc.getPageAt(pageIndex + 1);
-
-  // Update index
-  goog.array.forEach(nodes, function(node) {
-    goog.array.remove(this.pageNodeIndex_[pageIndex], node.getId());
-  }, this);
-
-  // Is required to create a new page?
-  if (goog.isDefAndNotNull(siblingPage)) { // - No
-    var siblingPageNodes = this.pageNodeIndex_[pageIndex + 1];
-    var siblingNode = doc.getNode(siblingPageNodes[0]);
-    var siblingNodeIndex = doc.indexOfNode(siblingNode);
-
-    goog.array.forEach(nodes, function(node) {
-      doc.addNodeAt(node, siblingNodeIndex);
-    }, this);
-
-  } else { // Yes
-    page = new pwk.Page(doc);
-    doc.addPage(page);
-
-    // NOTE: Important to add handlers after page initialization.
-    page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_,
-        false, this);
-
-    // Update index
-    this.pageNodeIndex_[this.pageNodeIndex_.length] = [];
-
-    goog.array.forEachRight(nodes, function(node) {
-      doc.addNode(node);
-    }, this);
-  }
-};
-
-
-/**
- * @return {Array.<Array.<string>>}
- */
-pwk.Pagination.prototype.getPaginationIndex = function() {
-  return this.pageNodeIndex_;
-};
-
-
-/**
- * Event handler for pwk.Document.EventType.NODE_REMOVED event type.
- * @param {pwk.Document.NodeRemovedEvent} e
- * @private
-*/
-pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
-  var doc = this.document_;
-  var parentPage = doc.getPageAt(e.parentPageIndex);
-  var removedNodeId = e.removedNode.getId();
-  var range = doc.getSelection().getRange();
-
-  // if page empty and it's not a last one, remove it from document
-  if (parentPage.isEmpty()) {
-    doc.removePage(parentPage);
-
-    goog.array.removeAt(this.pageNodeIndex_, e.parentPageIndex);
-
-    // If no more pages in the document
-    if (this.pageNodeIndex_.length === 0) {
-      // Add new empty paragraph in document
-      var newNode = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, doc);
-      doc.addNode(newNode);
-
-      range.setStartPosition(newNode.getFirstLine(), 0);
-      range.setEndPosition(newNode.getLastLine(), 0);
-    }
-
-  } else {
-    // remove node from page index
-    goog.array.forEach(this.pageNodeIndex_, function(arr) {
-      if (goog.array.remove(arr, removedNodeId)) {
-        return;
-      }
-    }, this);
-
-  }
 };

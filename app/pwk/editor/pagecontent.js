@@ -23,6 +23,7 @@
 
 /**
  * @fileoverview Page content component.
+ *
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
@@ -32,16 +33,18 @@ goog.require('goog.dom.classlist');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('pwk.Node');
+goog.require('pwk.utils.ResizeEvent');
 
 
 
 /**
  * Initialize {@code pwk.PageContent} component.
+ * @param {pwk.Page} parentPage Parent page.
  * @param {pwk.Document} doc Editor document instance.
  * @constructor
  * @extends {goog.ui.Component}
  */
-pwk.PageContent = function(doc) {
+pwk.PageContent = function(parentPage, doc) {
   goog.base(this);
 
   /**
@@ -49,6 +52,12 @@ pwk.PageContent = function(doc) {
    * @private
    */
   this.document_ = doc;
+
+  /**
+   * @type {pwk.Page}
+   * @private
+   */
+  this.parentPage_ = parentPage;
 
   /**
    * @type {pwk.PageSettings}
@@ -83,6 +92,9 @@ pwk.PageContent.prototype.decorateInternal = function(element) {
 /** @inheritDoc */
 pwk.PageContent.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
+
+  pwk.utils.ResizeEvent.listen(this.getElement(),
+      goog.bind(this.onResizeHandler_, this));
 };
 
 
@@ -155,6 +167,26 @@ pwk.PageContent.prototype.linkNodeAfter = function(node, previous) {
  */
 pwk.PageContent.prototype.unlinkNode = function(node) {
   return this.document_.unlinkNode(node);
+};
+
+
+/**
+ * Is there any nodes on this page?
+ * @return {boolean}
+ */
+pwk.PageContent.prototype.isEmpty = function() {
+  var childNodes = this.getElement().childNodes;
+  return childNodes.length === 1 &&
+      childNodes[0].className === pwk.utils.ResizeEvent.CSS_CLASS;
+};
+
+
+/**
+ * On element resize event handler.
+ * @private
+ */
+pwk.PageContent.prototype.onResizeHandler_ = function() {
+  this.dispatchEvent(new pwk.Document.FillingChangedEvent(this.parentPage_));
 };
 
 

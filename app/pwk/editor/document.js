@@ -347,7 +347,6 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
   }
 
   selection.updateCaretFromRange(range);
-  this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
 
@@ -502,9 +501,6 @@ pwk.Document.prototype.addNode = function(node) {
   if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
     goog.array.insertAt(this.nodeIndex_, nodeId, nodeIndex);
   }
-  //TODO: Temporary commented, to check that is not affected filling
-  // functionality
-  //this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
 };
 
 
@@ -538,9 +534,6 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
     if (goog.array.indexOf(this.nodeIndex_, nodeId) == -1) {
       goog.array.insertAt(this.nodeIndex_, nodeId, index);
     }
-    //TODO: Temporary commented, to check that is not affected filling
-    // functionality
-    //this.dispatchEvent(pwk.Document.EventType.FILLING_CHANGE);
   } else {
     this.addNode(node);
   }
@@ -717,34 +710,6 @@ pwk.Document.prototype.initializeDocument_ = function() {
  * @private
  */
 pwk.Document.prototype.initializeEvents_ = function() {
-  this.listen(pwk.Document.EventType.FILLING_CHANGE,
-      this.onDocumentFillingChangedEventHandler_);
-};
-
-
-/**
- * Handler of filling document content. Called each time, when height of
- * document content was changed.
- * @param {goog.events.Event} e
- * @private
- */
-pwk.Document.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
-  var pagination = this.pagination_;
-  var selection = this.selection_;
-  var range = selection.getRange();
-
-  // Check that range has been updated and start and end nodes is rendered
-  if (range != null &&
-      range.getStartNode().isInDocument() &&
-      range.getEndNode().isInDocument()) {
-
-    // If content become bigger then available on current pages, move nodes to
-    // other pages or create more page and move them there.
-    pagination.checkOverflow();
-
-    // Fill document pages if content height was changed
-    pagination.checkFilling();
-  }
 };
 
 
@@ -767,6 +732,7 @@ pwk.Document.EventType = {
 
 
 /**
+ * Object representing a NODE_REMOVED event.
  * @param {pwk.Node} node
  * @param {number} parentPageIndex
  * @extends {goog.events.Event}
@@ -786,3 +752,30 @@ pwk.Document.NodeRemovedEvent = function(node, parentPageIndex) {
   this.removedNode = node;
 };
 goog.inherits(pwk.Document.NodeRemovedEvent, goog.events.Event);
+
+
+
+/**
+ * Object representing a FILLING_CHANGE event.
+ * @param {pwk.Page} page
+ * @extends {goog.events.Event}
+ * @constructor
+ */
+pwk.Document.FillingChangedEvent = function(page) {
+  goog.events.Event.call(this, pwk.Document.EventType.FILLING_CHANGE, page);
+
+  /**
+   * @type {pwk.Page}
+   * @private
+   */
+  this.page_ = page;
+};
+goog.inherits(pwk.Document.FillingChangedEvent, goog.events.Event);
+
+
+/**
+ * @return {pwk.Page}
+ */
+pwk.Document.FillingChangedEvent.prototype.getPage = function() {
+  return this.page_;
+};
