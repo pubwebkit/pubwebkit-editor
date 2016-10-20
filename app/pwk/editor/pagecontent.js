@@ -176,8 +176,10 @@ pwk.PageContent.prototype.unlinkNode = function(node) {
  */
 pwk.PageContent.prototype.isEmpty = function() {
   var childNodes = this.getElement().childNodes;
-  return childNodes.length === 1 &&
-      childNodes[0].className === pwk.utils.ResizeEvent.CSS_CLASS;
+
+  return (childNodes.length === 1 &&
+      childNodes[0].className === pwk.utils.ResizeEvent.CSS_CLASS) ||
+      childNodes.length === 0;
 };
 
 

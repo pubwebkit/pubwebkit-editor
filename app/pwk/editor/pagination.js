@@ -254,7 +254,6 @@ pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
 
   // if page empty and it's not a last one, remove it from document
   if (parentPage.isEmpty()) {
-    debugger;
     doc.removePage(parentPage);
 
     goog.array.removeAt(this.pageNodeIndex_, e.parentPageIndex);
