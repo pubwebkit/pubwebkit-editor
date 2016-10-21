@@ -272,10 +272,8 @@ pwk.Page.prototype.checkPageOverflow = function() {
                   lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
                   linkedNode.insertLine(lastLine, true, 0);
                 }
-
-                doc.getPageAt(
-                    doc.getPagination().getPageIndexByNodeId(
-                        linkedNode.getId())).checkPageOverflow();
+                
+                linkedNode.getParentPage().checkPageOverflow();
               }
             }
 

@@ -457,6 +457,37 @@ pwk.Document.prototype.indexOfPage = function(page) {
 
 
 /**
+ * Get page index where are situated node with specified nodeId.
+ * @param {string} nodeId Node ID.
+ * @return {number}
+ */
+pwk.Document.prototype.indexOfPageByNodeId = function(nodeId) {
+  var result;
+  var pageNodeIndex = this.pagination_.getPaginationIndex();
+  var indexLen = pageNodeIndex.length;
+
+  for (var i = 0; i < indexLen; i++) {
+    result = goog.array.indexOf(pageNodeIndex[i], nodeId);
+    if (result != -1) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+
+/**
+ * Get page where are situated node with specified nodeId.
+ * @param {string} nodeId Node ID.
+ * @return {pwk.Page?}
+ */
+pwk.Document.prototype.getPageByNodeId = function(nodeId) {
+  var pageIndex = this.indexOfPageByNodeId(nodeId);
+  return this.getPageAt(pageIndex);
+};
+
+
+/**
  * Removes the given page from this document, and returns it.  Throws an error
  * if the argument is invalid or if the specified page isn't found in the
  * document.  The argument can either be a string (interpreted as the

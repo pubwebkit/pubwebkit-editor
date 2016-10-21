@@ -196,12 +196,19 @@ pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
 
 /**
  * Get parent page index.
- * @return {number} Parent page index
+ * @return {number} Parent page index.
  */
 pwk.Node.prototype.getParentPageIndex = function() {
-  return this.getDocument()
-      .getPagination()
-      .getPageIndexByNodeId(this.getId());
+  return this.document_.indexOfPageByNodeId(this.getId());
+};
+
+
+/**
+ * Get parent page.
+ * @return {pwk.Page} Parent page.
+ */
+pwk.Node.prototype.getParentPage = function() {
+  return this.document_.getPageByNodeId(this.getId());
 };
 
 

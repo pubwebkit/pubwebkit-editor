@@ -739,17 +739,15 @@ pwk.LeafNode.prototype.onLineContentChangedHandler_ = function(e) {
 pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
   // TODO: Try to improve performance in this place if it's possible.
 
+  var length;
   var doc = this.getDocument();
-  var pagination = doc.getPagination();
   var prevLinkedNode = this.previousLinkedNode_;
   var nextLinkedNode = this.nextLinkedNode_;
-  var currentNodePageId = pagination.getPageIndexByNodeId(this.getId());
-  var length;
+  var currentNodePageIndex = doc.indexOfPageByNodeId(this.getId());
 
   // Check if some of linked node situated on the same page and merge it.
   if (prevLinkedNode != null &&
-      currentNodePageId == pagination.getPageIndexByNodeId(
-          prevLinkedNode.getId())) {
+      currentNodePageIndex == prevLinkedNode.getParentPageIndex()) {
     length = prevLinkedNode.getLinesCount();
 
     while (length--) {
@@ -762,9 +760,8 @@ pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
   }
 
   if (nextLinkedNode != null &&
-      currentNodePageId == pagination.getPageIndexByNodeId(
-          nextLinkedNode.getId())) {
-    length = nextLinkedNode.getLinesCount();
+      currentNodePageIndex == nextLinkedNode.getParentPageIndex()) {
+      length = nextLinkedNode.getLinesCount();
 
     while (length--) {
       this.insertLine(

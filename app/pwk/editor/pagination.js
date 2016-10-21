@@ -131,7 +131,7 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
     var prevNode = doc.getNodeAt(index - 1);
 
     if (goog.isDefAndNotNull(prevNode)) {
-      pageIndex = this.getPageIndexByNodeId(prevNode.getId());
+      pageIndex = doc.indexOfPageByNodeId(prevNode.getId());
 
       var prevNodeIndex =
           goog.array.indexOf(pageNodeIndex[pageIndex], prevNode.getId());
@@ -149,7 +149,7 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
 
     if (goog.isDefAndNotNull(nextNode)) {
       // Get page index
-      pageIndex = this.getPageIndexByNodeId(nextNode.getId());
+      pageIndex = doc.indexOfPageByNodeId(nextNode.getId());
 
       // Add node index to index
       var nextNodeIndex =
@@ -164,27 +164,6 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
       this.addNode(node);
     }
   }
-};
-
-
-/**
- * Get page index where are situated node with specified id.
- * @param {string} id Node ID.
- * @return {number}
- */
-pwk.Pagination.prototype.getPageIndexByNodeId = function(id) {
-  var result;
-  var pageNodeIndex = this.pageNodeIndex_;
-  var indexLen = pageNodeIndex.length;
-  var googArray = goog.array;
-
-  for (var i = 0; i < indexLen; i++) {
-    result = googArray.indexOf(pageNodeIndex[i], id);
-    if (result != -1) {
-      return i;
-    }
-  }
-  return -1;
 };
 
 
@@ -234,6 +213,7 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
 
 
 /**
+ * Nodes index by pages.
  * @return {Array.<Array.<string>>}
  */
 pwk.Pagination.prototype.getPaginationIndex = function() {
@@ -288,63 +268,57 @@ pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
  */
 pwk.Pagination.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
 
-  console.log('FillingChangedEvent');
+  var page = e.getPage();
 
   // If content become bigger then available on current pages, move nodes to
   // other pages or create more page and move them there.
-  e.getPage().checkPageOverflow();
+  page.checkPageOverflow();
 
   // Fill document pages if content height was changed
-  this.checkFilling();
+  this.checkFilling(page);
 };
 
 
 /**
  * Checking pages filling. Checking started from topless range node.
+ * @param {pwk.Page} startPage
  */
-pwk.Pagination.prototype.checkFilling = function() {
-
+pwk.Pagination.prototype.checkFilling = function(startPage) {
+  //-=-=-=-=-=-=-=-=-=-=-=-=-//
+  console.log('checkFilling');
+  //-=-=-=-=-=-=-=-=-=-=-=-=-//
   var doc = this.document_;
-  var range = doc.getSelection().getRange();
-  var topPageIndex =
-      this.getPageIndexByNodeId(range.isReversed() ?
-          range.getEndNode().getId() :
-          range.getStartNode().getId());
-  var getBottomPageIndex = goog.bind(function() {
-    return this.pageNodeIndex_.length > topPageIndex + 1 ?
-        topPageIndex + 1 :
-        -1;
-  }, this);
-  var belowPageIndex = getBottomPageIndex();
-  var pageOffsetToCheck = 1;
-  var abovePage;
-
-  // Shift checking pages
-  topPageIndex = (topPageIndex - pageOffsetToCheck) >= 0 ?
-      topPageIndex - pageOffsetToCheck :
-      0;
-
+  var topPageIndex = doc.indexOfPage(startPage);
+  var getBottomPageIndex =
+      goog.bind(
+          function() {
+            return this.pageNodeIndex_.length > topPageIndex + 1
+                ? topPageIndex + 1 : -1;
+          },
+          this);
+  var bottomPageIndex = getBottomPageIndex();
+  //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-//
   // - check if current page is could be filled by content below {√}
-  //      - get available height
+  //      - get available height {√}
   // - get minimal available splittable part on the page below
   //      - get minimal splittable part height of the node below and node
   //        height itself
   //      - if height acceptable, move it to the above page
   //          - remove empty page LAST page
   //      - if not, exit ...
-  // - set page below to belowPageIndex variable
-
-  //console.log('checkFilling');
-
+  // - set page below to bottomPageIndex variable
+  //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-//
   //console.log('- = - = - = - = - = -');
 
-  while (belowPageIndex > 0) { // We have page below modified page?
-    abovePage = /** @type {pwk.Page}*/(doc.getPageAt(topPageIndex));
+  while (bottomPageIndex > 0) { // We have page below modified page?
+    var modifiedPage = /** @type {pwk.Page}*/(doc.getPageAt(topPageIndex));
+    var availableHeightAbove = modifiedPage.getAvailableContentSize();
 
-    var availableHeightAbove = abovePage.getAvailableContentSize();
+    console.log(availableHeightAbove);
+
     var nodeToMove = /** @type {pwk.Node}*/
-        (this.pageNodeIndex_[belowPageIndex].length > 0 ?
-            doc.getNode(this.pageNodeIndex_[belowPageIndex][0]) :
+        (this.pageNodeIndex_[bottomPageIndex].length > 0 ?
+            doc.getNode(this.pageNodeIndex_[bottomPageIndex][0]) :
             null);
     var nodeToMoveSize;
 
@@ -404,4 +378,5 @@ pwk.Pagination.prototype.checkFilling = function() {
   // split (Create abstract method isSplittable to pwk.Node class), then try to
   // split it and move part of them.
   // - Stop checking if content position were not changed
+  // - Re-draw selection (Not sure it's required, but try to check many cases)
 };
