@@ -1199,14 +1199,10 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
             lineOffset = selectionOffsets.start;
           } else {
 
-            var lastNode =
-                pwkDocument.getNodeAt(pwkDocument.getNodeCount() - 1);
-
-            if (bottomSelectionRangeNode === this &&
-                lastNode.getLastLine() != line) {
-              lineOffset = 0;
-            } else {
+            if (this.getLastLine() === line && this.lines_[i + 1] == null) {
               lineOffset = line.getLength();
+            } else {
+              lineOffset = 0;
             }
           }
 

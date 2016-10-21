@@ -315,7 +315,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
 
     processedNode.removeSelection(opt_isBack);
 
-    // Merge node if required
+    // Merge nodes if required
     if (topNode != bottomNode &&
         i == bottomNodeIndex &&
         topNode.isInDocument() &&
