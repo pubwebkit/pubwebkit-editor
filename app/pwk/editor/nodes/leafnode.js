@@ -761,7 +761,7 @@ pwk.LeafNode.prototype.normalizeLines = function(lastUpdatedLine) {
 
   if (nextLinkedNode != null &&
       currentNodePageIndex == nextLinkedNode.getParentPageIndex()) {
-      length = nextLinkedNode.getLinesCount();
+    length = nextLinkedNode.getLinesCount();
 
     while (length--) {
       this.insertLine(

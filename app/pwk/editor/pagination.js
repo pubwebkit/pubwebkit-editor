@@ -292,8 +292,9 @@ pwk.Pagination.prototype.checkFilling = function(startPage) {
   var getBottomPageIndex =
       goog.bind(
           function() {
-            return this.pageNodeIndex_.length > topPageIndex + 1
-                ? topPageIndex + 1 : -1;
+            return this.pageNodeIndex_.length > topPageIndex + 1 ?
+                   topPageIndex + 1 :
+                   -1;
           },
           this);
   var bottomPageIndex = getBottomPageIndex();
