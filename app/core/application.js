@@ -48,14 +48,17 @@ goog.require('goog.string');
 app.core.Application = function() {
   goog.events.EventTarget.call(this);
 
-  var historyStateInput = (/** @type {HTMLInputElement} **/(
-      goog.dom.createDom('input',
+
+  var historyStateInput =
+      /** @type {HTMLInputElement} **/
+      (goog.dom.createDom('input',
           {
             'type': 'text',
             'id': 'history_state',
             'name': 'history_state',
             'style': 'display:none'
-          })));
+          }));
+
   document.body.appendChild(historyStateInput);
 
   /**

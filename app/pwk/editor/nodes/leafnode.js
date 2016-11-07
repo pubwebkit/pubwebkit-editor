@@ -623,9 +623,7 @@ pwk.LeafNode.prototype.insertText = function(text, opt_offset) {
 };
 
 
-/**
- * @private
- */
+/** @private */
 pwk.LeafNode.prototype.renderNode_ = function() {
   goog.array.forEach(this.lines_, function(line) {
     pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
@@ -633,39 +631,33 @@ pwk.LeafNode.prototype.renderNode_ = function() {
 };
 
 
-/**
- * @inheritDoc
- */
+/** @inheritDoc */
 pwk.LeafNode.prototype.isSplittable = function() {
   return true;
 };
 
 
-/**
- * @param {number} offset Node offset, 0-based index.
- * @return {pwk.LeafNode} Returns new node or next linked node, in case if
- *    offset is end of the current node and next exist linked node.
- */
-pwk.LeafNode.prototype.split = function(offset) {
+/** @inheritDoc */
+pwk.LeafNode.prototype.splitToBottom = function(offset) {
   var rangeInfo = this.getRangeInfoForOffset(offset);
   var parentNodeLength = rangeInfo.getLine().getParentNode().getLength();
+  var nextLinkedNode = this.nextLinkedNode_;
 
   // If this is end of the node and exist linked node,
   // then just unlink next linked node and return it
   if (offset == parentNodeLength &&
-      goog.isDefAndNotNull(this.nextLinkedNode_)) {
+      goog.isDefAndNotNull(nextLinkedNode)) {
 
-    var linkedNode = this.nextLinkedNode_;
-    this.nextLinkedNode_ = null;
+    this.unlinkNextLinkedNode();
 
-    return linkedNode;
+    return nextLinkedNode;
   } else {
 
     var lines = this.lines_;
-    var linesLen = lines.length;
+    var linesLength = lines.length;
     var content = rangeInfo.getLine().cut(rangeInfo.getLineOffset());
     var startLineIndexToMove = rangeInfo.getLineIndex() + 1;
-    var linesCountToMove = linesLen - startLineIndexToMove;
+    var linesCountToMove = linesLength - startLineIndexToMove;
     var newNode;
 
     if (content.length > 0 || linesCountToMove == 0) {
@@ -677,9 +669,9 @@ pwk.LeafNode.prototype.split = function(offset) {
     }
 
     // If node have the next linked node, assign it to the new node.
-    if (offset > 0 && goog.isDefAndNotNull(this.nextLinkedNode_)) {
-      newNode.setNextLinkedNode(this.nextLinkedNode_);
-      this.nextLinkedNode_ = null;
+    if (offset > 0 && goog.isDefAndNotNull(nextLinkedNode)) {
+      this.unlinkNextLinkedNode();
+      newNode.setNextLinkedNode(nextLinkedNode);
     }
 
     while (linesCountToMove--) {
@@ -687,6 +679,76 @@ pwk.LeafNode.prototype.split = function(offset) {
     }
 
     return newNode;
+  }
+};
+
+
+/** @inheritDoc */
+pwk.LeafNode.prototype.splitToTop = function(offset, linkNode) {
+  var rangeInfo = this.getRangeInfoForOffset(offset);
+  var previousLinkedNode = this.previousLinkedNode_;
+
+  if (offset == 0 && goog.isDefAndNotNull(previousLinkedNode)) {
+    this.unlinkPreviousLinkedNode();
+
+    return previousLinkedNode;
+  } else {
+
+    var lines = this.lines_;
+    var content = rangeInfo.getLine().cut(rangeInfo.getLineOffset());
+    var lineIndex = rangeInfo.getLineIndex();
+
+    var newLineContent = content.length > 0 ? content :
+        this.unlinkLine(lines[lineIndex]);
+    var newNode =
+        new pwk.LeafNode(this.getType(), this.getDocument(), newLineContent);
+
+    while (lineIndex--) {
+      newNode.insertLine(this.unlinkLine(lines[lineIndex]), false, 0);
+    }
+
+    if (goog.isDefAndNotNull(previousLinkedNode)) {
+      this.unlinkPreviousLinkedNode();
+      newNode.setPreviousLinkedNode(previousLinkedNode);
+    }
+
+    if (linkNode) {
+      newNode.setNextLinkedNode(this);
+    }
+
+    return newNode;
+  }
+};
+
+
+/** @inheritDoc */
+pwk.LeafNode.prototype.splitByHeight = function(height) {
+  /**
+   * @type {pwk.Line}
+   */
+  var dividingLine;
+  var calculatedHeight = 0;
+
+  if (this.lines_) {
+    goog.array.every(this.lines_, function(line) {
+      var lineHeight = line.getHeight();
+
+      if ((lineHeight + calculatedHeight) < height) {
+        calculatedHeight += lineHeight;
+        dividingLine = line;
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  if (dividingLine != null) {
+    var offset =
+        this.getOffsetByLineOffset(dividingLine, dividingLine.getLength());
+    return this.splitToTop(offset, true);
+  } else {
+    return null;
   }
 };
 
@@ -1071,7 +1133,6 @@ pwk.LeafNode.prototype.unselect = function() {
 
 /**
  * @inheritDoc
- * @param {boolean=} opt_isBack
  */
 pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
   var nodeSelectionRange = this.nodeSelectionRange_;

@@ -507,7 +507,6 @@ pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
       e.preventDefault();
       e.stopPropagation();
       break;
-
   }
 };
 
@@ -541,7 +540,7 @@ pwk.Editor.prototype.addTestText = function(opt_init) {
   for (var i = 0; i < 10; i++) {
     paragraph = generator.generateParagraph(false);
     if (i == 0 && opt_init) {
-      line = (/** @type {pwk.LeafNode} */(this.document_.getNodeAt(0)))
+      line = /** @type {pwk.LeafNode} */(this.document_.getNodeAt(0))
           .getFirstLine();
       line.insertText(paragraph);
     } else {

@@ -270,7 +270,7 @@ pwk.Document.prototype.newLine = function() {
         this.addNodeAt(paragraph, this.indexOfNode(startNode));
       } else {
         if (startNodeLength >= range.getStartNodeOffset()) {
-          paragraph = startNode.split(range.getStartNodeOffset());
+          paragraph = startNode.splitToBottom(range.getStartNodeOffset());
         } else {
           paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
         }
@@ -651,6 +651,7 @@ pwk.Document.prototype.indexOfNode = function(node) {
  * @return {pwk.Node} The removed node, if any.
  */
 pwk.Document.prototype.unlinkNode = function(node) {
+  this.pageIndex_
   return /** @type {pwk.Node} */(this.removeChild(node, true));
 };
 

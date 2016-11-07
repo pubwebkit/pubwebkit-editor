@@ -27,7 +27,6 @@
  */
 
 goog.provide('pwk.Pagination');
-
 goog.require('goog.events.EventTarget');
 
 
@@ -281,103 +280,93 @@ pwk.Pagination.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
 
 /**
  * Checking pages filling. Checking started from topless range node.
- * @param {pwk.Page} startPage
+ * @param {pwk.Page} modifiedPage
  */
-pwk.Pagination.prototype.checkFilling = function(startPage) {
-  //-=-=-=-=-=-=-=-=-=-=-=-=-//
-  console.log('checkFilling');
-  //-=-=-=-=-=-=-=-=-=-=-=-=-//
+pwk.Pagination.prototype.checkFilling = function(modifiedPage) {
   var doc = this.document_;
-  var topPageIndex = doc.indexOfPage(startPage);
+  var topPageIndex = doc.indexOfPage(modifiedPage);
   var getBottomPageIndex =
       goog.bind(
           function() {
-            return this.pageNodeIndex_.length > topPageIndex + 1 ?
-                   topPageIndex + 1 :
-                   -1;
+            return this.pageNodeIndex_[topPageIndex + 1] ?
+                topPageIndex + 1 :
+                -1;
           },
           this);
+
+
   var bottomPageIndex = getBottomPageIndex();
-  //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-//
-  // - check if current page is could be filled by content below {√}
-  //      - get available height {√}
-  // - get minimal available splittable part on the page below
-  //      - get minimal splittable part height of the node below and node
-  //        height itself
-  //      - if height acceptable, move it to the above page
-  //          - remove empty page LAST page
-  //      - if not, exit ...
-  // - set page below to bottomPageIndex variable
-  //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-//
-  //console.log('- = - = - = - = - = -');
+  var bottomPage;
 
-  while (bottomPageIndex > 0) { // We have page below modified page?
-    var modifiedPage = /** @type {pwk.Page}*/(doc.getPageAt(topPageIndex));
-    var availableHeightAbove = modifiedPage.getAvailableContentSize();
+  // We have page below of modified page?
+  if (bottomPageIndex > 0) {
 
-    console.log(availableHeightAbove);
+    var hasContentToMove = true;
 
-    var nodeToMove = /** @type {pwk.Node}*/
-        (this.pageNodeIndex_[bottomPageIndex].length > 0 ?
-            doc.getNode(this.pageNodeIndex_[bottomPageIndex][0]) :
-            null);
-    var nodeToMoveSize;
+    while (hasContentToMove && bottomPageIndex > 0) {
+      var availableHeightAbove = modifiedPage.getAvailableContentSize();
 
-    // if (goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
-    //
-    //   console.log('availableHeightAbove: ' + availableHeightAbove);
-    //   console.log(nodeToMove);
-    //
-    //   nodeToMoveSize = nodeToMove.getSize();
-    //   console.log('nodeToMoveSize: ' + nodeToMoveSize);
-    //   // Node above could be moved to the page above completely
-    //   if (nodeToMoveSize.height <= availableHeightAbove) {
-    //
-    //     if (nodeToMove instanceof pwk.LeafNode) {
-    //       var previousLinkedNode = nodeToMove.getPreviousLinkedNode();
-    //
-    //       // For linked nodes
-    //       if (previousLinkedNode != null) {
-    //           pwk.Node.mergeNodes(doc, previousLinkedNode, nodeToMove);
-    //
-    //       } else {
-    //         // It's not linked nodes, so just move it to the above page.
-    //         nodeToMove = doc.unlinkNode(nodeToMove);
-    //         doc.addNodeAt(nodeToMove,
-    //             doc.indexOfNode(previousLinkedNode), true);
-    //
-    //       }
-    //     }
-    //
-    //   } else if (nodeToMove.isSplittable()) {
-    //   //   //            // TODO: Split node
-    //   //   //
-    //   } else {
-    //   //
-    //   //   //            break;
-    //     // --i >= 0 || 'exit'
-    //   }
-    // }
+      /** @type {pwk.Node}*/
+      var nodeToMove = doc.getNode(this.pageNodeIndex_[bottomPageIndex][0]);
+      var nodeToMoveSize;
 
+      if (goog.isDefAndNotNull(nodeToMove) && nodeToMove.isInDocument()) {
 
+        nodeToMoveSize = nodeToMove.getSize();
 
-    //      else {
-    //        break;
-    // - - - -    }
+        // Node above could be moved to the page above completely
+        if (nodeToMoveSize.height <= availableHeightAbove) {
 
-    //console.log('- = - = - = - = - = -');
-    return;
+          if (nodeToMove instanceof pwk.LeafNode) {
+            var previousLinkedNode = nodeToMove.getPreviousLinkedNode();
 
+            // For linked nodes
+            if (previousLinkedNode != null) {
+              pwk.Node.mergeNodes(doc, previousLinkedNode, nodeToMove);
+
+            } else {
+              // It's not linked nodes, so just move it to the above page.
+              goog.array.remove(this.pageNodeIndex_[bottomPageIndex],
+                  nodeToMove.getId());
+              nodeToMove = doc.unlinkNode(nodeToMove);
+              doc.addNodeAt(nodeToMove, nodeToMove.getIndex(), true);
+            }
+          }
+        }
+        // Node is splittable? Let's try move part to the page above.
+        else if (nodeToMove.isSplittable()) {
+
+          //Split node
+          var movedContent = nodeToMove.splitByHeight(availableHeightAbove);
+
+          if (movedContent != null) {
+            var previousLinkedNode = movedContent.getPreviousLinkedNode();
+
+            // For linked nodes
+            if (previousLinkedNode != null) {
+              pwk.Node.mergeNodes(doc, previousLinkedNode, nodeToMove);
+            }
+            else {
+              doc.addNodeAt(movedContent, nodeToMove.getIndex(), true);
+            }
+          }
+          hasContentToMove = false;
+        }
+        // Looks like it's impossible to move content. Exit...
+        else {
+          hasContentToMove = false;
+        }
+      }
+
+      // Is page empty? Remove it.
+      bottomPage = doc.getPageAt(bottomPageIndex);
+      if (bottomPage != null && bottomPage.isEmpty()) {
+        doc.removePage(bottomPage);
+        goog.array.removeAt(this.pageNodeIndex_, bottomPageIndex);
+      }
+
+      // Update index variable
+      bottomPageIndex = getBottomPageIndex();
+    }
   }
-
-  // Steps to fill pages top:
-  // - Checking start from topmost range node
-  // - Get height of remains space of the top page and get height of node below,
-  // if it's could be moved to the page above, move it. Merge with node above if
-  // they are linked.
-  // - If the space still remains on the page, check if current node could be
-  // split (Create abstract method isSplittable to pwk.Node class), then try to
-  // split it and move part of them.
-  // - Stop checking if content position were not changed
-  // - Re-draw selection (Not sure it's required, but try to check many cases)
 };

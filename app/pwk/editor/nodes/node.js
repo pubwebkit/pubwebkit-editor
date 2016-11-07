@@ -269,14 +269,9 @@ pwk.Node.prototype.getOffsetByLineOffset = goog.abstractMethod;
 /**
  * Remove node content based on current selection
  * @param {boolean=} opt_isBack Direction, in case if range is collapsed
- *    required to determine which key was pressed, Backspace or Delete.
+ *    required to determine which key was pressed, Backspace or Delete.§
  */
 pwk.Node.prototype.removeSelection = goog.abstractMethod;
-// Actions:
-// - update selection range
-// - remove
-// - unselect
-// - dispose
 
 
 /**
@@ -287,11 +282,48 @@ pwk.Node.prototype.isSplittable = goog.abstractMethod;
 
 
 /**
- * @param {number} offset  0-based index node offset.
- * @return {pwk.Node}  Returns new node or next linked node, in case if offset
+ * Split node to two parts by specified offset and return bottommost newly
+ * created node without adding to the DOM. If offset is end of the node and
+ * exists linked node below, then let's just unlink linked node below and return
+ * it without unlinking from the document.
+ * @param {number} offset Node offset, 0-based index.
+ * @return {pwk.LeafNode} Returns new node or below linked node, in case if
+ *    offset is end of the current node and linked node below is exist.
+ */
+pwk.Node.prototype.splitToBottom = goog.abstractMethod;
+
+
+/**
+ * Split node to two nodes by specified offset and return topmost newly
+ * created node without adding to the DOM. If offset is start of the node and
+ * exists linked node above, then let's just unlink linked node above and return
+ * it without unlinking from the document.
+ * @param {number} offset Node offset, 0-based index.
+ * @param {boolean} linkNode Make separated nodes linked?
+ * @return {pwk.LeafNode} Returns new node or above linked node, in case if
+ *    offset is start of the current node and linked node above is exist.
+ */
+pwk.Node.prototype.splitToTop = goog.abstractMethod;
+
+
+/**
+ * Cut specified range of the node and return newly created node without adding
+ * to the DOM.
+ * @param {number} startOffset Node offset, 0-based index.
+ * @param {number=} opt_endOffset Node offset, 0-based index.
+ * @return {pwk.LeafNode} Returns new node or next linked node, in case if
+ *    offset is end of the current node and next exist linked node.
+ */
+pwk.Node.prototype.cut = goog.abstractMethod;
+
+
+/**
+ * Split node by specified height.
+ * @param {number} height Height.
+ * @return {?pwk.Node}  Returns new node or next linked node, in case if offset
  * is end of the current node and next exist linked node.
  */
-pwk.Node.prototype.split = goog.abstractMethod;
+pwk.Node.prototype.splitByHeight = goog.abstractMethod;
 
 
 /**
