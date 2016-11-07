@@ -651,7 +651,6 @@ pwk.Document.prototype.indexOfNode = function(node) {
  * @return {pwk.Node} The removed node, if any.
  */
 pwk.Document.prototype.unlinkNode = function(node) {
-  this.pageIndex_
   return /** @type {pwk.Node} */(this.removeChild(node, true));
 };
 
