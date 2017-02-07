@@ -246,7 +246,7 @@ pwk.Document.prototype.addValue = function(value) {
 /**
  * Create new line.
  */
-pwk.Document.prototype.newLine = function() {
+pwk.Document.prototype.createNewLine = function() {
   var selection = this.selection_;
   var range = selection.getRange();
   var startNode = range.getStartNode();
@@ -573,7 +573,7 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
 
 /**
  * Calls the given function on each of this document's node in order.  If
- * {@code opt_obj} is provided, it will be used as the 'this' object in the
+ * {@code opt_obj} is provided, it will be used as the 'this' object in t he
  * function when called. The function should take two arguments:  the node
  * component and its 0-based index.  The return value is ignored.
  * @param {Function} f The function to call for every node component; should

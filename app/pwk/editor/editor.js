@@ -129,7 +129,7 @@ pwk.Editor.prototype.createDom = function() {
   this.setElementInternal(this.dom_.createElement('div'));
   var element = this.getElement();
   goog.dom.classlist.add(element, pwk.Editor.CSS_CLASS);
-
+//
   // Set editor focusable
   goog.dom.setFocusableTabIndex(element, true);
   element.focus();
@@ -279,8 +279,8 @@ pwk.Editor.prototype.scrollDocumentForSelection_ = function(e) {
  * @param {number} y
  * @private
  */
-pwk.Editor.prototype.selectFromRangeToPoint_ = function(startSelectionRange, x,
-                                                        y) {
+pwk.Editor.prototype.selectFromRangeToPoint_ =
+    function(startSelectionRange, x, y) {
   var selection = this.selection_;
   var endSelectionRange = selection.getSelectionRangeFromPoint(x, y);
   var selectionRange =
@@ -398,7 +398,7 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
 
   switch (e.keyCode) {
     case goog.events.KeyCodes.ENTER:
-      this.document_.newLine();
+      this.document_.createNewLine();
       isStopPropagation = true;
       break;
 
@@ -492,10 +492,6 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
-  // NOTE: Process shortcuts here. For details see
-  // {goog.ui.KeyboardShortcutHandler}
-  // NOTE: Keep in mind about Mac and Win keyboard
-
   switch (e.identifier) {
     case pwk.Shortcuts.Default.SAVE[0]:
       console.info('Save document...');
