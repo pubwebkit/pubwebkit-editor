@@ -76,6 +76,7 @@ pwk.Editor = function() {
   this.keyboardShortcutHandler_;
 
   /**
+   * Editor document instance.
    * @type {pwk.Document}
    * @private
    */
@@ -89,25 +90,29 @@ pwk.Editor = function() {
   this.focusHandler_ = null;
 
   /**
+   * Custom document selection.
    * @type {pwk.Selection}
    * @private
    */
   this.selection_ = this.document_.getSelection();
 
   /**
+   * Stores the start point of the selection.
    * @type {pwk.Range}
    * @private
    */
   this.startSelectionRange_;
 
   /**
-   * Indicated is selection of document started or not
+   * Indicates that selection process using mouse started.
    * @type {boolean}
    * @private
    */
-  this.isSelectionStarted_ = false;
+  this.isSelectionUsingMouseStarted_ = false;
 
   /**
+   * Stores {@link goog.events.BrowserEvent} to pass it to the recursive
+   * function {@link pwk.Editor#scrollInLoop_}
    * @type {goog.events.BrowserEvent}
    * @private
    */
@@ -129,7 +134,7 @@ pwk.Editor.prototype.createDom = function() {
   this.setElementInternal(this.dom_.createElement('div'));
   var element = this.getElement();
   goog.dom.classlist.add(element, pwk.Editor.CSS_CLASS);
-//
+
   // Set editor focusable
   goog.dom.setFocusableTabIndex(element, true);
   element.focus();
@@ -210,7 +215,7 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
       editorEl.focus();
     }
 
-    this.isSelectionStarted_ = true;
+    this.isSelectionUsingMouseStarted_ = true;
     selection.removeSelection();
 
     var selectionRange =
@@ -233,7 +238,7 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
  * @private
  */
 pwk.Editor.prototype.onMouseMove_ = function(e) {
-  if (e.isMouseActionButton() && this.isSelectionStarted_) {
+  if (e.isMouseActionButton() && this.isSelectionUsingMouseStarted_) {
 
     var viewPortSize = goog.dom.getViewportSize();
 
@@ -281,6 +286,8 @@ pwk.Editor.prototype.scrollDocumentForSelection_ = function(e) {
  */
 pwk.Editor.prototype.selectFromRangeToPoint_ =
     function(startSelectionRange, x, y) {
+
+  var startSelectionRange = this.startSelectionRange_;
   var selection = this.selection_;
   var endSelectionRange = selection.getSelectionRangeFromPoint(x, y);
   var selectionRange =
@@ -346,7 +353,7 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
  */
 pwk.Editor.prototype.onMouseUp_ = function(e) {
   if (e.isMouseActionButton()) {
-    this.isSelectionStarted_ = false;
+    this.isSelectionUsingMouseStarted_ = false;
     this.startSelectionRange_ = null;
     this.scrollLoopInProgress_ = false;
     this.scrollLoopBrowserEvent_ = null;
@@ -509,7 +516,6 @@ pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
 
 /**
  * Register handled shortcut.
- *
  * @param {goog.ui.KeyboardShortcutHandler} handler
  * @private
  */

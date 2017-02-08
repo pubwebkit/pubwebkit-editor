@@ -85,7 +85,7 @@ goog.addSingletonGetter(pwk.PageSettings);
 
 /**
  * @param {pwk.Document} doc Document required to manage global settings of
- *    pages of document.
+ * pages of document.
  */
 pwk.PageSettings.prototype.initialize = function(doc) {
   this.document_ = doc;
