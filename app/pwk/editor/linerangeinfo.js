@@ -93,7 +93,7 @@ pwk.LineOffsetInfo.prototype.setLineIndex = function(value) {
 
 
 /**
- * Get line instance {@code pwk.Line}.
+ * Get line instance {@link pwk.Line}.
  * @return {pwk.Line}
  */
 pwk.LineOffsetInfo.prototype.getLine = function() {

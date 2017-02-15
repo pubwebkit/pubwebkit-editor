@@ -75,8 +75,8 @@ goog.inherits(pwk.Node, goog.ui.Component);
 
 
 /**
- * Get editor {@code pwk.Document} instance.
- * @return {pwk.Document} Editor {@code pwk.Document} instance.
+ * Get editor {@link pwk.Document} instance.
+ * @return {pwk.Document} Editor {@link pwk.Document} instance.
  */
 pwk.Node.prototype.getDocument = function() {
   return this.document_;

@@ -287,7 +287,6 @@ pwk.Editor.prototype.scrollDocumentForSelection_ = function(e) {
 pwk.Editor.prototype.selectFromRangeToPoint_ =
     function(startSelectionRange, x, y) {
 
-  var startSelectionRange = this.startSelectionRange_;
   var selection = this.selection_;
   var endSelectionRange = selection.getSelectionRangeFromPoint(x, y);
   var selectionRange =

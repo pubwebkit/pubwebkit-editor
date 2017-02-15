@@ -68,7 +68,7 @@ pwk.Document = function() {
   this.pagination_ = new pwk.Pagination(this);
 
   /**
-   * Array of ids of child @code{pwk.Node} components. Used to hold order of
+   * Array of ids of child {@link pwk.Node} components. Used to hold order of
    * nodes in document.
    * @type {Array.<string>}
    * @private
@@ -76,7 +76,7 @@ pwk.Document = function() {
   this.nodeIndex_ = [];
 
   /**
-   * Array of ids of child @code{pwk.Page} components. Used to hold order of
+   * Array of ids of child {@link pwk.Page} components. Used to hold order of
    * pages in document.
    * @type {Array.<string>}
    * @private
@@ -244,7 +244,7 @@ pwk.Document.prototype.addValue = function(value) {
 
 
 /**
- * Create new line.
+ * Create new line based on current document range.
  */
 pwk.Document.prototype.createNewLine = function() {
   var selection = this.selection_;
@@ -384,7 +384,7 @@ pwk.Document.prototype.addPageAt = function(page, index) {
 
 /**
  * Calls the given function on each of this document's page in order.  If
- * {@code opt_obj} is provided, it will be used as the 'this' object in the
+ * {@link opt_obj} is provided, it will be used as the 'this' object in the
  * function when called. The function should take two arguments:  the page
  * component and its 0-based index.  The return value is ignored.
  * @param {Function} f The function to call for every page component; should
@@ -573,7 +573,7 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
 
 /**
  * Calls the given function on each of this document's node in order.  If
- * {@code opt_obj} is provided, it will be used as the 'this' object in t he
+ * {@link opt_obj} is provided, it will be used as the 'this' object in t he
  * function when called. The function should take two arguments:  the node
  * component and its 0-based index.  The return value is ignored.
  * @param {Function} f The function to call for every node component; should
@@ -644,7 +644,7 @@ pwk.Document.prototype.indexOfNode = function(node) {
 
 
 /**
- * Do the same as {@code pwk.Document.prototype.removeNode} but did not deleting
+ * Do the same as {@link pwk.Document#removeNode} but did not deleting
  * it from index. Usually used to detach node from DOM to move to other place.
  * @param {string|pwk.Node} node The ID of the node to remove, or the node
  *    component itself.
@@ -695,7 +695,7 @@ pwk.Document.prototype.removeNodeAt = function(index) {
 
 
 /**
- * Get {@code pwk.Pagination} document instance
+ * Get {@link pwk.Pagination} document instance
  * @return {pwk.Pagination}
  */
 pwk.Document.prototype.getPagination = function() {
@@ -713,31 +713,27 @@ pwk.Document.prototype.getPaginationIndex = function() {
 
 
 /**
- * Initialize document
+ * Initialize document.
  * @private
  */
 pwk.Document.prototype.initializeDocument_ = function() {
+  var paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
 
-  // If document empty, add empty paragraph
-  if (!this.getNodeCount()) {
-    var paragraph = new pwk.LeafNode(pwk.NodeTypes.PARAGRAPH, this);
+  this.addNode(paragraph);
 
-    this.addNode(paragraph);
+  this.dispatchEvent(
+      new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
 
-    this.dispatchEvent(
-        new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
-
-    // Initialize Range
-    var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0,
-        paragraph.getFirstLine(), 0);
-    this.selection_.setRange(range);
-    this.selection_.updateCaretFromRange();
-  }
+  // Initialize Range
+  var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0,
+      paragraph.getFirstLine(), 0);
+  this.selection_.setRange(range);
+  this.selection_.updateCaretFromRange();
 };
 
 
 /**
- * Initialize component and related components events
+ * Initialize component and related components events.
  * @private
  */
 pwk.Document.prototype.initializeEvents_ = function() {

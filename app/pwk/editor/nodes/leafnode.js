@@ -577,7 +577,7 @@ pwk.LeafNode.prototype.removeLine = function(line) {
 
 
 /**
- * Do the same as {@code pwk.LeafNode.prototype.removeLine}, but without object
+ * Do the same as {@link pwk.LeafNode#removeLine}, but without object
  * disposing.
  * @param {pwk.Line} line
  * @return {pwk.Line}

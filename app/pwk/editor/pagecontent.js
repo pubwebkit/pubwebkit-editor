@@ -38,7 +38,7 @@ goog.require('pwk.utils.ResizeEvent');
 
 
 /**
- * Initialize {@code pwk.PageContent} component.
+ * Initialize {@link pwk.PageContent} component.
  * @param {pwk.Page} parentPage Parent page.
  * @param {pwk.Document} doc Editor document instance.
  * @constructor
