@@ -24,7 +24,7 @@
 goog.provide('app.controllers.HelloController');
 
 goog.require('app.core.Controller');
-    goog.require('pwk.Editor');
+goog.require('pwk.Editor');
 goog.require('pwk.EditorContainer');
 
 /**
@@ -32,11 +32,10 @@ goog.require('pwk.EditorContainer');
  * @extends {app.core.Controller}
  */
 app.controllers.HelloController = function() {
-      goog.base(this, 'HelloController');
+  goog.base(this, 'HelloController');
 };
 
 goog.inherits(app.controllers.HelloController, app.core.Controller);
-
 
 /**
  * index action
@@ -48,4 +47,4 @@ app.controllers.HelloController.prototype.index = function(request, response) {
 };
 
 goog.exportProperty(app.controllers.HelloController.prototype, 'index',
-    app.controllers.HelloController.prototype.index);
+                    app.controllers.HelloController.prototype.index);

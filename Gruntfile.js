@@ -94,30 +94,8 @@ module.exports = function(grunt) {
       }
     },
 
-    closureLint: {
-      data: {
-        closureLinterPath: CONFIGURATION.closureLinter,
-        command: 'gjslint.py',
-        src: ['app/**/*.js', 'tests/**/*.js']
-      },
-      options: {
-        strict: true,
-        maxLineLength: 80,
-        opt: '-r'
-      },
-    },
-
-    closureFixStyle: {
-      data: {
-        closureLinterPath: CONFIGURATION.closureLinter,
-        command: 'fixjsstyle.py',
-        src: ['app']
-      },
-      options: {
-        strict: true,
-        maxLineLength: 80,
-        opt: '-r'
-      },
+    clangFormat: {
+      src: [ 'app/**/*.js' ]
     },
 
     closureBuilder: {
@@ -280,13 +258,13 @@ module.exports = function(grunt) {
   });
 
   // Load tasks
-  grunt.loadNpmTasks('grunt-closure-linter');
   grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-clang-format');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-file-append');
   grunt.loadNpmTasks('grunt-jsdoc');

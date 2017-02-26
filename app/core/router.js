@@ -14,8 +14,6 @@ goog.require('goog.array');
 goog.require('goog.events');
 goog.require('goog.history.Html5History');
 
-
-
 /**
  * @param {boolean=} opt_noFragment set to true to hide fragment when using
  * HTML5 history.
@@ -35,21 +33,20 @@ goog.require('goog.history.Html5History');
 app.core.Router = function(opt_noFragment, opt_blankPage, opt_input,
                            opt_iframe) {
   goog.base(this);
-  this.history_ = goog.history.Html5History.isSupported() ?
-      new goog.history.Html5History() :
-      new goog.History(!!(opt_blankPage && opt_noFragment), opt_blankPage,
-          opt_input, opt_iframe);
+  this.history_ = goog.history.Html5History.isSupported()
+                      ? new goog.history.Html5History()
+                      : new goog.History(!!(opt_blankPage && opt_noFragment),
+                                         opt_blankPage, opt_input, opt_iframe);
   if (this.history_.setUseFragment) {
     this.history_.setUseFragment(!opt_noFragment);
   }
   goog.events.listen(this.history_, goog.history.EventType.NAVIGATE,
-      this.onChange_, false, this);
+                     this.onChange_, false, this);
   this.routes_ = [];
   this.currentFragment_ = '';
   this.history_.setEnabled(true);
 };
 goog.inherits(app.core.Router, goog.events.EventTarget);
-
 
 /**
  * Router event types
@@ -59,9 +56,8 @@ app.core.Router.EventType = {
   /*
    * event to trigger when route is about to change.
    */
-  ROUTE_EXPIRED: 'routeExpired'
+  ROUTE_EXPIRED : 'routeExpired'
 };
-
 
 /**
  * Pass through the fragment for the URL
@@ -71,7 +67,6 @@ app.core.Router.prototype.navigate = function(fragment) {
   this.history_.setToken(fragment);
 };
 
-
 /**
  * Returns current routed fragment
  * @return {string} routed fragment.
@@ -79,7 +74,6 @@ app.core.Router.prototype.navigate = function(fragment) {
 app.core.Router.prototype.getFragment = function() {
   return this.currentFragment_;
 };
-
 
 /**
  * Define route as string or regex. /:abc/ will pass "abc" through as an
@@ -93,22 +87,23 @@ app.core.Router.prototype.getFragment = function() {
  */
 app.core.Router.prototype.route = function(route, fn, opt_context) {
   if (goog.isString(route))
-    route = new RegExp('^' + goog.string.regExpEscape(route)
-            .replace(/\\:\w+/g, '([a-zA-Z0-9._-]+)')
-            .replace(/\\\*/g, '(.*)')
-            .replace(/\\\[/g, '(')
-            .replace(/\\\]/g, ')?')
-            .replace(/\\\{/g, '(?:')
-            .replace(/\\\}/g, ')?') + '$');
+    route = new RegExp('^' +
+                       goog.string.regExpEscape(route)
+                           .replace(/\\:\w+/g, '([a-zA-Z0-9._-]+)')
+                           .replace(/\\\*/g, '(.*)')
+                           .replace(/\\\[/g, '(')
+                           .replace(/\\\]/g, ')?')
+                           .replace(/\\\{/g, '(?:')
+                           .replace(/\\\}/g, ')?') +
+                       '$');
   var completeRoute = {
-    route: route,
-    callback: fn,
-    context: opt_context
+    route : route,
+    callback : fn,
+    context : opt_context
   };
 
   this.routes_.push(completeRoute);
 };
-
 
 /**
  * Run route callback if route regexp matches fragment.
@@ -126,7 +121,6 @@ app.core.Router.prototype.runRouteIfMatches_ = function(route, fragment) {
   return false;
 };
 
-
 /**
  * Route change handler.
  * @private
@@ -142,17 +136,17 @@ app.core.Router.prototype.onChange_ = function() {
 
   if (fragment != this.currentFragment_) {
     this.dispatchEvent({
-      type: app.core.Router.EventType.ROUTE_EXPIRED,
-      previous: this.currentFragment_,
-      current: fragment
+      type : app.core.Router.EventType.ROUTE_EXPIRED,
+      previous : this.currentFragment_,
+      current : fragment
     });
     this.currentFragment_ = fragment;
-    goog.array.find(this.routes_ || [], function(route) {
-      return this.runRouteIfMatches_(route, fragment);
-    }, this);
+    goog.array.find(
+        this.routes_ || [],
+        function(route) { return this.runRouteIfMatches_(route, fragment); },
+        this);
   }
 };
-
 
 /**
  * Go through all defined routes and run first matched.
@@ -167,7 +161,8 @@ app.core.Router.prototype.checkRoutes = function() {
   }
 
   this.currentFragment_ = fragment;
-  goog.array.find(this.routes_ || [], function(route) {
-    return this.runRouteIfMatches_(route, fragment);
-  }, this);
+  goog.array.find(
+      this.routes_ || [],
+      function(route) { return this.runRouteIfMatches_(route, fragment); },
+      this);
 };

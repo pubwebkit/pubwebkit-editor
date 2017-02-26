@@ -30,19 +30,14 @@ goog.provide('pwk.BranchNode');
 
 goog.require('pwk.Node');
 
-
-
 /**
  * @param {pwk.NodeTypes} type Type of node
  * @param {pwk.Document} doc Parent document object.
  * @constructor
  * @extends {pwk.Node}
  */
-pwk.BranchNode = function(type, doc) {
-  goog.base(this, type, doc);
-};
+pwk.BranchNode = function(type, doc) { goog.base(this, type, doc); };
 goog.inherits(pwk.BranchNode, pwk.Node);
-
 
 /**
  * Component default css class
@@ -50,7 +45,6 @@ goog.inherits(pwk.BranchNode, pwk.Node);
  * @override
  */
 pwk.BranchNode.prototype.CSS_CLASS = 'pwk-branchnode';
-
 
 /**
  * @inheritDoc

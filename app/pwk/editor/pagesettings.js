@@ -31,8 +31,6 @@ goog.provide('pwk.PageSettings.Paper');
 
 goog.require('goog.math.Size');
 
-
-
 /**
  * Initialize {pwk.PageSettings} component.
  * @constructor
@@ -82,18 +80,14 @@ pwk.PageSettings = function() {
 };
 goog.addSingletonGetter(pwk.PageSettings);
 
-
 /**
  * @param {pwk.Document} doc Document required to manage global settings of
  * pages of document.
  */
-pwk.PageSettings.prototype.initialize = function(doc) {
-  this.document_ = doc;
-};
+pwk.PageSettings.prototype.initialize = function(doc) { this.document_ = doc; };
 
 // TODO: To implement the functionality to set left/right margin and apply this
 // settings on UI side
-
 
 /**
  * Get left page margin.
@@ -103,7 +97,6 @@ pwk.PageSettings.prototype.getLeftMargin = function() {
   return this.leftMargin_;
 };
 
-
 /**
  * Get right page margin.
  * @return {number}
@@ -111,7 +104,6 @@ pwk.PageSettings.prototype.getLeftMargin = function() {
 pwk.PageSettings.prototype.getRightMargin = function() {
   return this.rightMargin_;
 };
-
 
 /**
  * Get page size settings.
@@ -121,7 +113,6 @@ pwk.PageSettings.prototype.getSize = function() {
   return new goog.math.Size(this.width_, this.heigth_);
 };
 
-
 /**
  * Get page content width
  * @return {number}
@@ -130,7 +121,6 @@ pwk.PageSettings.prototype.getContentWidth = function() {
   return this.width_ - this.leftMargin_ - this.rightMargin_;
 };
 
-
 /**
  * Get inner width of page
  * @return {number}
@@ -138,7 +128,6 @@ pwk.PageSettings.prototype.getContentWidth = function() {
 pwk.PageSettings.prototype.getInnerWidth = function() {
   return this.width_ - this.leftMargin_ - this.rightMargin_;
 };
-
 
 /**
  * @return {pwk.Document}
@@ -151,67 +140,26 @@ pwk.PageSettings.prototype.getDocument_ = function() {
   return this.document_;
 };
 
-
 /**
  * Sizes of common paper sizes.
  * @enum {Object}
  */
 pwk.PageSettings.Paper = {
-  Test: {
-    height: {
-      pixel: 6 * 96
-    },
-    width: {
-      pixel: 5 * 96
-    }
+  Test : {height : {pixel : 6 * 96}, width : {pixel : 5 * 96}},
+  A4 : {
+    height : {pixel : 11.69 * 96, inch : 11.69, mm : 11.69 * 25.4},
+    width : {pixel : 8.27 * 96, inch : 8.27, mm : 8.27 * 25.4}
   },
-  A4: {
-    height: {
-      pixel: 11.69 * 96,
-      inch: 11.69,
-      mm: 11.69 * 25.4
-    },
-    width: {
-      pixel: 8.27 * 96,
-      inch: 8.27,
-      mm: 8.27 * 25.4
-    }
+  Letter : {
+    height : {pixel : 11.0 * 96, inch : 11.0, mm : 11.0 * 25.4},
+    width : {pixel : 8.5 * 96, inch : 8.5, mm : 8.5 * 25.4}
   },
-  Letter: {
-    height: {
-      pixel: 11.0 * 96,
-      inch: 11.0,
-      mm: 11.0 * 25.4
-    },
-    width: {
-      pixel: 8.5 * 96,
-      inch: 8.5,
-      mm: 8.5 * 25.4
-    }
+  Legal : {
+    height : {pixel : 14.0 * 96, inch : 14.0, mm : 14.0 * 25.4},
+    width : {pixel : 8.5 * 96, inch : 8.5, mm : 8.5 * 25.4}
   },
-  Legal: {
-    height: {
-      pixel: 14.0 * 96,
-      inch: 14.0,
-      mm: 14.0 * 25.4
-    },
-    width: {
-      pixel: 8.5 * 96,
-      inch: 8.5,
-      mm: 8.5 * 25.4
-    }
-  },
-  Executive: {
-    height: {
-      pixel: 10.5 * 96,
-      inch: 10.5,
-      mm: 10.5 * 25.4
-    },
-    width: {
-      pixel: 7.25 * 96,
-      inch: 7.25,
-      mm: 7.25 * 25.4
-    }
+  Executive : {
+    height : {pixel : 10.5 * 96, inch : 10.5, mm : 10.5 * 25.4},
+    width : {pixel : 7.25 * 96, inch : 7.25, mm : 7.25 * 25.4}
   }
 };
-

@@ -33,8 +33,6 @@ goog.require('goog.ui.Component');
 goog.require('pwk.NodeAttribute');
 goog.require('pwk.NodeFormatter');
 
-
-
 /**
  * @param {pwk.NodeTypes} type Type of node
  * @param {pwk.Document} doc Parent document object.
@@ -74,15 +72,11 @@ pwk.Node = function(type, doc) {
 };
 goog.inherits(pwk.Node, goog.ui.Component);
 
-
 /**
  * Get editor {@link pwk.Document} instance.
  * @return {pwk.Document} Editor {@link pwk.Document} instance.
  */
-pwk.Node.prototype.getDocument = function() {
-  return this.document_;
-};
-
+pwk.Node.prototype.getDocument = function() { return this.document_; };
 
 /** @inheritDoc */
 pwk.Node.prototype.createDom = function() {
@@ -90,7 +84,6 @@ pwk.Node.prototype.createDom = function() {
   this.setElementInternal(this.dom_.createElement('div'));
   goog.dom.classlist.add(this.getElement(), this.CSS_CLASS);
 };
-
 
 /** @inheritDoc */
 pwk.Node.prototype.disposeInternal = function() {
@@ -106,12 +99,10 @@ pwk.Node.prototype.disposeInternal = function() {
   delete this.attributes_;
 };
 
-
 /** @inheritDoc */
 pwk.Node.prototype.addChild = function(child, opt_render) {
   goog.base(this, 'addChild', child, opt_render);
 };
-
 
 /** @inheritDoc */
 pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
@@ -121,7 +112,6 @@ pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
 
   goog.base(this, 'addChildAt', child, index, opt_render);
 };
-
 
 /**
  * Determine or set that node is a child.
@@ -135,22 +125,15 @@ pwk.Node.prototype.isChild = function(opt_child) {
   return this.isChild_;
 };
 
-
 /**
  * @return {pwk.NodeTypes} Type of the node
  */
-pwk.Node.prototype.getType = function() {
-  return this.type_;
-};
-
+pwk.Node.prototype.getType = function() { return this.type_; };
 
 /**
  * @return {Array.<pwk.NodeAttribute>}
  */
-pwk.Node.prototype.getAttributes = function() {
-  return this.attributes_;
-};
-
+pwk.Node.prototype.getAttributes = function() { return this.attributes_; };
 
 /**
  * Get attribute for specified type.
@@ -158,11 +141,9 @@ pwk.Node.prototype.getAttributes = function() {
  * @return {?pwk.NodeAttribute}
  */
 pwk.Node.prototype.getAttribute = function(type) {
-  return goog.array.find(this.attributes_, function(att) {
-    return att.getType() == type;
-  });
+  return goog.array.find(
+      this.attributes_, function(att) { return att.getType() == type; });
 };
-
 
 /**
  * Gets the height and width of an node element, even if its display is none.
@@ -171,7 +152,6 @@ pwk.Node.prototype.getAttribute = function(type) {
 pwk.Node.prototype.getSize = function() {
   return goog.style.getSize(this.getElement());
 };
-
 
 /**
  * Set attribute. If attribute with specified type already exist, old data will
@@ -182,9 +162,8 @@ pwk.Node.prototype.getSize = function() {
  * @param {boolean=} opt_isMergeData
  */
 pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
-  var attribute = goog.array.find(this.attributes_, function(att) {
-    return att.getType() == type;
-  });
+  var attribute = goog.array.find(
+      this.attributes_, function(att) { return att.getType() == type; });
 
   if (goog.isDefAndNotNull(attribute)) {
     attribute.setValue(value, opt_isMergeData);
@@ -194,7 +173,6 @@ pwk.Node.prototype.setAttribute = function(type, value, opt_isMergeData) {
   this.dispatchEvent(pwk.Node.EventType.ATTRIBUTES_CHANGED);
 };
 
-
 /**
  * Get parent page index.
  * @return {number} Parent page index.
@@ -203,7 +181,6 @@ pwk.Node.prototype.getParentPageIndex = function() {
   return this.document_.indexOfPageByNodeId(this.getId());
 };
 
-
 /**
  * Get parent page.
  * @return {pwk.Page} Parent page.
@@ -211,7 +188,6 @@ pwk.Node.prototype.getParentPageIndex = function() {
 pwk.Node.prototype.getParentPage = function() {
   return this.document_.getPageByNodeId(this.getId());
 };
-
 
 /**
  * Returns the 0-based index of the given node component, or -1 if no such
@@ -222,18 +198,15 @@ pwk.Node.prototype.getIndex = function() {
   return this.document_.indexOfNode(this);
 };
 
-
 /**
  * Make selection for node content by range
  */
 pwk.Node.prototype.select = goog.abstractMethod;
 
-
 /**
  * Remove selection from node
  */
 pwk.Node.prototype.unselect = goog.abstractMethod;
-
 
 /**
  * Remove content range from node
@@ -243,20 +216,17 @@ pwk.Node.prototype.unselect = goog.abstractMethod;
  */
 pwk.Node.prototype.removeRange = goog.abstractMethod;
 
-
 /**
  * Get first line of the current node.
  * @return {pwk.Line}
  */
 pwk.Node.prototype.getFirstLine = goog.abstractMethod;
 
-
 /**
  * Get latest line of the node.
  * @return {pwk.Line}
  */
 pwk.Node.prototype.getLastLine = goog.abstractMethod;
-
 
 /**
  * Get node offset regarding specified line offset.
@@ -266,7 +236,6 @@ pwk.Node.prototype.getLastLine = goog.abstractMethod;
  */
 pwk.Node.prototype.getOffsetByLineOffset = goog.abstractMethod;
 
-
 /**
  * Remove node content based on current selection
  * @param {boolean=} opt_isBack Direction, in case if range is collapsed
@@ -274,13 +243,11 @@ pwk.Node.prototype.getOffsetByLineOffset = goog.abstractMethod;
  */
 pwk.Node.prototype.removeSelection = goog.abstractMethod;
 
-
 /**
  * Specifies whether there can be this node is split between pages.
  * @return {boolean}
  */
 pwk.Node.prototype.isSplittable = goog.abstractMethod;
-
 
 /**
  * Split node to two parts by specified offset and return bottommost newly
@@ -292,7 +259,6 @@ pwk.Node.prototype.isSplittable = goog.abstractMethod;
  *    offset is end of the current node and linked node below is exist.
  */
 pwk.Node.prototype.splitToBottom = goog.abstractMethod;
-
 
 /**
  * Split node to two nodes by specified offset and return topmost newly
@@ -306,7 +272,6 @@ pwk.Node.prototype.splitToBottom = goog.abstractMethod;
  */
 pwk.Node.prototype.splitToTop = goog.abstractMethod;
 
-
 /**
  * Cut specified range of the node and return newly created node without adding
  * to the DOM.
@@ -317,7 +282,6 @@ pwk.Node.prototype.splitToTop = goog.abstractMethod;
  */
 pwk.Node.prototype.cut = goog.abstractMethod;
 
-
 /**
  * Split node by specified height.
  * @param {number} height Height.
@@ -326,13 +290,11 @@ pwk.Node.prototype.cut = goog.abstractMethod;
  */
 pwk.Node.prototype.splitByHeight = goog.abstractMethod;
 
-
 /**
  * Set previous linked node.
  * @param {pwk.Node} node
  */
 pwk.Node.prototype.setPreviousLinkedNode = goog.abstractMethod;
-
 
 /**
  * Set next linked node.
@@ -340,20 +302,17 @@ pwk.Node.prototype.setPreviousLinkedNode = goog.abstractMethod;
  */
 pwk.Node.prototype.setNextLinkedNode = goog.abstractMethod;
 
-
 /**
  * Get previous linked node. If node does not linked returns null.
  * @return {?pwk.Node}
  */
 pwk.Node.prototype.getPreviousLinkedNode = goog.abstractMethod;
 
-
 /**
  * Get next linked node. If node does not linked returns null.
  * @return {?pwk.Node}
  */
 pwk.Node.prototype.getNextLinkedNode = goog.abstractMethod;
-
 
 /**
  * Get lines content length
@@ -362,13 +321,11 @@ pwk.Node.prototype.getNextLinkedNode = goog.abstractMethod;
  */
 pwk.Node.prototype.getLength = goog.abstractMethod;
 
-
 /**
  * Component default css class
  * @type {string}
  */
 pwk.Node.prototype.CSS_CLASS = 'pwk-node';
-
 
 /**
  * Merge nodes
@@ -387,9 +344,8 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
       var lastChangedLine = bottomNode.getLineAt(0);
 
       while (length--) {
-        topNode.insertLine(
-            bottomNode.unlinkLine(
-                bottomNode.getLineAt(0)), true);
+        topNode.insertLine(bottomNode.unlinkLine(bottomNode.getLineAt(0)),
+                           true);
       }
 
       // Update linked nodes
@@ -410,18 +366,15 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
       }
 
       if (lastChangedLine != null) {
-        topNode.dispatchEvent(
-            new pwk.NodeContentChangedEvent(lastChangedLine));
+        topNode.dispatchEvent(new pwk.NodeContentChangedEvent(lastChangedLine));
       }
-
     }
   }
 };
-
 
 /**
  * @enum {string}
  */
 pwk.Node.EventType = {
-  ATTRIBUTES_CHANGED: goog.events.getUniqueId('attributes_changed')
+  ATTRIBUTES_CHANGED : goog.events.getUniqueId('attributes_changed')
 };

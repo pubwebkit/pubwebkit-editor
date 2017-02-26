@@ -30,8 +30,6 @@ goog.provide('app.core.Response');
 goog.require('app.core.Router');
 goog.require('goog.soy');
 
-
-
 /**
  * Create a response based on the provided request.
  * @param {app.core.Request} request
@@ -52,14 +50,10 @@ app.core.Response = function(request, router) {
   this.router_ = router;
 };
 
-
 /**
  * @return {app.core.Router}
  */
-app.core.Response.prototype.getRouter = function() {
-  return this.router_;
-};
-
+app.core.Response.prototype.getRouter = function() { return this.router_; };
 
 /**
  * Render the template with the provided data.

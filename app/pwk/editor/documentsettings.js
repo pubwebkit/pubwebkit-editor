@@ -30,8 +30,6 @@ goog.provide('pwk.DocumentSettings');
 
 goog.require('goog.style');
 
-
-
 /**
  * Initialize {pwk.PageSettings} component.
  * @constructor
@@ -61,7 +59,6 @@ pwk.DocumentSettings = function() {
 };
 goog.addSingletonGetter(pwk.DocumentSettings);
 
-
 /**
  * Get default line-height for current document.
  * @return {string}
@@ -69,7 +66,6 @@ goog.addSingletonGetter(pwk.DocumentSettings);
 pwk.DocumentSettings.prototype.getLineHeight = function() {
   return this.lineHeight_;
 };
-
 
 /**
  * Set default line-height for current document.
@@ -80,7 +76,6 @@ pwk.DocumentSettings.prototype.setLineHeight = function(value) {
   this.applyLineHeight_();
 };
 
-
 /**
  * Get default font size of current document.
  * @return {string}
@@ -88,7 +83,6 @@ pwk.DocumentSettings.prototype.setLineHeight = function(value) {
 pwk.DocumentSettings.prototype.getFontSize = function() {
   return this.fontSize_;
 };
-
 
 /**
  * Set default font size of current document.
@@ -98,7 +92,6 @@ pwk.DocumentSettings.prototype.setFontSize = function(value) {
   this.fontSize_ = value;
   this.applyFontSize_();
 };
-
 
 /**
  * Initialize document property to manage global settings of document.
@@ -110,16 +103,14 @@ pwk.DocumentSettings.prototype.initialize = function(doc) {
   this.applyFontSize_();
 };
 
-
 /**
  * Apply line height settings to document.
  * @private
  */
 pwk.DocumentSettings.prototype.applyLineHeight_ = function() {
-  goog.style.setStyle(
-      this.getDocument_().getElement(), 'line-height', this.lineHeight_);
+  goog.style.setStyle(this.getDocument_().getElement(), 'line-height',
+                      this.lineHeight_);
 };
-
 
 /**
  * Apply font size settings to document.
@@ -128,7 +119,6 @@ pwk.DocumentSettings.prototype.applyLineHeight_ = function() {
 pwk.DocumentSettings.prototype.applyFontSize_ = function() {
   this.getDocument_().getElement().style.fontSize = this.fontSize_;
 };
-
 
 /**
  * @return {pwk.Document}
@@ -140,4 +130,3 @@ pwk.DocumentSettings.prototype.getDocument_ = function() {
   }
   return this.document_;
 };
-

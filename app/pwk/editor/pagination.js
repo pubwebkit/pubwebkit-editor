@@ -30,8 +30,6 @@ goog.provide('pwk.Pagination');
 goog.require('goog.events.EventTarget');
 goog.require('pwk.LeafNode');
 
-
-
 /**
  * @param {pwk.Document} document
  * @constructor
@@ -56,18 +54,16 @@ pwk.Pagination = function(document) {
   this.initEvents_();
 };
 
-
 /**
  * Initialize event handlers.
  * @private
  */
 pwk.Pagination.prototype.initEvents_ = function() {
   goog.events.listen(this.document_, pwk.Document.EventType.NODE_REMOVED,
-      this.onDocumentNodeRemovedEventHandler_, false, this);
+                     this.onDocumentNodeRemovedEventHandler_, false, this);
   goog.events.listen(this.document_, pwk.Document.EventType.FILLING_CHANGE,
-      this.onDocumentFillingChangedEventHandler_, false, this);
+                     this.onDocumentFillingChangedEventHandler_, false, this);
 };
-
 
 /**
  * Add node to the document and link with the latest page.
@@ -91,8 +87,8 @@ pwk.Pagination.prototype.addNode = function(node) {
     editorDocument.addPage(page);
 
     // Important to add handlers after page initialization.
-    page.listen(pwk.Page.EventType.OVERFLOW,
-        this.onPageOverflowsHandler_, false, this);
+    page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_,
+                false, this);
 
     pageNodeIndex[pageNodeIndexLen] = [];
 
@@ -107,7 +103,6 @@ pwk.Pagination.prototype.addNode = function(node) {
   // Render node on the page
   page.linkNode(node);
 };
-
 
 /**
  * Add node to the document at the given 0-based index and link with the page
@@ -136,7 +131,7 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
       var prevNodeIndex =
           goog.array.indexOf(pageNodeIndex[pageIndex], prevNode.getId());
       goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(),
-          prevNodeIndex + 1);
+                          prevNodeIndex + 1);
 
       page = this.document_.getPageAt(pageIndex);
       page.linkNodeAfter(node, prevNode);
@@ -155,7 +150,7 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
       var nextNodeIndex =
           goog.array.indexOf(pageNodeIndex[pageIndex], nextNode.getId());
       goog.array.insertAt(pageNodeIndex[pageIndex], node.getId(),
-          nextNodeIndex);
+                          nextNodeIndex);
 
       page = this.document_.getPageAt(pageIndex);
       page.linkNodeBefore(node, nextNode);
@@ -165,7 +160,6 @@ pwk.Pagination.prototype.addNodeAt = function(node, index, opt_after) {
     }
   }
 };
-
 
 /**
  * Handler to process the page overflow event.
@@ -190,9 +184,8 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
     var siblingNode = doc.getNode(siblingPageNodes[0]);
     var siblingNodeIndex = doc.indexOfNode(siblingNode);
 
-    goog.array.forEach(nodes, function(node) {
-      doc.addNodeAt(node, siblingNodeIndex);
-    }, this);
+    goog.array.forEach(
+        nodes, function(node) { doc.addNodeAt(node, siblingNodeIndex); }, this);
 
   } else { // Create new page
     page = new pwk.Page(doc);
@@ -200,17 +193,14 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
 
     // NOTE: Important to add handlers after page initialization.
     page.listen(pwk.Page.EventType.OVERFLOW, this.onPageOverflowsHandler_,
-        false, this);
+                false, this);
 
     // Update index
     this.pageNodeIndex_[this.pageNodeIndex_.length] = [];
 
-    goog.array.forEachRight(nodes, function(node) {
-      doc.addNode(node);
-    }, this);
+    goog.array.forEachRight(nodes, function(node) { doc.addNode(node); }, this);
   }
 };
-
 
 /**
  * Nodes index by pages.
@@ -219,7 +209,6 @@ pwk.Pagination.prototype.onPageOverflowsHandler_ = function(e) {
 pwk.Pagination.prototype.getPaginationIndex = function() {
   return this.pageNodeIndex_;
 };
-
 
 /**
  * Event handler for pwk.Document.EventType.NODE_REMOVED event type.
@@ -255,10 +244,8 @@ pwk.Pagination.prototype.onDocumentNodeRemovedEventHandler_ = function(e) {
         return;
       }
     }, this);
-
   }
 };
-
 
 /**
  * Handler of filling document content by pages. Called each time, when page
@@ -278,7 +265,6 @@ pwk.Pagination.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
   this.checkFilling(page);
 };
 
-
 /**
  * Checking pages filling. Checking started from topless range node.
  * @param {pwk.Page} modifiedPage
@@ -286,15 +272,9 @@ pwk.Pagination.prototype.onDocumentFillingChangedEventHandler_ = function(e) {
 pwk.Pagination.prototype.checkFilling = function(modifiedPage) {
   var doc = this.document_;
   var topPageIndex = doc.indexOfPage(modifiedPage);
-  var getBottomPageIndex =
-      goog.bind(
-          function() {
-            return this.pageNodeIndex_[topPageIndex + 1] ?
-                topPageIndex + 1 :
-                -1;
-          },
-          this);
-
+  var getBottomPageIndex = goog.bind(function() {
+    return this.pageNodeIndex_[topPageIndex + 1] ? topPageIndex + 1 : -1;
+  }, this);
 
   var bottomPageIndex = getBottomPageIndex();
   var bottomPage;
@@ -328,7 +308,7 @@ pwk.Pagination.prototype.checkFilling = function(modifiedPage) {
             } else {
               // It's not linked nodes, so just move it to the above page.
               goog.array.remove(this.pageNodeIndex_[bottomPageIndex],
-                  nodeToMove.getId());
+                                nodeToMove.getId());
               nodeToMove = doc.unlinkNode(nodeToMove);
               doc.addNodeAt(nodeToMove, nodeToMove.getIndex(), true);
             }
@@ -346,8 +326,7 @@ pwk.Pagination.prototype.checkFilling = function(modifiedPage) {
             // For linked nodes
             if (previousLinkedNode != null) {
               pwk.Node.mergeNodes(doc, previousLinkedNode, nodeToMove);
-            }
-            else {
+            } else {
               doc.addNodeAt(movedContent, nodeToMove.getIndex(), true);
             }
           }

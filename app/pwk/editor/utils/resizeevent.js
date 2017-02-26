@@ -29,52 +29,40 @@
 
 goog.provide('pwk.utils.ResizeEvent');
 
-
 /**
  * Is Internet Explorer?
  * @type {boolean}
  * @private
  */
 pwk.utils.ResizeEvent.isIE_ = (function() {
-  return typeof navigator !== 'undefined' ?
-      Boolean(navigator.userAgent.match(/Trident/) ||
-              navigator.userAgent.match(/Edge/)) :
-      false;
+  return typeof navigator !== 'undefined'
+             ? Boolean(navigator.userAgent.match(/Trident/) ||
+                       navigator.userAgent.match(/Edge/))
+             : false;
 }());
-
 
 /**
  * @type {Function}
  * @private
  */
 pwk.utils.ResizeEvent.requestFrame_ = (function() {
-  var raf = window.requestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      function fallbackRAF(func) {
-        return window.setTimeout(func, 20);
-      };
+  var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+            window.webkitRequestAnimationFrame || function fallbackRAF(func) {
+              return window.setTimeout(func, 20);
+            };
 
-  return function requestFrameFunction(func) {
-    return raf(func);
-  };
+  return function requestFrameFunction(func) { return raf(func); };
 })();
-
 
 /**
  * @type {Function}
  * @private
  */
 pwk.utils.ResizeEvent.cancelFrame_ = (function() {
-  var cancel = window.cancelAnimationFrame ||
-      window.mozCancelAnimationFrame ||
-      window.webkitCancelAnimationFrame ||
-      window.clearTimeout;
-  return function cancelFrameFunction(id) {
-    return cancel(id);
-  };
+  var cancel = window.cancelAnimationFrame || window.mozCancelAnimationFrame ||
+               window.webkitCancelAnimationFrame || window.clearTimeout;
+  return function cancelFrameFunction(id) { return cancel(id); };
 })();
-
 
 /**
  * @param {Event} e
@@ -97,7 +85,6 @@ pwk.utils.ResizeEvent.resizeListener_ = function(e) {
   });
 };
 
-
 /**
  * On element load handler.
  * @param {Element} el
@@ -105,10 +92,9 @@ pwk.utils.ResizeEvent.resizeListener_ = function(e) {
  */
 pwk.utils.ResizeEvent.objectLoad_ = function(el) {
   el.contentDocument.defaultView.__resizeTrigger__ = el.__resizeElement__;
-  el.contentDocument.defaultView.addEventListener('resize',
-      pwk.utils.ResizeEvent.resizeListener_);
+  el.contentDocument.defaultView.addEventListener(
+      'resize', pwk.utils.ResizeEvent.resizeListener_);
 };
-
 
 /**
  * Adds an event listener for a custom resize event.
@@ -128,9 +114,11 @@ pwk.utils.ResizeEvent.listen = function(element, fn) {
         element.style.position = 'relative';
       }
       var obj = element.__resizeTrigger__ = document.createElement('object');
-      obj.setAttribute('style', 'display: block; position: absolute; top: 0; ' +
-          'left: 0; height: 100%; width: 100%; overflow: hidden; ' +
-          'pointer-events: none; z-index: -1; opacity: 0;');
+      obj.setAttribute(
+          'style',
+          'display: block; position: absolute; top: 0; ' +
+              'left: 0; height: 100%; width: 100%; overflow: hidden; ' +
+              'pointer-events: none; z-index: -1; opacity: 0;');
       obj.setAttribute('class', 'resize-sensor');
       obj.__resizeElement__ = element;
       obj.onload = goog.bind(pwk.utils.ResizeEvent.objectLoad_, obj, obj);
@@ -147,7 +135,6 @@ pwk.utils.ResizeEvent.listen = function(element, fn) {
   element.__resizeListeners__.push(fn);
 };
 
-
 /**
  * Removes an resize event listener which was added with listen() method.
  * @param {Element} element
@@ -156,25 +143,23 @@ pwk.utils.ResizeEvent.listen = function(element, fn) {
 pwk.utils.ResizeEvent.unlisten = function(element, fn) {
   var attachEvent = document.attachEvent;
 
-  element.__resizeListeners__
-      .splice(element.__resizeListeners__.indexOf(fn), 1);
+  element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn),
+                                     1);
 
   if (!element.__resizeListeners__.length) {
     if (attachEvent) {
       element.detachEvent('onresize', pwk.utils.ResizeEvent.resizeListener_);
     } else {
-      element.__resizeTrigger__.contentDocument.defaultView
-          .removeEventListener('resize', pwk.utils.ResizeEvent.resizeListener_);
+      element.__resizeTrigger__.contentDocument.defaultView.removeEventListener(
+          'resize', pwk.utils.ResizeEvent.resizeListener_);
       element.__resizeTrigger__ =
           !element.removeChild(element.__resizeTrigger__);
     }
   }
 };
 
-
 /**
  * Default CSS class to be applied to the resize sensor.
  * @type {string}
  */
 pwk.utils.ResizeEvent.CSS_CLASS = 'resize-sensor';
-

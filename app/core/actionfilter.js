@@ -30,14 +30,11 @@
 
 goog.provide('app.core.ActionFilter');
 
-
-
 /**
  * Action filter.
  * @interface
  */
 app.core.ActionFilter = function() {};
-
 
 /**
  * Controller that will be processed by this filter.
@@ -45,13 +42,11 @@ app.core.ActionFilter = function() {};
  */
 app.core.ActionFilter.prototype.getController = goog.abstractMethod;
 
-
 /**
  * Action that will be processed by this filter.
  * @return {string|RegExp}
  */
 app.core.ActionFilter.prototype.getAction = goog.abstractMethod;
-
 
 /**
  * Called when an unhandled exception occurs in the action.
@@ -59,13 +54,11 @@ app.core.ActionFilter.prototype.getAction = goog.abstractMethod;
  */
 app.core.ActionFilter.prototype.onException = goog.nullFunction;
 
-
 /**
  * Called before the action method is invoked.
  * @param {app.core.events.ActionEvent} e
  */
 app.core.ActionFilter.prototype.onActionExecuting = goog.nullFunction;
-
 
 /**
  * Called after the action method is invoked.

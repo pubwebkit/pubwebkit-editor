@@ -32,15 +32,9 @@ goog.provide('pwk.Ruler');
 
 goog.require('goog.ui.Component');
 
-
-
 /**
  * @constructor
  * @extends {goog.ui.Component}
  */
-pwk.Ruler = function() {
-  goog.base(this);
-};
+pwk.Ruler = function() { goog.base(this); };
 goog.inherits(pwk.Ruler, goog.ui.Component);
-
-

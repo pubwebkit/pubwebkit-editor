@@ -26,8 +26,6 @@ goog.provide('app.core.types.ActionFilterItem');
 goog.require('app.core.ActionFilter');
 goog.require('app.core.types.ApplicationFilterItem');
 
-
-
 /**
  * @param {!app.core.ActionFilter} filter
  * @param {string|RegExp=} opt_route Route to watch for.
@@ -45,8 +43,7 @@ app.core.types.ActionFilterItem = function(filter, opt_route, opt_order) {
   this.route_ = goog.isDefAndNotNull(opt_route) ? opt_route : '';
 };
 goog.inherits(app.core.types.ActionFilterItem,
-    app.core.types.ApplicationFilterItem);
-
+              app.core.types.ApplicationFilterItem);
 
 /**
  * @return {string|RegExp}

@@ -29,8 +29,6 @@
 goog.provide('pwk.NodeAttribute');
 goog.provide('pwk.NodeAttributeTypes');
 
-
-
 /**
  * @param {pwk.NodeAttributeTypes} type
  * @param {string} value
@@ -52,24 +50,17 @@ pwk.NodeAttribute = function(type, value) {
   this.setValue(value);
 };
 
-
 /**
  * Get attribute type.
  * @return {pwk.NodeAttributeTypes}
  */
-pwk.NodeAttribute.prototype.getType = function() {
-  return this.type_;
-};
-
+pwk.NodeAttribute.prototype.getType = function() { return this.type_; };
 
 /**
  * Get attribute value.
  * @return {string}
  */
-pwk.NodeAttribute.prototype.getValue = function() {
-  return this.value_;
-};
-
+pwk.NodeAttribute.prototype.getValue = function() { return this.value_; };
 
 /**
  * Set attribute value.
@@ -82,34 +73,33 @@ pwk.NodeAttribute.prototype.setValue = function(value, opt_isAppendValue) {
 
     switch (this.type_) {
 
-      case pwk.NodeAttributeTypes.HTML_CLASS:
-        var classes = this.value_.split(' ');
-        // Is class already assigned?
-        if (!goog.array.contains(classes, value)) {
+    case pwk.NodeAttributeTypes.HTML_CLASS:
+      var classes = this.value_.split(' ');
+      // Is class already assigned?
+      if (!goog.array.contains(classes, value)) {
 
-          // Is required to append value of just define it?
-          if (opt_isAppendValue) {
-            this.value_ = this.value_ + ' ' + value;
-          } else {
-            this.value_ = value;
-          }
+        // Is required to append value of just define it?
+        if (opt_isAppendValue) {
+          this.value_ = this.value_ + ' ' + value;
+        } else {
+          this.value_ = value;
         }
-        break;
+      }
+      break;
 
-      default:
-        this.value_ = value;
+    default:
+      this.value_ = value;
     }
   }
 };
-
 
 /**
  * Node attribute types.
  * @enum {string}
  */
 pwk.NodeAttributeTypes = {
-  HTML_CLASS: 'html/class',
-  STYLE_HEIGHT: 'style/height',
-  STYLE_LINE_HEIGHT: 'style/lineHeight',
-  STYLE_FONT_SIZE: 'style/fontSize'
+  HTML_CLASS : 'html/class',
+  STYLE_HEIGHT : 'style/height',
+  STYLE_LINE_HEIGHT : 'style/lineHeight',
+  STYLE_FONT_SIZE : 'style/fontSize'
 };

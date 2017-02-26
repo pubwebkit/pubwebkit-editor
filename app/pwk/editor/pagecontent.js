@@ -35,8 +35,6 @@ goog.require('goog.ui.Component');
 goog.require('pwk.Node');
 goog.require('pwk.utils.ResizeEvent');
 
-
-
 /**
  * Initialize {@link pwk.PageContent} component.
  * @param {pwk.Page} parentPage Parent page.
@@ -67,14 +65,12 @@ pwk.PageContent = function(parentPage, doc) {
 };
 goog.inherits(pwk.PageContent, goog.ui.Component);
 
-
 /** @inheritDoc */
 pwk.PageContent.prototype.createDom = function() {
   var element = this.dom_.createElement('div');
   this.setElementInternal(element);
   this.decorateInternal(element);
 };
-
 
 /** @inheritDoc */
 pwk.PageContent.prototype.decorateInternal = function(element) {
@@ -88,15 +84,13 @@ pwk.PageContent.prototype.decorateInternal = function(element) {
   element.style.paddingLeft = pageSettings.getLeftMargin() + 'px';
 };
 
-
 /** @inheritDoc */
 pwk.PageContent.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   pwk.utils.ResizeEvent.listen(this.getElement(),
-      goog.bind(this.onResizeHandler_, this));
+                               goog.bind(this.onResizeHandler_, this));
 };
-
 
 /** @inheritDoc */
 pwk.PageContent.prototype.disposeInternal = function() {
@@ -105,7 +99,6 @@ pwk.PageContent.prototype.disposeInternal = function() {
   // Remove references
   this.document_ = null;
 };
-
 
 /**
  * Render node inside this page content and insert at the end of page.
@@ -121,7 +114,6 @@ pwk.PageContent.prototype.linkNode = function(node) {
   node.render(element);
 };
 
-
 /**
  * Render node inside this page content and insert before specific node.
  * @param {pwk.Node} node
@@ -136,7 +128,6 @@ pwk.PageContent.prototype.linkNodeBefore = function(node, sibling) {
   var siblingEl = sibling.getElement();
   node.renderBefore(siblingEl);
 };
-
 
 /**
  * Render node inside this page content and insert before specific node.
@@ -159,7 +150,6 @@ pwk.PageContent.prototype.linkNodeAfter = function(node, previous) {
   }
 };
 
-
 /**
  * Remove node from document and return if any.
  * @param {string|pwk.Node} node
@@ -169,7 +159,6 @@ pwk.PageContent.prototype.unlinkNode = function(node) {
   return this.document_.unlinkNode(node);
 };
 
-
 /**
  * Is there any nodes on this page?
  * @return {boolean}
@@ -178,10 +167,9 @@ pwk.PageContent.prototype.isEmpty = function() {
   var childNodes = this.getElement().childNodes;
 
   return (childNodes.length === 1 &&
-      childNodes[0].className === pwk.utils.ResizeEvent.CSS_CLASS) ||
-      childNodes.length === 0;
+          childNodes[0].className === pwk.utils.ResizeEvent.CSS_CLASS) ||
+         childNodes.length === 0;
 };
-
 
 /**
  * On element resize event handler.
@@ -190,7 +178,6 @@ pwk.PageContent.prototype.isEmpty = function() {
 pwk.PageContent.prototype.onResizeHandler_ = function() {
   this.dispatchEvent(new pwk.Document.FillingChangedEvent(this.parentPage_));
 };
-
 
 /**
  * Default CSS class to be applied to the root element of components rendered

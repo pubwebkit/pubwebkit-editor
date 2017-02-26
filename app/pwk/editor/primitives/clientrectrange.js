@@ -28,8 +28,6 @@
 
 goog.provide('pwk.primitives.ClientRectRange');
 
-
-
 /**
  * @param {number=} opt_width
  * @param {number=} opt_height

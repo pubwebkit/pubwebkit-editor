@@ -48,8 +48,6 @@ goog.require('pwk.Line');
 goog.require('pwk.Shortcuts.Default');
 goog.require('pwk.Shortcuts.MacOS');
 
-
-
 /**
  * Main class of PWK Editor.
  * @constructor
@@ -129,7 +127,6 @@ pwk.Editor = function() {
 };
 goog.inherits(pwk.Editor, goog.ui.Component);
 
-
 /** @inheritDoc */
 pwk.Editor.prototype.createDom = function() {
 
@@ -142,7 +139,6 @@ pwk.Editor.prototype.createDom = function() {
   goog.dom.setFocusableTabIndex(element, true);
   element.focus();
 };
-
 
 /** @inheritDoc */
 pwk.Editor.prototype.enterDocument = function() {
@@ -174,7 +170,6 @@ pwk.Editor.prototype.enterDocument = function() {
   this.addTestText(true);
 };
 
-
 /**
  * Initialize key event handler.
  * @private
@@ -182,25 +177,23 @@ pwk.Editor.prototype.enterDocument = function() {
 pwk.Editor.prototype.initializeEvents_ = function() {
   this.getHandler()
       .listen(this.keyboardShortcutHandler_,
-          goog.ui.KeyboardShortcutHandler.EventType.SHORTCUT_TRIGGERED,
-          this.handleKeyboardShortcut_)
-      .listen(this.focusHandler_,
-          goog.events.FocusHandler.EventType.FOCUSIN, this.onFocusIn_)
-      .listen(this.focusHandler_,
-          goog.events.FocusHandler.EventType.FOCUSOUT, this.onFocusOut_)
+              goog.ui.KeyboardShortcutHandler.EventType.SHORTCUT_TRIGGERED,
+              this.handleKeyboardShortcut_)
+      .listen(this.focusHandler_, goog.events.FocusHandler.EventType.FOCUSIN,
+              this.onFocusIn_)
+      .listen(this.focusHandler_, goog.events.FocusHandler.EventType.FOCUSOUT,
+              this.onFocusOut_)
       .listen(this.keyHandler_, goog.events.KeyHandler.EventType.KEY,
-          this.handleKeyEvent_)
+              this.handleKeyEvent_)
       .listen(this.keyTarget_, goog.events.EventType.MOUSEDOWN,
-          this.onMouseDown_, true)
-      .listen(document, goog.events.EventType.MOUSEMOVE,
-          this.onMouseMove_, true)
-      .listen(document, goog.events.EventType.MOUSEUP,
-          this.onMouseUp_, true);
+              this.onMouseDown_, true)
+      .listen(document, goog.events.EventType.MOUSEMOVE, this.onMouseMove_,
+              true)
+      .listen(document, goog.events.EventType.MOUSEUP, this.onMouseUp_, true);
 
   // Register keyboard shortcuts
   this.registerKeyboardShortcut_(this.keyboardShortcutHandler_);
 };
-
 
 /**
  * Handles mousedown event.
@@ -234,7 +227,6 @@ pwk.Editor.prototype.onMouseDown_ = function(e) {
   }
 };
 
-
 /**
  * Handles mousemove event.
  * @param {goog.events.BrowserEvent} e Mouse event to handle.
@@ -248,7 +240,7 @@ pwk.Editor.prototype.onMouseMove_ = function(e) {
     if (e.clientY < viewPortSize.height - 10 && e.clientY > 0) {
       this.scrollLoopInProgress_ = false;
       this.selectFromRangeToPoint_(this.startSelectionRange_, e.clientX,
-          e.clientY);
+                                   e.clientY);
 
     } else {
       if (e.clientY == 0) {
@@ -263,7 +255,6 @@ pwk.Editor.prototype.onMouseMove_ = function(e) {
 
   e.preventDefault();
 };
-
 
 /**
  * @param {goog.events.BrowserEvent} e
@@ -280,28 +271,25 @@ pwk.Editor.prototype.scrollDocumentForSelection_ = function(e) {
   }
 };
 
-
 /**
  * @param {pwk.Range} startSelectionRange
  * @param {number} x
  * @param {number} y
  * @private
  */
-pwk.Editor.prototype.selectFromRangeToPoint_ =
-    function(startSelectionRange, x, y) {
+pwk.Editor.prototype.selectFromRangeToPoint_ = function(startSelectionRange, x,
+                                                        y) {
 
   var selection = this.selection_;
   var endSelectionRange = selection.getSelectionRangeFromPoint(x, y);
-  var selectionRange =
-      pwk.Range.createFromNodes(startSelectionRange.getStartLine(),
-          startSelectionRange.getStartNodeOffset(),
-          endSelectionRange.getEndLine(),
-          endSelectionRange.getEndNodeOffset(),
-          startSelectionRange.isStartOfStartLine(),
-          endSelectionRange.isStartOfEndLine());
+  var selectionRange = pwk.Range.createFromNodes(
+      startSelectionRange.getStartLine(),
+      startSelectionRange.getStartNodeOffset(), endSelectionRange.getEndLine(),
+      endSelectionRange.getEndNodeOffset(),
+      startSelectionRange.isStartOfStartLine(),
+      endSelectionRange.isStartOfEndLine());
   selection.selectDocument(selectionRange);
 };
-
 
 /**
  * @private
@@ -331,14 +319,16 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
     }
 
     var y = goog.style.getContainerOffsetToScrollInto(
-        this.selection_.getRange().getEndLine().getElement(), container).y;
-    var scroll = new goog.fx.dom.Scroll(container, [0, container.scrollTop],
-        [0, y + ((offsetY == 0 ? 15 : offsetY) * 5)], 50);
+                           this.selection_.getRange().getEndLine().getElement(),
+                           container).y;
+    var scroll = new goog.fx.dom.Scroll(
+        container, [ 0, container.scrollTop ],
+        [ 0, y + ((offsetY == 0 ? 15 : offsetY) * 5) ], 50);
 
     scroll.listen(goog.fx.Transition.EventType.END, goog.bind(function() {
       if (this.scrollLoopInProgress_) {
         this.selectFromRangeToPoint_(this.startSelectionRange_, clientX,
-            clientY);
+                                     clientY);
         this.scrollInLoop_();
       }
     }, this));
@@ -346,7 +336,6 @@ pwk.Editor.prototype.scrollInLoop_ = function() {
     scroll.play();
   }
 };
-
 
 /**
  * Handles mouseup event.
@@ -364,7 +353,6 @@ pwk.Editor.prototype.onMouseUp_ = function(e) {
   e.preventDefault();
 };
 
-
 /**
  * Handles focus event.
  * @param {goog.events.BrowserEvent} e Browser's event object.
@@ -377,7 +365,6 @@ pwk.Editor.prototype.onFocusIn_ = function(e) {
   }
 };
 
-
 /**
  * Handles focus out event.
  * @param {goog.events.BrowserEvent} e Browser's event object.
@@ -389,7 +376,6 @@ pwk.Editor.prototype.onFocusOut_ = function(e) {
     this.selection_.getCaret().hide();
   }
 };
-
 
 /**
  * Attempts to handle a keyboard event.
@@ -406,78 +392,78 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
   }
 
   switch (e.keyCode) {
-    case goog.events.KeyCodes.ENTER:
-      this.document_.createNewLine();
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.ENTER:
+    this.document_.createNewLine();
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.BACKSPACE:
-      isStopPropagation = true;
-      this.document_.deleteSelection(true);
-      break;
+  case goog.events.KeyCodes.BACKSPACE:
+    isStopPropagation = true;
+    this.document_.deleteSelection(true);
+    break;
 
-    case goog.events.KeyCodes.DELETE:
-      isStopPropagation = true;
-      this.document_.deleteSelection();
-      break;
+  case goog.events.KeyCodes.DELETE:
+    isStopPropagation = true;
+    this.document_.deleteSelection();
+    break;
 
-    case goog.events.KeyCodes.LEFT:
-      this.selection_.moveCaretLeft();
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.LEFT:
+    this.selection_.moveCaretLeft();
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.RIGHT:
-      this.selection_.moveCaretRight();
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.RIGHT:
+    this.selection_.moveCaretRight();
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.HOME:
-      this.selection_.moveCaretLineStart();
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.HOME:
+    this.selection_.moveCaretLineStart();
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.END:
-      this.selection_.moveCaretLineEnd();
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.END:
+    this.selection_.moveCaretLineEnd();
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.UP:
-      this.selection_.moveCaretUp();
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.UP:
+    this.selection_.moveCaretUp();
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.DOWN:
-      this.selection_.moveCaretDown();
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.DOWN:
+    this.selection_.moveCaretDown();
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.TAB:
-      this.document_.addValue(document.createTextNode('\u0009'));
-      isStopPropagation = true;
-      break;
+  case goog.events.KeyCodes.TAB:
+    this.document_.addValue(document.createTextNode('\u0009'));
+    isStopPropagation = true;
+    break;
 
-    case goog.events.KeyCodes.F1:
-    case goog.events.KeyCodes.F2:
-    case goog.events.KeyCodes.F3:
-    case goog.events.KeyCodes.F4:
-    case goog.events.KeyCodes.F5:
-    case goog.events.KeyCodes.F6:
-    case goog.events.KeyCodes.F7:
-    case goog.events.KeyCodes.F8:
-    case goog.events.KeyCodes.F9:
-    case goog.events.KeyCodes.F10:
-    case goog.events.KeyCodes.F11:
-    case goog.events.KeyCodes.F12:
-      break;
+  case goog.events.KeyCodes.F1:
+  case goog.events.KeyCodes.F2:
+  case goog.events.KeyCodes.F3:
+  case goog.events.KeyCodes.F4:
+  case goog.events.KeyCodes.F5:
+  case goog.events.KeyCodes.F6:
+  case goog.events.KeyCodes.F7:
+  case goog.events.KeyCodes.F8:
+  case goog.events.KeyCodes.F9:
+  case goog.events.KeyCodes.F10:
+  case goog.events.KeyCodes.F11:
+  case goog.events.KeyCodes.F12:
+    break;
 
-    default:
-      if (e.charCode > 0 && !e.ctrlKey && !e.metaKey) {
-        switch (e.charCode) {
-          default:
-            this.document_.addValue(String.fromCharCode(e.charCode));
-            isStopPropagation = true;
-        }
+  default:
+    if (e.charCode > 0 && !e.ctrlKey && !e.metaKey) {
+      switch (e.charCode) {
+      default:
+        this.document_.addValue(String.fromCharCode(e.charCode));
+        isStopPropagation = true;
       }
+    }
   }
 
   if (isStopPropagation) {
@@ -494,7 +480,6 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
   return isStopPropagation;
 };
 
-
 /**
  * Handles keyboard shortcuts on the editor.
  * @param {goog.ui.KeyboardShortcutEvent} e
@@ -502,19 +487,18 @@ pwk.Editor.prototype.handleKeyEvent_ = function(e) {
  */
 pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
   switch (e.identifier) {
-    case pwk.Shortcuts.Default.SAVE[0]:
-      console.info('Save document...');
-      this.addTestText();
-      break;
+  case pwk.Shortcuts.Default.SAVE[0]:
+    console.info('Save document...');
+    this.addTestText();
+    break;
 
-    case pwk.Shortcuts.Default.SELECT_ALL[0]:
-      this.document_.getSelection().selectDocument();
-      e.preventDefault();
-      e.stopPropagation();
-      break;
+  case pwk.Shortcuts.Default.SELECT_ALL[0]:
+    this.document_.getSelection().selectDocument();
+    e.preventDefault();
+    e.stopPropagation();
+    break;
   }
 };
-
 
 /**
  * Register handled shortcut.
@@ -523,11 +507,11 @@ pwk.Editor.prototype.handleKeyboardShortcut_ = function(e) {
  */
 pwk.Editor.prototype.registerKeyboardShortcut_ = function(handler) {
   for (var shortcut in pwk.Shortcuts.Default) {
-    handler.registerShortcut(pwk.Shortcuts.Default[shortcut][0],
+    handler.registerShortcut(
+        pwk.Shortcuts.Default[shortcut][0],
         goog.array.slice(pwk.Shortcuts.Default[shortcut], 1));
   }
 };
-
 
 /**
  * Keep in mind that this case is implemented for test purpose only and does not
@@ -544,8 +528,8 @@ pwk.Editor.prototype.addTestText = function(opt_init) {
   for (var i = 0; i < 10; i++) {
     paragraph = generator.generateParagraph(false);
     if (i == 0 && opt_init) {
-      line = /** @type {pwk.LeafNode} */(this.document_.getNodeAt(0))
-          .getFirstLine();
+      line = /** @type {pwk.LeafNode} */ (this.document_.getNodeAt(0))
+                 .getFirstLine();
       line.insertText(paragraph);
     } else {
       line = new pwk.Line(paragraph);
@@ -556,13 +540,11 @@ pwk.Editor.prototype.addTestText = function(opt_init) {
   //console.profileEnd();
 };
 
-
 /**
  * Component default css class.
  * @type {string}
  */
 pwk.Editor.CSS_CLASS = 'pwk-editor';
-
 
 /**
  * iFrame text event target CSS class.

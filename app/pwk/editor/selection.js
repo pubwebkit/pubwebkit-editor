@@ -37,8 +37,6 @@ goog.require('goog.math.Rect');
 goog.require('pwk.layer.Caret');
 goog.require('pwk.primitives.NodeSelectionRange');
 
-
-
 /**
  * @param {pwk.Document} doc
  * @extends {goog.events.EventTarget}
@@ -111,7 +109,6 @@ pwk.Selection = function(doc) {
 };
 goog.inherits(pwk.Selection, goog.events.EventTarget);
 
-
 /**
  * Initialize selection for document.
  */
@@ -121,14 +118,13 @@ pwk.Selection.prototype.initialize = function() {
   this.document_.addChild(caret, true);
   caret.show();
   caret.listen(pwk.layer.Caret.EventType.BEFORE_UPDATE, this.caretBeforeUpdate_,
-      false, this);
+               false, this);
   caret.listen(pwk.layer.Caret.EventType.AFTER_UPDATE, this.caretAfterUpdate_,
-      false, this);
+               false, this);
 
   this.containerElement_ =
       goog.dom.getElementByClass(pwk.EditorContainer.CSS_CLASS);
 };
-
 
 /**
  * @param {goog.events.Event} e Event object.
@@ -138,7 +134,6 @@ pwk.Selection.prototype.caretBeforeUpdate_ = function(e) {
 
 };
 
-
 /**
  * @param {pwk.layer.Caret.AfterUpdateEvent} e Event object.
  * @private
@@ -147,26 +142,22 @@ pwk.Selection.prototype.caretAfterUpdate_ = function(e) {
 
   if (!goog.isDefAndNotNull(this.lastModifiedBounds_) ||
       this.lastBoundsDirection_ != pwk.Selection.CaretDirection.DOWN &&
-      this.lastBoundsDirection_ != pwk.Selection.CaretDirection.UP) {
+          this.lastBoundsDirection_ != pwk.Selection.CaretDirection.UP) {
 
     this.lastBounds_ = e.getBounds();
     this.lastModifiedBounds_ = this.lastBounds_;
     this.lastModifiedRange_ =
-        /** @type {pwk.Range} */(goog.object.clone(this.range_));
+        /** @type {pwk.Range} */ (goog.object.clone(this.range_));
   }
 
   this.scrollToRangePosition(true);
 };
 
-
 /**
  * Get document caret instance
  * @return {pwk.layer.Caret}
  */
-pwk.Selection.prototype.getCaret = function() {
-  return this.caret_;
-};
-
+pwk.Selection.prototype.getCaret = function() { return this.caret_; };
 
 /**
  * Scroll to range position
@@ -208,16 +199,15 @@ pwk.Selection.prototype.scrollToRangePosition = function(opt_isIncreaseTask) {
       }
 
       if (isTop || isBottom) {
-        scroll = new goog.fx.dom.Scroll(container,
-            [0, container.scrollTop],
-            [0, isTop ? y - 60 - elementHeight : y + 60 + elementHeight],
-            120,
+        scroll = new goog.fx.dom.Scroll(
+            container, [ 0, container.scrollTop ],
+            [ 0, isTop ? y - 60 - elementHeight : y + 60 + elementHeight ], 120,
             goog.fx.easing.easeOut);
 
         this.scrollToRangePositionScrollInstance_ = scroll;
 
         scroll.listen(goog.fx.Transition.EventType.END,
-            goog.bind(this.scrollToRangePosition, this, false));
+                      goog.bind(this.scrollToRangePosition, this, false));
         scroll.play();
       } else {
         this.scrollToRangePosition(false);
@@ -225,7 +215,6 @@ pwk.Selection.prototype.scrollToRangePosition = function(opt_isIncreaseTask) {
     }
   }
 };
-
 
 /**
  * Update caret from range.
@@ -248,7 +237,6 @@ pwk.Selection.prototype.updateCaretFromRange = function(opt_range) {
   }
 };
 
-
 /**
  * Update selection from range.
  * @param {pwk.Range=} opt_range
@@ -261,25 +249,18 @@ pwk.Selection.prototype.updateSelectionFromRange = function(opt_range) {
   }
 };
 
-
 /**
  * Get current range
  * @return {pwk.Range}
  */
-pwk.Selection.prototype.getRange = function() {
-  return this.range_;
-};
-
+pwk.Selection.prototype.getRange = function() { return this.range_; };
 
 /**
  * Set range. Usually you should not use this method, instead of creating new
  * range, you should change current, using public methods of pwk.Range instance.
  * @param {pwk.Range} range
  */
-pwk.Selection.prototype.setRange = function(range) {
-  this.range_ = range;
-};
-
+pwk.Selection.prototype.setRange = function(range) { this.range_ = range; };
 
 /**
  * Move caret left
@@ -329,7 +310,6 @@ pwk.Selection.prototype.moveCaretLeft = function() {
   this.lastModifiedBoundsDirection_ = pwk.Selection.CaretDirection.LEFT;
 };
 
-
 /**
  * Move caret right.
  * @param {boolean=} opt_isTyping If this flag is set, then caret didn't be
@@ -373,14 +353,14 @@ pwk.Selection.prototype.moveCaretRight = function(opt_isTyping) {
 
           // Move caret to the start of line
           range.setStartPosition(newPositionRangeInfo.getLine(), startOffset,
-              true);
+                                 true);
           range.setEndPosition(newPositionRangeInfo.getLine(), startOffset,
-              true);
+                               true);
         } else {
           range.setStartPosition(newPositionLinkedRangeInfo.getLine(),
-              newPositionLinkedRangeInfo.getNodeOffset());
+                                 newPositionLinkedRangeInfo.getNodeOffset());
           range.setEndPosition(newPositionLinkedRangeInfo.getLine(),
-              newPositionLinkedRangeInfo.getNodeOffset());
+                               newPositionLinkedRangeInfo.getNodeOffset());
         }
 
       } else if (newPositionLinkedRangeInfo != null) {
@@ -390,10 +370,9 @@ pwk.Selection.prototype.moveCaretRight = function(opt_isTyping) {
             newPositionLinkedRangeInfo.getNodeOffset() - Number(isStartOfLine);
 
         range.setStartPosition(newPositionLinkedRangeInfo.getLine(), offset,
-            isStartOfLine);
+                               isStartOfLine);
         range.setEndPosition(newPositionLinkedRangeInfo.getLine(), offset,
-            isStartOfLine);
-
+                             isStartOfLine);
       }
     }
 
@@ -405,7 +384,6 @@ pwk.Selection.prototype.moveCaretRight = function(opt_isTyping) {
   this.lastBoundsDirection_ = pwk.Selection.CaretDirection.RIGHT;
   this.lastModifiedBoundsDirection_ = pwk.Selection.CaretDirection.RIGHT;
 };
-
 
 /**
  * Move caret to end of current line
@@ -431,7 +409,6 @@ pwk.Selection.prototype.moveCaretLineEnd = function() {
   this.lastModifiedBoundsDirection_ = pwk.Selection.CaretDirection.END;
 };
 
-
 /**
  * Move caret to start of current line
  */
@@ -453,7 +430,6 @@ pwk.Selection.prototype.moveCaretLineStart = function() {
   this.lastBoundsDirection_ = pwk.Selection.CaretDirection.HOME;
   this.lastModifiedBoundsDirection_ = pwk.Selection.CaretDirection.HOME;
 };
-
 
 /**
  * Move caret up.
@@ -501,7 +477,7 @@ pwk.Selection.prototype.moveCaretUp = function() {
 
       // If last direction was to the end of line
     } else if (this.lastModifiedBoundsDirection_ ==
-        pwk.Selection.CaretDirection.END) {
+               pwk.Selection.CaretDirection.END) {
       newPositionOffset =
           lineParentNode.getOffsetByLineOffset(line, line.getLength());
       range.setStartPosition(line, newPositionOffset);
@@ -512,9 +488,9 @@ pwk.Selection.prototype.moveCaretUp = function() {
       var lineLength = line.getLength();
       var lastModifiedStartLineOffset =
           this.lastModifiedRange_.getStartLineOffset();
-      var initialOffset = lastModifiedStartLineOffset > lineLength ?
-          lineLength :
-          lastModifiedStartLineOffset;
+      var initialOffset = lastModifiedStartLineOffset > lineLength
+                              ? lineLength
+                              : lastModifiedStartLineOffset;
       var lineRange;
 
       newPositionOffset =
@@ -522,10 +498,10 @@ pwk.Selection.prototype.moveCaretUp = function() {
       if (lastModifiedStartLineOffset === 0 &&
           lastModifiedStartLineOffset < lineLength) {
         lineRange = pwk.Range.createFromNodes(line, newPositionOffset, line,
-            newPositionOffset, true, true);
+                                              newPositionOffset, true, true);
       } else {
         lineRange = pwk.Range.createFromNodes(line, newPositionOffset, line,
-            newPositionOffset);
+                                              newPositionOffset);
       }
 
       var prevNodeOffsetX = this.lastModifiedBounds_.left;
@@ -548,12 +524,11 @@ pwk.Selection.prototype.moveCaretUp = function() {
           lineOffsetX = lineBounds.left;
         } while (lineOffsetX > prevNodeOffsetX);
 
-        isUseLastOffset =
-            !(Math.abs(prevNodeOffsetX - lineOffsetX) >
-            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
-        newPositionOffset = isUseLastOffset ?
-            lineRange.getStartNodeOffset() :
-            lineRange.getStartNodeOffset() + 1;
+        isUseLastOffset = !(Math.abs(prevNodeOffsetX - lineOffsetX) >
+                            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
+        newPositionOffset = isUseLastOffset
+                                ? lineRange.getStartNodeOffset()
+                                : lineRange.getStartNodeOffset() + 1;
 
       } else if (lineOffsetX < prevNodeOffsetX) { // If offset above is less
         do {
@@ -573,19 +548,18 @@ pwk.Selection.prototype.moveCaretUp = function() {
 
         } while (lineOffsetX < prevNodeOffsetX);
 
-        isUseLastOffset =
-            !(Math.abs(prevNodeOffsetX - lineOffsetX) >
-            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
+        isUseLastOffset = !(Math.abs(prevNodeOffsetX - lineOffsetX) >
+                            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
 
-        newPositionOffset = isUseLastOffset ?
-            lineRange.getStartNodeOffset() :
-            lineRange.getStartNodeOffset() - 1;
+        newPositionOffset = isUseLastOffset
+                                ? lineRange.getStartNodeOffset()
+                                : lineRange.getStartNodeOffset() - 1;
       }
 
       range.setStartPosition(line, newPositionOffset,
-          isStartOfLine && isUseLastOffset);
+                             isStartOfLine && isUseLastOffset);
       range.setEndPosition(line, newPositionOffset,
-          isStartOfLine && isUseLastOffset);
+                           isStartOfLine && isUseLastOffset);
     }
   }
 
@@ -593,7 +567,6 @@ pwk.Selection.prototype.moveCaretUp = function() {
   this.caret_.show();
   this.caret_.update(this);
 };
-
 
 /**
  * Move caret down
@@ -641,7 +614,7 @@ pwk.Selection.prototype.moveCaretDown = function() {
 
       // If last direction was to the end of line
     } else if (this.lastModifiedBoundsDirection_ ===
-        pwk.Selection.CaretDirection.END) {
+               pwk.Selection.CaretDirection.END) {
       newPositionOffset =
           lineParentNode.getOffsetByLineOffset(line, line.getLength());
       range.setStartPosition(line, newPositionOffset);
@@ -651,9 +624,9 @@ pwk.Selection.prototype.moveCaretDown = function() {
     } else {
       var lineLength = line.getLength();
       var lastModifiedStartLineOffset = lastModifiedRange.getStartLineOffset();
-      var initialOffset = lastModifiedStartLineOffset > lineLength ?
-          lineLength :
-          lastModifiedStartLineOffset;
+      var initialOffset = lastModifiedStartLineOffset > lineLength
+                              ? lineLength
+                              : lastModifiedStartLineOffset;
       var lineRange;
 
       newPositionOffset =
@@ -661,10 +634,10 @@ pwk.Selection.prototype.moveCaretDown = function() {
       if (lastModifiedStartLineOffset === 0 &&
           lastModifiedStartLineOffset < lineLength) {
         lineRange = pwk.Range.createFromNodes(line, newPositionOffset, line,
-            newPositionOffset, true, true);
+                                              newPositionOffset, true, true);
       } else {
         lineRange = pwk.Range.createFromNodes(line, newPositionOffset, line,
-            newPositionOffset);
+                                              newPositionOffset);
       }
 
       var prevNodeOffsetX = this.lastModifiedBounds_.left;
@@ -688,12 +661,11 @@ pwk.Selection.prototype.moveCaretDown = function() {
           lineOffsetX = lineBounds.left;
         } while (lineOffsetX > prevNodeOffsetX);
 
-        isUseLastOffset =
-            !(Math.abs(prevNodeOffsetX - lineOffsetX) >
-            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
-        newPositionOffset = isUseLastOffset ?
-            lineRange.getStartNodeOffset() :
-            lineRange.getStartNodeOffset() + 1;
+        isUseLastOffset = !(Math.abs(prevNodeOffsetX - lineOffsetX) >
+                            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
+        newPositionOffset = isUseLastOffset
+                                ? lineRange.getStartNodeOffset()
+                                : lineRange.getStartNodeOffset() + 1;
 
       } else if (lineOffsetX < prevNodeOffsetX) { // If offset above is less
         do {
@@ -713,18 +685,17 @@ pwk.Selection.prototype.moveCaretDown = function() {
 
         } while (lineOffsetX < prevNodeOffsetX);
 
-        isUseLastOffset =
-            !(Math.abs(prevNodeOffsetX - lineOffsetX) >
-            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
-        newPositionOffset = isUseLastOffset ?
-            lineRange.getStartNodeOffset() :
-            lineRange.getStartNodeOffset() - 1;
+        isUseLastOffset = !(Math.abs(prevNodeOffsetX - lineOffsetX) >
+                            Math.abs(prevNodeOffsetX - prevLoopBoundsLeft));
+        newPositionOffset = isUseLastOffset
+                                ? lineRange.getStartNodeOffset()
+                                : lineRange.getStartNodeOffset() - 1;
       }
 
       range.setStartPosition(line, newPositionOffset,
-          isStartOfLine && isUseLastOffset);
+                             isStartOfLine && isUseLastOffset);
       range.setEndPosition(line, newPositionOffset,
-          isStartOfLine && isUseLastOffset);
+                           isStartOfLine && isUseLastOffset);
     }
   }
 
@@ -732,7 +703,6 @@ pwk.Selection.prototype.moveCaretDown = function() {
   this.caret_.show();
   this.caret_.update(this);
 };
-
 
 /**
  * Returns a bounding rectangle for a given range in document space.
@@ -769,19 +739,18 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range,
     var boundingTop;
     var gRange;
 
-
     // Detect Internet Explorer
     if (goog.userAgent.IE) {
       var textRange = document.body.createTextRange();
       var browserZoomLevel =
-          (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) ?
-              1 :
-              screen.deviceXDPI / screen.logicalXDPI;
+          (!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))
+              ? 1
+              : screen.deviceXDPI / screen.logicalXDPI;
       var isExclude = opt_disable_for_ie != null ? opt_disable_for_ie : {
-        boundingHeight: false,
-        boundingWidth: false,
-        boundingLeft: false,
-        boundingTop: false
+        boundingHeight : false,
+        boundingWidth : false,
+        boundingLeft : false,
+        boundingTop : false
       };
 
       if (startNodeLength === 0) {
@@ -792,43 +761,38 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range,
         textRange.collapse();
         textRange.moveEnd('character', 1);
 
-        boundingHeight = isExclude.boundingHeight ?
-            0 :
-            textRange.boundingHeight / browserZoomLevel;
-        boundingWidth = isExclude.boundingWidth ?
-            0 :
-            textRange.boundingWidth / browserZoomLevel;
-        boundingLeft = isExclude.boundingLeft ?
-            0 :
-            textRange.boundingLeft / browserZoomLevel;
-        boundingTop = isExclude.boundingTop ?
-            0 :
-            textRange.boundingTop / browserZoomLevel;
+        boundingHeight = isExclude.boundingHeight
+                             ? 0
+                             : textRange.boundingHeight / browserZoomLevel;
+        boundingWidth = isExclude.boundingWidth ? 0 : textRange.boundingWidth /
+                                                          browserZoomLevel;
+        boundingLeft = isExclude.boundingLeft ? 0 : textRange.boundingLeft /
+                                                        browserZoomLevel;
+        boundingTop = isExclude.boundingTop ? 0 : textRange.boundingTop /
+                                                      browserZoomLevel;
 
         startNodeContentEl.innerHTML = '';
       } else {
         textRange.moveToElementText(startNodeContentEl);
-        textRange.moveStart('character',
+        textRange.moveStart(
+            'character',
             (endLineOffset === 0 ? startLineOffset : startLineOffset - 1));
         textRange.collapse();
         textRange.moveEnd('character', 1);
 
-        boundingHeight = isExclude.boundingHeight ?
-            0 :
-            textRange.boundingHeight / browserZoomLevel;
-        boundingWidth = isExclude.boundingWidth ?
-            0 :
-            textRange.boundingWidth / browserZoomLevel;
-        boundingLeft = isExclude.boundingLeft ?
-            0 :
-            textRange.boundingLeft / browserZoomLevel;
-        boundingTop = isExclude.boundingTop ?
-            0 :
-            textRange.boundingTop / browserZoomLevel;
+        boundingHeight = isExclude.boundingHeight
+                             ? 0
+                             : textRange.boundingHeight / browserZoomLevel;
+        boundingWidth = isExclude.boundingWidth ? 0 : textRange.boundingWidth /
+                                                          browserZoomLevel;
+        boundingLeft = isExclude.boundingLeft ? 0 : textRange.boundingLeft /
+                                                        browserZoomLevel;
+        boundingTop = isExclude.boundingTop ? 0 : textRange.boundingTop /
+                                                      browserZoomLevel;
       }
 
       bounds.left = boundingLeft - documentClientPosition.x +
-          (range.getEndLineOffset() === 0 ? 0 : boundingWidth) - 0.6;
+                    (range.getEndLineOffset() === 0 ? 0 : boundingWidth) - 0.6;
       bounds.top = boundingTop - documentClientPosition.y;
       bounds.width = boundingWidth;
       bounds.height = boundingHeight;
@@ -842,10 +806,11 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range,
       }
 
       gRange.selectNodeContents(endNodeContentEl);
-      gRange.setStart(endNodeContentEl,
+      gRange.setStart(
+          endNodeContentEl,
           (endLineOffset === 0 ? startLineOffset : startLineOffset - 1));
       gRange.setEnd(endNodeContentEl,
-          (endLineOffset === 0 ? 1 : endLineOffset));
+                    (endLineOffset === 0 ? 1 : endLineOffset));
 
       var boundsClientRect = gRange.getBoundingClientRect();
 
@@ -853,7 +818,8 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range,
         endNodeContentEl.innerHTML = '';
       }
 
-      bounds.left = boundsClientRect.left - documentClientPosition.x +
+      bounds.left =
+          boundsClientRect.left - documentClientPosition.x +
           (range.getEndLineOffset() === 0 ? 0 : boundsClientRect.width) - 0.6;
       bounds.top = boundsClientRect.top - documentClientPosition.y;
       bounds.width = boundsClientRect.width;
@@ -871,11 +837,11 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range,
 
       if (range.getStartLineOffset() === 0) {
         gRange = googDom.Range.createFromNodes(startNodeContentEl, 0,
-            endNodeContentEl, 0);
+                                               endNodeContentEl, 0);
       } else {
-        gRange = googDom.Range.createFromNodes(startNodeContentEl,
-            range.getStartLineOffset() - 1, endNodeContentEl,
-            range.getEndLineOffset());
+        gRange = googDom.Range.createFromNodes(
+            startNodeContentEl, range.getStartLineOffset() - 1,
+            endNodeContentEl, range.getEndLineOffset());
       }
 
       // Create markers
@@ -890,7 +856,7 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range,
       bounds.left = endMarkerClientPosition.x - documentClientPosition.x - 0.75;
       bounds.top = endMarkerClientPosition.y - documentClientPosition.y;
       bounds.width = bounds.left -
-          (startMarkerClientPosition.x - documentClientPosition.x);
+                     (startMarkerClientPosition.x - documentClientPosition.x);
       bounds.height = startNodeContentEl.offsetHeight;
 
       if (startNodeLength === 0) {
@@ -904,7 +870,6 @@ pwk.Selection.prototype.getBoundsForRange = function(opt_range,
 
   return bounds;
 };
-
 
 /**
  * @param {number} x
@@ -927,7 +892,6 @@ pwk.Selection.prototype.getSelectionRangeFromPoint = function(x, y) {
   return range;
 };
 
-
 /**
  * @param {pwk.Line} line
  * @param {number} x
@@ -943,7 +907,7 @@ pwk.Selection.prototype.getLineRangeFromPoint_ = function(line, x) {
   var documentElement = this.document_.getElement();
   var documentClientPosition = goog.style.getClientPosition(documentElement);
   var range = pwk.Range.createFromNodes(line, nodeOffset, line, nodeOffset,
-      true, false);
+                                        true, false);
   var loopRange;
   var rangeInfo;
   var closest;
@@ -954,17 +918,18 @@ pwk.Selection.prototype.getLineRangeFromPoint_ = function(line, x) {
 
     if (line !== rangeInfo.getLine()) {
       loopRange = pwk.Range.createFromNodes(line, nodeOffset + i, line,
-          nodeOffset + i, true, true);
+                                            nodeOffset + i, true, true);
     } else {
-      loopRange = pwk.Range.createFromNodes(line, nodeOffset + i, line,
-          nodeOffset + i, rangeInfo.getLineOffset() === 0, false);
+      loopRange =
+          pwk.Range.createFromNodes(line, nodeOffset + i, line, nodeOffset + i,
+                                    rangeInfo.getLineOffset() === 0, false);
     }
 
     var excludeParametersForIe = {
-      boundingHeight: true,
-      boundingWidth: false,
-      boundingLeft: false,
-      boundingTop: true
+      boundingHeight : true,
+      boundingWidth : false,
+      boundingLeft : false,
+      boundingTop : true
     };
     var bounds = this.getBoundsForRange(loopRange, excludeParametersForIe);
     var distance = bounds.left + documentClientPosition.x + 0.75;
@@ -984,7 +949,6 @@ pwk.Selection.prototype.getLineRangeFromPoint_ = function(line, x) {
 
   return range;
 };
-
 
 /**
  * @param {number} x
@@ -1024,11 +988,11 @@ pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
     if (receiver != null) {
       var googArray = goog.array;
       parentElement = googDom.getAncestorByClass(receiver, pwk.Page.CSS_CLASS);
-      childElements = googArray.concat(googArray.toArray(childElements),
-          googArray.toArray(
-              googDom.getElementsByClass(lineCssClass, parentElement)));
+      childElements =
+          googArray.concat(googArray.toArray(childElements),
+                           googArray.toArray(googDom.getElementsByClass(
+                               lineCssClass, parentElement)));
     }
-
   }
 
   l = childElements.length;
@@ -1054,10 +1018,12 @@ pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
         break;
       }
 
-      var offsets = [[elBounds.left, elBounds.top],
-            [elBounds.right, elBounds.top],
-            [elBounds.left, elBounds.bottom],
-            [elBounds.right, elBounds.bottom]];
+      var offsets = [
+        [ elBounds.left, elBounds.top ],
+        [ elBounds.right, elBounds.top ],
+        [ elBounds.left, elBounds.bottom ],
+        [ elBounds.right, elBounds.bottom ]
+      ];
 
       goog.array.forEach(offsets, function(offset) {
         dx = offset[0] - x;
@@ -1073,7 +1039,6 @@ pwk.Selection.prototype.getClosestLineElementToOffset_ = function(x, y) {
 
   return el;
 };
-
 
 /**
  * @param {pwk.Range=} opt_range
@@ -1093,7 +1058,7 @@ pwk.Selection.prototype.selectDocument = function(opt_range) {
 
     // Create range for all document if it is not passed
     opt_range = pwk.Range.createFromNodes(firstLine, 0, lastLine,
-        lastNode.getLength(), true, false);
+                                          lastNode.getLength(), true, false);
 
     for (var i = 0; i < nodesCount; i++) {
       doc.getNodeAt(i).select();
@@ -1119,171 +1084,144 @@ pwk.Selection.prototype.selectDocument = function(opt_range) {
     var startLineOffset;
     var nodeSelectionRange;
 
-
     if (currentStartNodeIndex == newStartNodeIndex &&
         currentEndNodeIndex == newEndNodeIndex) { // Reselect end node only
 
       condition = (newStartNode == newEndNode);
 
       if (opt_range.isReversed()) {
-        endLine = condition ?
-            opt_range.getStartLine() :
-            newEndNode.getLastLine();
-        endLineOffset = condition ?
-            opt_range.getStartLineOffset() :
-            endLine.getLength();
-        nodeSelectionRange =
-            new pwk.primitives.NodeSelectionRange(opt_range.getEndLine(),
-                opt_range.getEndLineOffset(),
-                endLine,
-                endLineOffset);
+        endLine =
+            condition ? opt_range.getStartLine() : newEndNode.getLastLine();
+        endLineOffset =
+            condition ? opt_range.getStartLineOffset() : endLine.getLength();
+        nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+            opt_range.getEndLine(), opt_range.getEndLineOffset(), endLine,
+            endLineOffset);
 
       } else {
-        startLine = condition ?
-            opt_range.getStartLine() :
-            newEndNode.getFirstLine();
+        startLine =
+            condition ? opt_range.getStartLine() : newEndNode.getFirstLine();
         startLineOffset = condition ? opt_range.getStartLineOffset() : 0;
-        nodeSelectionRange =
-            new pwk.primitives.NodeSelectionRange(startLine,
-                startLineOffset,
-                opt_range.getEndLine(),
-                opt_range.getEndLineOffset());
-
+        nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+            startLine, startLineOffset, opt_range.getEndLine(),
+            opt_range.getEndLineOffset());
       }
 
       newEndNode.unselect();
       newEndNode.select(nodeSelectionRange);
 
     } else if (currentStartNodeIndex === newStartNodeIndex &&
-        currentStartNodeIndex < newEndNodeIndex &&
-        currentEndNodeIndex < newEndNodeIndex) { // Add down
+               currentStartNodeIndex < newEndNodeIndex &&
+               currentEndNodeIndex < newEndNodeIndex) { // Add down
 
       for (var i = currentEndNodeIndex; i <= newEndNodeIndex; i++) {
 
         switch (i) {
-          case currentEndNodeIndex: // Reselect previous end node
-            if (currentStartNodeIndex === currentEndNodeIndex) {
-              nodeSelectionRange =
-                  new pwk.primitives.NodeSelectionRange(
-                      currentRange.getStartLine(),
-                      currentRange.getStartLineOffset(),
-                      currentEndNode.getLastLine(),
-                      currentEndNode.getLastLine().getLength());
-            } else {
-              nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
-                  currentEndNode.getFirstLine(),
-                  0,
-                  currentEndNode.getLastLine(),
-                  currentEndNode.getLastLine().getLength());
-            }
-            currentEndNode.select(nodeSelectionRange);
-            break;
-
-          case newEndNodeIndex: // Select end node
+        case currentEndNodeIndex: // Reselect previous end node
+          if (currentStartNodeIndex === currentEndNodeIndex) {
             nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
-                newEndNode.getFirstLine(),
-                0,
-                opt_range.getEndLine(),
-                opt_range.getEndLineOffset());
-            newEndNode.select(nodeSelectionRange);
-            break;
+                currentRange.getStartLine(), currentRange.getStartLineOffset(),
+                currentEndNode.getLastLine(),
+                currentEndNode.getLastLine().getLength());
+          } else {
+            nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+                currentEndNode.getFirstLine(), 0, currentEndNode.getLastLine(),
+                currentEndNode.getLastLine().getLength());
+          }
+          currentEndNode.select(nodeSelectionRange);
+          break;
 
-          default:
-            doc.getNodeAt(i).select();
+        case newEndNodeIndex: // Select end node
+          nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+              newEndNode.getFirstLine(), 0, opt_range.getEndLine(),
+              opt_range.getEndLineOffset());
+          newEndNode.select(nodeSelectionRange);
+          break;
+
+        default:
+          doc.getNodeAt(i).select();
         }
       }
 
     } else if (currentStartNodeIndex === newStartNodeIndex &&
-        currentStartNodeIndex > newEndNodeIndex &&
-        currentEndNodeIndex > newEndNodeIndex) {
+               currentStartNodeIndex > newEndNodeIndex &&
+               currentEndNodeIndex > newEndNodeIndex) {
       // Add up. Keep in mind that this selection is reversed
 
       for (var i = currentEndNodeIndex; i >= newEndNodeIndex; i--) {
         switch (i) {
-          case currentEndNodeIndex: // Reselect previous end node
-            if (currentStartNodeIndex === currentEndNodeIndex) {
-              nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
-                  currentEndNode.getFirstLine(),
-                  0,
-                  currentRange.getStartLine(),
-                  currentRange.getStartLineOffset());
-            } else {
-              nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
-                  currentEndNode.getFirstLine(),
-                  0, currentEndNode.getLastLine(),
-                  currentEndNode.getLastLine().getLength());
-            }
-            currentEndNode.select(nodeSelectionRange);
-            break;
-
-          case newEndNodeIndex: // Select end node
-            endLine = opt_range.getEndLine();
+        case currentEndNodeIndex: // Reselect previous end node
+          if (currentStartNodeIndex === currentEndNodeIndex) {
             nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
-                endLine,
-                opt_range.getEndLineOffset(),
-                newEndNode.getLastLine(),
-                newEndNode.getLastLine().getLength());
-            newEndNode.select(nodeSelectionRange);
-            break;
+                currentEndNode.getFirstLine(), 0, currentRange.getStartLine(),
+                currentRange.getStartLineOffset());
+          } else {
+            nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+                currentEndNode.getFirstLine(), 0, currentEndNode.getLastLine(),
+                currentEndNode.getLastLine().getLength());
+          }
+          currentEndNode.select(nodeSelectionRange);
+          break;
 
-          default:
-            doc.getNodeAt(i).select();
+        case newEndNodeIndex: // Select end node
+          endLine = opt_range.getEndLine();
+          nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+              endLine, opt_range.getEndLineOffset(), newEndNode.getLastLine(),
+              newEndNode.getLastLine().getLength());
+          newEndNode.select(nodeSelectionRange);
+          break;
+
+        default:
+          doc.getNodeAt(i).select();
         }
       }
 
     } else if (currentStartNodeIndex === newStartNodeIndex &&
-        currentStartNodeIndex >= newEndNodeIndex &&
-        currentEndNodeIndex < newEndNodeIndex) {
+               currentStartNodeIndex >= newEndNodeIndex &&
+               currentEndNodeIndex < newEndNodeIndex) {
       /* Remove selection from node(s) above and reselect end node */
 
       for (var i = currentEndNodeIndex; i <= newEndNodeIndex; i++) {
 
         switch (i) {
-          case newEndNodeIndex:
-            condition = (newStartNode === newEndNode);
-            endLine = condition ?
-                opt_range.getStartLine() :
-                newEndNode.getLastLine();
-            endLineOffset = condition ?
-                opt_range.getStartLineOffset() :
-                endLine.getLength();
-            nodeSelectionRange =
-                new pwk.primitives.NodeSelectionRange(opt_range.getEndLine(),
-                    opt_range.getEndLineOffset(), endLine, endLineOffset);
-            break;
+        case newEndNodeIndex:
+          condition = (newStartNode === newEndNode);
+          endLine =
+              condition ? opt_range.getStartLine() : newEndNode.getLastLine();
+          endLineOffset =
+              condition ? opt_range.getStartLineOffset() : endLine.getLength();
+          nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+              opt_range.getEndLine(), opt_range.getEndLineOffset(), endLine,
+              endLineOffset);
+          break;
 
-          default:
-            doc.getNodeAt(i).unselect();
+        default:
+          doc.getNodeAt(i).unselect();
         }
       }
 
     } else if (currentStartNodeIndex === newStartNodeIndex &&
-        currentStartNodeIndex <= newEndNodeIndex &&
-        currentEndNodeIndex > newEndNodeIndex) {
+               currentStartNodeIndex <= newEndNodeIndex &&
+               currentEndNodeIndex > newEndNodeIndex) {
       // Remove selection from node(s) below and reselect end node
 
       for (var i = currentEndNodeIndex; i >= newEndNodeIndex; i--) {
         switch (i) {
 
-          case newEndNodeIndex:
-            condition = (newStartNode === newEndNode);
-            startLine = condition ?
-                opt_range.getStartLine() :
-                newEndNode.getFirstLine();
-            startLineOffset = condition ? opt_range.getStartLineOffset() : 0;
-            nodeSelectionRange =
-                new pwk.primitives.NodeSelectionRange(
-                    startLine,
-                    startLineOffset,
-                    opt_range.getEndLine(),
-                    opt_range.getEndLineOffset());
-            break;
+        case newEndNodeIndex:
+          condition = (newStartNode === newEndNode);
+          startLine =
+              condition ? opt_range.getStartLine() : newEndNode.getFirstLine();
+          startLineOffset = condition ? opt_range.getStartLineOffset() : 0;
+          nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+              startLine, startLineOffset, opt_range.getEndLine(),
+              opt_range.getEndLineOffset());
+          break;
 
-          default:
-            doc.getNodeAt(i).unselect();
+        default:
+          doc.getNodeAt(i).unselect();
         }
       }
-
     }
   }
 
@@ -1297,7 +1235,6 @@ pwk.Selection.prototype.selectDocument = function(opt_range) {
   }
 
 };
-
 
 /**
  * Remove current document selection
@@ -1318,21 +1255,20 @@ pwk.Selection.prototype.removeSelection = function() {
     var node;
 
     for (var i = startNodeIndex; i <= endNodeIndex; i++) {
-      node = /** @type {pwk.LeafNode} */(doc.getNodeAt(i));
+      node = /** @type {pwk.LeafNode} */ (doc.getNodeAt(i));
       node.unselect();
     }
   }
 };
 
-
 /**
  * @enum {number}
  */
 pwk.Selection.CaretDirection = {
-  LEFT: 1,
-  RIGHT: 2,
-  UP: 3,
-  DOWN: 4,
-  END: 5,
-  HOME: 6
+  LEFT : 1,
+  RIGHT : 2,
+  UP : 3,
+  DOWN : 4,
+  END : 5,
+  HOME : 6
 };

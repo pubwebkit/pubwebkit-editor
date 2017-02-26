@@ -28,8 +28,6 @@
 
 goog.provide('pwk.primitives.NodeSelectionRange');
 
-
-
 /**
  * @param {pwk.Line} startLine
  * @param {number} startLineOffset
@@ -64,25 +62,23 @@ pwk.primitives.NodeSelectionRange = function(startLine, startLineOffset,
   this.endLineOffset = endLineOffset;
 };
 
-
 /**
  * @return {boolean}
  */
 pwk.primitives.NodeSelectionRange.prototype.isCollapsed = function() {
   return this.startLine === this.endLine &&
-      this.startLineOffset === this.endLineOffset;
+         this.startLineOffset === this.endLineOffset;
 };
-
 
 /**
  * Compare two NodeSelectionRange objects.
  * @param {pwk.primitives.NodeSelectionRange} otherNodeSelectionRange
  * @return {boolean}
  */
-pwk.primitives.NodeSelectionRange.prototype.equals =
-    function(otherNodeSelectionRange) {
+pwk.primitives.NodeSelectionRange.prototype.equals = function(
+    otherNodeSelectionRange) {
   return (otherNodeSelectionRange.startLine == this.startLine &&
-      otherNodeSelectionRange.endLine == this.endLine &&
-      otherNodeSelectionRange.startLineOffset == this.startLineOffset &&
-      otherNodeSelectionRange.endLineOffset == this.endLineOffset);
+          otherNodeSelectionRange.endLine == this.endLine &&
+          otherNodeSelectionRange.startLineOffset == this.startLineOffset &&
+          otherNodeSelectionRange.endLineOffset == this.endLineOffset);
 };

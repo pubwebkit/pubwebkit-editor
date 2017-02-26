@@ -25,8 +25,6 @@ goog.provide('app.core.events.ActionExceptionEvent');
 
 goog.require('app.core.events.ActionEvent');
 
-
-
 /**
  * @param {app.core.types.ActionFilterContext} actionFilterContext Current
  *    filter context
@@ -37,8 +35,8 @@ goog.require('app.core.events.ActionEvent');
  */
 app.core.events.ActionExceptionEvent = function(actionFilterContext, app, err) {
   app.core.events.ActionEvent.call(
-      this, actionFilterContext,
-      app.core.Application.EventType.ACTIONEXCEPTION, goog.nullFunction, app);
+      this, actionFilterContext, app.core.Application.EventType.ACTIONEXCEPTION,
+      goog.nullFunction, app);
 
   /**
    * @type {Error}
@@ -47,8 +45,7 @@ app.core.events.ActionExceptionEvent = function(actionFilterContext, app, err) {
   this.error_ = err;
 };
 goog.inherits(app.core.events.ActionExceptionEvent,
-    app.core.events.ActionEvent);
-
+              app.core.events.ActionEvent);
 
 /**
  * @return {Error}

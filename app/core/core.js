@@ -34,19 +34,14 @@ goog.require('app.core.Application');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventTarget');
 
-
-
 /**
  * The base class.
  * This class will be exported as the main entry point.
  * @constructor
  * @extends {app.core.Application}
  */
-app.Core = function() {
-  goog.base(this);
-};
+app.Core = function() { goog.base(this); };
 goog.inherits(app.Core, app.core.Application);
-
 
 /**
  * Kicks off the library.

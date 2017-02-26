@@ -34,8 +34,6 @@ goog.require('goog.ui.Component');
 goog.require('pwk.LineContent');
 goog.require('pwk.layer.SelectionOverlay');
 
-
-
 /**
  *
  * @param {string=} opt_text Text content
@@ -65,7 +63,6 @@ pwk.Line = function(opt_text) {
 };
 goog.inherits(pwk.Line, goog.ui.Component);
 
-
 /** @inheritDoc */
 pwk.Line.prototype.createDom = function() {
   var element = goog.dom.createElement('div');
@@ -79,7 +76,6 @@ pwk.Line.prototype.createDom = function() {
   this.addChild(this.content_, true);
 };
 
-
 /** @inheritDoc */
 pwk.Line.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
@@ -92,15 +88,11 @@ pwk.Line.prototype.disposeInternal = function() {
   delete this.selectionOffsets_;
 };
 
-
 /**
  * Get line content
  * @return {string}
  */
-pwk.Line.prototype.getText = function() {
-  return this.content_.getText();
-};
-
+pwk.Line.prototype.getText = function() { return this.content_.getText(); };
 
 /**
  * Get line content with normalized whitespaces
@@ -110,15 +102,11 @@ pwk.Line.prototype.getNormalizedText = function() {
   return this.content_.getNormalizedText();
 };
 
-
 /**
  * Get content length
  * @return {number}
  */
-pwk.Line.prototype.getLength = function() {
-  return this.content_.getLength();
-};
-
+pwk.Line.prototype.getLength = function() { return this.content_.getLength(); };
 
 /**
  * Get content width
@@ -129,7 +117,6 @@ pwk.Line.prototype.getWidth = function(isOnlyPrintableContent) {
   return this.content_.getWidth(isOnlyPrintableContent);
 };
 
-
 /**
  * Get line height
  * @return {number}
@@ -137,7 +124,6 @@ pwk.Line.prototype.getWidth = function(isOnlyPrintableContent) {
 pwk.Line.prototype.getHeight = function() {
   return goog.style.getSize(this.getContentElement()).height;
 };
-
 
 /**
  * Get index inside node.
@@ -147,15 +133,11 @@ pwk.Line.prototype.getIndex = function() {
   return this.getParentNode().indexOfLine(this);
 };
 
-
 /**
  * Removes the last text node from the content and returns its value.
  * @return {string} The value of the popped text node.
  */
-pwk.Line.prototype.pop = function() {
-  return this.content_.pop();
-};
-
+pwk.Line.prototype.pop = function() { return this.content_.pop(); };
 
 /**
  * Removes latest text nodes, separated by space/tab, from the content and
@@ -165,7 +147,6 @@ pwk.Line.prototype.pop = function() {
 pwk.Line.prototype.popLastWord = function() {
   return this.content_.popLastWord();
 };
-
 
 /**
  * Insert a single value.
@@ -178,7 +159,6 @@ pwk.Line.prototype.insertValue = function(value, opt_offset) {
   this.dispatchEvent(new pwk.NodeContentChangedEvent(this));
 };
 
-
 /**
  * Set the text
  * @param {string} text
@@ -190,7 +170,6 @@ pwk.Line.prototype.insertText = function(text, opt_offset) {
   this.dispatchEvent(new pwk.NodeContentChangedEvent(this));
 };
 
-
 /**
  * @param {number} offset
  * @return {Node?}
@@ -198,7 +177,6 @@ pwk.Line.prototype.insertText = function(text, opt_offset) {
 pwk.Line.prototype.getTextNodeAtOffset = function(offset) {
   return this.content_.getTextNodeAtOffset(offset);
 };
-
 
 /**
  * @param {number} offset
@@ -208,14 +186,10 @@ pwk.Line.prototype.getTextNodeValueAtOffset = function(offset) {
   return this.content_.getTextNodeValueAtOffset(offset);
 };
 
-
 /**
  * @return {pwk.LineContent}
  */
-pwk.Line.prototype.getContent = function() {
-  return this.content_;
-};
-
+pwk.Line.prototype.getContent = function() { return this.content_; };
 
 /**
  * @param {number} startOffset
@@ -226,15 +200,13 @@ pwk.Line.prototype.cut = function(startOffset, opt_endOffset) {
   return this.content_.cut(startOffset, opt_endOffset);
 };
 
-
 /**
  * Get parent leaf node
  * @return {pwk.LeafNode}
  */
 pwk.Line.prototype.getParentNode = function() {
-  return /** @type {pwk.LeafNode} */(this.getParent());
+  return /** @type {pwk.LeafNode} */ (this.getParent());
 };
-
 
 /**
  * Make selection for line content by provided offsets.
@@ -259,23 +231,21 @@ pwk.Line.prototype.select = function(opt_startOffset, opt_endOffset) {
     clientRectRange =
         new pwk.primitives.ClientRectRange(10, elSize.height, 0, 0);
   } else {
-    var lineContentClientRect =
-        this.content_.getBoundingClientRectForOffset(opt_startOffset,
-            opt_endOffset);
-    clientRectRange =
-        new pwk.primitives.ClientRectRange(lineContentClientRect.width,
-            elSize.height, 0, lineContentClientRect.left - elPageOffset.x);
+    var lineContentClientRect = this.content_.getBoundingClientRectForOffset(
+        opt_startOffset, opt_endOffset);
+    clientRectRange = new pwk.primitives.ClientRectRange(
+        lineContentClientRect.width, elSize.height, 0,
+        lineContentClientRect.left - elPageOffset.x);
   }
 
   this.selectionOffsets_ = {
-    start: goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0,
-    end: goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength()
+    start : goog.isDefAndNotNull(opt_startOffset) ? opt_startOffset : 0,
+    end : goog.isDefAndNotNull(opt_endOffset) ? opt_endOffset : this.getLength()
   };
 
   this.selectionOverlay_ = new pwk.layer.SelectionOverlay(clientRectRange);
   this.addChildAt(this.selectionOverlay_, 0, true);
 };
-
 
 /**
  * Remove selection overlay from the line.
@@ -289,7 +259,6 @@ pwk.Line.prototype.unselect = function() {
   }
 };
 
-
 /**
  * To determine whether selected line completely.
  * @return {boolean}
@@ -297,30 +266,28 @@ pwk.Line.prototype.unselect = function() {
 pwk.Line.prototype.isSelectedEntirely = function() {
   if (goog.isDefAndNotNull(this.selectionOffsets_)) {
     return this.selectionOffsets_.start == 0 &&
-        this.selectionOffsets_.end == this.getLength();
+           this.selectionOffsets_.end == this.getLength();
   }
   return false;
 };
-
 
 /**
  * Remove selected content.
  * @return {{start:number, end:number}|Object<string,string>|null}
  */
 pwk.Line.prototype.removeSelection = function() {
-  var result = this.selectionOffsets_ != null ?
-      goog.object.clone(this.selectionOffsets_) :
-      null;
+  var result = this.selectionOffsets_ != null
+                   ? goog.object.clone(this.selectionOffsets_)
+                   : null;
 
   if (goog.isDefAndNotNull(this.selectionOffsets_)) {
     this.content_.removeAt(this.selectionOffsets_.start,
-        this.selectionOffsets_.end);
+                           this.selectionOffsets_.end);
     this.unselect();
   }
 
   return result;
 };
-
 
 /**
  * Component default css class.

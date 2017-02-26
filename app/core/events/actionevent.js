@@ -26,8 +26,6 @@ goog.provide('app.core.events.ActionEvent');
 goog.require('app.core.types.ActionFilterContext');
 goog.require('goog.events.Event');
 
-
-
 /**
  * A base class for controller actions events.
  * @param {app.core.types.ActionFilterContext} actionFilterContext Current
@@ -58,14 +56,12 @@ app.core.events.ActionEvent = function(actionFilterContext, type, resolve,
 };
 goog.inherits(app.core.events.ActionEvent, goog.events.Event);
 
-
 /**
  * @return {app.core.types.ActionFilterContext}
  */
 app.core.events.ActionEvent.prototype.getContext = function() {
   return this.actionFilterContext_;
 };
-
 
 /**
  * Resolve promise

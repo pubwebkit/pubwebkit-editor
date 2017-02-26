@@ -41,8 +41,6 @@ goog.require('goog.Promise');
 goog.require('goog.events.EventTarget');
 goog.require('goog.string');
 
-
-
 /**
  * @constructor
  * @extends {goog.events.EventTarget}
@@ -50,16 +48,14 @@ goog.require('goog.string');
 app.core.Application = function() {
   goog.events.EventTarget.call(this);
 
-
   var historyStateInput =
       /** @type {HTMLInputElement} **/
-      (goog.dom.createDom('input',
-          {
-            'type': 'text',
-            'id': 'history_state',
-            'name': 'history_state',
-            'style': 'display:none'
-          }));
+      (goog.dom.createDom('input', {
+        'type' : 'text',
+        'id' : 'history_state',
+        'name' : 'history_state',
+        'style' : 'display:none'
+      }));
 
   document.body.appendChild(historyStateInput);
 
@@ -96,18 +92,16 @@ app.core.Application = function() {
 };
 goog.inherits(app.core.Application, goog.events.EventTarget);
 
-
 /**
  * @param {string} route The path The fragment we are mapping the controller to.
  * @param {Function} controller The name or object that identifying the desired
  * controller.
  */
 app.core.Application.prototype.mapRoute = function(route, controller) {
-  this.router_.route(
-      route, goog.bind(
-          goog.partial(this.processRoute_, route, new controller()), this));
+  this.router_.route(route, goog.bind(goog.partial(this.processRoute_, route,
+                                                   new controller()),
+                                      this));
 };
-
 
 /**
  * @param {string} route The fragment we are mapping the controller to.
@@ -119,7 +113,9 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
   this.setCurrentRoute_(route);
 
   var i = 2;
-  var routeData = {'controller': controller.getControllerName()};
+  var routeData = {
+    'controller' : controller.getControllerName()
+  };
   var pattern = /:[a-zA-Z0-9._-]*/g;
   var request;
   var response;
@@ -150,22 +146,31 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
   if (goog.isFunction((instance[routeData['action']]))) {
 
     try {
-      new goog.Promise(function(resolve, reject) {
-        this.dispatchEvent(new app.core.events.ActionEvent(filterContext,
-            app.core.Application.EventType.ACTIONEXECUTING, resolve, this));
-      }, this)
-          .then(function() {
-            return new goog.Promise(function(resolve, reject) {
-              resolve(instance[routeData['action']](request, response));
-            });
-          }, undefined, this)
-          .then(function() {
-            return new goog.Promise(function(resolve, reject) {
-              this.dispatchEvent(new app.core.events.ActionEvent(filterContext,
-                  app.core.Application.EventType.ACTIONEXECUTED, resolve,
-                  this));
-            }, this);
-          }, undefined, this)
+      new goog.Promise(
+                   function(resolve, reject) {
+                     this.dispatchEvent(new app.core.events.ActionEvent(
+                         filterContext,
+                         app.core.Application.EventType.ACTIONEXECUTING,
+                         resolve, this));
+                   },
+                   this)
+          .then(
+               function() {
+                 return new goog.Promise(function(resolve, reject) {
+                   resolve(instance[routeData['action']](request, response));
+                 });
+               },
+               undefined, this)
+          .then(
+               function() {
+                 return new goog.Promise(function(resolve, reject) {
+                   this.dispatchEvent(new app.core.events.ActionEvent(
+                       filterContext,
+                       app.core.Application.EventType.ACTIONEXECUTED, resolve,
+                       this));
+                 }, this);
+               },
+               undefined, this)
           .then(function() {
             return new goog.Promise(function(resolve, reject) {
               // Application loaded
@@ -174,8 +179,7 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
             }, this);
           }, undefined, this);
 
-    }
-    catch (err) {
+    } catch (err) {
       this.dispatchEvent(
           new app.core.events.ActionExceptionEvent(filterContext, this, err));
     }
@@ -185,7 +189,6 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
   }
 };
 
-
 /**
  * Register application filter
  * @param {!app.core.ApplicationFilter} filter
@@ -193,10 +196,10 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
  */
 app.core.Application.prototype.addApplicationFilter = function(filter,
                                                                opt_order) {
-  goog.array.insert(this.applicationFilters_,
+  goog.array.insert(
+      this.applicationFilters_,
       new app.core.types.ApplicationFilterItem(filter, opt_order));
 };
-
 
 /**
  * Register action filter
@@ -206,10 +209,9 @@ app.core.Application.prototype.addApplicationFilter = function(filter,
  */
 app.core.Application.prototype.addActionFilter = function(filter, opt_route,
                                                           opt_order) {
-  goog.array.insert(this.actionFilters_,
-      new app.core.types.ActionFilterItem(filter, opt_route, opt_order));
+  goog.array.insert(this.actionFilters_, new app.core.types.ActionFilterItem(
+                                             filter, opt_route, opt_order));
 };
-
 
 /**
  * Start application execution
@@ -217,17 +219,17 @@ app.core.Application.prototype.addActionFilter = function(filter, opt_route,
 app.core.Application.prototype.run = function() {
   // Initialize events
   this.listenOnce(app.core.Application.EventType.APPLICATIONSTART,
-      this.onApplicationStart_, false, this);
+                  this.onApplicationStart_, false, this);
   this.listenOnce(app.core.Application.EventType.APPLICATIONRUN,
-      this.onApplicationRun_, false, this);
+                  this.onApplicationRun_, false, this);
   this.listenOnce(app.core.Application.EventType.APPLICATIONLOADED,
-      this.onApplicationLoaded_, false, this);
+                  this.onApplicationLoaded_, false, this);
   this.listen(app.core.Application.EventType.ACTIONEXCEPTION,
-      this.onActionException_, false, this);
+              this.onActionException_, false, this);
   this.listen(app.core.Application.EventType.ACTIONEXECUTING,
-      this.onActionExecuting_, false, this);
+              this.onActionExecuting_, false, this);
   this.listen(app.core.Application.EventType.ACTIONEXECUTED,
-      this.onActionExecuted_, false, this);
+              this.onActionExecuted_, false, this);
 
   // Sort application filters
   goog.array.sort(this.applicationFilters_, function(a, b) {
@@ -249,7 +251,6 @@ app.core.Application.prototype.run = function() {
   this.dispatchEvent(app.core.Application.EventType.APPLICATIONRUN);
 };
 
-
 /**
  * Called before the action method is invoked.
  * @param {app.core.events.ActionEvent} e
@@ -261,7 +262,6 @@ app.core.Application.prototype.onActionExecuting_ = function(e) {
   });
   e.resolvePromise();
 };
-
 
 /**
  * Called after the action method is invoked.
@@ -275,7 +275,6 @@ app.core.Application.prototype.onActionExecuted_ = function(e) {
   e.resolvePromise();
 };
 
-
 /**
  * Called when an unhandled exception occurs in the action.
  * @param {app.core.events.ActionExceptionEvent} e
@@ -288,7 +287,6 @@ app.core.Application.prototype.onActionException_ = function(e) {
   e.resolvePromise();
 };
 
-
 /**
  * Called when an application start initialization.
  * @param {goog.events.Event} e
@@ -300,7 +298,6 @@ app.core.Application.prototype.onApplicationStart_ = function(e) {
   });
 };
 
-
 /**
  * Called when an application end initialization.
  * @param {goog.events.Event} e
@@ -311,7 +308,6 @@ app.core.Application.prototype.onApplicationRun_ = function(e) {
     filterItem.getFilter().onApplicationRun(e);
   });
 };
-
 
 /**
  * Called when an application launched.
@@ -325,7 +321,6 @@ app.core.Application.prototype.onApplicationLoaded_ = function(e) {
   this.isFirstLoad_ = false;
 };
 
-
 /**
  * Calls a function for each registered application filter.
  * @param {Function} callback
@@ -336,7 +331,6 @@ app.core.Application.prototype.forEachApplicationFilter_ = function(callback) {
     callback.call(this, filterItem);
   }, this);
 };
-
 
 /**
  * Calls a function for each registered action filter, but skip filters with
@@ -356,28 +350,28 @@ app.core.Application.prototype.forEachActionFilter_ = function(callback) {
   }, this);
 };
 
-
 /**
  * @param {string} route
  * @private
  */
 app.core.Application.prototype.setCurrentRoute_ = function(route) {
-  this.currentRoute_ = new RegExp('^' + goog.string.regExpEscape(route)
-          .replace(/\\:\w+/g, '([a-zA-Z0-9._-]+)')
-          .replace(/\\\*/g, '(.*)')
-          .replace(/\\\[/g, '(')
-          .replace(/\\\]/g, ')?')
-          .replace(/\\\{/g, '(?:')
-          .replace(/\\\}/g, ')?') + '$');
+  this.currentRoute_ = new RegExp('^' +
+                                  goog.string.regExpEscape(route)
+                                      .replace(/\\:\w+/g, '([a-zA-Z0-9._-]+)')
+                                      .replace(/\\\*/g, '(.*)')
+                                      .replace(/\\\[/g, '(')
+                                      .replace(/\\\]/g, ')?')
+                                      .replace(/\\\{/g, '(?:')
+                                      .replace(/\\\}/g, ')?') +
+                                  '$');
 };
-
 
 /** @enum {string} */
 app.core.Application.EventType = {
-  APPLICATIONSTART: goog.events.getUniqueId('application_start'),
-  APPLICATIONRUN: goog.events.getUniqueId('application_start'),
-  APPLICATIONLOADED: goog.events.getUniqueId('application_loaded'),
-  ACTIONEXCEPTION: goog.events.getUniqueId('action_exception'),
-  ACTIONEXECUTING: goog.events.getUniqueId('action_executing'),
-  ACTIONEXECUTED: goog.events.getUniqueId('action_executed')
+  APPLICATIONSTART : goog.events.getUniqueId('application_start'),
+  APPLICATIONRUN : goog.events.getUniqueId('application_start'),
+  APPLICATIONLOADED : goog.events.getUniqueId('application_loaded'),
+  ACTIONEXCEPTION : goog.events.getUniqueId('action_exception'),
+  ACTIONEXECUTING : goog.events.getUniqueId('action_executing'),
+  ACTIONEXECUTED : goog.events.getUniqueId('action_executed')
 };

@@ -27,8 +27,6 @@ goog.require('app.core.Controller');
 goog.require('pwk.Editor');
 goog.require('pwk.EditorContainer');
 
-
-
 /**
  * @constructor
  * @extends {app.core.Controller}
@@ -37,7 +35,6 @@ app.controllers.HomeController = function() {
   goog.base(this, 'HomeController');
 };
 goog.inherits(app.controllers.HomeController, app.core.Controller);
-
 
 /**
  * index action
@@ -53,4 +50,4 @@ app.controllers.HomeController.prototype.index = function(request, response) {
 };
 
 goog.exportProperty(app.controllers.HomeController.prototype, 'index',
-    app.controllers.HomeController.prototype.index);
+                    app.controllers.HomeController.prototype.index);

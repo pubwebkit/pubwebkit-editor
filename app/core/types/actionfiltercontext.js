@@ -23,8 +23,6 @@
 
 goog.provide('app.core.types.ActionFilterContext');
 
-
-
 /**
  * @param {app.core.Request} request
  * @param {app.core.Response} response
@@ -45,14 +43,12 @@ app.core.types.ActionFilterContext = function(request, response) {
   this.response_ = response;
 };
 
-
 /**
  * @return {app.core.Request}
  */
 app.core.types.ActionFilterContext.prototype.getRequest = function() {
   return this.request_;
 };
-
 
 /**
  * @return {app.core.Response}

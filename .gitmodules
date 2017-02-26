@@ -19,7 +19,3 @@
 [submodule "vendors/closure-library"]
 	path = vendors/closure-library
 	url = https://banguit@github.com/google/closure-library.git
-[submodule "vendors/closure-linter"]
-	path = vendors/closure-linter
-	url = https://github.com/google/closure-linter.git
-	branch = master

@@ -29,8 +29,6 @@ goog.provide('app.core.Request');
 
 goog.require('goog.Uri');
 
-
-
 /**
  * Create a simple request object based on the provided URL.
  * @param {Object} routeData Object that contains information about current
@@ -55,7 +53,6 @@ app.core.Request = function(routeData, uri, queryVals, opt_ignoreCase) {
 };
 goog.inherits(app.core.Request, goog.Uri);
 
-
 /**
  * Return route data by key or all values as object
  * @param {string=} opt_key
@@ -68,7 +65,6 @@ app.core.Request.prototype.getRouteData = function(opt_key) {
   return this.routeData_;
 };
 
-
 /**
  * Convert this object to a simple JSON object.
  * @return {Object}
@@ -76,14 +72,14 @@ app.core.Request.prototype.getRouteData = function(opt_key) {
  */
 app.core.Request.prototype.toJSON = function() {
   var obj = {
-    domain: this.getDomain(),
-    path: this.getPath(),
-    port: this.getPort(),
-    query: this.getQuery(),
-    scheme: this.getScheme(),
-    userInfo: this.getUserInfo(),
-    routeData: this.routeData_,
-    queryData: {}
+    domain : this.getDomain(),
+    path : this.getPath(),
+    port : this.getPort(),
+    query : this.getQuery(),
+    scheme : this.getScheme(),
+    userInfo : this.getUserInfo(),
+    routeData : this.routeData_,
+    queryData : {}
   };
   var queryData = this.getQueryData();
   var keys = queryData.getKeys();

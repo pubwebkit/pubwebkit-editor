@@ -27,8 +27,6 @@
 
 goog.provide('pwk.NodeAnnotation');
 
-
-
 /**
  * @param {string} type
  * @param {{start: number, end: number}} range
@@ -51,7 +49,6 @@ pwk.NodeAnnotation = function(type, range) {
    */
   this.range_ = range;
 
-
   /**
    * @type {string}
    * @private
@@ -59,15 +56,11 @@ pwk.NodeAnnotation = function(type, range) {
   this.data_;
 };
 
-
 /**
  * Get current annotation type.
  * @return {string}
  */
-pwk.NodeAnnotation.prototype.getType = function() {
-  return this.type_;
-};
-
+pwk.NodeAnnotation.prototype.getType = function() { return this.type_; };
 
 /**
  * @return {{start: number, end: number}}
@@ -76,10 +69,7 @@ pwk.NodeAnnotation.prototype.getRangeOffset = function() {
   return this.range_;
 };
 
-
 /**
  * @return {string}
  */
-pwk.NodeAnnotation.prototype.getData = function() {
-  return this.data_;
-};
+pwk.NodeAnnotation.prototype.getData = function() { return this.data_; };

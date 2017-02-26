@@ -28,8 +28,6 @@
 
 goog.provide('app.core.Controller');
 
-
-
 /**
  * Defines an abstract controller for handling requests to certain fragments.
  * @param {string} controllerName Current
@@ -43,7 +41,6 @@ app.core.Controller = function(controllerName) {
    */
   this.controllerName_ = controllerName;
 };
-
 
 /**
  * Get current controller name

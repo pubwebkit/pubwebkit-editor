@@ -41,8 +41,6 @@ goog.require('pwk.PageFooter');
 goog.require('pwk.PageHeader');
 goog.require('pwk.PageSettings');
 
-
-
 /**
  * Initialize {pwk.Page} component.
  *
@@ -85,7 +83,6 @@ pwk.Page = function(doc) {
 };
 goog.inherits(pwk.Page, goog.ui.Component);
 
-
 /** @inheritDoc */
 pwk.Page.prototype.createDom = function() {
   // Create element
@@ -106,13 +103,11 @@ pwk.Page.prototype.createDom = function() {
   goog.style.setHeight(el, pageSize.height + 'px');
 };
 
-
 /** @inheritDoc */
 pwk.Page.prototype.decorateInternal = function(element) {
   goog.base(this, 'decorateInternal', element);
   goog.dom.classlist.add(element, pwk.Page.CSS_CLASS);
 };
-
 
 /** @inheritDoc */
 pwk.Page.prototype.disposeInternal = function() {
@@ -127,7 +122,6 @@ pwk.Page.prototype.disposeInternal = function() {
   this.document_ = null;
 };
 
-
 /**
  * Link the node with current page and place on the end of page
  * @param {pwk.Node} node
@@ -141,7 +135,6 @@ pwk.Page.prototype.linkNode = function(node) {
   this.content_.linkNode(node);
   this.checkPageOverflow();
 };
-
 
 /**
  * Link the node with current page and place it before specific node
@@ -158,7 +151,6 @@ pwk.Page.prototype.linkNodeBefore = function(node, sibling) {
   this.checkPageOverflow();
 };
 
-
 /**
  * Link the node with current page and place it after specific node
  * @param {pwk.Node} node
@@ -173,7 +165,6 @@ pwk.Page.prototype.linkNodeAfter = function(node, previous) {
   this.content_.linkNodeAfter(node, previous);
   this.checkPageOverflow();
 };
-
 
 /**
  * Get maximum content height.
@@ -190,16 +181,14 @@ pwk.Page.prototype.getMaxContentSize = function() {
   return pageSize.height - footerSize.height - headerSize.height;
 };
 
-
 /**
  * Get available content height.
  * @return {number}
  */
 pwk.Page.prototype.getAvailableContentSize = function() {
   return this.getMaxContentSize() -
-      goog.style.getSize(this.content_.getElement()).height;
+         goog.style.getSize(this.content_.getElement()).height;
 };
-
 
 /**
  * Checking size of page content on overflows and dispatching OVERFLOW event in
@@ -225,69 +214,67 @@ pwk.Page.prototype.checkPageOverflow = function() {
       loopNode = doc.getNode(pageNodes[pageNodesLength]);
 
       switch (loopNode.getType()) {
-        case pwk.NodeTypes.PARAGRAPH:
-          var leafNode = /** @type {pwk.LeafNode} */(loopNode);
-          var nodeHeight = googStyle.getSize(leafNode.getElement()).height;
-          var linkedNode = leafNode.getNextLinkedNode();
+      case pwk.NodeTypes.PARAGRAPH:
+        var leafNode = /** @type {pwk.LeafNode} */ (loopNode);
+        var nodeHeight = googStyle.getSize(leafNode.getElement()).height;
+        var linkedNode = leafNode.getNextLinkedNode();
 
-          // Is required to move the whole node?
-          if ((contentEl.offsetHeight - nodeHeight) < maxContentHeight) {
-            var lineLength = leafNode.getLinesCount();
-            var loopLine;
-            var heightToCut = 0;
+        // Is required to move the whole node?
+        if ((contentEl.offsetHeight - nodeHeight) < maxContentHeight) {
+          var lineLength = leafNode.getLinesCount();
+          var loopLine;
+          var heightToCut = 0;
 
-            while (lineLength--) {
-              loopLine = leafNode.getLineAt(lineLength);
-              heightToCut += loopLine.getHeight();
-              if ((contentEl.offsetHeight - heightToCut) < maxContentHeight) {
-                break;
-              }
+          while (lineLength--) {
+            loopLine = leafNode.getLineAt(lineLength);
+            heightToCut += loopLine.getHeight();
+            if ((contentEl.offsetHeight - heightToCut) < maxContentHeight) {
+              break;
             }
-
-            if (lineLength == 0) {
-              // Move all node to the next page
-              goog.array.insert(nodes, this.content_.unlinkNode(leafNode));
-            } else {
-              var lastLine;
-
-              if (!goog.isDefAndNotNull(linkedNode)) {
-                // Move lines to the new linked node
-                for (var i = leafNode.getLinesCount() - 1;
-                     i >= lineLength; i--) {
-                  lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
-
-                  if (!goog.isDefAndNotNull(newLinkedNode)) {
-                    newLinkedNode =
-                        new pwk.LeafNode(loopNode.getType(), doc, lastLine);
-                    loopNode.setNextLinkedNode(newLinkedNode);
-                  } else {
-                    newLinkedNode.insertLine(lastLine, false, 0);
-                  }
-                }
-
-                goog.array.insert(nodes, newLinkedNode);
-              } else {
-                // Move lines to the exist next linked node
-                for (var i = leafNode.getLinesCount() - 1;
-                     i >= lineLength; i--) {
-                  lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
-                  linkedNode.insertLine(lastLine, true, 0);
-                }
-
-                linkedNode.getParentPage().checkPageOverflow();
-              }
-            }
-
-          } else {
-            // Move all node to the next page
-            goog.array.insert(nodes, this.content_.unlinkNode(leafNode));
           }
 
-          break;
+          if (lineLength == 0) {
+            // Move all node to the next page
+            goog.array.insert(nodes, this.content_.unlinkNode(leafNode));
+          } else {
+            var lastLine;
 
-        default:
-          // Remove node from page to move it to the next page
-          goog.array.insert(nodes, this.content_.unlinkNode(loopNode));
+            if (!goog.isDefAndNotNull(linkedNode)) {
+              // Move lines to the new linked node
+              for (var i = leafNode.getLinesCount() - 1; i >= lineLength; i--) {
+                lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
+
+                if (!goog.isDefAndNotNull(newLinkedNode)) {
+                  newLinkedNode =
+                      new pwk.LeafNode(loopNode.getType(), doc, lastLine);
+                  loopNode.setNextLinkedNode(newLinkedNode);
+                } else {
+                  newLinkedNode.insertLine(lastLine, false, 0);
+                }
+              }
+
+              goog.array.insert(nodes, newLinkedNode);
+            } else {
+              // Move lines to the exist next linked node
+              for (var i = leafNode.getLinesCount() - 1; i >= lineLength; i--) {
+                lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));
+                linkedNode.insertLine(lastLine, true, 0);
+              }
+
+              linkedNode.getParentPage().checkPageOverflow();
+            }
+          }
+
+        } else {
+          // Move all node to the next page
+          goog.array.insert(nodes, this.content_.unlinkNode(leafNode));
+        }
+
+        break;
+
+      default:
+        // Remove node from page to move it to the next page
+        goog.array.insert(nodes, this.content_.unlinkNode(loopNode));
       }
 
       // Recalculate content
@@ -301,15 +288,11 @@ pwk.Page.prototype.checkPageOverflow = function() {
   }
 };
 
-
 /**
  * Is there any content on this page?
  * @return {boolean}
  */
-pwk.Page.prototype.isEmpty = function() {
-  return this.content_.isEmpty();
-};
-
+pwk.Page.prototype.isEmpty = function() { return this.content_.isEmpty(); };
 
 /**
  * Default CSS class to be applied to the root element of components rendered
@@ -318,16 +301,13 @@ pwk.Page.prototype.isEmpty = function() {
  */
 pwk.Page.CSS_CLASS = 'pwk-page';
 
-
 /**
  * Event types that can be stopped/started.
  * @enum {string}
  */
 pwk.Page.EventType = {
-  OVERFLOW: goog.events.getUniqueId('page_overflow')
+  OVERFLOW : goog.events.getUniqueId('page_overflow')
 };
-
-
 
 /**
  * @param {pwk.Page} page
@@ -353,14 +333,12 @@ pwk.Page.PageOverflowEvent = function(page, nodes, pageIndex) {
 };
 goog.inherits(pwk.Page.PageOverflowEvent, goog.events.Event);
 
-
 /**
  * @return {Array.<pwk.Node>}
  */
 pwk.Page.PageOverflowEvent.prototype.getNodesForMoving = function() {
   return this.nodes_;
 };
-
 
 /**
  * @return {number}

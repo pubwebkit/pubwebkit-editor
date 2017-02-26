@@ -32,7 +32,6 @@ goog.require('goog.dom.classlist');
 goog.require('pwk.DocumentSettings');
 goog.require('pwk.NodeAttributeTypes');
 
-
 /**
  * @param {pwk.Document} doc
  * @param {pwk.Node|pwk.LeafNode} node
@@ -40,40 +39,39 @@ goog.require('pwk.NodeAttributeTypes');
 pwk.NodeFormatter.applyGlobalDocumentFormation = function(doc, node) {
   var nodeIndex = doc.indexOfNode(node);
   var documentSettings =
-      (/**@type {pwk.DocumentSettings}*/(pwk.DocumentSettings.getInstance()));
+      (/**@type {pwk.DocumentSettings}*/ (pwk.DocumentSettings.getInstance()));
 
   switch (node.getType()) {
-    case pwk.NodeTypes.PARAGRAPH:
+  case pwk.NodeTypes.PARAGRAPH:
 
-      var prevNode = doc.getNodeAt(nodeIndex - 1);
-      var types = pwk.NodeAttributeTypes;
+    var prevNode = doc.getNodeAt(nodeIndex - 1);
+    var types = pwk.NodeAttributeTypes;
 
-      if (goog.isDefAndNotNull(prevNode)) {
-        node.setAttribute(types.STYLE_LINE_HEIGHT,
-            prevNode.getAttribute(types.STYLE_LINE_HEIGHT).getValue());
-        node.setAttribute(types.STYLE_HEIGHT,
-            prevNode.getAttribute(types.STYLE_HEIGHT).getValue());
-        node.setAttribute(types.STYLE_FONT_SIZE,
-            prevNode.getAttribute(types.STYLE_FONT_SIZE).getValue());
+    if (goog.isDefAndNotNull(prevNode)) {
+      node.setAttribute(
+          types.STYLE_LINE_HEIGHT,
+          prevNode.getAttribute(types.STYLE_LINE_HEIGHT).getValue());
+      node.setAttribute(types.STYLE_HEIGHT,
+                        prevNode.getAttribute(types.STYLE_HEIGHT).getValue());
+      node.setAttribute(
+          types.STYLE_FONT_SIZE,
+          prevNode.getAttribute(types.STYLE_FONT_SIZE).getValue());
 
-      } else {
-        var fontSize =
-            parseFloat(pwk.utils.style.PointsToPixels(
-                documentSettings.getFontSize()));
-        var lineHeight = parseFloat(documentSettings.getLineHeight());
-        var height = (fontSize * lineHeight) + 'px';
+    } else {
+      var fontSize = parseFloat(
+          pwk.utils.style.PointsToPixels(documentSettings.getFontSize()));
+      var lineHeight = parseFloat(documentSettings.getLineHeight());
+      var height = (fontSize * lineHeight) + 'px';
 
-        node.setAttribute(types.STYLE_LINE_HEIGHT,
-            documentSettings.getLineHeight());
-        node.setAttribute(types.STYLE_HEIGHT, height);
-        node.setAttribute(types.STYLE_FONT_SIZE,
-            documentSettings.getFontSize());
-      }
+      node.setAttribute(types.STYLE_LINE_HEIGHT,
+                        documentSettings.getLineHeight());
+      node.setAttribute(types.STYLE_HEIGHT, height);
+      node.setAttribute(types.STYLE_FONT_SIZE, documentSettings.getFontSize());
+    }
 
-      break;
+    break;
   }
 };
-
 
 /**
  * Apply attributes for the specified node.
@@ -88,24 +86,24 @@ pwk.NodeFormatter.applyNodeAttributes = function(attributes, node) {
 
     switch (attr.getType()) {
 
-      case pwk.NodeAttributeTypes.HTML_CLASS:
-        goog.dom.classlist.set(element, value);
-        break;
+    case pwk.NodeAttributeTypes.HTML_CLASS:
+      goog.dom.classlist.set(element, value);
+      break;
 
-      case pwk.NodeAttributeTypes.STYLE_FONT_SIZE:
-        element.style.fontSize = value;
-        break;
+    case pwk.NodeAttributeTypes.STYLE_FONT_SIZE:
+      element.style.fontSize = value;
+      break;
 
-      case pwk.NodeAttributeTypes.STYLE_HEIGHT:
-        goog.style.setHeight(element, value);
-        break;
+    case pwk.NodeAttributeTypes.STYLE_HEIGHT:
+      goog.style.setHeight(element, value);
+      break;
 
-      case pwk.NodeAttributeTypes.STYLE_LINE_HEIGHT:
-        element.style.lineHeight = value;
-        break;
+    case pwk.NodeAttributeTypes.STYLE_LINE_HEIGHT:
+      element.style.lineHeight = value;
+      break;
 
-      default:
-        throw new Error('Unknown node attribute type');
+    default:
+      throw new Error('Unknown node attribute type');
     }
   });
 };

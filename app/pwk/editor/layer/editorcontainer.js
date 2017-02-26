@@ -32,17 +32,12 @@ goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('goog.ui.Component');
 
-
-
 /**
  * @constructor
  * @extends {goog.ui.Component}
  */
-pwk.EditorContainer = function() {
-  goog.base(this);
-};
+pwk.EditorContainer = function() { goog.base(this); };
 goog.inherits(pwk.EditorContainer, goog.ui.Component);
-
 
 /** @inheritDoc */
 pwk.EditorContainer.prototype.createDom = function() {
@@ -52,17 +47,15 @@ pwk.EditorContainer.prototype.createDom = function() {
   goog.dom.classlist.add(this.getElement(), pwk.EditorContainer.CSS_CLASS);
 };
 
-
 /** @inheritDoc */
 pwk.EditorContainer.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   // Initialize events
   goog.events.listen(window, goog.events.EventType.RESIZE,
-      this.onWindowResizeHandler_, false, this);
+                     this.onWindowResizeHandler_, false, this);
   this.onWindowResizeHandler_();
 };
-
 
 /**
  * On window resize event handler
@@ -71,7 +64,6 @@ pwk.EditorContainer.prototype.enterDocument = function() {
 pwk.EditorContainer.prototype.onWindowResizeHandler_ = function() {
   goog.style.setHeight(this.getElement(), goog.dom.getViewportSize().height);
 };
-
 
 /**
  * Component default css class

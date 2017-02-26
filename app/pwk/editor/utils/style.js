@@ -30,7 +30,6 @@ goog.provide('pwk.utils.style');
 
 goog.require('goog.style');
 
-
 /**
  * Convert Points to Pixels
  * @param {string} pt
@@ -41,4 +40,3 @@ pwk.utils.style.PointsToPixels = function(pt) {
     return Math.round(parseInt(group0, 10) * 96 / 72) + 'px';
   });
 };
-

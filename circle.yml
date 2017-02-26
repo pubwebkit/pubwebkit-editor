@@ -16,7 +16,6 @@ dependencies:
     - chmod +x vendors/closure-linter/closure_linter/fixjsstyle.py
 
   override:
-    - npm run closure-lint
 
   post:
     - npm run build:closure-compiler

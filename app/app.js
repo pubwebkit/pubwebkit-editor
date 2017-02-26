@@ -31,7 +31,6 @@ goog.provide('app');
 goog.require('app.Core');
 goog.require('app.exports');
 
-
 /**
  * Cross-browser wrapper for DOMContentLoaded.
  * @param {Window} win Window reference
@@ -70,8 +69,7 @@ app.contentLoaded_ = function(win, fn) {
   function poll() {
     try {
       root.doScroll('left');
-    }
-    catch (e) {
+    } catch (e) {
       setTimeout(poll, 50);
       return;
     }
@@ -80,13 +78,13 @@ app.contentLoaded_ = function(win, fn) {
 
   if (doc.readyState === 'complete') {
     fn.call(win, 'lazy');
-  }
-  else {
+  } else {
     if (!modern && root.doScroll) {
 
       try {
         top = !win.frameElement;
-      } catch (e) {}
+      } catch (e) {
+      }
 
       if (top) {
         poll();
@@ -99,6 +97,4 @@ app.contentLoaded_ = function(win, fn) {
 };
 
 // Run application
-app.contentLoaded_(window, function() {
-  (new app.Core()).init();
-});
+app.contentLoaded_(window, function() { (new app.Core()).init(); });

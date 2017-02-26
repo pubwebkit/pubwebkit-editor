@@ -32,8 +32,6 @@ goog.require('goog.dom.classlist');
 goog.require('goog.ui.Component');
 goog.require('pwk.PageSettings');
 
-
-
 /**
  * Initialize {pwk.PageFooter} component.
  * @constructor
@@ -50,7 +48,6 @@ pwk.PageFooter = function() {
 };
 goog.inherits(pwk.PageFooter, goog.ui.Component);
 
-
 /** @inheritDoc */
 pwk.PageFooter.prototype.createDom = function() {
   var element = this.dom_.createElement('div');
@@ -62,7 +59,6 @@ pwk.PageFooter.prototype.createDom = function() {
   goog.style.setUnselectable(element, true);
 };
 
-
 /** @inheritDoc */
 pwk.PageFooter.prototype.decorateInternal = function(element) {
   goog.base(this, 'decorateInternal', element);
@@ -70,12 +66,10 @@ pwk.PageFooter.prototype.decorateInternal = function(element) {
   goog.dom.classlist.add(element, pwk.PageFooter.CSS_CLASS);
 };
 
-
 /** @inheritDoc */
 pwk.PageFooter.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 };
-
 
 /** @inheritDoc */
 pwk.PageFooter.prototype.disposeInternal = function() {
@@ -84,7 +78,6 @@ pwk.PageFooter.prototype.disposeInternal = function() {
   // Remove references
   this.pageSettings_ = null;
 };
-
 
 /**
  * Default CSS class to be applied to the root element of components rendered
