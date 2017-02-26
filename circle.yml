@@ -11,9 +11,6 @@ dependencies:
   pre:
     - npm install
     - pip install six
-    - cd vendors/closure-linter/ && python ./setup.py install
-    - chmod +x vendors/closure-linter/closure_linter/gjslint.py
-    - chmod +x vendors/closure-linter/closure_linter/fixjsstyle.py
 
   override:
 
