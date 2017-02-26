@@ -1250,7 +1250,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
           if (loopLine.isInDocument()) {
             line = loopLine;
           } else {
-            line = this.lines_[i + 1] || this.lines_[i];
+            line = this.lines_[i] || this.lines_[i + 1];
           }
 
           if (selectionOffsets) {
