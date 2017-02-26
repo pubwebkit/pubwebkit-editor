@@ -32,7 +32,7 @@ goog.require('pwk.EditorContainer');
  * @extends {app.core.Controller}
  */
 app.controllers.HomeController = function() {
-  goog.base(this, 'HomeController');
+  app.controllers.HomeController.base(this, 'constructor', 'HomeController');
 };
 goog.inherits(app.controllers.HomeController, app.core.Controller);
 

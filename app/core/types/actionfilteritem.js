@@ -34,7 +34,7 @@ goog.require('app.core.types.ApplicationFilterItem');
  * @extends {app.core.types.ApplicationFilterItem}
  */
 app.core.types.ActionFilterItem = function(filter, opt_route, opt_order) {
-  goog.base(this, filter, opt_order);
+  app.core.types.ActionFilterItem.base(this, 'constructor', filter, opt_order);
 
   /**
    * @type {string|RegExp}

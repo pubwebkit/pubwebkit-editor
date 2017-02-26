@@ -40,7 +40,7 @@ goog.require('goog.events.EventTarget');
  * @constructor
  * @extends {app.core.Application}
  */
-app.Core = function() { goog.base(this); };
+app.Core = function() { app.Core.base(this, 'constructor'); };
 goog.inherits(app.Core, app.core.Application);
 
 /**

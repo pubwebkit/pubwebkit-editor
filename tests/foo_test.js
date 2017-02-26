@@ -5,4 +5,3 @@ describe('Foo test', function() {
     assertEquals(1, 1);
   });
 });
-

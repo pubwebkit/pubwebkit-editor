@@ -41,7 +41,7 @@ goog.require('pwk.layer.SelectionOverlay');
  * @constructor
  */
 pwk.Line = function(opt_text) {
-  goog.base(this);
+  pwk.Line.base(this, 'constructor');
 
   /**
    * @type {pwk.LineContent}
@@ -78,7 +78,7 @@ pwk.Line.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.Line.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  pwk.Line.base(this, 'disposeInternal');
 
   goog.dispose(this.content_);
   goog.dispose(this.selectionOverlay_);

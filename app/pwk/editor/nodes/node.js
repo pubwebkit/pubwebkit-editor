@@ -41,7 +41,7 @@ goog.require('pwk.NodeFormatter');
  * @extends {goog.ui.Component}
  */
 pwk.Node = function(type, doc) {
-  goog.base(this);
+  pwk.Node.base(this, 'constructor');
 
   /**
    * @type {Array.<pwk.NodeAttribute>}
@@ -87,7 +87,7 @@ pwk.Node.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.Node.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  pwk.Node.base(this, 'disposeInternal');
 
   // Remove attributes
   for (var i = 0; i < this.attributes_.length; i++) {
@@ -101,7 +101,7 @@ pwk.Node.prototype.disposeInternal = function() {
 
 /** @inheritDoc */
 pwk.Node.prototype.addChild = function(child, opt_render) {
-  goog.base(this, 'addChild', child, opt_render);
+  pwk.Node.base(this, 'addChild', child, opt_render);
 };
 
 /** @inheritDoc */
@@ -110,7 +110,7 @@ pwk.Node.prototype.addChildAt = function(child, index, opt_render) {
     child.isChild(true);
   }
 
-  goog.base(this, 'addChildAt', child, index, opt_render);
+  pwk.Node.base(this, 'addChildAt', child, index, opt_render);
 };
 
 /**

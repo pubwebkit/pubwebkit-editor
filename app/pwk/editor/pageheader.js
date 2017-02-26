@@ -38,7 +38,7 @@ goog.require('pwk.PageSettings');
  * @extends {goog.ui.Component}
  */
 pwk.PageHeader = function() {
-  goog.base(this);
+  pwk.PageHeader.base(this, 'constructor');
 
   /**
    * @type {pwk.PageSettings}
@@ -61,19 +61,19 @@ pwk.PageHeader.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.PageHeader.prototype.decorateInternal = function(element) {
-  goog.base(this, 'decorateInternal', element);
+  pwk.PageHeader.base(this, 'decorateInternal', element);
 
   goog.dom.classlist.add(element, pwk.PageHeader.CSS_CLASS);
 };
 
 /** @inheritDoc */
 pwk.PageHeader.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.PageHeader.base(this, 'enterDocument');
 };
 
 /** @inheritDoc */
 pwk.PageHeader.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  pwk.PageHeader.base(this, 'disposeInternal');
 
   // Remove references
   this.pageSettings_ = null;

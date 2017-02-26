@@ -43,7 +43,7 @@ goog.require('pwk.utils.ResizeEvent');
  * @extends {goog.ui.Component}
  */
 pwk.PageContent = function(parentPage, doc) {
-  goog.base(this);
+  pwk.PageContent.base(this, 'constructor');
 
   /**
    * @type {pwk.Document}
@@ -74,7 +74,7 @@ pwk.PageContent.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.PageContent.prototype.decorateInternal = function(element) {
-  goog.base(this, 'decorateInternal', element);
+  pwk.PageContent.base(this, 'decorateInternal', element);
 
   goog.dom.classlist.add(element, pwk.PageContent.CSS_CLASS);
 
@@ -86,7 +86,7 @@ pwk.PageContent.prototype.decorateInternal = function(element) {
 
 /** @inheritDoc */
 pwk.PageContent.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.PageContent.base(this, 'enterDocument');
 
   pwk.utils.ResizeEvent.listen(this.getElement(),
                                goog.bind(this.onResizeHandler_, this));
@@ -94,7 +94,7 @@ pwk.PageContent.prototype.enterDocument = function() {
 
 /** @inheritDoc */
 pwk.PageContent.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  pwk.PageContent.base(this, 'disposeInternal');
 
   // Remove references
   this.document_ = null;

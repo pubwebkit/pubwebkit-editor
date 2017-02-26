@@ -54,8 +54,7 @@ goog.require('pwk.Shortcuts.MacOS');
  * @extends {goog.ui.Component}
  */
 pwk.Editor = function() {
-  goog.base(this);
-
+  pwk.Editor.base(this, 'constructor');
   /**
    * @type {goog.events.KeyHandler}
    * @private
@@ -142,7 +141,7 @@ pwk.Editor.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.Editor.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.Editor.base(this, 'enterDocument');
 
   var element = this.getElement();
 

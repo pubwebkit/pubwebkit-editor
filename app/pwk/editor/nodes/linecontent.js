@@ -39,7 +39,7 @@ goog.require('pwk.primitives.ClientRectRange');
  * @constructor
  */
 pwk.LineContent = function(opt_text) {
-  goog.base(this);
+  pwk.LineContent.base(this, 'constructor');
 
   /**
    * @type {string}
@@ -70,12 +70,12 @@ pwk.LineContent.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.LineContent.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.LineContent.base(this, 'enterDocument');
 };
 
 /** @inheritDoc */
 pwk.LineContent.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  pwk.LineContent.base(this, 'disposeInternal');
 
   // Remove annotations
   for (var i = 0; i < this.annotations_.length; i++) {

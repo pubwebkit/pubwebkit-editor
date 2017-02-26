@@ -41,7 +41,7 @@ goog.require('pwk.primitives.ClientRectRange');
  * @extends {goog.ui.Component}
  */
 pwk.layer.SelectionOverlay = function(clientRectRange, opt_domHelper) {
-  goog.base(this, opt_domHelper);
+  pwk.layer.SelectionOverlay.base(this, 'constructor', opt_domHelper);
 
   /**
    * @type {pwk.primitives.ClientRectRange}

@@ -32,7 +32,7 @@ goog.require('goog.history.Html5History');
  */
 app.core.Router = function(opt_noFragment, opt_blankPage, opt_input,
                            opt_iframe) {
-  goog.base(this);
+  app.core.Router.base(this, 'constructor');
   this.history_ = goog.history.Html5History.isSupported()
                       ? new goog.history.Html5History()
                       : new goog.History(!!(opt_blankPage && opt_noFragment),

@@ -51,7 +51,7 @@ goog.require('pwk.utils.style');
  * @constructor
  */
 pwk.Document = function() {
-  goog.base(this);
+  pwk.Document.base(this, 'constructor');
 
   /**
    * @type {pwk.Selection}
@@ -114,7 +114,7 @@ pwk.Document.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.Document.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.Document.base(this, 'enterDocument');
 
   // Initialize events
   this.initializeEvents_();

@@ -36,7 +36,9 @@ goog.require('pwk.Node');
  * @constructor
  * @extends {pwk.Node}
  */
-pwk.BranchNode = function(type, doc) { goog.base(this, type, doc); };
+pwk.BranchNode = function(type, doc) {
+  pwk.BranchNode.base(this, 'constructor', type, doc);
+};
 goog.inherits(pwk.BranchNode, pwk.Node);
 
 /**

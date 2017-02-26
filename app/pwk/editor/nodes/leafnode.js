@@ -48,7 +48,7 @@ goog.require('pwk.primitives.NodeSelectionRange');
  * @extends {pwk.Node}
  */
 pwk.LeafNode = function(type, doc, opt_content) {
-  goog.base(this, type, doc);
+  pwk.LeafNode.base(this, 'constructor', type, doc);
 
   /**
    * @type {Array.<pwk.Line>}
@@ -115,7 +115,7 @@ pwk.LeafNode.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.LeafNode.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.LeafNode.base(this, 'enterDocument');
 
   // Initialize events
   this.listen(pwk.Node.EventType.ATTRIBUTES_CHANGED, this.renderNode_, false,
@@ -240,7 +240,7 @@ pwk.LeafNode.prototype.insertLines = function(lines, render, opt_i) {
 
 /** @inheritDoc */
 pwk.LeafNode.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  pwk.LeafNode.base(this, 'disposeInternal');
 
   var lines = this.lines_;
   var linesLen = lines.length;
@@ -1276,7 +1276,7 @@ pwk.LeafNode.prototype.isSelectedEntirely_ = function() {
 
 /** @inheritDoc */
 pwk.LeafNode.prototype.addChildAt = function(child, index, opt_render) {
-  goog.base(this, 'addChildAt', child, index, opt_render);
+  pwk.LeafNode.base(this, 'addChildAt', child, index, opt_render);
 };
 
 /**

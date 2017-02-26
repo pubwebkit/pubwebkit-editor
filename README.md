@@ -10,14 +10,10 @@ Also, it's a part of [www.pubwebkit.com](http://www.pubwebkit.com/) portal.
 * Make sure you have installed Maven.
 * Build Google Closure Compiler. Run command `npm run build:closure-compiler` on the root of the pubwebkit-editor project.
 * Build Google Closure Templates for javascript usage. Navigate to `vendors/closure-templates/` folder and run command `mvn`.
-* Install Closure Linter from `vendors/closure-linter` by next command `python ./setup.py install`.
-  - Make gjslint.py executable `chmod +x vendors/closure-linter/closure_linter/gjslint.py`.
-  - Make fixjsstyle.py executable `chmod +x vendors/closure-linter/closure_linter/fixjsstyle.py`.
 
 ## Available npm commands
 * `npm run build` - Build project.
 * `npm run build:closure-compiler` - Build Google Closure Compiler.
-* `npm run closure-lint` - Check files by Closure Linter. Will be checked all scripts inside `app/` & `test/` folders.
 * `npm test` - Run tests.
 
 ## File structure
@@ -34,7 +30,6 @@ GruntJS is a JavaScript based command line build tool that helps developers auto
 Below list of the most important task that can used during development:
 * `grunt build` - Compile JavaScript to better JavaScript by Google Closure Compiler, compile Less files to css and minimize. Compiled project will be placed to `dist/` folder.
 * `grunt eslint` - Check JavaScript files of the project by  ESLint linting utility.
-* `grunt closureLint` - Check JavaScript files for style issues by Google Closure Linter.
 * `grunt connect` - Run local server with root project directory. Web server will be available by http://localhost:9000.
 * `grunt jsdoc` - Generate JSDoc based documentation. All documentation available under `docs/` folder. If you will run local web server, then you can access documentation by http://localhost:9000/documentation.
 Also, you can browse latest API documentation by this [link](http://htmlpreview.github.io/?https://github.com/pubwebkit/pubwebkit-editor/blob/master/docs/index.html) using GitHub & BitBucket HTML Preview tool.

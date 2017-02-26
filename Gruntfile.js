@@ -95,7 +95,7 @@ module.exports = function(grunt) {
     },
 
     clangFormat: {
-      src: [ 'app/**/*.js' ]
+      src: [ 'app/**/*.js', 'tests/**/*.js' ]
     },
 
     closureBuilder: {
@@ -163,7 +163,7 @@ module.exports = function(grunt) {
                           'unusedLocalVariables',
                           //'unusedPrivateMembers',
                           'uselessCode',
-                          // 'useOfGoogBase',
+                          'useOfGoogBase',
                           'underscore',
                           'visibility'],
           hide_warnings_for: CONFIGURATION.closureLibrary

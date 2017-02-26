@@ -36,7 +36,9 @@ goog.require('goog.ui.Component');
  * @constructor
  * @extends {goog.ui.Component}
  */
-pwk.EditorContainer = function() { goog.base(this); };
+pwk.EditorContainer = function() {
+  pwk.EditorContainer.base(this, 'constructor');
+};
 goog.inherits(pwk.EditorContainer, goog.ui.Component);
 
 /** @inheritDoc */
@@ -49,7 +51,7 @@ pwk.EditorContainer.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.EditorContainer.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.EditorContainer.base(this, 'enterDocument');
 
   // Initialize events
   goog.events.listen(window, goog.events.EventType.RESIZE,

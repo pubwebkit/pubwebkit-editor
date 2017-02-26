@@ -45,7 +45,7 @@ goog.require('pwk.utils.dom');
  * @extends {goog.ui.Component}
  */
 pwk.layer.Caret = function(opt_domHelper) {
-  goog.base(this, opt_domHelper);
+  pwk.layer.Caret.base(this, 'constructor', opt_domHelper);
 
   /**
    * Is cursor visible.
@@ -115,7 +115,7 @@ pwk.layer.Caret.prototype.createDom = function() {
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.decorateInternal = function(element) {
-  goog.base(this, 'decorateInternal', element);
+  pwk.layer.Caret.base(this, 'decorateInternal', element);
 
   // Add css class
   goog.dom.classlist.add(element, pwk.layer.Caret.CSS_CLASS);
@@ -127,7 +127,7 @@ pwk.layer.Caret.prototype.decorateInternal = function(element) {
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  pwk.layer.Caret.base(this, 'enterDocument');
 
   // Wrap by layer
   var parent =
@@ -144,7 +144,7 @@ pwk.layer.Caret.prototype.enterDocument = function() {
 
 /** @inheritDoc */
 pwk.layer.Caret.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  pwk.layer.Caret.base(this, 'disposeInternal');
 
   // Stop timer
   clearInterval(this.blinkId_);
