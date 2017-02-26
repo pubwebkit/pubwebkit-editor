@@ -22,39 +22,25 @@
 //
 
 /**
- * @fileoverview TODO: add description
+ * @fileoverview Event handler for {@link Node} content changes
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-goog.provide('pwk.BranchNode');
+goog.provide('pwk.NodeContentChangedEvent');
 
-goog.require('pwk.Node');
-
-
+goog.require('goog.events.Event');
 
 /**
- * @param {pwk.NodeTypes} type Type of node
- * @param {pwk.Document} doc Parent document object.
+ * @param {pwk.Line} line
+ * @extends {goog.events.Event}
  * @constructor
- * @extends {pwk.Node}
  */
-pwk.BranchNode = function(type, doc) {
-  goog.base(this, type, doc);
+pwk.NodeContentChangedEvent = function(line) {
+  goog.events.Event.call(this, pwk.LeafNode.EventType.CONTENT_CHANGED, line);
+
+  /**
+   * @type {pwk.Line}
+   */
+  this.lastUpdatedLine = line;
 };
-goog.inherits(pwk.BranchNode, pwk.Node);
-
-
-/**
- * Component default css class
- * @type {string}
- * @override
- */
-pwk.BranchNode.prototype.CSS_CLASS = 'pwk-branchnode';
-
-
-/**
- * @inheritDoc
- */
-pwk.BranchNode.prototype.getSize = function() {
-  return goog.style.getSize(this.getElement());
-};
+goog.inherits(pwk.NodeContentChangedEvent, goog.events.Event);

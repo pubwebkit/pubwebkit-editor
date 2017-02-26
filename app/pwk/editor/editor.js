@@ -37,11 +37,14 @@ goog.require('goog.events.KeyCodes');
 goog.require('goog.events.KeyHandler');
 goog.require('goog.events.KeyHandler.EventType');
 goog.require('goog.events.KeyNames');
+goog.require('goog.fx.dom.Scroll');
 goog.require('goog.json');
 goog.require('goog.text.LoremIpsum');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.KeyboardShortcutHandler');
 goog.require('pwk.Document');
+goog.require('pwk.LeafNode');
+goog.require('pwk.Line');
 goog.require('pwk.Shortcuts.Default');
 goog.require('pwk.Shortcuts.MacOS');
 

@@ -27,15 +27,16 @@
  */
 
 goog.provide('pwk.LeafNode');
-goog.provide('pwk.LeafNode.NodeContentChangedEvent');
 
 goog.require('goog.dom.Range');
 goog.require('goog.dom.classlist');
+goog.require('goog.events.Event');
 goog.require('pwk.Line');
 goog.require('pwk.LineOffsetInfo');
 goog.require('pwk.Node');
 goog.require('pwk.NodeAttribute');
 goog.require('pwk.NodeAttributeTypes');
+goog.require('pwk.NodeContentChangedEvent');
 goog.require('pwk.NodeFormatter');
 goog.require('pwk.primitives.NodeSelectionRange');
 
@@ -56,7 +57,7 @@ pwk.LeafNode = function(type, doc, opt_content) {
    * @private
    */
   this.lines_ =
-      goog.isString(opt_content) || !goog.isDefAndNotNull(opt_content) ?
+goog.isString(opt_content) || !goog.isDefAndNotNull(opt_content) ?
           [new pwk.Line(opt_content || '')] :
           [opt_content];
 
@@ -132,7 +133,7 @@ pwk.LeafNode.prototype.enterDocument = function() {
   }
 
   if (this.getLength() > 0) {
-    this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(
+    this.dispatchEvent(new pwk.NodeContentChangedEvent(
         this.getFirstLine()));
   }
 };
@@ -419,6 +420,7 @@ pwk.LeafNode.prototype.getRangeInfoByLinkedNodesOffset = function(nodeOffset) {
  * @param {pwk.Line} line
  * @param {number} lineOffset
  * @return {number}
+ * @override
  */
 pwk.LeafNode.prototype.getOffsetByLineOffset = function(line, lineOffset) {
   var lines = this.lines_;
@@ -782,7 +784,7 @@ pwk.LeafNode.prototype.clearRangeInfoForOffsetCache = function(opt_callerNode) {
 
 
 /**
- * @param {pwk.LeafNode.NodeContentChangedEvent} e
+ * @param {pwk.NodeContentChangedEvent} e
  * @private
  */
 pwk.LeafNode.prototype.onLineContentChangedHandler_ = function(e) {
@@ -1270,7 +1272,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
       if (startLineIndex + 1 in this.lines_) {
         this.dispatchEvent(
-            new pwk.LeafNode.NodeContentChangedEvent(
+            new pwk.NodeContentChangedEvent(
                 this.lines_[startLineIndex + 1]));
       }
 
@@ -1342,6 +1344,7 @@ pwk.LeafNode.prototype.addChildAt = function(child, index, opt_render) {
 /**
  * Component default css class.
  * @type {string}
+ * @override
  */
 pwk.LeafNode.prototype.CSS_CLASS = 'pwk-leafnode';
 
@@ -1352,20 +1355,3 @@ pwk.LeafNode.prototype.CSS_CLASS = 'pwk-leafnode';
 pwk.LeafNode.EventType = {
   CONTENT_CHANGED: goog.events.getUniqueId('node_content_changed')
 };
-
-
-
-/**
- * @param {pwk.Line} line
- * @extends {goog.events.Event}
- * @constructor
- */
-pwk.LeafNode.NodeContentChangedEvent = function(line) {
-  goog.events.Event.call(this, pwk.LeafNode.EventType.CONTENT_CHANGED, line);
-
-  /**
-   * @type {pwk.Line}
-   */
-  this.lastUpdatedLine = line;
-};
-goog.inherits(pwk.LeafNode.NodeContentChangedEvent, goog.events.Event);

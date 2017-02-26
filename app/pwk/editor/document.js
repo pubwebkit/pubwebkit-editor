@@ -290,7 +290,7 @@ pwk.Document.prototype.createNewLine = function() {
 
       selection.updateCaretFromRange();
       paragraph.dispatchEvent(
-          new pwk.LeafNode.NodeContentChangedEvent(
+          new pwk.NodeContentChangedEvent(
               paragraph.getLineAt(1, true)));
       break;
   }
@@ -722,7 +722,7 @@ pwk.Document.prototype.initializeDocument_ = function() {
   this.addNode(paragraph);
 
   this.dispatchEvent(
-      new pwk.LeafNode.NodeContentChangedEvent(paragraph.getFirstLine()));
+      new pwk.NodeContentChangedEvent(paragraph.getFirstLine()));
 
   // Initialize Range
   var range = pwk.Range.createFromNodes(paragraph.getFirstLine(), 0,

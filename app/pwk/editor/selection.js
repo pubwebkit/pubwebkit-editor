@@ -33,7 +33,9 @@ goog.require('goog.dom.classlist');
 goog.require('goog.events.EventTarget');
 goog.require('goog.fx.dom');
 goog.require('goog.fx.easing');
+goog.require('goog.math.Rect');
 goog.require('pwk.layer.Caret');
+goog.require('pwk.primitives.NodeSelectionRange');
 
 
 

@@ -30,6 +30,7 @@ goog.provide('pwk.Node');
 
 goog.require('goog.dom.classlist');
 goog.require('goog.ui.Component');
+goog.require('pwk.NodeAttribute');
 goog.require('pwk.NodeFormatter');
 
 
@@ -410,7 +411,7 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
 
       if (lastChangedLine != null) {
         topNode.dispatchEvent(
-            new pwk.LeafNode.NodeContentChangedEvent(lastChangedLine));
+            new pwk.NodeContentChangedEvent(lastChangedLine));
       }
 
     }

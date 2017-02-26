@@ -72,6 +72,7 @@ app.core.Request.prototype.getRouteData = function(opt_key) {
 /**
  * Convert this object to a simple JSON object.
  * @return {Object}
+ * @override
  */
 app.core.Request.prototype.toJSON = function() {
   var obj = {

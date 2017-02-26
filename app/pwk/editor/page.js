@@ -33,6 +33,7 @@ goog.provide('pwk.Page.PageOverflowEvent');
 goog.require('goog.dom.classlist');
 goog.require('goog.events.Event');
 goog.require('goog.ui.Component');
+goog.require('pwk.LeafNode');
 goog.require('pwk.Node');
 goog.require('pwk.NodeFormatter');
 goog.require('pwk.PageContent');

@@ -28,6 +28,7 @@
 
 goog.provide('pwk.Pagination');
 goog.require('goog.events.EventTarget');
+goog.require('pwk.LeafNode');
 
 
 

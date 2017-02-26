@@ -51,3 +51,6 @@ app.controllers.HomeController.prototype.index = function(request, response) {
   container.addChild(editor, true);
   container.render(document.body);
 };
+
+goog.exportProperty(app.controllers.HomeController.prototype, 'index',
+    app.controllers.HomeController.prototype.index);

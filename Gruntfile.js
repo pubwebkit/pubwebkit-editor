@@ -141,7 +141,54 @@ module.exports = function(grunt) {
           create_source_map: CONFIGURATION.sourceMap,
           source_map_format: 'V3',
           source_map_location_mapping: CONFIGURATION.source_map_location_mapping,
-          output_wrapper: CONFIGURATION.outputWrapper
+          output_wrapper: CONFIGURATION.outputWrapper,
+          jscomp_warning: ['lintChecks',
+                          'accessControls',
+                          'ambiguousFunctionDecl',
+                          'checkEventfulObjectDisposal',
+                          'checkRegExp',
+                          'checkTypes',
+                          'checkVars',
+                          'commonJsModuleLoad',
+                          'conformanceViolations',
+                          'const',
+                          'constantProperty',
+                          'deprecated',
+                          'deprecatedAnnotations',
+                          'duplicateMessage',
+                          'es3',
+                          'es5Strict',
+                          'externsValidation',
+                          'fileoverviewTags',
+                          'functionParams',
+                          'globalThis',
+                          'internetExplorerChecks',
+                          'invalidCasts',
+                          'misplacedTypeAnnotation',
+                          'missingGetCssName',
+                          'missingOverride',
+                          'missingPolyfill',
+                          'missingProperties',
+                          'missingProvide',
+                          //'missingRequire',
+                          'missingReturn',
+                          'msgDescriptions',
+                          // 'newCheckTypes',
+                          // 'nonStandardJsDocs',
+                          // 'reportUnknownTypes',
+                          'suspiciousCode',
+                          'strictModuleDepCheck',
+                          'typeInvalidation',
+                          'undefinedNames',
+                          'undefinedVars',
+                          'unknownDefines',
+                          'unusedLocalVariables',
+                          //'unusedPrivateMembers',
+                          'uselessCode',
+                          // 'useOfGoogBase',
+                          'underscore',
+                          'visibility'],
+          hide_warnings_for: CONFIGURATION.closureLibrary
         }
       },
       app: {
@@ -217,7 +264,9 @@ module.exports = function(grunt) {
 
     shell: {
       compileClosureCompiler: {
-        command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && mvn -DskipTests -pl "!pom-gwt.xml"'
+        command: () => 'cd ' + CONFIGURATION.closureCompilerSrc + ' && '
+                  + 'mvn install -DskipTests -pl com.google.javascript:closure-compiler-linter  && '
+                  + 'mvn -DskipTests -pl "!pom-gwt.xml"'
       },
       options: {
         execOptions: {

@@ -175,7 +175,7 @@ pwk.Line.prototype.popLastWord = function() {
 pwk.Line.prototype.insertValue = function(value, opt_offset) {
   this.content_.insertValue(value, opt_offset);
 
-  this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this));
+  this.dispatchEvent(new pwk.NodeContentChangedEvent(this));
 };
 
 
@@ -187,7 +187,7 @@ pwk.Line.prototype.insertValue = function(value, opt_offset) {
 pwk.Line.prototype.insertText = function(text, opt_offset) {
   this.content_.insertText(text, opt_offset);
 
-  this.dispatchEvent(new pwk.LeafNode.NodeContentChangedEvent(this));
+  this.dispatchEvent(new pwk.NodeContentChangedEvent(this));
 };
 
 

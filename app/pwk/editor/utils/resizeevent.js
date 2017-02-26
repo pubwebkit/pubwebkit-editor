@@ -57,7 +57,7 @@ pwk.utils.ResizeEvent.requestFrame_ = (function() {
 
   return function requestFrameFunction(func) {
     return raf(func);
-  }
+  };
 })();
 
 
@@ -72,7 +72,7 @@ pwk.utils.ResizeEvent.cancelFrame_ = (function() {
       window.clearTimeout;
   return function cancelFrameFunction(id) {
     return cancel(id);
-  }
+  };
 })();
 
 
