@@ -239,7 +239,7 @@ pwk.Page.prototype.checkPageOverflow = function() {
           } else {
             var lastLine;
 
-            if (!goog.isDefAndNotNull(linkedNode)) {
+            if (!linkedNode) {
               // Move lines to the new linked node
               for (var i = leafNode.getLinesCount() - 1; i >= lineLength; i--) {
                 lastLine = loopNode.unlinkLine(loopNode.getLineAt(i));

@@ -318,16 +318,16 @@ pwk.Pagination.prototype.checkFilling = function(modifiedPage) {
         else if (nodeToMove.isSplittable()) {
 
           //Split node
-          var movedContent = nodeToMove.splitByHeight(availableHeightAbove);
+          var newNodeToMode = nodeToMove.splitByHeight(availableHeightAbove);
 
-          if (movedContent != null) {
-            var previousLinkedNode = movedContent.getPreviousLinkedNode();
+          if (newNodeToMode != null) {
+            var previousLinkedNode = newNodeToMode.getPreviousLinkedNode();
 
             // For linked nodes
             if (previousLinkedNode != null) {
-              pwk.Node.mergeNodes(doc, previousLinkedNode, nodeToMove);
+              pwk.Node.mergeNodes(doc, previousLinkedNode, newNodeToMode);
             } else {
-              doc.addNodeAt(movedContent, nodeToMove.getIndex(), true);
+               doc.addNodeAt(newNodeToMode, nodeToMove.getIndex(), true);
             }
           }
           hasContentToMove = false;

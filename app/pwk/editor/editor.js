@@ -524,7 +524,7 @@ pwk.Editor.prototype.addTestText = function(opt_init) {
   var node;
 
   //console.profile('Normalization performance');
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 20; i++) {
     paragraph = generator.generateParagraph(false);
     if (i == 0 && opt_init) {
       line = /** @type {pwk.LeafNode} */ (this.document_.getNodeAt(0))

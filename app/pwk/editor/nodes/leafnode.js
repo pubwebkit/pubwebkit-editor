@@ -553,7 +553,10 @@ pwk.LeafNode.prototype.removeLine = function(line) {
  */
 pwk.LeafNode.prototype.unlinkLine = function(line) {
   goog.array.remove(this.lines_, line);
-  return /** @type {pwk.Line} */ (this.removeChild(line, true));
+  if(this.indexOfChild(line) != -1) {
+    this.removeChild(line, true);
+  }
+  return line;
 };
 
 /**

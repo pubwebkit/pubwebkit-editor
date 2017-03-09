@@ -344,8 +344,7 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
       var lastChangedLine = bottomNode.getLineAt(0);
 
       while (length--) {
-        topNode.insertLine(bottomNode.unlinkLine(bottomNode.getLineAt(0)),
-                           true);
+        topNode.insertLine(bottomNode.unlinkLine(bottomNode.getLineAt(0)), true);
       }
 
       // Update linked nodes
@@ -362,7 +361,9 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
           topNode.setNextLinkedNode(bottomNodeNextLinkedNode);
         }
 
-        document.removeNode(bottomNode);
+        if(document.indexOfNode(bottomNode) != -1) {
+          document.removeNode(bottomNode);
+        }
       }
 
       if (lastChangedLine != null) {
