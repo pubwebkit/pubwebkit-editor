@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>PubWebKit Editor | Source: pwk/editor/layer/selectionoverlay.js</title>
+	<title>PubWebKit Editor | Source: pwk/editor/nodes/nodecontentchangedevent.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -70,7 +70,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: pwk/editor/layer/selectionoverlay.js</h1>
+		<h1 class="page-title">Source: pwk/editor/nodes/nodecontentchangedevent.js</h1>
     
 <section>
     <article>
@@ -99,58 +99,28 @@
 //
 
 /**
- * @fileoverview Selection overview UI component.
+ * @fileoverview Event handler for {@link Node} content changes
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-goog.provide('pwk.layer.SelectionOverlay');
+goog.provide('pwk.NodeContentChangedEvent');
 
-goog.require('goog.dom.classlist');
 goog.require('goog.events.Event');
-goog.require('goog.ui.Component');
-goog.require('pwk.primitives.ClientRectRange');
 
 /**
- * @param {pwk.primitives.ClientRectRange} clientRectRange
- * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
- *    document interaction.
+ * @param {pwk.Line} line
+ * @extends {goog.events.Event}
  * @constructor
- * @extends {goog.ui.Component}
  */
-pwk.layer.SelectionOverlay = function(clientRectRange, opt_domHelper) {
-  pwk.layer.SelectionOverlay.base(this, 'constructor', opt_domHelper);
+pwk.NodeContentChangedEvent = function(line) {
+  goog.events.Event.call(this, pwk.LeafNode.EventType.CONTENT_CHANGED, line);
 
   /**
-   * @type {pwk.primitives.ClientRectRange}
-   * @private
+   * @type {pwk.Line}
    */
-  this.clientRectRange_ = clientRectRange;
+  this.lastUpdatedLine = line;
 };
-goog.inherits(pwk.layer.SelectionOverlay, goog.ui.Component);
-
-/**
- * Default CSS class to be applied to the root element of components rendered
- * by this renderer.
- *
- * @type {string}
- */
-pwk.layer.SelectionOverlay.CSS_CLASS = 'pwk-selection-overlay';
-
-/** @inheritDoc */
-pwk.layer.SelectionOverlay.prototype.createDom = function() {
-  var element = goog.dom.createDom('div');
-  var clientRect = this.clientRectRange_;
-  var googStyle = goog.style;
-  var googMath = goog.math;
-
-  this.setElementInternal(element);
-  goog.dom.classlist.add(this.getElement(),
-                         pwk.layer.SelectionOverlay.CSS_CLASS);
-  googStyle.setPosition(
-      element, new googMath.Coordinate(clientRect.left, clientRect.top));
-  googStyle.setSize(element,
-                    new googMath.Size(clientRect.width, clientRect.height));
-};
+goog.inherits(pwk.NodeContentChangedEvent, goog.events.Event);
 </pre>
     </article>
 </section>

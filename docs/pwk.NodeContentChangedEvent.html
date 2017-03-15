@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>PubWebKit Editor | Source: pwk/editor/layer/selectionoverlay.js</title>
+	<title>PubWebKit Editor | Class: NodeContentChangedEvent</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -65,96 +65,276 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: pwk/editor/layer/selectionoverlay.js</h1>
-    
+
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">//
-// Pubwebkit editor is powerful editor to create your ebook in various styles.
-// It's includes: Cover Designer, Template Editor, Community Snippets and more.
-// Also, it's a part of www.pubwebkit.com portal.
-// Copyright (C) 2016 Dmytro Antonenko
-//
-// This file is part of Pubwebkit editor
-//
-// Pubwebkit editor is free software: you can redistribute it and/or modify it
-// under  the terms of the GNU Affero General Public License as published by the
-// Free Software Foundation, version 3
-//
-// Pubwebkit editor is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// FITNESS FOR A PARTICULAR PURPOSE.
-//
-// See the GNU Affero General Public License for more details. You should have
-// received a copy of the GNU General Public License along with Hatch.js. If
-// not, see &lt;http://www.gnu.org/licenses/>.
-//
-// Authors: Dmytro Antonenko
-//
 
-/**
- * @fileoverview Selection overview UI component.
- * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
- */
+<header>
+    
+        <h2>
 
-goog.provide('pwk.layer.SelectionOverlay');
+        pwk.NodeContentChangedEvent
+        </h2>
+        
+    
+</header>
 
-goog.require('goog.dom.classlist');
-goog.require('goog.events.Event');
-goog.require('goog.ui.Component');
-goog.require('pwk.primitives.ClientRectRange');
 
-/**
- * @param {pwk.primitives.ClientRectRange} clientRectRange
- * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
- *    document interaction.
- * @constructor
- * @extends {goog.ui.Component}
- */
-pwk.layer.SelectionOverlay = function(clientRectRange, opt_domHelper) {
-  pwk.layer.SelectionOverlay.base(this, 'constructor', opt_domHelper);
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="NodeContentChangedEvent"><span class="type-signature"></span>new pwk.NodeContentChangedEvent(line)</h4>
 
-  /**
-   * @type {pwk.primitives.ClientRectRange}
-   * @private
-   */
-  this.clientRectRange_ = clientRectRange;
-};
-goog.inherits(pwk.layer.SelectionOverlay, goog.ui.Component);
+    
+</dt>
+<dd>
 
-/**
- * Default CSS class to be applied to the root element of components rendered
- * by this renderer.
- *
- * @type {string}
- */
-pwk.layer.SelectionOverlay.CSS_CLASS = 'pwk-selection-overlay';
+    
 
-/** @inheritDoc */
-pwk.layer.SelectionOverlay.prototype.createDom = function() {
-  var element = goog.dom.createDom('div');
-  var clientRect = this.clientRectRange_;
-  var googStyle = goog.style;
-  var googMath = goog.math;
+    
 
-  this.setElementInternal(element);
-  goog.dom.classlist.add(this.getElement(),
-                         pwk.layer.SelectionOverlay.CSS_CLASS);
-  googStyle.setPosition(
-      element, new googMath.Coordinate(clientRect.left, clientRect.top));
-  googStyle.setSize(element,
-                    new googMath.Size(clientRect.width, clientRect.height));
-};
-</pre>
-    </article>
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>line</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="pwk.Line.html">pwk.Line</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="pwk_editor_nodes_nodecontentchangedevent.js.html">pwk/editor/nodes/nodecontentchangedevent.js</a>,
+				 <a href="pwk_editor_nodes_nodecontentchangedevent.js.html#sunlight-1-line-38">line 38</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>goog.events.Event</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<hr>
+<dt class="name" id="lastUpdatedLine">
+    <h4><span class="type-signature"></span>lastUpdatedLine<span class="type-signature"> :<a href="pwk.Line.html">pwk.Line</a></span></h4>
+
+    
+</dt>
+<dd>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="pwk.Line.html">pwk.Line</a></span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="pwk_editor_nodes_nodecontentchangedevent.js.html">pwk/editor/nodes/nodecontentchangedevent.js</a>,
+				 <a href="pwk_editor_nodes_nodecontentchangedevent.js.html#sunlight-1-line-44">line 44</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -164,6 +344,10 @@ pwk.layer.SelectionOverlay.prototype.createDom = function() {
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>

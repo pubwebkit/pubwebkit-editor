@@ -25,7 +25,7 @@ goog.addDependency('../../../../app/pwk/editor/layer/editorcontainer.js', ['pwk.
 goog.addDependency('../../../../app/pwk/editor/layer/ruler.js', ['pwk.Ruler'], ['goog.ui.Component'], false);
 goog.addDependency('../../../../app/pwk/editor/layer/selectionoverlay.js', ['pwk.layer.SelectionOverlay'], ['goog.dom.classlist', 'goog.events.Event', 'goog.ui.Component', 'pwk.primitives.ClientRectRange'], false);
 goog.addDependency('../../../../app/pwk/editor/linerangeinfo.js', ['pwk.LineOffsetInfo'], [], false);
-goog.addDependency('../../../../app/pwk/editor/nodeformatter.js', ['pwk.NodeFormatter'], ['goog.dom.classlist', 'pwk.DocumentSettings', 'pwk.NodeAttributeTypes'], false);
+goog.addDependency('../../../../app/pwk/editor/nodeformatter.js', ['pwk.NodeFormatter'], ['goog.dom.classlist', 'pwk.DocumentSettings', 'pwk.NodeAttributeTypes', 'pwk.ui.NODE_TYPE_PARAGRAPH'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/branchnode.js', ['pwk.BranchNode'], ['pwk.Node'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/leafnode.js', ['pwk.LeafNode'], ['goog.dom.Range', 'goog.dom.classlist', 'goog.events.Event', 'pwk.Line', 'pwk.LineOffsetInfo', 'pwk.Node', 'pwk.NodeAttribute', 'pwk.NodeAttributeTypes', 'pwk.NodeContentChangedEvent', 'pwk.NodeFormatter', 'pwk.primitives.NodeSelectionRange'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/line.js', ['pwk.Line'], ['goog.dom.classlist', 'goog.style', 'goog.ui.Component', 'pwk.LineContent', 'pwk.layer.SelectionOverlay'], false);
@@ -46,6 +46,7 @@ goog.addDependency('../../../../app/pwk/editor/primitives/nodeselectionrange.js'
 goog.addDependency('../../../../app/pwk/editor/range.js', ['pwk.Range'], ['goog.events.EventTarget'], false);
 goog.addDependency('../../../../app/pwk/editor/selection.js', ['pwk.Selection'], ['goog.dom.classlist', 'goog.events.EventTarget', 'goog.fx.dom', 'goog.fx.easing', 'goog.math.Rect', 'pwk.layer.Caret', 'pwk.primitives.NodeSelectionRange'], false);
 goog.addDependency('../../../../app/pwk/editor/shortcuts.js', ['pwk.Shortcuts.Default', 'pwk.Shortcuts.MacOS'], ['goog.events.KeyCodes', 'goog.ui.KeyboardShortcutHandler'], false);
+goog.addDependency('../../../../app/pwk/editor/ui/cssnames.js', ['pwk.ui.NODE_TYPE_PARAGRAPH'], [], false);
 goog.addDependency('../../../../app/pwk/editor/utils/dom.js', ['pwk.utils.dom'], [], false);
 goog.addDependency('../../../../app/pwk/editor/utils/resizeevent.js', ['pwk.utils.ResizeEvent'], [], false);
 goog.addDependency('../../../../app/pwk/editor/utils/style.js', ['pwk.utils.style'], ['goog.style'], false);

@@ -82,7 +82,9 @@ pwk.Node.prototype.getDocument = function() { return this.document_; };
 pwk.Node.prototype.createDom = function() {
   // Create element and apply classes
   this.setElementInternal(this.dom_.createElement('div'));
+
   goog.dom.classlist.add(this.getElement(), this.CSS_CLASS);
+  pwk.NodeFormatter.applyNodeStylesheet(this);
 };
 
 /** @inheritDoc */
@@ -325,7 +327,7 @@ pwk.Node.prototype.getLength = goog.abstractMethod;
  * Component default css class
  * @type {string}
  */
-pwk.Node.prototype.CSS_CLASS = 'pwk-node';
+pwk.Node.prototype.CSS_CLASS = goog.getCssName('pwk-node');
 
 /**
  * Merge nodes

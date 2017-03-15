@@ -48,7 +48,7 @@ pwk.DocumentSettings = function() {
    * @type {string}
    * @private
    */
-  this.fontSize_ = '12pt';
+  this.fontSize_ = '10pt';
 
   /**
    * Document instance.

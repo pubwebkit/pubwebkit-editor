@@ -98,15 +98,13 @@ goog.inherits(pwk.LeafNode, pwk.Node);
 
 /** @inheritDoc */
 pwk.LeafNode.prototype.createDom = function() {
-  this.setElementInternal(this.dom_.createElement('div'));
+  pwk.LeafNode.base(this, 'createDom');
 
   var element = this.getElement();
   var lines = this.lines_;
   var linesLength = lines.length;
 
-  // adjust dom element
   element.setAttribute('id', this.getId());
-  goog.dom.classlist.add(element, this.CSS_CLASS);
 
   while (linesLength--) {
     this.renderLine_(lines[linesLength], 0);
@@ -119,9 +117,9 @@ pwk.LeafNode.prototype.enterDocument = function() {
 
   // Initialize events
   this.listen(pwk.Node.EventType.ATTRIBUTES_CHANGED, this.renderNode_, false,
-              this);
+      this);
   this.listen(pwk.LeafNode.EventType.CONTENT_CHANGED,
-              this.onLineContentChangedHandler_, false, this);
+      this.onLineContentChangedHandler_, false, this);
 
   if (this.getAttributes().length > 0) {
     this.dispatchEvent(pwk.Node.EventType.ATTRIBUTES_CHANGED);
@@ -1287,7 +1285,7 @@ pwk.LeafNode.prototype.addChildAt = function(child, index, opt_render) {
  * @type {string}
  * @override
  */
-pwk.LeafNode.prototype.CSS_CLASS = 'pwk-leafnode';
+pwk.LeafNode.prototype.CSS_CLASS = goog.getCssName('pwk-leafnode');
 
 /**
  * @enum {string}
