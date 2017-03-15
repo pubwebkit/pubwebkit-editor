@@ -31,7 +31,7 @@ goog.provide('pwk.Node');
 goog.require('goog.dom.classlist');
 goog.require('goog.ui.Component');
 goog.require('pwk.NodeAttribute');
-goog.require('pwk.NodeFormatter');
+goog.require('pwk.ui.NodeFormatter');
 
 /**
  * @param {pwk.NodeTypes} type Type of node
@@ -68,7 +68,7 @@ pwk.Node = function(type, doc) {
   this.document_ = doc;
 
   // Apply global attributes
-  pwk.NodeFormatter.applyGlobalDocumentFormation(doc, this);
+  pwk.ui.NodeFormatter.applyGlobalDocumentFormation(doc, this);
 };
 goog.inherits(pwk.Node, goog.ui.Component);
 
@@ -84,7 +84,7 @@ pwk.Node.prototype.createDom = function() {
   this.setElementInternal(this.dom_.createElement('div'));
 
   goog.dom.classlist.add(this.getElement(), this.CSS_CLASS);
-  pwk.NodeFormatter.applyNodeStylesheet(this);
+  pwk.ui.NodeFormatter.applyNodeStylesheet(this);
 };
 
 /** @inheritDoc */

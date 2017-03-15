@@ -26,7 +26,7 @@
  * @author dmitry.antonenko@pubwebkit.com (Dmytro Antonenko)
  */
 
-goog.provide('pwk.NodeFormatter');
+goog.provide('pwk.ui.NodeFormatter');
 
 goog.require('goog.dom.classlist');
 goog.require('pwk.DocumentSettings');
@@ -37,7 +37,7 @@ goog.require('pwk.ui.NODE_TYPE_PARAGRAPH');
  * @param {pwk.Document} doc
  * @param {pwk.Node|pwk.LeafNode} node
  */
-pwk.NodeFormatter.applyGlobalDocumentFormation = function (doc, node) {
+pwk.ui.NodeFormatter.applyGlobalDocumentFormation = function (doc, node) {
   var nodeIndex = doc.indexOfNode(node);
   /** @type {pwk.DocumentSettings} */
   var documentSettings = pwk.DocumentSettings.getInstance();
@@ -78,7 +78,7 @@ pwk.NodeFormatter.applyGlobalDocumentFormation = function (doc, node) {
  * Apply css class name to node in depends on {@link pwk.NodeTypes}
  * @param {pwk.Node} node
  */
-pwk.NodeFormatter.applyNodeStylesheet = function (node) {
+pwk.ui.NodeFormatter.applyNodeStylesheet = function (node) {
     var typeCssName;
 
     switch (node.getType()) {
@@ -97,7 +97,7 @@ pwk.NodeFormatter.applyNodeStylesheet = function (node) {
  * @param {Array.<pwk.NodeAttribute>} attributes
  * @param {goog.ui.Component} node Node or any child component
  */
-pwk.NodeFormatter.applyNodeAttributes = function (attributes, node) {
+pwk.ui.NodeFormatter.applyNodeAttributes = function (attributes, node) {
   var element = node.getElement();
 
   goog.array.forEach(attributes, function (attr) {

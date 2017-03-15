@@ -71,6 +71,5 @@ pwk.layer.SelectionOverlay.prototype.createDom = function() {
                          pwk.layer.SelectionOverlay.CSS_CLASS);
   googStyle.setPosition(
       element, new googMath.Coordinate(clientRect.left, clientRect.top));
-  googStyle.setSize(element,
-                    new googMath.Size(clientRect.width, clientRect.height));
+  googStyle.setWidth(element, clientRect.width);
 };

@@ -35,11 +35,11 @@ goog.require('goog.events.Event');
 goog.require('goog.ui.Component');
 goog.require('pwk.LeafNode');
 goog.require('pwk.Node');
-goog.require('pwk.NodeFormatter');
 goog.require('pwk.PageContent');
 goog.require('pwk.PageFooter');
 goog.require('pwk.PageHeader');
 goog.require('pwk.PageSettings');
+goog.require('pwk.ui.NodeFormatter');
 
 /**
  * Initialize {pwk.Page} component.

@@ -37,8 +37,8 @@ goog.require('pwk.Node');
 goog.require('pwk.NodeAttribute');
 goog.require('pwk.NodeAttributeTypes');
 goog.require('pwk.NodeContentChangedEvent');
-goog.require('pwk.NodeFormatter');
 goog.require('pwk.primitives.NodeSelectionRange');
+goog.require('pwk.ui.NodeFormatter');
 
 /**
  * @param {pwk.NodeTypes} type Type of node.
@@ -220,7 +220,7 @@ pwk.LeafNode.prototype.insertLine = function(line, render, opt_i) {
  */
 pwk.LeafNode.prototype.renderLine_ = function(line, index) {
   this.addChildAt(line, index, true);
-  pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
+  pwk.ui.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
 };
 
 /**
@@ -592,7 +592,7 @@ pwk.LeafNode.prototype.insertText = function(text, opt_offset) {
 /** @private */
 pwk.LeafNode.prototype.renderNode_ = function() {
   goog.array.forEach(this.lines_, function(line) {
-    pwk.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
+    pwk.ui.NodeFormatter.applyNodeAttributes(this.getAttributes(), line);
   }, this);
 };
 
@@ -986,7 +986,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine,
       lineParentNode = lastUpdatedLine.getParentNode();
       googArray.insert(lineParentNode.getLines(), lastUpdatedLineBelow);
       lineParentNode.addChild(lastUpdatedLineBelow, true);
-      pwk.NodeFormatter.applyNodeAttributes(
+      pwk.ui.NodeFormatter.applyNodeAttributes(
           this.getAttributes(),
           lastUpdatedLineBelow); // apply node attributes
     } else {

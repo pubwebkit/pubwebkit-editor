@@ -25,17 +25,16 @@ goog.addDependency('../../../../app/pwk/editor/layer/editorcontainer.js', ['pwk.
 goog.addDependency('../../../../app/pwk/editor/layer/ruler.js', ['pwk.Ruler'], ['goog.ui.Component'], false);
 goog.addDependency('../../../../app/pwk/editor/layer/selectionoverlay.js', ['pwk.layer.SelectionOverlay'], ['goog.dom.classlist', 'goog.events.Event', 'goog.ui.Component', 'pwk.primitives.ClientRectRange'], false);
 goog.addDependency('../../../../app/pwk/editor/linerangeinfo.js', ['pwk.LineOffsetInfo'], [], false);
-goog.addDependency('../../../../app/pwk/editor/nodeformatter.js', ['pwk.NodeFormatter'], ['goog.dom.classlist', 'pwk.DocumentSettings', 'pwk.NodeAttributeTypes', 'pwk.ui.NODE_TYPE_PARAGRAPH'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/branchnode.js', ['pwk.BranchNode'], ['pwk.Node'], false);
-goog.addDependency('../../../../app/pwk/editor/nodes/leafnode.js', ['pwk.LeafNode'], ['goog.dom.Range', 'goog.dom.classlist', 'goog.events.Event', 'pwk.Line', 'pwk.LineOffsetInfo', 'pwk.Node', 'pwk.NodeAttribute', 'pwk.NodeAttributeTypes', 'pwk.NodeContentChangedEvent', 'pwk.NodeFormatter', 'pwk.primitives.NodeSelectionRange'], false);
+goog.addDependency('../../../../app/pwk/editor/nodes/leafnode.js', ['pwk.LeafNode'], ['goog.dom.Range', 'goog.dom.classlist', 'goog.events.Event', 'pwk.Line', 'pwk.LineOffsetInfo', 'pwk.Node', 'pwk.NodeAttribute', 'pwk.NodeAttributeTypes', 'pwk.NodeContentChangedEvent', 'pwk.primitives.NodeSelectionRange', 'pwk.ui.NodeFormatter'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/line.js', ['pwk.Line'], ['goog.dom.classlist', 'goog.style', 'goog.ui.Component', 'pwk.LineContent', 'pwk.layer.SelectionOverlay'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/linecontent.js', ['pwk.LineContent'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.NodeAnnotation', 'pwk.primitives.ClientRectRange'], false);
-goog.addDependency('../../../../app/pwk/editor/nodes/node.js', ['pwk.Node'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.NodeAttribute', 'pwk.NodeFormatter'], false);
+goog.addDependency('../../../../app/pwk/editor/nodes/node.js', ['pwk.Node'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.NodeAttribute', 'pwk.ui.NodeFormatter'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/nodeannotation.js', ['pwk.NodeAnnotation'], [], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/nodeattribute.js', ['pwk.NodeAttribute', 'pwk.NodeAttributeTypes'], [], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/nodecontentchangedevent.js', ['pwk.NodeContentChangedEvent'], ['goog.events.Event'], false);
 goog.addDependency('../../../../app/pwk/editor/nodes/nodetypes.js', ['pwk.NodeTypes'], [], false);
-goog.addDependency('../../../../app/pwk/editor/page.js', ['pwk.Page', 'pwk.Page.EventType', 'pwk.Page.PageOverflowEvent'], ['goog.dom.classlist', 'goog.events.Event', 'goog.ui.Component', 'pwk.LeafNode', 'pwk.Node', 'pwk.NodeFormatter', 'pwk.PageContent', 'pwk.PageFooter', 'pwk.PageHeader', 'pwk.PageSettings'], false);
+goog.addDependency('../../../../app/pwk/editor/page.js', ['pwk.Page', 'pwk.Page.EventType', 'pwk.Page.PageOverflowEvent'], ['goog.dom.classlist', 'goog.events.Event', 'goog.ui.Component', 'pwk.LeafNode', 'pwk.Node', 'pwk.PageContent', 'pwk.PageFooter', 'pwk.PageHeader', 'pwk.PageSettings', 'pwk.ui.NodeFormatter'], false);
 goog.addDependency('../../../../app/pwk/editor/pagecontent.js', ['pwk.PageContent'], ['goog.dom.classlist', 'goog.style', 'goog.ui.Component', 'pwk.Node', 'pwk.utils.ResizeEvent'], false);
 goog.addDependency('../../../../app/pwk/editor/pagefooter.js', ['pwk.PageFooter'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.PageSettings'], false);
 goog.addDependency('../../../../app/pwk/editor/pageheader.js', ['pwk.PageHeader'], ['goog.dom.classlist', 'goog.ui.Component', 'pwk.PageSettings'], false);
@@ -47,6 +46,7 @@ goog.addDependency('../../../../app/pwk/editor/range.js', ['pwk.Range'], ['goog.
 goog.addDependency('../../../../app/pwk/editor/selection.js', ['pwk.Selection'], ['goog.dom.classlist', 'goog.events.EventTarget', 'goog.fx.dom', 'goog.fx.easing', 'goog.math.Rect', 'pwk.layer.Caret', 'pwk.primitives.NodeSelectionRange'], false);
 goog.addDependency('../../../../app/pwk/editor/shortcuts.js', ['pwk.Shortcuts.Default', 'pwk.Shortcuts.MacOS'], ['goog.events.KeyCodes', 'goog.ui.KeyboardShortcutHandler'], false);
 goog.addDependency('../../../../app/pwk/editor/ui/cssnames.js', ['pwk.ui.NODE_TYPE_PARAGRAPH'], [], false);
+goog.addDependency('../../../../app/pwk/editor/ui/nodeformatter.js', ['pwk.ui.NodeFormatter'], ['goog.dom.classlist', 'pwk.DocumentSettings', 'pwk.NodeAttributeTypes', 'pwk.ui.NODE_TYPE_PARAGRAPH'], false);
 goog.addDependency('../../../../app/pwk/editor/utils/dom.js', ['pwk.utils.dom'], [], false);
 goog.addDependency('../../../../app/pwk/editor/utils/resizeevent.js', ['pwk.utils.ResizeEvent'], [], false);
 goog.addDependency('../../../../app/pwk/editor/utils/style.js', ['pwk.utils.style'], ['goog.style'], false);
