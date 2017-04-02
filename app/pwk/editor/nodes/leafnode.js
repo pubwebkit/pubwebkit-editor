@@ -1192,36 +1192,34 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
         if (i == endLineIndex) {
 
-          if (loopLine.isInDocument()) {
+          if (selectionOffsets && loopLine.isInDocument()) {
             line = loopLine;
-          } else {
-            line = this.lines_[i] || this.lines_[i + 1];
-          }
-
-          if (selectionOffsets) {
             lineOffset = selectionOffsets.start;
+
           } else {
 
-            if (this.getLastLine() === line && this.lines_[i + 1] == null) {
-              lineOffset = line.getLength();
-            } else {
+            if (i + 1 in this.lines_) {
+              line = this.lines_[i + 1];
               lineOffset = 0;
+            } else {
+              line = this.lines_[i];
+              lineOffset = line.getLength();
             }
           }
 
           nodeOffset = this.getOffsetByLineOffset(line, lineOffset);
+
+          if (selectionOffsets) {
+            var rangeInfo = this.getRangeInfoForOffset(nodeOffset);
+            line = rangeInfo.getLine();
+            lineOffset = rangeInfo.getLineOffset();
+          }
         }
       }
 
       if (startLineIndex + 1 in this.lines_) {
         this.dispatchEvent(
             new pwk.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
-      }
-
-      if (!line.isInDocument()) {
-        var rangeInfo = this.getRangeInfoForOffset(nodeOffset);
-        line = rangeInfo.getLine();
-        lineOffset = rangeInfo.getLineOffset();
       }
 
       if (topSelectionRangeNode === this && bottomSelectionRangeNode !== this) {
