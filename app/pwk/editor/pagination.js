@@ -327,7 +327,7 @@ pwk.Pagination.prototype.checkFilling = function(modifiedPage) {
             if (previousLinkedNode != null) {
               pwk.Node.mergeNodes(doc, previousLinkedNode, newNodeToMode);
             } else {
-               doc.addNodeAt(newNodeToMode, nodeToMove.getIndex(), true);
+              doc.addNodeAt(newNodeToMode, nodeToMove.getIndex(), true);
             }
           }
           hasContentToMove = false;
