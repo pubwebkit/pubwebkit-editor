@@ -332,7 +332,7 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
     }
   }
 
-  selection.updateCaretFromRange(range);
+  selection.updateCaretFromRange();
 };
 
 /**

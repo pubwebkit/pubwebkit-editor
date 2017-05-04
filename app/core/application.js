@@ -192,8 +192,8 @@ app.core.Application.prototype.processRoute_ = function(route, controller) {
  * @param {!app.core.ApplicationFilter} filter
  * @param {number=} opt_order
  */
-app.core.Application.prototype.addApplicationFilter = function(filter,
-                                                               opt_order) {
+app.core.Application.prototype.addApplicationFilter =
+    function(filter, opt_order) {
   goog.array.insert(this.applicationFilters_,
       new app.core.types.ApplicationFilterItem(filter, opt_order));
 };
@@ -356,13 +356,13 @@ app.core.Application.prototype.setCurrentRoute_ = function(route) {
   this.currentRoute_ =
       new RegExp('^' +
           goog.string.regExpEscape(route)
-              .replace(/\\:\w+/g, '([a-zA-Z0-9._-]+)')
-              .replace(/\\\*/g, '(.*)')
-              .replace(/\\\[/g, '(')
-              .replace(/\\\]/g, ')?')
-              .replace(/\\\{/g, '(?:')
-              .replace(/\\\}/g, ')?') +
-              '$');
+          .replace(/\\:\w+/g, '([a-zA-Z0-9._-]+)')
+          .replace(/\\\*/g, '(.*)')
+          .replace(/\\\[/g, '(')
+          .replace(/\\\]/g, ')?')
+          .replace(/\\\{/g, '(?:')
+          .replace(/\\\}/g, ')?') +
+          '$');
 };
 
 /** @enum {string} */

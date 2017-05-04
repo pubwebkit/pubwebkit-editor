@@ -1099,21 +1099,25 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       topSelectionRangeNode === bottomSelectionRangeNode;
 
   if (selectionRange.isCollapsed()) {
-    // TODO: Process "Delete" / "Backspace" buttons
-    console.log('Process "Delete" / "Backspace" buttons');
-    console.log(goog.isDefAndNotNull(opt_isBack) ? 'Backspace' : 'Delete');
+    var newRange;
 
-    /**
-     * Remove :
-     *  - text node
-     *  - empty line
-     *  - empty node
-     *  - if on the first position of node:
-     *    + merge with top node
-     *    + remove text node in the linked node
-     *    + remove empty line of the lineked node
-     *
-     */
+    if (opt_isBack) {
+      var nodeOffset = selectionRange.getStartNodeOffset();
+
+      if (nodeOffset > 0) {
+        newRange = pwk.Range.createFromNodes(
+            selectionRange.getStartLine(), nodeOffset - 1,
+            selectionRange.getEndLine(), nodeOffset);
+      } else {
+      }
+
+    } else {
+    }
+
+    if (newRange) {
+      pwkSelection.selectDocument(newRange);
+      pwkDocument.deleteSelection(opt_isBack);
+    }
 
   } else {
 

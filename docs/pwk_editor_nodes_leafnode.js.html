@@ -194,9 +194,9 @@ pwk.LeafNode.prototype.enterDocument = function() {
 
   // Initialize events
   this.listen(pwk.Node.EventType.ATTRIBUTES_CHANGED, this.renderNode_, false,
-      this);
+              this);
   this.listen(pwk.LeafNode.EventType.CONTENT_CHANGED,
-      this.onLineContentChangedHandler_, false, this);
+              this.onLineContentChangedHandler_, false, this);
 
   if (this.getAttributes().length > 0) {
     this.dispatchEvent(pwk.Node.EventType.ATTRIBUTES_CHANGED);
@@ -628,7 +628,7 @@ pwk.LeafNode.prototype.removeLine = function(line) {
  */
 pwk.LeafNode.prototype.unlinkLine = function(line) {
   goog.array.remove(this.lines_, line);
-  if(this.indexOfChild(line) != -1) {
+  if (this.indexOfChild(line) != -1) {
     this.removeChild(line, true);
   }
   return line;
@@ -1176,9 +1176,25 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       topSelectionRangeNode === bottomSelectionRangeNode;
 
   if (selectionRange.isCollapsed()) {
-    // TODO: Process "Delete" / "Backspace" buttons
-    console.log('Process "Delete" / "Backspace" buttons');
-    console.log(goog.isDefAndNotNull(opt_isBack) ? 'Backspace' : 'Delete');
+    var newRange;
+
+    if (opt_isBack) {
+      var nodeOffset = selectionRange.getStartNodeOffset();
+
+      if (nodeOffset > 0) {
+        newRange = pwk.Range.createFromNodes(
+            selectionRange.getStartLine(), nodeOffset - 1,
+            selectionRange.getEndLine(), nodeOffset);
+      } else {
+      }
+
+    } else {
+    }
+
+    if (newRange) {
+      pwkSelection.selectDocument(newRange);
+      pwkDocument.deleteSelection(opt_isBack);
+    }
 
   } else {
 
@@ -1250,27 +1266,25 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       var startLineIndex = this.indexOfLine(nodeSelectionRange.startLine);
       var endLineIndex = this.indexOfLine(nodeSelectionRange.endLine);
       var nodeOffset = 0;
-      var loopLine;
       var selectionOffsets;
       var line;
       var lineOffset;
 
       for (var i = startLineIndex; i &lt;= endLineIndex; i++) {
-        loopLine = this.lines_[i];
+        line = this.lines_[i];
 
-        if (loopLine.isSelectedEntirely()) {
+        if (line.isSelectedEntirely()) {
           // Remove line from node.
-          this.removeLine(loopLine);
+          this.removeLine(line);
           endLineIndex--;
           i--;
         } else {
-          selectionOffsets = loopLine.removeSelection();
+          selectionOffsets = line.removeSelection();
         }
 
         if (i == endLineIndex) {
 
-          if (selectionOffsets &amp;&amp; loopLine.isInDocument()) {
-            line = loopLine;
+          if (selectionOffsets &amp;&amp; line.isInDocument()) {
             lineOffset = selectionOffsets.start;
 
           } else {
@@ -1299,29 +1313,32 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
             new pwk.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
       }
 
-      if (topSelectionRangeNode === this &amp;&amp; bottomSelectionRangeNode !== this) {
-        if (isReversed) {
-          selectionRange.setEndPosition(line, nodeOffset, !lineOffset);
-          if (isSelectionInsideThisNodeOnly) {
-            selectionRange.setStartPosition(line, nodeOffset, !lineOffset);
-          }
-        } else {
-          selectionRange.setStartPosition(line, nodeOffset, !lineOffset);
-          if (isSelectionInsideThisNodeOnly) {
+      if (line) {
+        if (topSelectionRangeNode === this &amp;&amp;
+            bottomSelectionRangeNode !== this) {
+          if (isReversed) {
             selectionRange.setEndPosition(line, nodeOffset, !lineOffset);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setStartPosition(line, nodeOffset, !lineOffset);
+            }
+          } else {
+            selectionRange.setStartPosition(line, nodeOffset, !lineOffset);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setEndPosition(line, nodeOffset, !lineOffset);
+            }
           }
-        }
 
-      } else {
-        if (isReversed) {
-          selectionRange.setStartPosition(line, nodeOffset, !lineOffset);
-          if (isSelectionInsideThisNodeOnly) {
-            selectionRange.setEndPosition(line, nodeOffset, !lineOffset);
-          }
         } else {
-          selectionRange.setEndPosition(line, nodeOffset, !lineOffset);
-          if (isSelectionInsideThisNodeOnly) {
+          if (isReversed) {
             selectionRange.setStartPosition(line, nodeOffset, !lineOffset);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setEndPosition(line, nodeOffset, !lineOffset);
+            }
+          } else {
+            selectionRange.setEndPosition(line, nodeOffset, !lineOffset);
+            if (isSelectionInsideThisNodeOnly) {
+              selectionRange.setStartPosition(line, nodeOffset, !lineOffset);
+            }
           }
         }
       }
@@ -1411,7 +1428,7 @@ pwk.LeafNode.EventType = {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on Tue Apr 18th 2017
+		on Thu May 4th 2017
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

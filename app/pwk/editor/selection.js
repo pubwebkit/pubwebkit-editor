@@ -231,21 +231,7 @@ pwk.Selection.prototype.updateCaretFromRange = function(opt_range) {
       this.lastModifiedBoundsDirection_ = null;
       this.caret_.show();
       this.caret_.update(this);
-    } else {
-      this.updateSelectionFromRange(opt_range);
     }
-  }
-};
-
-/**
- * Update selection from range.
- * @param {pwk.Range=} opt_range
- */
-pwk.Selection.prototype.updateSelectionFromRange = function(opt_range) {
-  // TODO: Call select() method for required nodes and pass proper parameters
-
-  if (goog.isDefAndNotNull(opt_range)) {
-    this.range_ = opt_range;
   }
 };
 
