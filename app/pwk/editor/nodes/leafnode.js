@@ -1105,9 +1105,24 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       var nodeOffset = selectionRange.getStartNodeOffset();
 
       if (nodeOffset > 0) {
-        newRange = pwk.Range.createFromNodes(
-            selectionRange.getStartLine(), nodeOffset - 1,
-            selectionRange.getEndLine(), nodeOffset);
+        var newOffset = nodeOffset - 1;
+        var newLineOffset = selectionRange.getStartLineOffset() - 1;
+
+        if (newLineOffset >= 0) {
+          newRange = pwk.Range.createFromNodes(
+              selectionRange.getStartLine(), newOffset,
+              selectionRange.getStartLine(), nodeOffset,
+                  newLineOffset === 0, false);
+
+        } else {
+          var newOffsetRangeInfo =
+              selectionRange.getStartNode().getRangeInfoForOffset(newOffset);
+
+          newRange = pwk.Range.createFromNodes(
+              newOffsetRangeInfo.getLine(), newOffset,
+              newOffsetRangeInfo.getLine(), nodeOffset);
+        }
+
       } else {
       }
 
@@ -1223,7 +1238,9 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
           nodeOffset = this.getOffsetByLineOffset(line, lineOffset);
 
-          if (selectionOffsets) {
+          if (selectionOffsets &&
+              selectionOffsets.start != 0 &&
+              selectionOffsets.end != 0) {
             var rangeInfo = this.getRangeInfoForOffset(nodeOffset);
             line = rangeInfo.getLine();
             lineOffset = rangeInfo.getLineOffset();
