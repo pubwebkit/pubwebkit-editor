@@ -1094,14 +1094,14 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
       isReversed ? selectionRange.getEndNode() : selectionRange.getStartNode();
   var bottomSelectionRangeNode =
       isReversed ? selectionRange.getStartNode() : selectionRange.getEndNode();
-  var isNodeSelectedEntirely = this.isSelectedEntirely_();
+  var isNodeSelectedEntirely = this.isNodeSelectedEntirely_();
+  var isSelectedThisNodeOnly = this.isSelectedThisNodeOnly_();
   var isSelectionInsideThisNodeOnly =
       topSelectionRangeNode === bottomSelectionRangeNode;
 
   if (selectionRange.isCollapsed()) {
     var newRange;
     var nodeOffset;
-    var lineToRefresh;
 
     if (opt_isBack) { // `Backspace` logic
       nodeOffset = selectionRange.getStartNodeOffset();
@@ -1153,7 +1153,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
   } else {
 
-    if (isNodeSelectedEntirely) {
+    if (isNodeSelectedEntirely && !isSelectedThisNodeOnly) {
       // Update selection range & remove node from document entirely
 
       if (topSelectionRangeNode === this || bottomSelectionRangeNode === this) {
@@ -1318,16 +1318,42 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
  * @return {boolean}
  * @private
  */
-pwk.LeafNode.prototype.isSelectedEntirely_ = function() {
-  if (goog.isDefAndNotNull(this.nodeSelectionRange_)) {
-    return this.indexOfLine(this.nodeSelectionRange_.startLine) === 0 &&
-           this.nodeSelectionRange_.startLineOffset === 0 &&
-           this.indexOfLine(this.nodeSelectionRange_.endLine) ==
-               this.lines_.length - 1 &&
-           this.nodeSelectionRange_.endLineOffset ===
-               this.nodeSelectionRange_.endLine.getLength();
+pwk.LeafNode.prototype.isNodeSelectedEntirely_ = function() {
+  var nodeRange = this.nodeSelectionRange_;
+  var isSelectedEntirely = false;
+
+  if (nodeRange) {
+
+    isSelectedEntirely =
+        this.indexOfLine(nodeRange.startLine) === 0 &&
+        nodeRange.startLineOffset === 0 &&
+        this.indexOfLine(nodeRange.endLine) === this.lines_.length - 1 &&
+        nodeRange.endLineOffset === nodeRange.endLine.getLength();
   }
-  return false;
+
+  return isSelectedEntirely;
+};
+
+/**
+ * Is selected just current node only?
+ * @return {boolean}
+ * @private
+ */
+pwk.LeafNode.prototype.isSelectedThisNodeOnly_ = function() {
+  var nodeRange = this.nodeSelectionRange_;
+  var isSelectedOnlyThisNode = false;
+
+  if (nodeRange) {
+    var selectionRange = this.document_.getSelection().getRange();
+
+    isSelectedOnlyThisNode =
+        selectionRange.getStartLine() === nodeRange.startLine &&
+        selectionRange.getEndLine() === nodeRange.endLine &&
+        selectionRange.getStartLineOffset() === nodeRange.startLineOffset &&
+        selectionRange.getEndLineOffset() === nodeRange.endLineOffset;
+  }
+
+  return isSelectedOnlyThisNode;
 };
 
 /** @inheritDoc */
