@@ -140,22 +140,30 @@ pwk.Range.prototype.isStartOfEndLine = function() {
 /**
  * @return {pwk.Line}
  */
-pwk.Range.prototype.getStartLine = function() { return this.startLine_; };
+pwk.Range.prototype.getStartLine = function() {
+  return this.startLine_;
+};
 
 /**
  * @return {pwk.Line}
  */
-pwk.Range.prototype.getEndLine = function() { return this.endLine_; };
+pwk.Range.prototype.getEndLine = function() {
+  return this.endLine_;
+};
 
 /**
  * @return {pwk.LeafNode}
  */
-pwk.Range.prototype.getStartNode = function() { return this.startNode_; };
+pwk.Range.prototype.getStartNode = function() {
+  return this.startNode_;
+};
 
 /**
  * @return {pwk.LeafNode}
  */
-pwk.Range.prototype.getEndNode = function() { return this.endNode_; };
+pwk.Range.prototype.getEndNode = function() {
+  return this.endNode_;
+};
 
 /**
  * @return {number}

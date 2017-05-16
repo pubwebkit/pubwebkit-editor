@@ -1100,10 +1100,13 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
   if (selectionRange.isCollapsed()) {
     var newRange;
+    var nodeOffset;
+    var lineToRefresh;
 
-    if (opt_isBack) {
-      var nodeOffset = selectionRange.getStartNodeOffset();
+    if (opt_isBack) { // `Backspace` logic
+      nodeOffset = selectionRange.getStartNodeOffset();
 
+      // Cursor inside LeafNode
       if (nodeOffset > 0) {
         var newOffset = nodeOffset - 1;
         var newLineOffset = selectionRange.getStartLineOffset() - 1;
@@ -1123,10 +1126,24 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
               newOffsetRangeInfo.getLine(), nodeOffset);
         }
 
-      } else {
+      } else { // Cursor is at the beginning of the LeafNode
+
+        var previousLinkedNode =
+            selectionRange.getStartNode().getPreviousLinkedNode();
+
+        // If there is a previous linked node, let's select the last character
+        // and remove it.
+        if (previousLinkedNode) {
+          nodeOffset = previousLinkedNode.getLength();
+          var lastLine = previousLinkedNode.getLastLine();
+
+          newRange = pwk.Range.createFromNodes(lastLine, nodeOffset, lastLine,
+              nodeOffset);
+        }
       }
 
-    } else {
+    } else { // `Delete` logic
+
     }
 
     if (newRange) {
@@ -1239,8 +1256,8 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
           nodeOffset = this.getOffsetByLineOffset(line, lineOffset);
 
           if (selectionOffsets &&
-              selectionOffsets.start != 0 &&
-              selectionOffsets.end != 0) {
+              !(selectionOffsets.start === 0 && selectionOffsets.end === 1) &&
+              !(selectionOffsets.start === 1 && selectionOffsets.end === 0)) {
             var rangeInfo = this.getRangeInfoForOffset(nodeOffset);
             line = rangeInfo.getLine();
             lineOffset = rangeInfo.getLineOffset();
@@ -1248,9 +1265,15 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
         }
       }
 
-      if (startLineIndex + 1 in this.lines_) {
+      var nextLineInNode = this.lines_[startLineIndex + 1];
+      var nextLinkedNodeLine = bottomSelectionRangeNode.getNextLinkedNode() ?
+          bottomSelectionRangeNode.getNextLinkedNode().getFirstLine() :
+          null;
+      var lineToRefresh = nextLineInNode || nextLinkedNodeLine;
+
+      if (lineToRefresh) {
         this.dispatchEvent(
-            new pwk.NodeContentChangedEvent(this.lines_[startLineIndex + 1]));
+            new pwk.NodeContentChangedEvent(lineToRefresh));
       }
 
       if (line) {
