@@ -560,7 +560,7 @@ pwk.LeafNode.prototype.unlinkLine = function(line) {
 /**
  * Returns the 0-based index of the given line component, or -1 if no such
  * node is found.
- * @param {pwk.Line?} line The line component.
+ * @param {?pwk.Line} line The line component.
  * @return {number} 0-based index of the line component; -1 if not found.
  */
 pwk.LeafNode.prototype.indexOfLine = function(line) {
@@ -1153,17 +1153,14 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
 
       } else { // Cursor is at the beginning of the LeafNode
 
-        var previousLinkedNode =
-            selectionRange.getStartNode().getPreviousLinkedNode();
+        // If cursor located in the beginning of the node, let's try merge
+        // current node with node above.
+        var previousNode =
+            pwkDocument.getPreviousNode(
+                /** @type {!pwk.Node} */(topSelectionRangeNode));
 
-        // If there is a previous linked node, let's select the last character
-        // and remove it.
-        if (previousLinkedNode) {
-          nodeOffset = previousLinkedNode.getLength();
-          var lastLine = previousLinkedNode.getLastLine();
-
-          newRange = pwk.Range.createFromNodes(lastLine, nodeOffset, lastLine,
-              nodeOffset);
+        if (previousNode) {
+          pwk.Node.mergeNodes(pwkDocument, previousNode, topSelectionRangeNode);
         }
       }
 

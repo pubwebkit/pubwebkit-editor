@@ -172,7 +172,7 @@ pwk.Line.prototype.insertText = function(text, opt_offset) {
 
 /**
  * @param {number} offset
- * @return {Node?}
+ * @return {?Node}
  */
 pwk.Line.prototype.getTextNodeAtOffset = function(offset) {
   return this.content_.getTextNodeAtOffset(offset);

@@ -359,7 +359,7 @@ pwk.LineContent.prototype.getLength = function() {
 
 /**
  * @param {number} offset
- * @return {Node?}
+ * @return {?Node}
  */
 pwk.LineContent.prototype.getTextNodeAtOffset = function(offset) {
   return this.getElement().childNodes[offset] || null;

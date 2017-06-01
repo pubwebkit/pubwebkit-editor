@@ -343,6 +343,11 @@ pwk.Node.mergeNodes = function(document, topNode, bottomNode) {
     // Proceed pwk.LeafNode to pwk.LeafNode merge
     if (topNode instanceof pwk.LeafNode) {
 
+      // Update range
+      var range = document.getSelection().getRange();
+      range.setStartPosition(topNode.getLastLine(), topNode.getLength());
+      range.collapse(true);
+
       //Merge
       var length = bottomNode.getLinesCount();
       var lastChangedLine = bottomNode.getLineAt(0);

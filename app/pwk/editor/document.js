@@ -315,9 +315,6 @@ pwk.Document.prototype.deleteSelection = function(opt_isBack) {
 
       if (topNode.getLength() === topNodeOffset && bottomNodeOffset === 0) {
 
-        // Update range
-        range.collapse(true);
-
         // Try merge nodes
         pwk.Node.mergeNodes(this, topNode, bottomNode);
       }
@@ -386,16 +383,16 @@ pwk.Document.prototype.forEachPage = function(f, opt_obj) {
 /**
  * Returns the page with the given ID, or null if no such page exists.
  * @param {string} id Page ID.
- * @return {pwk.Page?} The page with the given ID; null if none.
+ * @return {?pwk.Page} The page with the given ID; null if none.
  */
 pwk.Document.prototype.getPage = function(id) {
-  return /** @type {pwk.Page?} */ (this.getChild(id));
+  return /** @type {?pwk.Page} */ (this.getChild(id));
 };
 
 /**
  * Returns the page at the given index, or null if the index is out of bounds.
  * @param {number} index 0-based index.
- * @return {pwk.Page?} The page at the given index; null if none.
+ * @return {?pwk.Page} The page at the given index; null if none.
  */
 pwk.Document.prototype.getPageAt = function(index) {
   var pageId = this.pageIndex_.length ? this.pageIndex_[index] || '' : '';
@@ -453,7 +450,7 @@ pwk.Document.prototype.indexOfPageByNodeId = function(nodeId) {
 /**
  * Get page where are situated node with specified nodeId.
  * @param {string} nodeId Node ID.
- * @return {pwk.Page?}
+ * @return {?pwk.Page}
  */
 pwk.Document.prototype.getPageByNodeId = function(nodeId) {
   var pageIndex = this.indexOfPageByNodeId(nodeId);
@@ -540,8 +537,8 @@ pwk.Document.prototype.addNodeAt = function(node, index, opt_renderAfter) {
 };
 
 /**
- * Calls the given function on each of this document's node in order.  If
- * {@link opt_obj} is provided, it will be used as the 'this' object in t he
+ * Calls the given function on each of this document's node in order. If
+ * {@param opt_obj} is provided, it will be used as the 'this' object in t he
  * function when called. The function should take two arguments:  the node
  * component and its 0-based index.  The return value is ignored.
  * @param {Function} f The function to call for every node component; should
@@ -560,16 +557,28 @@ pwk.Document.prototype.forEachNode = function(f, opt_obj) {
 /**
  * Returns the node with the given ID, or null if no such node exists.
  * @param {string} id Node ID.
- * @return {pwk.Node?} The node with the given ID; null if none.
+ * @return {?pwk.Node} The node with the given ID; null if none.
  */
 pwk.Document.prototype.getNode = function(id) {
-  return /** @type {pwk.Node?} */ (this.getChild(id));
+  return /** @type {?pwk.Node} */ (this.getChild(id));
+};
+
+/**
+ * Get previous node in the document.
+ * @param {!pwk.Node} startNode Node that will used as start point.
+ * @return {?pwk.Node} The node before startNode; null if none.
+ */
+pwk.Document.prototype.getPreviousNode = function(startNode) {
+  var previousNodeIndex = startNode ?
+      this.indexOfNode(startNode) - 1 :
+      -1;
+  return this.getNodeAt(previousNodeIndex);
 };
 
 /**
  * Returns the node at the given index, or null if the index is out of bounds.
  * @param {number} index 0-based index.
- * @return {pwk.Node?} The node at the given index; null if none.
+ * @return {?pwk.Node} The node at the given index; null if none.
  */
 pwk.Document.prototype.getNodeAt = function(index) {
   var nodeId = this.nodeIndex_.length ? this.nodeIndex_[index] || '' : '';
