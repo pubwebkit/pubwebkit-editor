@@ -288,7 +288,7 @@ pwk.Document.prototype.createNewLine = function() {
 
 /**
  * Delete document content based on current selection range.
- * @param {boolean=} opt_isBack Direction
+ * @param {boolean=} opt_isBack Direction.
  */
 pwk.Document.prototype.deleteSelection = function(opt_isBack) {
   var selection = this.selection_;

@@ -63,7 +63,7 @@ pwk.Node = function(type, doc) {
 
   /**
    * @type {pwk.Document}
-   * @private
+   * @protected
    */
   this.document_ = doc;
 
@@ -76,7 +76,9 @@ goog.inherits(pwk.Node, goog.ui.Component);
  * Get editor {@link pwk.Document} instance.
  * @return {pwk.Document} Editor {@link pwk.Document} instance.
  */
-pwk.Node.prototype.getDocument = function() { return this.document_; };
+pwk.Node.prototype.getDocument = function() {
+  return this.document_;
+};
 
 /** @inheritDoc */
 pwk.Node.prototype.createDom = function() {

@@ -538,6 +538,17 @@ pwk.LineContent.prototype.getFirstWordInfo = function() {
 };
 
 /**
+ * Get last word and width.
+ * @return {{width: number, text: string}}
+ */
+pwk.LineContent.prototype.getLastWordInfo = function() {
+  var normalizedText = this.getNormalizedText();
+  var spaceIndex = normalizedText.lastIndexOf(' ');
+
+  return this.getContentInfoForOffset(spaceIndex + 1, this.getLength());
+};
+
+/**
  * @return {Array.<pwk.NodeAnnotation>}
  */
 pwk.LineContent.prototype.getAnnotations = function() {

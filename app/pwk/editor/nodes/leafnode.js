@@ -828,6 +828,9 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine,
     var contentToMoveInfo;
     var calculatedAboveWidth;
     var lastWord;
+    var firstWordInfo;
+    var lastWordInfo;
+    var mergeWord;
 
     do {
       if (contentToMoveInfo != null) { // Skip this case for first time
@@ -835,38 +838,61 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine,
         lineAboveContent.insertText(contentToMoveInfo.text,
                                     lineAboveContent.getLength());
 
-        if (!isSpace) {
+        if (!isSpace && !mergeWord) {
           lastUpdatedLineContent.removeAt(0, 1);
         } else {
           lastUpdatedLineContent.removeFirstWord();
         }
 
-        lineBelowLength = lastUpdatedLineContent.getLength();
-        if (lineBelowLength == 0) {
-          lastUpdatedLine.getParentNode().removeLine(lastUpdatedLine);
-          lastUpdatedLine = lines[lastUpdateLineIndex + 1];
-          if (goog.isDefAndNotNull(lastUpdatedLine)) {
-            lastUpdatedLineContent = lastUpdatedLine.getContent();
-          } else {
-            // No line below? Exit...
-            return null;
+        if (mergeWord && lineAbove.getWidth(false) > parentContentWidth) {
+          lastUpdateLineIndex = lastUpdateLineIndex - 1;
+          lastUpdatedLine = lines[lastUpdateLineIndex];
+          lineAboveContent = null;
+        } else {
+          lineBelowLength = lastUpdatedLineContent.getLength();
+          if (lineBelowLength == 0) {
+            lastUpdatedLine.getParentNode().removeLine(lastUpdatedLine);
+            lastUpdatedLine = lines[lastUpdateLineIndex + 1];
+            if (goog.isDefAndNotNull(lastUpdatedLine)) {
+              lastUpdatedLineContent = lastUpdatedLine.getContent();
+            } else {
+              // No line below? Exit...
+              return null;
+            }
           }
         }
       }
 
-      lastWord = lineAboveContent.getTextNodeValueAtOffset(
-          lineAboveContent.getLength() - 1);
-      // Check, if line above did not contains spaces
-      isSpace = googString.isSpace(googString.normalizeWhitespace(lastWord));
-      contentToMoveInfo =
-          !isSpace ? lastUpdatedLineContent.getContentInfoForOffset(0, 1)
-                   : lastUpdatedLineContent.getFirstWordInfo();
+      if (mergeWord) {
+        mergeWord = false;
+      }
 
-      calculatedAboveWidth =
-          lineAbove.getWidth(false) + contentToMoveInfo.width;
+      if (lineAboveContent) {
+        lastWord = lineAboveContent.getTextNodeValueAtOffset(
+            lineAboveContent.getLength() - 1);
+        // Check, if line above did not contains spaces
+        isSpace = googString.isSpace(googString.normalizeWhitespace(lastWord));
+        firstWordInfo = lastUpdatedLineContent.getFirstWordInfo();
+        lastWordInfo = lineAboveContent.getLastWordInfo();
 
-      loopsCount++;
-    } while (calculatedAboveWidth < parentContentWidth);
+        if (!isSpace &&
+            (firstWordInfo.width + lastWordInfo.width) < parentContentWidth) {
+          contentToMoveInfo = firstWordInfo;
+          mergeWord = true;
+        } else {
+          contentToMoveInfo =
+              !isSpace ? lastUpdatedLineContent.getContentInfoForOffset(0, 1)
+                  : firstWordInfo;
+        }
+
+        calculatedAboveWidth =
+            lineAbove.getWidth(false) + contentToMoveInfo.width;
+
+        if (!mergeWord) {
+          loopsCount++;
+        }
+      }
+    } while (calculatedAboveWidth < parentContentWidth || mergeWord);
 
     if (loopsCount > 1) {
       lastUpdateLineIndex = googArray.indexOf(lines, lastUpdatedLine);
@@ -924,9 +950,8 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine,
         lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
 
         lineContentWidth =
-            lastUpdatedLineContent.getContentInfoForOffset(
-                                       0, lastUpdatedModifiedLineContentLength)
-                .width;
+            lastUpdatedLineContent.getContentInfoForOffset(0,
+                lastUpdatedModifiedLineContentLength).width;
         firstSpaceIndex =
             googString.trimRight(googString.normalizeWhitespace(contentToMove))
                 .indexOf(' ');
@@ -943,38 +968,38 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine,
 
       do {
         lastSpaceIndex =
-            googString.trimRight(googString.normalizeWhitespace(
-                                     lastUpdatedContentText)).lastIndexOf(' ');
+            googString.trimRight(
+                googString.normalizeWhitespace(lastUpdatedContentText))
+                    .lastIndexOf(' ');
 
         // If remains big text only, then move last character only
         if (lastSpaceIndex != -1) {
           contentToMove =
-              lastUpdatedLineContent.copy(
-                  lastSpaceIndex + 1, lastUpdatedModifiedLineContentLength) +
-              contentToMove;
+              lastUpdatedLineContent.copy(lastSpaceIndex + 1,
+                  lastUpdatedModifiedLineContentLength) + contentToMove;
 
-          lastUpdatedContentText = lastUpdatedLineContent.copy(
-              0, lastUpdatedLineContentLength - contentToMove.length);
+          lastUpdatedContentText =
+              lastUpdatedLineContent.copy(0,
+                  lastUpdatedLineContentLength - contentToMove.length);
           lastUpdatedModifiedLineContentLength = lastUpdatedContentText.length;
         } else {
 
           do {
             tempWord = googString.normalizeWhitespace(
                 lastUpdatedLineContent
-                    .getTextNodeAtOffset(lastUpdatedModifiedLineContentLength -
-                                         1)
-                    .data);
+                    .getTextNodeAtOffset(
+                        lastUpdatedModifiedLineContentLength - 1).data);
             contentToMove = tempWord + contentToMove;
-            lastUpdatedContentText = lastUpdatedLineContent.copy(
-                0, lastUpdatedLineContentLength - contentToMove.length);
+            lastUpdatedContentText =
+                lastUpdatedLineContent.copy(0,
+                    lastUpdatedLineContentLength - contentToMove.length);
             lastUpdatedModifiedLineContentLength--;
           } while (googString.isSpace(tempWord));
         }
 
         lineContentWidth =
-            lastUpdatedLineContent.getContentInfoForOffset(
-                                       0, lastUpdatedModifiedLineContentLength)
-                .width;
+            lastUpdatedLineContent.getContentInfoForOffset(0,
+                lastUpdatedModifiedLineContentLength).width;
 
       } while (lineContentWidth > parentContentWidth);
     }
@@ -986,8 +1011,7 @@ pwk.LeafNode.prototype.normalizeForward_ = function(lastUpdatedLine,
       lineParentNode = lastUpdatedLine.getParentNode();
       googArray.insert(lineParentNode.getLines(), lastUpdatedLineBelow);
       lineParentNode.addChild(lastUpdatedLineBelow, true);
-      pwk.ui.NodeFormatter.applyNodeAttributes(
-          this.getAttributes(),
+      pwk.ui.NodeFormatter.applyNodeAttributes(this.getAttributes(),
           lastUpdatedLineBelow); // apply node attributes
     } else {
       lastUpdatedLineBelow = lines[lastUpdateLineIndex + 1];
@@ -1084,7 +1108,8 @@ pwk.LeafNode.prototype.unselect = function() {
 /**
  * @inheritDoc
  */
-pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
+pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
+                                                  opt_skipNormalization) {
   var nodeSelectionRange = this.nodeSelectionRange_;
   var pwkDocument = this.getDocument();
   var pwkSelection = pwkDocument.getSelection();
@@ -1255,7 +1280,9 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
 
           nodeOffset = this.getOffsetByLineOffset(line, lineOffset);
 
-          if (selectionOffsets &&
+          if ((selectionOffsets &&
+              selectionOffsets.start !== 0 &&
+              selectionOffsets.end > 1) &&
               !(selectionOffsets.start === 0 && selectionOffsets.end === 1) &&
               !(selectionOffsets.start === 1 && selectionOffsets.end === 0)) {
             var rangeInfo = this.getRangeInfoForOffset(nodeOffset);
@@ -1271,9 +1298,22 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack) {
           null;
       var lineToRefresh = nextLineInNode || nextLinkedNodeLine;
 
-      if (lineToRefresh) {
+      if (lineToRefresh && !opt_skipNormalization) {
         this.dispatchEvent(
             new pwk.NodeContentChangedEvent(lineToRefresh));
+      }
+
+      // Word merged?
+      var rangeCheck = this.getRangeInfoByLinkedNodesOffset(nodeOffset);
+      if (!line.isInDocument() ||
+          (lineOffset !== 0 && line !== rangeCheck.getLine())) {
+
+        if (!line.isInDocument() || nodeOffset !== rangeCheck.getNodeOffset()) {
+          lineOffset = rangeCheck.getLineOffset();
+          nodeOffset = rangeCheck.getNodeOffset();
+        }
+
+        line = rangeCheck.getLine();
       }
 
       if (line) {
@@ -1344,7 +1384,7 @@ pwk.LeafNode.prototype.isSelectedThisNodeOnly_ = function() {
   var isSelectedOnlyThisNode = false;
 
   if (nodeRange) {
-    var selectionRange = this.document_.getSelection().getRange();
+    var selectionRange = this.getDocument().getSelection().getRange();
 
     isSelectedOnlyThisNode =
         selectionRange.getStartLine() === nodeRange.startLine &&
