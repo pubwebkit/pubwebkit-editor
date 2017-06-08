@@ -333,20 +333,22 @@ pwk.Selection.prototype.moveCaretRight = function(opt_isTyping) {
 
         // Line changed and cursor has moved from last position of line above.
         if (range.getStartLine() !== newPositionRangeInfo.getLine() &&
-            range.getStartLineRangeInfo().isEndOfLine &&
+            range.getStartLineRangeInfo().isEndOfLine() &&
             newPositionRangeInfo.getLineOffset() === 1 &&
             !goog.isDefAndNotNull(opt_isTyping)) {
 
           // Move caret to the start of line
-          range.setStartPosition(newPositionRangeInfo.getLine(), startOffset,
-                                 true);
-          range.setEndPosition(newPositionRangeInfo.getLine(), startOffset,
-                               true);
+          range.setStartPosition(
+              newPositionRangeInfo.getLine(), startOffset, true);
+          range.setEndPosition(
+              newPositionRangeInfo.getLine(), startOffset, true);
         } else {
-          range.setStartPosition(newPositionLinkedRangeInfo.getLine(),
-                                 newPositionLinkedRangeInfo.getNodeOffset());
-          range.setEndPosition(newPositionLinkedRangeInfo.getLine(),
-                               newPositionLinkedRangeInfo.getNodeOffset());
+          range.setStartPosition(
+              newPositionLinkedRangeInfo.getLine(),
+              newPositionLinkedRangeInfo.getNodeOffset());
+          range.setEndPosition(
+              newPositionLinkedRangeInfo.getLine(),
+              newPositionLinkedRangeInfo.getNodeOffset());
         }
 
       } else if (newPositionLinkedRangeInfo != null) {
@@ -355,10 +357,10 @@ pwk.Selection.prototype.moveCaretRight = function(opt_isTyping) {
         var offset =
             newPositionLinkedRangeInfo.getNodeOffset() - Number(isStartOfLine);
 
-        range.setStartPosition(newPositionLinkedRangeInfo.getLine(), offset,
-                               isStartOfLine);
-        range.setEndPosition(newPositionLinkedRangeInfo.getLine(), offset,
-                             isStartOfLine);
+        range.setStartPosition(
+            newPositionLinkedRangeInfo.getLine(), offset, isStartOfLine);
+        range.setEndPosition(
+            newPositionLinkedRangeInfo.getLine(), offset, isStartOfLine);
       }
     }
 

@@ -1120,18 +1120,15 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
   var bottomSelectionRangeNode =
       isReversed ? selectionRange.getStartNode() : selectionRange.getEndNode();
   var isNodeSelectedEntirely = this.isNodeSelectedEntirely_();
-  var isSelectedThisNodeOnly = this.isSelectedThisNodeOnly_();
   var isSelectionInsideThisNodeOnly =
       topSelectionRangeNode === bottomSelectionRangeNode;
 
   if (selectionRange.isCollapsed()) {
     var newRange;
-    var nodeOffset;
+    var nodeOffset = selectionRange.getStartNodeOffset();
 
-    if (opt_isBack) { // `Backspace` logic
-      nodeOffset = selectionRange.getStartNodeOffset();
-
-      // Cursor inside LeafNode
+    // `Backspace` logic
+    if (opt_isBack) {
       if (nodeOffset > 0) {
         var newOffset = nodeOffset - 1;
         var newLineOffset = selectionRange.getStartLineOffset() - 1;
@@ -1140,7 +1137,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
           newRange = pwk.Range.createFromNodes(
               selectionRange.getStartLine(), newOffset,
               selectionRange.getStartLine(), nodeOffset,
-                  newLineOffset === 0, false);
+              newLineOffset === 0, false);
 
         } else {
           var newOffsetRangeInfo =
@@ -1165,8 +1162,39 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
       }
 
     } else { // `Delete` logic
-
+      // var topSelectionRangeNodeLength = topSelectionRangeNode.getLength();
+      // var newOffset = nodeOffset + 1;
+      // var newOffsetRangeInfo;
+      // if (topSelectionRangeNodeLength !== nodeOffset) {
+      //
+      //   // Remove symbol after caret.
+      //   newOffsetRangeInfo =
+      //       selectionRange.getStartNode().getRangeInfoForOffset(newOffset);
+      //
+      //   newRange = pwk.Range.createFromNodes(
+      //       selectionRange.getStartLine(), nodeOffset,
+      //       newOffsetRangeInfo.getLine(), newOffset,
+      //       selectionRange.getStartLineOffset() === 0);
+      //
+      // } else if (topSelectionRangeNode.getNextLinkedNode() &&
+      //     topSelectionRangeNodeLength === nodeOffset) {
+      //
+      //   newOffsetRangeInfo =
+      //       selectionRange.getStartNode()
+      //           .getRangeInfoByLinkedNodesOffset(newOffset);
+      //
+      //   newRange = pwk.Range.createFromNodes(
+      //       newOffsetRangeInfo.getLine(), 0,
+      //       newOffsetRangeInfo.getLine(), 1);
+      //
+      // } else {
+      //   // Merge current and node below.
+      //   console.log('Merge nodes');
+      // }
     }
+
+    this.dispatchEvent(
+        new pwk.NodeContentChangedEvent(lineToRefresh));
 
     if (newRange) {
       pwkSelection.selectDocument(newRange);
@@ -1175,7 +1203,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
 
   } else {
 
-    if (isNodeSelectedEntirely && !isSelectedThisNodeOnly) {
+    if (isNodeSelectedEntirely) {
       // Update selection range & remove node from document entirely
 
       if (topSelectionRangeNode === this || bottomSelectionRangeNode === this) {
@@ -1195,18 +1223,18 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
                 (pwkDocument.getNodeAt(pwkDocument.indexOfNode(this) + 1));
 
             if (isReversed) {
-              selectionRange.setEndPosition(bottommostNode.getFirstLine(), 0,
-                                            true);
+              selectionRange.setEndPosition(
+                  bottommostNode.getFirstLine(), 0, true);
               if (isSelectionInsideThisNodeOnly) {
-                selectionRange.setStartPosition(bottommostNode.getFirstLine(),
-                                                0, true);
+                selectionRange.setStartPosition(
+                    bottommostNode.getFirstLine(), 0, true);
               }
             } else {
-              selectionRange.setStartPosition(bottommostNode.getFirstLine(), 0,
-                                              true);
+              selectionRange.setStartPosition(
+                  bottommostNode.getFirstLine(), 0, true);
               if (isSelectionInsideThisNodeOnly) {
-                selectionRange.setEndPosition(bottommostNode.getFirstLine(), 0,
-                                              true);
+                selectionRange.setEndPosition(
+                    bottommostNode.getFirstLine(), 0, true);
               }
             }
           }
@@ -1263,7 +1291,6 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
 
           if (selectionOffsets && line.isInDocument()) {
             lineOffset = selectionOffsets.start;
-
           } else {
 
             if (i + 1 in this.lines_) {
@@ -1292,7 +1319,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
       var nextLineInNode = this.lines_[startLineIndex + 1];
       var nextLinkedNodeLine = bottomSelectionRangeNode.getNextLinkedNode() ?
           bottomSelectionRangeNode.getNextLinkedNode().getFirstLine() :
-          null;
+          this.lines_[startLineIndex];
       var lineToRefresh = nextLineInNode || nextLinkedNodeLine;
 
       if (lineToRefresh && !opt_skipNormalization) {
@@ -1301,9 +1328,11 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
       }
 
       // Word merged?
-      var rangeCheck = this.getRangeInfoByLinkedNodesOffset(nodeOffset);
+      var rangeCheck = this.nextLinkedNode_ ?
+          this.getRangeInfoByLinkedNodesOffset(nodeOffset) :
+          this.getRangeInfoForOffset(nodeOffset);
       if (!line.isInDocument() ||
-          (lineOffset !== 0 && line !== rangeCheck.getLine())) {
+          (rangeCheck && lineOffset !== 0 && line !== rangeCheck.getLine())) {
 
         if (!line.isInDocument() || nodeOffset !== rangeCheck.getNodeOffset()) {
           lineOffset = rangeCheck.getLineOffset();
