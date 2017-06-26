@@ -1072,35 +1072,9 @@ pwk.Selection.prototype.selectDocument = function(opt_range) {
     var startLineOffset;
     var nodeSelectionRange;
 
-    if (currentStartNodeIndex == newStartNodeIndex &&
-        currentEndNodeIndex == newEndNodeIndex) { // Reselect end node only
-
-      condition = (newStartNode == newEndNode);
-
-      if (opt_range.isReversed()) {
-        endLine =
-            condition ? opt_range.getStartLine() : newEndNode.getLastLine();
-        endLineOffset =
-            condition ? opt_range.getStartLineOffset() : endLine.getLength();
-        nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
-            opt_range.getEndLine(), opt_range.getEndLineOffset(), endLine,
-            endLineOffset);
-
-      } else {
-        startLine =
-            condition ? opt_range.getStartLine() : newEndNode.getFirstLine();
-        startLineOffset = condition ? opt_range.getStartLineOffset() : 0;
-        nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
-            startLine, startLineOffset, opt_range.getEndLine(),
-            opt_range.getEndLineOffset());
-      }
-
-      newEndNode.unselect();
-      newEndNode.select(nodeSelectionRange);
-
-    } else if (currentStartNodeIndex === newStartNodeIndex &&
-               currentStartNodeIndex < newEndNodeIndex &&
-               currentEndNodeIndex < newEndNodeIndex) { // Add down
+    if (currentStartNodeIndex === newStartNodeIndex &&
+        currentStartNodeIndex < newEndNodeIndex &&
+        currentEndNodeIndex < newEndNodeIndex) { // Add down
 
       for (var i = currentEndNodeIndex; i <= newEndNodeIndex; i++) {
 
@@ -1210,12 +1184,35 @@ pwk.Selection.prototype.selectDocument = function(opt_range) {
           doc.getNodeAt(i).unselect();
         }
       }
+    } else {
+      condition = (newStartNode === newEndNode);
+
+      if (opt_range.isReversed()) {
+        endLine =
+            condition ? opt_range.getStartLine() : newEndNode.getLastLine();
+        endLineOffset =
+            condition ? opt_range.getStartLineOffset() : endLine.getLength();
+        nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+            opt_range.getEndLine(), opt_range.getEndLineOffset(), endLine,
+            endLineOffset);
+
+      } else {
+        startLine =
+            condition ? opt_range.getStartLine() : newEndNode.getFirstLine();
+        startLineOffset = condition ? opt_range.getStartLineOffset() : 0;
+        nodeSelectionRange = new pwk.primitives.NodeSelectionRange(
+            startLine, startLineOffset, opt_range.getEndLine(),
+            opt_range.getEndLineOffset());
+      }
+
+      newEndNode.unselect();
+      newEndNode.select(nodeSelectionRange);
     }
   }
 
   this.range_ = opt_range;
 
-  if (opt_range.isCollapsed() && opt_range.getStartLine().getLength() != 0) {
+  if (opt_range.isCollapsed() && opt_range.getStartLine().getLength() !== 0) {
     this.updateCaretFromRange();
   } else {
     this.lastBoundsDirection_ = null;

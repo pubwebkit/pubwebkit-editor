@@ -836,7 +836,7 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine,
       if (contentToMoveInfo != null) { // Skip this case for first time
 
         lineAboveContent.insertText(contentToMoveInfo.text,
-                                    lineAboveContent.getLength());
+            lineAboveContent.getLength());
 
         if (!isSpace && !mergeWord) {
           lastUpdatedLineContent.removeAt(0, 1);
@@ -850,8 +850,9 @@ pwk.LeafNode.prototype.normalizeBackward_ = function(lastUpdatedLine,
           lineAboveContent = null;
         } else {
           lineBelowLength = lastUpdatedLineContent.getLength();
-          if (lineBelowLength == 0) {
-            lastUpdatedLine.getParentNode().removeLine(lastUpdatedLine);
+          if (lineBelowLength === 0) {
+            var parentNode = lastUpdatedLine.getParentNode();
+            parentNode.removeLine(lastUpdatedLine);
             lastUpdatedLine = lines[lastUpdateLineIndex + 1];
             if (goog.isDefAndNotNull(lastUpdatedLine)) {
               lastUpdatedLineContent = lastUpdatedLine.getContent();
@@ -1122,6 +1123,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
   var isNodeSelectedEntirely = this.isNodeSelectedEntirely_();
   var isSelectionInsideThisNodeOnly =
       topSelectionRangeNode === bottomSelectionRangeNode;
+  var isRemoveNode = false;
 
   if (selectionRange.isCollapsed()) {
     var newRange;
@@ -1162,39 +1164,36 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
       }
 
     } else { // `Delete` logic
-      // var topSelectionRangeNodeLength = topSelectionRangeNode.getLength();
-      // var newOffset = nodeOffset + 1;
-      // var newOffsetRangeInfo;
-      // if (topSelectionRangeNodeLength !== nodeOffset) {
-      //
-      //   // Remove symbol after caret.
-      //   newOffsetRangeInfo =
-      //       selectionRange.getStartNode().getRangeInfoForOffset(newOffset);
-      //
-      //   newRange = pwk.Range.createFromNodes(
-      //       selectionRange.getStartLine(), nodeOffset,
-      //       newOffsetRangeInfo.getLine(), newOffset,
-      //       selectionRange.getStartLineOffset() === 0);
-      //
-      // } else if (topSelectionRangeNode.getNextLinkedNode() &&
-      //     topSelectionRangeNodeLength === nodeOffset) {
-      //
-      //   newOffsetRangeInfo =
-      //       selectionRange.getStartNode()
-      //           .getRangeInfoByLinkedNodesOffset(newOffset);
-      //
-      //   newRange = pwk.Range.createFromNodes(
-      //       newOffsetRangeInfo.getLine(), 0,
-      //       newOffsetRangeInfo.getLine(), 1);
-      //
-      // } else {
-      //   // Merge current and node below.
-      //   console.log('Merge nodes');
-      // }
-    }
+      var topSelectionRangeNodeLength = topSelectionRangeNode.getLength();
+      var newOffset = nodeOffset + 1;
+      var newOffsetRangeInfo;
+      if (topSelectionRangeNodeLength !== nodeOffset) {
 
-    this.dispatchEvent(
-        new pwk.NodeContentChangedEvent(lineToRefresh));
+        // Remove symbol after caret.
+        newOffsetRangeInfo =
+            selectionRange.getStartNode().getRangeInfoForOffset(newOffset);
+
+        newRange = pwk.Range.createFromNodes(
+            selectionRange.getStartLine(), nodeOffset,
+            newOffsetRangeInfo.getLine(), newOffset,
+            selectionRange.getStartLineOffset() === 0);
+
+      } else if (topSelectionRangeNode.getNextLinkedNode() &&
+          topSelectionRangeNodeLength === nodeOffset) {
+
+        newOffsetRangeInfo =
+            selectionRange.getStartNode()
+                .getRangeInfoByLinkedNodesOffset(newOffset);
+
+        newRange = pwk.Range.createFromNodes(
+            newOffsetRangeInfo.getLine(), 0,
+            newOffsetRangeInfo.getLine(), 1, true);
+
+      } else {
+        // Merge current and node below.
+        console.log('Merge nodes');
+      }
+    }
 
     if (newRange) {
       pwkSelection.selectDocument(newRange);
@@ -1274,6 +1273,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
       var selectionOffsets;
       var line;
       var lineOffset;
+      var linkedNodeOffset;
 
       for (var i = startLineIndex; i <= endLineIndex; i++) {
         line = this.lines_[i];
@@ -1312,6 +1312,7 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
             var rangeInfo = this.getRangeInfoForOffset(nodeOffset);
             line = rangeInfo.getLine();
             lineOffset = rangeInfo.getLineOffset();
+            linkedNodeOffset = rangeInfo.getLinkedNodeOffset();
           }
         }
       }
@@ -1325,12 +1326,24 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
       if (lineToRefresh && !opt_skipNormalization) {
         this.dispatchEvent(
             new pwk.NodeContentChangedEvent(lineToRefresh));
+
+        if (!this.getLinesCount()) {
+          // Looks like it is linked node and all content were moved during
+          // normalization.
+          var newRangeNode = this.previousLinkedNode_ || this.nextLinkedNode_;
+          var rangeInfo = newRangeNode.getRangeInfoForOffset(linkedNodeOffset);
+          nodeOffset = linkedNodeOffset;
+          line = rangeInfo.getLine();
+          lineOffset = rangeInfo.getLineOffset();
+          isRemoveNode = true;
+        }
       }
 
       // Word merged?
       var rangeCheck = this.nextLinkedNode_ ?
           this.getRangeInfoByLinkedNodesOffset(nodeOffset) :
           this.getRangeInfoForOffset(nodeOffset);
+
       if (!line.isInDocument() ||
           (rangeCheck && lineOffset !== 0 && line !== rangeCheck.getLine())) {
 
@@ -1374,9 +1387,13 @@ pwk.LeafNode.prototype.removeSelection = function(opt_isBack,
     }
   }
 
-  // Cleanup variables
-  this.isSelected_ = false;
-  this.nodeSelectionRange_ = null;
+  if (isRemoveNode) {
+    pwkDocument.removeNode(this);
+  } else {
+    // Cleanup variables
+    this.isSelected_ = false;
+    this.nodeSelectionRange_ = null;
+  }
 };
 
 /**
