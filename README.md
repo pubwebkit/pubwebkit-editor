@@ -1,5 +1,7 @@
 # [Pubwebkit](http://www.pubwebkit.com/) editor
 
+Project moved to https://github.com/banguit/pubwebkit-editor
+
 [![CircleCI](https://circleci.com/gh/pubwebkit/pubwebkit-editor.svg?style=shield&circle-token=3752c66c0d775a9f309ab8b150f98a6ffd0289fe)](https://circleci.com/gh/pubwebkit/pubwebkit-editor) [![License](https://img.shields.io/badge/License-GNU%20AGPL%20V3-green.svg?style=flat)](http://www.gnu.org/licenses/agpl-3.0.ru.html)
 
 Powerful editor to create your ebook in various styles. It's includes: Cover Designer, Template Editor, Community Snippets and more.
